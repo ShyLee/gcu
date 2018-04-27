@@ -1,0 +1,1299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- afm-config.xml FM Web Central application preferences. o Preferences are often overridden within the project, role, user, navigator or view context. [When overriding preferences means, the program replaces parent's nodes with the child's nodes with a matching xPath, so if you retrieve a value, you will get the one appropriate for that nested context.] o Refer to the ARCHIBUS System Management manual for instructions on changing values that can be adjusted on a per-site basis. o Changes to items marked as "Internal" are not supported. -->
+
+<afm-config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <!-- Application Preferences. locale Internal: default locale if not overridden by user account. selfAdministration Internal. errorMessageView, etc. Internal: View for command menu actions. showParentsWithoutChildren Internal: Do owner-assigned reports show owners with no assigned. Overridden by view setting. guestUserID Internal: User account name for guest use_hier_security Internal: whether hierarchical security group matching rules are to be used. abSchemaSystemFolder Internal: System folder and help link locations. userGroupAllowedEditCanonicViews User group required to change a default view (else user must save only to the hotlist). userGroupAllowedEditViewAnalysis User group required to change a view analysis view printablePdfXsl Internal: Default xsl for printing views to Pdf format. -->
+
+    <!-- For SSO, use logoutView="logout.axvw". For normal deployment, use logoutView="ab-login.jsp". -->
+    <preferences
+        name="My Company"
+        locale="en_US"
+        selfAdministration="true"
+        applicationTitle="ARCHIBUS Web Central"
+        relativeSchemaPath="/#Attribute%//@webAppDirectory%/#Attribute%//@schemaDirectory%"
+        schemaDirectory="schema"
+        webAppDirectory="archibus"
+        relativeAppPath="/#Attribute%//@webAppDirectory%"
+        absoluteAppPath="http://localhost:8080/#Attribute%//@webAppDirectory%"
+        errorMessageView="ab-error-message.axvw"
+        loginView="ab-sign-in.jsp"
+        logoutView="login.axvw"
+        mainView="navigator-details.axvw"
+        timeoutView="login.axvw"
+        showMessageAsPopup="message-as-popup.axvw"
+        showMessageAsView="message-as-view.axvw"
+        showParentsWithoutChildren="true"
+        guestUserID="GUEST"
+        userGroupAllowedEditCanonicViews="SYS-USRMGR"
+        userGroupAllowedEditViewAnalysis="SYS-USRMGR"
+        use_hier_security="true"
+        abSchemaSystemFolder="#Attribute%//@relativeSchemaPath%/ab-system"
+        abSchemaSystemGraphicsFolder="#Attribute%//@abSchemaSystemFolder%/graphics"
+        abSchemaSystemHelpFolder="/#Attribute%//@webAppDirectory%/help/user#Attribute%/*/preferences/userAccount/@helpExtension%"
+        abSchemaSystemMgmtHelpFolder="/#Attribute%//@webAppDirectory%/help/system#Attribute%/*/preferences/userAccount/@helpExtension%"
+        abSchemaSystemJavascriptFolder="#Attribute%//@abSchemaSystemFolder%/javascript"
+        abSchemaSystemCSSFolder="#Attribute%//@abSchemaSystemFolder%/style"
+        helpLink="http://www.archibus.com/ai/abizfiles/v21.1_help/archibus_help/archibus.htm"
+        alterwindowhelpLink="#Attribute%//@abSchemaSystemHelpFolder%/user/facilities_information_manager/managing_fm_web_central/using_the_alter_view_console.htm"
+        abSchemaSystemXSDURIPath="#Attribute%//@webAppPath%/schema/ab-system/xsd"
+        dynamicDrawingHighlights="true"
+        dwfViewer7="true"
+        dwfDefaultHighlightColor="16711680"
+        reportJobViewName="ab-paginated-report-job.axvw">
+
+        <retrievedRecords
+            inheritParentContext="false"/>
+
+        <!-- Global record limits -->
+        <recordLimits>
+            <recordLimit
+                output="none"
+                ruleType="Message"
+                perTgrp="0"
+                perView="0"/>
+            <recordLimit
+                output="html"
+                ruleType="Message"
+                perTgrp="100"
+                perView="200"/>
+            <recordLimit
+                output="file"
+                ruleType="Message"
+                perTgrp="0"
+                perView="100000"/>
+            <recordLimit
+                output="file"
+                ruleType="Scheduled"
+                perTgrp="0"
+                perView="0"/>
+        </recordLimits>
+
+        <!-- Internal: list of supported components versions. The startup will warn if an unsupported version is in use. Do NOT change this section! -->
+        <requiredComponents>
+            <requiredComponent
+                name="Xalan"
+                versionClassName="org.apache.xalan.Version">
+                <supportedVersions>
+                    <supportedVersion
+                        version="2.3.1"/>
+                    <supportedVersion
+                        version="2.7.4"/>
+                </supportedVersions>
+            </requiredComponent>
+            <requiredComponent
+                name="Xerces"
+                versionClassName="org.apache.xerces.impl.Version">
+                <supportedVersions>
+                    <supportedVersion
+                        version="2.9.1"/>
+                    <supportedVersion
+                        version="4.4.5"/>
+                </supportedVersions>
+            </requiredComponent>
+        </requiredComponents>
+
+        <!-- Default setting for generating PDF button on each view. This setting can be overriden by a view setting -->
+        <pdfButton
+            show="false"
+            style="portrait"/>
+        <export>
+            <pdf>
+                <xsl
+                    file="ab-printable-pdf-fo.xsl"/>
+                <!-- Attribute file value must be "config.xml" to load FOP configuration file name to support Asian (double-byte) languages. This configuration file loads the 20MB Unicode font set. -->
+                <!-- Attribute file value can be empty to support just European (single-byte) languages -->
+                <fopConfig
+                    folder="#Attribute%//@webAppPath%/#Attribute%//@schemaDirectory%/ab-system/export-reports/fop-config"
+                    file=""/>
+            </pdf>
+            <excel>
+                <button
+                    show="false"/>
+                <xsl
+                    file="ab-excel-fo.xsl"/>
+                <mdx>
+                    <button
+                        show="false"/>
+                    <xsl
+                        file="ab-mdx-2-excel-fo.xsl"/>
+                </mdx>
+            </excel>
+        </export>
+        <!-- Override for fields to display for each table in the Select Values window. -->
+        <selectValue
+            showIndex="true">
+            <option
+                key="date_calendar">
+                <xsl
+                    file="select-date-from-calendar.xsl"/>
+            </option>
+            <option
+                key="eq">
+                <field
+                    name="bl_id"/>
+                <field
+                    name="fl_id"/>
+                <field
+                    name="rm_id"/>
+            </option>
+            <option
+                key="em">
+                <field
+                    name="bl_id"/>
+                <field
+                    name="fl_id"/>
+                <field
+                    name="rm_id"/>
+                <field
+                    name="phone"/>
+            </option>
+
+            <option
+                key="afm_docvers">
+                <field
+                    name="doc_file"/>
+                <field
+                    name="doc_size"/>
+            </option>
+        </selectValue>
+
+        <!-- XML Schema definition to apply to each type of file. Set validation="false" to turn off validation. -->
+        <xmlSchemas>
+            <xmlSchema
+                type="axvw"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/afm-xml-views.xsd"/>
+            <xmlSchema
+                type="frms"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/framesets.xsd"/>
+            <xmlSchema
+                type="acts"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/default-actions.xsd"/>
+            <xmlSchema
+                type="lang"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/locale-strings.xsd"/>
+            <xmlSchema
+                type="dflt"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/tablegroup-dflt.xsd"/>
+            <xmlSchema
+                type="incomingActionXml"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/xmlStringFromClientSideAction.xsd"/>
+            <xmlSchema
+                type="afm-license"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/afm-licenses.xsd"/>
+            <xmlSchema
+                type="afm-secure"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/afm-secure.xsd"/>
+            <xmlSchema
+                type="afm-projects"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/afm-projects.xsd"/>
+            <xmlSchema
+                type="vpa-restriction"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/vpa-restriction.xsd"/>
+            <xmlSchema
+                type="afm-workflow-rules"
+                validation="true"
+                uri="file:///#Attribute%//@abSchemaSystemXSDURIPath%/afm-workflow-rules.xsd"/>
+        </xmlSchemas>
+
+        <!-- Internal: controls inheritance of attributes to child context. -->
+        <inherit/>
+
+        <!-- Internal: used for Grinder test support. -->
+        <debug
+            requestCounterGlobal="true"
+            memoryUsageInterval="100"
+            loadTestMode="false"
+            translatablePrefix="false"/>
+
+        <!-- Internal: default title bar view and frameset. -->
+        <viewTitleBar
+            show="true"
+            file="view-title-bar-view.axvw"/>
+
+        <!-- Internal: default view formatting, style sheet, and ISO formats. -->
+        <formatting>
+            <xsl
+                file="default.xsl"/>
+            <!-- Before 21.1: default CSS style sheet, used if the user does not have color scheme set in the profile. -->
+            <css
+                file="abcascadingstylesheet.css"/>
+            <!-- Before 17.2: used for formatting data for edit forms (non-localized, neutral format). -->
+            <dateFormat
+                format="yyyy-MM-dd"/>
+            <timeFormat
+                format="HH:mm.ss.SSS"/>
+            <dateTimeFormat
+                format="yyyy-MM-dd HH:mm.ss.SSS"/>
+        </formatting>
+
+        <!-- Object Cache Manager Determines the interval, in seconds, between sweeps of the cache to remove for objects that have passed their "time to live". The application only sweeps the cache if the minimum percentage memory free limit is reached. -->
+        <cacheManager
+            cleanInterval="300"
+            minPercentageFreeMemory="20"/>
+
+        <!-- System integrators developing new views may wish to use the settings below to eliminate caching so that changes to view (axvw) and style sheet (.xsl) files are apparent when the view reloads. See also the classLoaders below. If you use these settings: load views from the address bar, as with these settings the Process Navigator view gets cleaned faster than you can use it. <cacheManager cleanInterval="1" minPercentageFreeMemory="100" /> -->
+
+
+        <!-- Document Management. Use this section to control the list of file types that users can check into the application and to control the format the program sends the documents back in. [] contentType instructs your browser as to the type/subtype of the data being retrieved. [] contentDisposition can specify that the document should be treated as an inline extension or as a document attachment. o 'inline' means that the document should be immediately displayed to the user; set this only if the client browser natively understands, or has a plug in for displaying, this type. o 'attachment; filename=' means that the browser presents a dialog from which you can open or save the document with the default filename supplied by the server. -->
+
+        <documentManagement>
+            <fileTypes>
+                <fileType
+                    extension="doc">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/msword"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="docx">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="pdf">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/pdf"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="xls">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/vnd.ms-excel"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="xlsx">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="dwg">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="dwf">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="txt">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="text/plain"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="jpg">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="image/jpeg"
+                                contentDisposition="inline"/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="gif">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="image/GIF"
+                                contentDisposition="inline"/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="bmp">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="image/BMP"
+                                contentDisposition="inline"/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="png">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="image/PNG"
+                                contentDisposition="inline"/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="zip">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="xml">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="text/xml"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="htm">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="text/html"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+                <fileType
+                    extension="html">
+                    <operations>
+                        <operation
+                            type="showDocument">
+                            <header
+                                contentType="text/html"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                        <operation
+                            type="checkOut">
+                            <header
+                                contentType="application/octet-stream"
+                                contentDisposition="attachment; filename="/>
+                        </operation>
+                    </operations>
+                </fileType>
+            </fileTypes>
+        </documentManagement>
+
+        <!-- Internal: default locale information if not overridden by per-user setting. -->
+        <!-- Used for formatting data for reports (localized format). currencySymbol attribute is here for backward compatibility with 1.0 views, this value is not used in 2.0 views. -->
+        <locale
+            name="en_US"
+            currencySymbol="$"
+            decimalSeparator="."
+            groupingSeparator=","
+            displayUnits="Imperial">
+            <dateFormat
+                short="M/d/yyyy"
+                long="MMMM d, yyyy"
+                monthNames="January,February,March,April,May,June,July,August,September,October,November,December,"
+                format="MM/dd/yyyy"
+                dateFormat="LONG"/>
+            <timeFormat
+                short="h:mm a"
+                long="h:mm:ss a z"
+                amPmStrings="AM,PM"
+                format="hh:mm a"
+                timeFormat="LONG"/>
+            <dateTimeFormat
+                format="MM/dd/yyyy hh:mm:ss a"
+                dateFormat="LONG"
+                timeFormat="LONG"/>
+            <moneyFormat
+                format=""/>
+            <decimalFormat
+                format=""/>
+        </locale>
+
+        <core
+            userId="SYSTEM"/>
+    </preferences>
+
+    <!-- Internal: Database-specific settings and ISO-to-native-date/time conversions. -->
+    <!-- Do not change transactionIsolationLevel value, it might affect application logic. -->
+    <databases>
+        <database>
+            <engine
+                type="sqlServer">
+                <inherit
+                    matchAttribute="type"/>
+                <jdbc
+                    driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+                    url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ"
+                    connectFormat="1"
+                    transactionIsolationLevel="1"/>
+                <sql>
+                    <format
+                        date="yyyy-MM-dd HH:mm:ss"
+                        time="yyyy-MM-dd HH:mm:ss"
+                        datetime="yyyy-MM-dd HH:mm:ss"/>
+                    <function
+                        date="'%s'"
+                        time="'1899-12-30 %s'"
+                        datetime="'1899-12-30 %s'"
+                        timestampForField="CONVERT(DATETIME,CONVERT(CHAR,%date,102)+ ' ' +CONVERT(CHAR,%time,114), 121)"
+                        timestampForValue="CONVERT(DATETIME,%date + ' ' +%time,121)"/>
+                </sql>
+                <connectionPool
+                    type="dbcp"
+                    maxActive="200"
+                    maxWait="-1"
+                    maxIdle="8"
+                    minIdle="-1"
+                    whenExhaustedAction="2"
+                    testOnBorrow="false"
+                    testOnReturn="false"
+                    timeBetweenEvictionRunsMillis="-1"
+                    minEvictableIdleTimeMillis="1800000"
+                    testWhileIdle="false"
+                    validationQuery="SELECT 1"/>
+            </engine>
+            <!-- The content of engine type=SqlServerExpress is exactly the same as SqlServer. -->
+            <engine
+                type="sqlServerExpress">
+                <inherit
+                    matchAttribute="type"/>
+                <jdbc
+                    driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+                    url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ"
+                    connectFormat="1"
+                    transactionIsolationLevel="1"/>
+                <sql>
+                    <format
+                        date="yyyy-MM-dd HH:mm:ss"
+                        time="yyyy-MM-dd HH:mm:ss"
+                        datetime="yyyy-MM-dd HH:mm:ss"/>
+                    <function
+                        date="'%s'"
+                        time="'1899-12-30 %s'"
+                        datetime="'1899-12-30 %s'"
+                        timestampForField="CONVERT(DATETIME,CONVERT(CHAR,%date,102)+ ' ' +CONVERT(CHAR,%time,114), 121)"
+                        timestampForValue="CONVERT(DATETIME,%date + ' ' +%time,121)"/>
+                </sql>
+                <connectionPool
+                    type="dbcp"
+                    maxActive="15"
+                    maxWait="-1"
+                    maxIdle="8"
+                    minIdle="-1"
+                    whenExhaustedAction="2"
+                    testOnBorrow="false"
+                    testOnReturn="false"
+                    timeBetweenEvictionRunsMillis="-1"
+                    minEvictableIdleTimeMillis="1800000"
+                    testWhileIdle="false"
+                    validationQuery="SELECT 1"/>
+            </engine>
+            <engine
+                type="Oracle">
+                <inherit
+                    matchAttribute="type"/>
+                <jdbc
+                    driver="oracle.jdbc.OracleDriver"
+                    url="jdbc:oracle:thin:@127.0.0.1:1521:oracle"
+                    connectFormat="1"
+                    transactionIsolationLevel="2"/>
+                <sql>
+                    <format
+                        date="yyyy-MM-dd HH:mm:ss"
+                        time="yyyy-MM-dd HH:mm:ss"
+                        datetime="yyyy-MM-dd HH:mm:ss"/>
+                    <function
+                        date="TO_DATE('%s 00:00:00', 'YYYY-MM-DD HH24:MI:SS')"
+                        time="TO_DATE('1899-12-30 %s', 'YYYY-MM-DD HH24:MI:SS')"
+                        datetime="TO_DATE('%s', 'YYYY-MM-DD HH24:MI:SS')"
+                        timestampForField="TO_DATE(TO_CHAR(%date, 'YYYY-MM-DD')|| ' '||TO_CHAR(%time, 'HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')"
+                        timestampForValue="TO_DATE(%date|| ' ' ||%time ,'YYYY-MM-DD HH24:MI:SS')"/>
+                </sql>
+                <connectionPool
+                    type="dbcp"
+                    maxActive="200"
+                    maxWait="-1"
+                    maxIdle="8"
+                    minIdle="-1"
+                    whenExhaustedAction="1"
+                    testOnBorrow="false"
+                    testOnReturn="false"
+                    timeBetweenEvictionRunsMillis="-1"
+                    minEvictableIdleTimeMillis="1800000"
+                    testWhileIdle="false"
+                    validationQuery="SELECT 1 FROM DUAL"/>
+            </engine>
+            <engine
+                type="Sybase">
+                <inherit
+                    matchAttribute="type"/>
+                <jdbc
+                    driver="com.sybase.jdbc3.jdbc.SybDriver"
+                    url="jdbc:sybase:Tds:localhost:2638"
+                    connectFormat="1"
+                    transactionIsolationLevel="1"/>
+                <sql>
+                    <!-- For Sybase 10.0.1.3722 or later, change the value of format/time attribute: time="HH:mm:ss.S" -->
+                    <format
+                        date="yyyy-MM-dd"
+                        time="yyyy-MM-dd HH:mm:ss.S"
+                        datetime="yyyy-MM-dd HH:mm:ss.S"
+                        double=""
+                        float=""
+                        integer=""/>
+                    <function
+                        date="'%s'"
+                        time="'%s'"
+                        datetime="'%s'"
+                        timestampForField="DATETIME(%date||' '||%time)"
+                        timestampForValue="DATETIME(%date||' '||%time)"/>
+                </sql>
+                <connectionPool
+                    type="dbcp"
+                    maxActive="200"
+                    maxWait="-1"
+                    maxIdle="8"
+                    minIdle="-1"
+                    whenExhaustedAction="1"
+                    testOnBorrow="false"
+                    testOnReturn="false"
+                    timeBetweenEvictionRunsMillis="-1"
+                    minEvictableIdleTimeMillis="1800000"
+                    testWhileIdle="false"
+                    validationQuery="SELECT 1"/>
+            </engine>
+            <engine
+                type="Sybase-Runtime">
+                <inherit
+                    matchAttribute="type"/>
+                <jdbc
+                    driver="ianywhere.ml.jdbcodbc.jdbc3.IDriver"
+                    url="jdbc:odbc:driver=SQL Anywhere 10"
+                    connectFormat="1"
+                    transactionIsolationLevel="1"/>
+                <sql>
+                    <format
+                        date="yyyy-MM-dd"
+                        time="HH:mm:ss"
+                        datetime="yyyy-MM-dd HH:mm:ss"
+                        double=""
+                        float=""
+                        integer=""/>
+                    <function
+                        date="'%s'"
+                        time="'%s'"
+                        datetime="'%s'"
+                        timestampForField="DATETIME(%date||' '||%time)"
+                        timestampForValue="DATETIME(%date||' '||%time)"/>
+                </sql>
+                <connectionPool
+                    type="dbcp"
+                    maxActive="15"
+                    maxWait="-1"
+                    maxIdle="8"
+                    minIdle="-1"
+                    whenExhaustedAction="2"
+                    testOnBorrow="false"
+                    testOnReturn="false"
+                    timeBetweenEvictionRunsMillis="-1"
+                    minEvictableIdleTimeMillis="1800000"
+                    testWhileIdle="false"
+                    validationQuery="SELECT 1"/>
+            </engine>
+        </database>
+    </databases>
+
+    <!-- classLoaders Configuration for each type of object creation and persistance. See also cacheManager above. The "expires" value is specified in seconds; a value of -1 means never expire the object, which is typical for production environments. Expired objects can be cleaned by the cacheManager when it needs more memory. You should only expire the TableDefImpl, CashedArrayListImpl and XsltTemplatesImpl classLoaders. Expiring other loaders may cause Web Central not to run. -->
+    <classLoaders>
+        <!--Overriding children means adding parent's children to the collection of the child's children -->
+        <!--contains collections of objects -->
+        <inherit
+            addChildren="true"/>
+        <classLoader
+            key="com.archibus.config.ProjectImpl"
+            value="com.archibus.config.ProjectLoader"
+            expires="-1">
+        </classLoader>
+        <classLoader
+            key="default"
+            value="com.archibus.config.ClassCreator"
+            expires="-1">
+        </classLoader>
+        <!-- Expire the viewImpl and viewDefImpl to reload view (.axvw) changes. -->
+        <classLoader
+            key="com.archibus.view.ViewImpl"
+            value="com.archibus.view.ViewLoader"
+            expires="-1">
+        </classLoader>
+        <classLoader
+            key="com.archibus.security.UserAccountImpl"
+            value="com.archibus.security.UserAccountLoader"
+            expires="-1">
+        </classLoader>
+        <classLoader
+            key="com.archibus.security.UserRoleImpl"
+            value="com.archibus.security.UserRoleLoader"
+            expires="-1">
+        </classLoader>
+        <classLoader
+            key="com.archibus.config.DatabaseImpl"
+            value="com.archibus.config.DatabaseLoader"
+            expires="-1">
+        </classLoader>
+        <classLoader
+            key="com.archibus.config.UserSessionImpl"
+            value="com.archibus.config.UserSessionLoader"
+            expires="-1">
+        </classLoader>
+        <!-- Expire the viewImpl and viewDefImpl to reload view (.axvw) changes. -->
+        <classLoader
+            key="com.archibus.view.ViewDefImpl"
+            value="com.archibus.view.ViewDefLoader"
+            expires="-1">
+        </classLoader>
+        <classLoader
+            key="com.archibus.jobmanager.WorkflowRulesContainerImpl"
+            value="com.archibus.jobmanager.WorkflowRulesContainerLoader"
+            expires="-1">
+        </classLoader>
+        <classLoader
+            key="com.archibus.config.ContextImpl"
+            value="com.archibus.config.NonCachedContextLoader"
+            expires="-1">
+        </classLoader>
+
+        <!-- Life time of cached schema table definitions. -->
+        <classLoader
+            key="com.archibus.schema.TableDefImpl"
+            value="com.archibus.schema.TableDefLoaderImpl"
+            expires="300">
+        </classLoader>
+
+        <!-- Life time of cached lists. -->
+        <classLoader
+            key="com.archibus.db.CashedArrayListImpl"
+            value="com.archibus.db.CashedArrayListLoader"
+            expires="300">
+        </classLoader>
+
+        <!-- Life time of cached XML files. -->
+        <classLoader
+            key="com.archibus.config.XmlCachedImpl"
+            value="com.archibus.config.XmlCachedLoader"
+            expires="-1">
+        </classLoader>
+
+        <!-- Life time of cached XSL files. Expire the XsltTemplatesImpl to reload style sheet (.xsl) changes. -->
+        <classLoader
+            key="com.archibus.config.XsltTemplatesImpl"
+            value="com.archibus.config.XsltTemplatesLoader"
+            expires="300">
+        </classLoader>
+    </classLoaders>
+
+    <!-- Internal: file search categories and folders. -->
+    <fileCategories>
+        <inherit
+            addChildren="true"/>
+        <fileCategory
+            type="default"
+            extension="frms"
+            name="framesets"
+            xml="true">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/framesets"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/move/management"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/capital-budgeting"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/capital-budgeting/evaluate"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/execute-adjust"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/execute-common"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/execute-cost"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/monitor"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/plan"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/workplace/moves"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="acts"
+            name="defaultActions"
+            xml="true"
+            fileName="default-actions.acts">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/default-actions"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="dflt"
+            name="defaultValues"
+            xml="true">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/view-definition"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="gif"
+            name="images"
+            xml="false">
+            <searchDirectories>
+                <!-- new pipeline - requests starting from /schema, need to add webAppDirectory -->
+                <searchDirectory
+                    directory="#Attribute%//@contextPath%/#Attribute%//@webAppDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/graphics"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/graphics"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="png"
+            name="images"
+            xml="false">
+            <searchDirectories>
+                <!-- new pipeline - requests starting from /schema, need to add webAppDirectory -->
+                <searchDirectory
+                    directory="#Attribute%//@contextPath%/#Attribute%//@webAppDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/graphics"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/graphics"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="jpg"
+            name="images"
+            xml="false">
+            <searchDirectories>
+                <!-- new pipeline - requests starting from /schema, need to add webAppDirectory -->
+                <searchDirectory
+                    directory="#Attribute%//@contextPath%/#Attribute%//@webAppDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/graphics"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/graphics"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+            </searchDirectories>
+        </fileCategory>
+        <!-- 1. No search outside of schema folder. 2. The "schema" folder (wildcard search in all schema files) is last. 3. The ab-core folders are before ab-system folders to optimize search for 17.2 views. -->
+        <fileCategory
+            type="default"
+            extension="js"
+            name="javScript"
+            xml="false">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/controls"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/libraries"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/javascript"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="axvw"
+            name="views"
+            xml="true"
+            classLoaderKey="com.archibus.view.ViewDefImpl">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/documents-management"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/main-toolbar"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/process-navigator"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/paginated-reports"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/workflow-rules"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/system-administration"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/system-administration/sys-admin-views"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/printable-pdf-reports"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/system-administration"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/view-definition"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/workflow-rules"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="jsp"
+            name="JSPs"
+            xml="true">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schemaCompiled"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schemaCompiled/layouts"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/documents-management"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/main-toolbar"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/paginated-reports"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/process-navigator"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/printable-pdf-reports"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/system-administration"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/view-definition"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/workflow-rules"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/move/management/manage-gp"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="localizedStrings"
+            extension="lang"
+            name="localized strings"
+            xml="true">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/lang"/>
+            </searchDirectories>
+
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="xsl"
+            name="stylesheets"
+            xml="true">
+            <searchDirectories>
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/export-reports"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/documents-management"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/printable-pdf-reports"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/system-administration"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/view-definition"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/workflow-rules"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-system/xsl"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/move/management"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/capital-budgeting"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/capital-budgeting/evaluate"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/common"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/common/calendar"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/common/gantt"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/contract"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/execute-adjust"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/execute-communicate"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/execute-schedule"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/monitor"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/plan"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/project/management/procure"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/risk/emergency-preparedness"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/workplace/assets"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/workplace/building-operations"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/workplace/portal"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/workplace/real-property"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/workplace/space-allocation"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-products/workplace/space-occupancy"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="css"
+            name="cascadingStyleSheets"
+            xml="false">
+            <searchDirectories>
+                <!-- new pipeline - requests starting from /schema, need to add webAppDirectory -->
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/css"/>
+                <searchDirectory
+                    directory="#Attribute%//abSchemaSystemCSSFolder%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+            </searchDirectories>
+        </fileCategory>
+        <fileCategory
+            type="default"
+            extension="html"
+            name="htmlPages"
+            xml="true">
+            <searchDirectories>
+                <!-- new pipeline - requests starting from /schema, need to add webAppDirectory -->
+                <searchDirectory
+                    directory="#Attribute%//@absoluteFileDirectory%"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema/ab-core/views/process-navigator"/>
+                <searchDirectory
+                    directory="#Attribute%//@webAppPath%/schema"/>
+            </searchDirectories>
+        </fileCategory>
+    </fileCategories>
+
+    <!-- Internal: This is the global application restriction, which is typically empty. Is refined by the VPA and view restrictions. -->
+    <restrictions>
+        <!-- Internal: Whether restrictions are refined (added to) or replaced in nested contexts. -->
+        <inherit
+            addChildren="true"/>
+        <!--restriction type="forFields" sql="#ASQL_VPAField() = 'HQ' OR #ASQL_VPAField() = 'I202'"> <title translatable="true"> For Fields Restriction</title> <field name="bl_id"/> </restriction> <restriction type="forValidatedTables" sql="#ASQL_VPAField() LIKE 'HQ%' OR #ASQL_VPAField() LIKE 'I202%'"> <title translatable="true"> For Validated Tables Restriction</title> <validatingTable name="bl"/> </restriction> <restriction type="sql" sql="bl.bl_id='HQ' OR bl.bl_id='I202'"> <title translatable="true">SQL Restriction</title> <field table="bl"/> </restriction> <restriction type="parsed"> <title translatable="true">Parsed Restriction</title> <clause relop="OR" op="=" value="HQ"> <field name="bl_id" table=""/> </clause> <clause relop="OR" op="=" value="I202"> <field name="bl_id" table=""/> </clause> </restriction -->
+    </restrictions>
+
+    <!-- Internal: the list of supported locales. If values unspecified, default Java values for each locale are used. Except for Chinese, these use the ISO 639 two-letter lowercase culture code associated with a language and an ISO 3166 two-letter uppercase subculture code associated with a country or region. The name attribute has the JEE name, the dotnetName attribute holds the Windows .Net CultureInfo Id. -->
+    <locales>
+        <inherit/>
+        <locale
+            name="fr_FR"
+            dotnetName="fr-FR"/>
+        <locale
+            name="en_AU"
+            dotnetName="en-AU"/>
+        <locale
+            name="en_CA"
+            dotnetName="en-CA"/>
+        <locale
+            name="en_GB"
+            dotnetName="en-GB"/>
+        <locale
+            name="en_US"
+            dotnetName="en-US"/>
+        <locale
+            name="fr_CA"
+            dotnetName="fr-CA"/>
+        <locale
+            name="ar_SA"
+            dotnetName="ar-SA"/>
+        <!-- Simplified Chinese -->
+        <locale
+            name="zh_CN"
+            dotnetName="zh-Hans"/>
+        <!-- Traditional Chinese -->
+        <locale
+            name="zh_TW"
+            dotnetName="zh-Hant"/>
+        <locale
+            name="nl_NL"
+            dotnetName="nl-NL"/>
+        <locale
+            name="no_NO"
+            dotnetName="nb-NO"/>
+        <locale
+            name="de_DE"
+            dotnetName="de-DE"/>
+        <locale
+            name="iw_IL"
+            dotnetName="he-IL"/>
+        <locale
+            name="it_IT"
+            dotnetName="it-IT"/>
+        <locale
+            name="ja_JP"
+            dotnetName="ja-JP"/>
+        <locale
+            name="ko_KR"
+            dotnetName="ko-KR"/>
+        <locale
+            name="pt_BR"
+            dotnetName="pt-BR"/>
+        <locale
+            name="es_ES"
+            dotnetName="es-ES"/>
+    </locales>
+
+    <!-- Languages. The application will cache string translations for each language specified below. On Sybase and Oracle, all translations are in the same database with UTF-8 encoding. You can enable any double-byte (DBCS) language in use from that server. On MS SQL Server, single-byte languages are in one database with Latin-1 encoding, and the DBCS databases are each in a separate database with their own encoding. If you are using MS SQL Server and a DBCS language, enable that DBCS language, and disable the other languages. If a localeName attribute is specified, it will be used instead of the isoLanguage in application. This is so that the application can distinguish between locales such as tranditional Chinese (zh_TW) and simplified Chinese (zh_CN) for which the ISO standard provides no distinction. enabled="true": the language is always enabled, regardless of the server operating system locale. enabled="false": the language is always disabled. enabled="auto": the language is enabled 
+        if it matches the server operating system locale. -->
+    <languages>
+        <inherit/>
+        <language
+            isoLanguage="en"
+            enabled="auto"
+            dbExtension=""
+            helpExtension=""/>
+        <language
+            isoLanguage="fr"
+            enabled="auto"
+            dbExtension="fr"
+            helpExtension="fr"/>
+        <language
+            isoLanguage="de"
+            enabled="auto"
+            dbExtension="de"
+            helpExtension="de"/>
+        <language
+            isoLanguage="es"
+            enabled="auto"
+            dbExtension="es"
+            helpExtension="es"/>
+
+        <language
+            isoLanguage="ja"
+            enabled="auto"
+            dbExtension="jp"
+            helpExtension="jp"/>
+        <language
+            isoLanguage="it"
+            enabled="auto"
+            dbExtension="it"
+            helpExtension="it"/>
+        <language
+            isoLanguage="nl"
+            enabled="auto"
+            dbExtension="nl"
+            helpExtension="nl"/>
+        <language
+            isoLanguage="no"
+            enabled="auto"
+            dbExtension="no"
+            helpExtension="no"/>
+        <language
+            isoLanguage="zh"
+            enabled="auto"
+            dbExtension="ch"
+            helpExtension="ch"
+            localeName="zh_CN"/>
+        <language
+            isoLanguage="zh"
+            enabled="auto"
+            dbExtension="zh"
+            helpExtension="zh"
+            localeName="zh_TW"/>
+        <language
+            isoLanguage="ko"
+            enabled="auto"
+            dbExtension="ko"
+            helpExtension="ko"/>
+    </languages>
+</afm-config>

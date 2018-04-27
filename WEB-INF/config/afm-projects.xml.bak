@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <!--  afm-projects.xml 
+
+    o Refer to the ARCHIBUS System Management help for configuration information. 
+
+    o Add your Web projects to this file. 
+
+    o If there is more than one <project> defined in this file, the login
+      form will allow users to select from a list. 
+
+    o The ARCHIBUS application will connect to _all_ of the <database>
+      connections specified here. If one database connection does not
+      work, the application will not start. 
+
+    o To connect to the sample project, change the "localhost" or the IP
+      address (e.g. 10.1.99.75) attribute in the <jdbc> tag to the IP
+      address of your database server. If the database is configured to
+      listen at a different port, you will need to change the port
+      setting below as well. 
+
+    o Secure passwords are kept in afm-secure.xml. Refer to the Enable
+      task category (Security activity) help topic in the System
+      Management Help.
+
+  -->
+
+<afm-projects>
+
+  <project>
+    <preferences
+      name="HQ-Sybase-Runtime" 
+      title="Headquarters-Sybase-Runtime" 
+      active="false"
+      projectType="local"
+       
+      projectFolder="/#Attribute%//@webAppDirectory%/projects/hq"
+      projectGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/graphics" 
+      projectDrawingsFolder="/#Attribute%//@webAppDirectory%/projects/hq/drawings"
+      enterpriseGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/enterprise-graphics"
+
+      drawingsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/drawings" 
+      enterpriseGraphicsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/enterprise-graphics"
+      useDocumentManagementForDrawings="false"
+
+      units="Imperial" 
+      baseUnits="Inches" 
+      logoFile="archibus-20x20-trans.gif" 
+      projectDrawingsSubFolder="projects/hq/drawings"
+      databaseEngineType="Sybase-Runtime"
+      databaseFile="C:\users\public\archibus\projects\hq\hq.db" 
+      preloadTableDefs="false"
+    />
+    <databases>
+      <database role="data" maxNumberOfRecords="100">
+        <login defaultAccount="afm" defaultPassword="afm">default</login>
+        <engine type="Sybase-Runtime">
+          <jdbc url="jdbc:odbc:driver=SQL Anywhere 10" />
+        </engine>
+      </database>
+      <database role="schema" maxNumberOfRecords="0">
+        <login defaultAccount="afm" defaultPassword="afm" />
+        <engine type="Sybase-Runtime">
+          <jdbc url="jdbc:odbc:driver=SQL Anywhere 10" />
+        </engine>
+      </database>
+      <database role="security" maxNumberOfRecords="0">
+        <login defaultAccount="afm_secure" defaultPassword="afm" />
+        <engine type="Sybase-Runtime">
+          <jdbc url="jdbc:odbc:driver=SQL Anywhere 10" />
+        </engine>
+      </database>
+    </databases>
+  </project>
+
+  <!-- For Sybase 10.0.1.3722 or later, change the value of databases/database/engine/sql/format/time attribute in /context/compatibility/afm-config.xml."   -->
+  <project>
+    <preferences 
+      name="HQ-Sybase" 
+      title="Headquarters-Sybase" 
+      active="false"
+      projectType="enterprise"
+       
+      projectFolder="/#Attribute%//@webAppDirectory%/projects/hq"
+      projectGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/graphics" 
+      projectDrawingsFolder="/#Attribute%//@webAppDirectory%/projects/hq/drawings"
+      enterpriseGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/enterprise-graphics"
+
+      drawingsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/drawings" 
+      enterpriseGraphicsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/enterprise-graphics"
+      useDocumentManagementForDrawings="false"
+
+      units="Imperial" 
+      baseUnits="Inches" 
+      logoFile="archibus-20x20-trans.gif" 
+      projectDrawingsSubFolder="projects/hq/drawings"
+      databaseEngineType="Sybase"
+      databaseFile=""
+      preloadTableDefs="true"
+    />
+    <databases>
+      <database role="data" maxNumberOfRecords="100">
+        <login defaultAccount="afm" defaultPassword="afm">default</login>
+        <engine type="Sybase">
+          <jdbc url="jdbc:sybase:Tds:localhost:2638" />
+        </engine>
+      </database>
+      <database role="schema" maxNumberOfRecords="0">
+        <login defaultAccount="afm" defaultPassword="afm" />
+        <engine type="Sybase">
+          <jdbc url="jdbc:sybase:Tds:localhost:2638" />
+        </engine>
+      </database>
+      <database role="security" maxNumberOfRecords="0">
+        <login defaultAccount="afm_secure" defaultPassword="afm" />
+        <engine type="Sybase">
+          <jdbc url="jdbc:sybase:Tds:localhost:2638" />
+        </engine>
+      </database>
+    </databases>
+  </project>
+
+  <project>
+    <preferences 
+      name="HQ-SQL Server Express" 
+      title="Headquarters-SQL Server Express" 
+      active="false" 
+      projectType="enterprise"
+
+      projectFolder="/#Attribute%//@webAppDirectory%/projects/hq"
+      projectGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/graphics" 
+      projectDrawingsFolder="/#Attribute%//@webAppDirectory%/projects/hq/drawings"
+      enterpriseGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/enterprise-graphics"
+
+      drawingsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/drawings" 
+      enterpriseGraphicsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/enterprise-graphics"
+      useDocumentManagementForDrawings="false"
+
+      units="Imperial" 
+      baseUnits="Inches" 
+      logoFile="archibus-20x20-trans.gif" 
+      projectDrawingsSubFolder="projects/hq/drawings"
+      databaseEngineType="sqlServerExpress"
+      databaseFile=""
+      preloadTableDefs="false"
+      />
+    <databases>
+      <database role="data" maxNumberOfRecords="100">
+        <login defaultAccount="afm" defaultPassword="afm" integratedLogin="false">default</login>
+        <engine type="sqlServerExpress">
+          <jdbc url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ" />
+        </engine>
+      </database>
+      <database role="schema" maxNumberOfRecords="0">
+        <login defaultAccount="afm" defaultPassword="afm" integratedLogin="false" />
+        <engine type="sqlServerExpress">
+          <jdbc url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ" />
+        </engine>
+      </database>
+      <database role="security" maxNumberOfRecords="0">
+        <login defaultAccount="afm_secure" defaultPassword="afm" integratedLogin="false" />
+        <engine type="sqlServerExpress">
+          <jdbc url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ" />
+        </engine>
+      </database>
+    </databases>
+  </project>
+
+  <project>
+    <preferences 
+      name="HQ-SQL Server" 
+      title="Headquarters-SQL Server" 
+      active="false" 
+      projectType="enterprise"
+
+      projectFolder="/#Attribute%//@webAppDirectory%/projects/hq"
+      projectGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/graphics" 
+      projectDrawingsFolder="/#Attribute%//@webAppDirectory%/projects/hq/drawings"
+      enterpriseGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/enterprise-graphics"
+
+      drawingsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/drawings" 
+      enterpriseGraphicsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/enterprise-graphics"
+      useDocumentManagementForDrawings="false"
+
+      units="Imperial" 
+      baseUnits="Inches" 
+      logoFile="archibus-20x20-trans.gif" 
+      projectDrawingsSubFolder="projects/hq/drawings"
+      databaseEngineType="sqlServer"
+      preloadTableDefs="true"
+    />
+    <databases>
+      <database role="data" maxNumberOfRecords="100">
+        <login defaultAccount="afm" defaultPassword="afm" integratedLogin="false">default</login>
+        <engine type="sqlServer">
+          <jdbc url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ" />
+        </engine>
+      </database>
+      <database role="schema" maxNumberOfRecords="0">
+        <login defaultAccount="afm" defaultPassword="afm" integratedLogin="false" />
+        <engine type="sqlServer">
+          <jdbc url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ" />
+        </engine>
+      </database>
+      <database role="security" maxNumberOfRecords="0">
+        <login defaultAccount="afm_secure" defaultPassword="afm" integratedLogin="false" />
+        <engine type="sqlServer">
+          <jdbc url="jdbc:sqlserver://127.0.0.1:1433;databaseName=HQ" />
+        </engine>
+      </database>
+    </databases>
+  </project>
+
+  <project>
+    <preferences 
+      name="v3.0-8-arctdb" 
+      title="v3.0-8-arctdb" 
+      active="true" 
+      projectType="enterprise"
+
+      projectFolder="/#Attribute%//@webAppDirectory%/projects/hq"
+      projectGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/graphics" 
+      projectDrawingsFolder="/#Attribute%//@webAppDirectory%/projects/hq/drawings"
+      enterpriseGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/hq/enterprise-graphics"
+
+      drawingsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/drawings" 
+      enterpriseGraphicsFolderForSmartClient="//workgroupsvr/AIPROJECTS/hq/enterprise-graphics"
+      useDocumentManagementForDrawings="true"
+
+      units="Imperial" 
+      baseUnits="Inches" 
+      logoFile="archibus-20x20-trans.gif" 
+      projectDrawingsSubFolder="projects/hq/drawings"
+      databaseEngineType="Oracle"
+      preloadTableDefs="true"
+    />
+    <databases>
+      <database role="data" maxNumberOfRecords="100">
+        <login defaultAccount="afm" defaultPassword="afm">default</login>
+        <engine type="Oracle">
+          <jdbc url="jdbc:oracle:thin:@192.168.139.8:1521:arctdb" />
+        </engine>
+      </database>
+      <database role="schema" maxNumberOfRecords="0">
+        <login defaultAccount="afm" defaultPassword="afm" />
+        <engine type="Oracle">
+          <jdbc url="jdbc:oracle:thin:@192.168.139.8:1521:arctdb" />
+        </engine>
+      </database>
+      <database role="security" maxNumberOfRecords="0">
+        <login defaultAccount="afm_secure" defaultPassword="afm" />
+        <engine type="Oracle">
+          <jdbc url="jdbc:oracle:thin:@192.168.139.8:1521:arctdb" />
+        </engine>
+      </database>
+    </databases>
+  </project>
+</afm-projects>

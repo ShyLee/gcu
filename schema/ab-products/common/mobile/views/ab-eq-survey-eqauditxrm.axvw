@@ -1,0 +1,27 @@
+<view version="2.0">
+    <dataSource id="abEqSurveyEqauditxRmHighlight" type="DrawingControlHighlight">
+        <table name="rm" role="main" />
+        <field table="rm" name="bl_id" />
+        <field table="rm" name="fl_id" />
+        <field table="rm" name="rm_id" />
+        <field table="rm" name="dwgname" />
+        
+        <sql dialect="generic">
+            SELECT DISTINCT rm.bl_id, rm.fl_id, rm.rm_id, rm.dwgname
+            FROM rm 
+            LEFT OUTER JOIN eq_audit ON eq_audit.bl_id=rm.bl_id AND eq_audit.fl_id=rm.fl_id AND eq_audit.rm_id=rm.rm_id
+            LEFT OUTER JOIN survey ON eq_audit.survey_id=survey.survey_id 
+            WHERE  ((survey.status = 'Issued' AND survey.em_id = '${user.employee.id}' )) 
+        </sql>
+
+        <sortField table="rm" name="fl_id" />
+    </dataSource>
+
+    <dataSource id="abEqSurveyEqauditxRmLabel">
+        <table name="rm" role="main"/>
+        <field table="rm" name="rm_id"/>
+    </dataSource>
+    
+    <panel type="grid" id="eqauditPanel" dataSource="abEqSurveyEqauditxRmHighlight">
+    </panel>
+</view>

@@ -1,0 +1,346 @@
+<view version="2.0">
+    <!-- 自动生成主键方法的js -->
+    <js file="asc-bj-usms-eq-common-getprimarykey.js"/>
+    <js file="asc-bj-usms-eq-def-budget.js"/>
+    
+    <layout type="borderLayout" id="centerLayout">
+        <west id="treePostion"  split="true" initialSize="45%"/>
+        <center id="centerPostion" />
+    </layout>
+    <layout type="borderLayout" id="centerCenterLayout" containingLayout="centerLayout" region="center">
+        <north id="budgetItemGridPostion" autoScroll="true" split="true" initialSize="45%"/>
+        <center id="budgetItemFormPostion"   autoScroll="true"  />
+    </layout>
+    <layout type="borderLayout" id="westLayout" containingLayout="centerLayout" region="west">
+        <north id="budgetGridPostion" autoScroll="true" split="true" initialSize="45%"/>
+        <center id="budgetFormPostion"   autoScroll="true"   />
+    </layout>
+    
+    <title translatable="true">Define Dudget</title>
+    <dataSource id="dsAscBjUsmsEqDataDefBudgetDs">
+        <table name="eq_budget" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget" name="cost_budget_cap" showTotals="true"/>
+        <field table="eq_budget" name="cost_budget_exp"/>
+        <field table="eq_budget" name="fiscal_year"/>
+        <field table="eq_budget" name="date_requested"/>
+        <field table="eq_budget" name="date_approved"/>
+        <!-- 
+        <field table="eq_budget" name="budget_type"/>
+         -->
+        <field table="eq_budget" name="em_id"/>
+        <field table="eq_budget" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_budget" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_budget" name="dv_manager"/>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="comments"/>
+        <field table="eq_budget" name="status"/>
+        <field table="eq_budget" name="type"/>
+        <restriction type="sql" sql="eq_budget.status='0'"/>
+    </dataSource>
+    <dataSource id="dsCsiDs">
+        <table name="csi" role="main"/>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="csi" name="gbfl_id"/>
+        <field table="csi" name="gbfl_name"/>
+    </dataSource>
+    <dataSource id="dsAscBjUsmsEqDataDefBudgetItemDs">
+        <table name="eq_budget_item" role="main"/>
+        <!-- <table name="csi" role="standard"/> -->
+        <field table="eq_budget_item" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_item_id"/>
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget_item" name="budget_item_name"/>
+        <field table="eq_budget_item" name="csi_id"/>
+        <field table="eq_budget_item" name="eq_name"/>
+        <field table="eq_budget_item" name="brand"/>
+        <field table="eq_budget_item" name="eq_std"/>
+        <field table="eq_budget_item" name="dv_id"/>
+        <field table="eq_budget_item" name="dp_id"/>
+        <field table="eq_budget_item" name="use"/>
+        <field table="eq_budget_item" name="count"/>
+        <field table="eq_budget_item" name="price"/>
+        <field table="eq_budget_item" name="total_cost" showTotals="true"/>
+        <field table="eq_budget_item" name="units"/>
+        <field table="eq_budget_item" name="comments"/> <!-- 
+        <field table="eq_budget_item" name="supplier_agreement_id"/>
+        <field table="eq_budget_item" name="important_level"/>-->
+        <field table="eq_budget_item" name="capital_source"/>
+        <field table="eq_budget_item" name="date_buy_old_eq"/>
+        <field table="eq_budget_item" name="actual_price"/>
+        <field table="eq_budget_item" name="actual_total"/>
+        <field table="eq_budget_item" name="type"/>
+        <field table="eq_budget_item" name="teach_num"/>
+        <field table="eq_budget_item" name="admin_num"/>
+        <field table="eq_budget_item" name="dv_capital"/>
+        <field table="eq_budget_item" name="other_capital"/>
+        <field table="eq_budget_item" name="sch_capital"/>
+        <!-- <field table="csi" name="description"/> -->
+    </dataSource>
+    <dataSource id="dsAscBjUsmsEqDataDefBudgetDetailDs">
+        <table name="eq_budget" role="main"/>
+        <table name="em" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="fiscal_year"/>
+        <field table="eq_budget" name="dv_id" />
+        <field table="dv" name="dv_name" />
+        <field table="eq_budget" name="dp_id" />
+        <field table="dp" name="dp_name" />
+        <field table="eq_budget" name="cost_budget_cap"/>
+        <field table="eq_budget" name="date_requested"/>
+        <field table="eq_budget" name="date_approved"/>
+        <field table="eq_budget" name="em_id"/>
+        <field table="eq_budget" name="em_name"/>
+        <field table="eq_budget" name="dv_manager"/>
+        <field table="eq_budget" name="dv_manager_name"/>
+        <field table="eq_budget" name="comments"/>
+        <field table="eq_budget" name="type"/>
+        <field table="eq_budget" name="fiscal_manage"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+    </dataSource>
+  <panel type="grid" id="treePanel" showOnLoad="true" dataSource="dsAscBjUsmsEqDataDefBudgetDs" layoutRegion="budgetGridPostion" multipleSelectionEnabled="true">
+        <sortField name="budget_id" table="eq_budget" ascending="true"/>
+        <title translatable="true">Select Budget</title>
+        <action id="download">
+            <title translatable="true">MoBan</title>
+        </action>
+        <action id="import">
+          <title translatable="true">import</title>
+        </action>
+        <action id="btnReport">
+            <title translatable="true">FaBu</title>
+        </action>
+        <action id="addNew">
+          <title translatable="true">Add New</title>
+        </action>
+        
+        <field name="budget_id" table="eq_budget" controlType="link">
+          <command type="showPanel" panelId="detailsPanel"/>
+          <command type="showPanel" panelId="budgetItemPanel" newRecord="false"/>
+          <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+        </field>
+        <field name="dv_id" table="eq_budget" hidden="true"/>
+        <field name="dv_name" table="dv" controlType="link">
+          <command type="showPanel" panelId="detailsPanel"/>
+          <command type="showPanel" panelId="budgetItemPanel" newRecord="false"/>
+          <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+        </field>
+        <field table="eq_budget" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name" controlType="link">
+          <command type="showPanel" panelId="detailsPanel"/>
+          <command type="showPanel" panelId="budgetItemPanel" newRecord="false"/>
+          <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+        </field>
+        
+        <field name="cost_budget_cap" table="eq_budget" controlType="link" showTotals="true">
+          <command type="showPanel" panelId="detailsPanel"/>
+          <command type="showPanel" panelId="budgetItemPanel" newRecord="false"/>
+          <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+        </field>
+        <field name="type" table="eq_budget" controlType="link" hidden="true">
+          <command type="showPanel" panelId="detailsPanel"/>
+          <command type="showPanel" panelId="budgetItemPanel" newRecord="false"/>
+          <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+        </field>
+         <field name="fiscal_year" table="eq_budget" controlType="link">
+          <command type="showPanel" panelId="detailsPanel"/>
+          <command type="showPanel" panelId="budgetItemPanel" newRecord="false"/>
+          <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+        </field>
+        <field name="name" table="eq_budget" controlType="link">
+          <command type="showPanel" panelId="detailsPanel"/>
+          <command type="showPanel" panelId="budgetItemPanel" newRecord="false"/>
+          <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+        </field>
+  </panel>
+  
+  <panel type="form" id="detailsPanel" showOnLoad="false" columns="1" dataSource="dsAscBjUsmsEqDataDefBudgetDetailDs" layoutRegion="budgetItemGridPostion">
+        <title translatable="true">Budget Details</title>
+           
+            <action id="save">
+              <title translatable="true">Save</title>
+              <command type="saveForm"/>
+              <command type="showPanel" panelId="treePanel" applyParentRestriction="false"/> 
+            </action>
+            <action id="delete" enabled="${!panel.newRecord}">
+              <title translatable="true">Delete</title>
+              <command type="deleteRecord"/>
+              <command type="showPanel" panelId="detailsPanel" show="false"/>
+              <command type="showPanel" panelId="treePanel" applyParentRestriction="false"/>
+            </action>
+            <action id="cancel">
+              <title translatable="true">Cancel</title>
+              <command type="showPanel" panelId="detailsPanel" show="false"/>
+            </action>
+            <field table="eq_budget" name="budget_id" readOnly="true"/>
+            <field table="eq_budget" name="name" required="true"/>
+            <!-- <field id="selectFiscalYear">
+                <title translatable="true">CaiZhengNian</title>
+                <html>
+                    <select id="columns" onChange="setNumberOfColumns(this.id, this.value)">
+                          <option value="1" translatable="true">1</option>
+                          <option value="2" translatable="true" selected="true">2</option>
+                          <option value="3" translatable="true">3</option>
+                    </select>
+                </html>
+            </field> -->
+            <field table="eq_budget" name="fiscal_year" required="true"/>
+            <field table="dv" name="dv_name"  required="true" readOnly="false">
+				<action>
+					<title>...</title>
+					<tooltip>Select Value</tooltip>
+					<command type="selectValue" 
+						fieldNames="eq_budget.dv_id,dv.dv_name"
+						selectFieldNames="dv.dv_id,dv.dv_name" 
+						visibleFieldNames="dv.dv_id,dv.dv_name"
+						actionListener="addDvRes" 
+						showIndex="false" />
+				</action>
+            </field>
+            <field table="eq_budget" name="dv_id" hidden="true"/>
+            <field table="eq_budget" name="dp_id" hidden="true"/>
+        	<field table="dp" name="dp_name" required="false" readOnly="false">
+				<action>
+					<title>...</title>
+					<tooltip>Select Value</tooltip>
+					<command type="selectValue" 
+						fieldNames="eq_budget.dv_id,dv.dv_name,eq_budget.dp_id,dp.dp_name"
+						selectFieldNames="dp.dv_id,dv.dv_name,dp.dp_id,dp.dp_name" 
+						visibleFieldNames="dp.dv_id,dv.dv_name,dp.dp_id,dp.dp_name"
+						showIndex="false" />
+				</action>
+            </field>
+            <field table="eq_budget" name="fiscal_manage"/>
+            <field table="eq_budget" name="type" hidden="true"/>
+            <field table="eq_budget" name="cost_budget_cap" readOnly="true"/>
+            <field table="eq_budget" name="date_requested" value="new Date()" hidden="true"/>
+            <!--<field table="eq_budget" name="date_approved"/>  -->
+            <!-- 
+            <field table="eq_budget" name="budget_type"/>
+             -->
+            <!-- <field table="eq_budget" name="em_id" required="true">
+               <title>tianbiaoren</title>
+               <action id="action01">
+                    <title>...</title>
+                    <tooltip>Select Value</tooltip>
+                    <command type="selectValue" fieldNames="eq_budget.em_id,eq_budget.em_name"
+                        selectFieldNames="em.em_id,em.name" 
+                        visibleFieldNames="em.em_id,em.name,em.dv_id" 
+                        showIndex="false"/>
+               </action>
+            </field>
+            <field table="eq_budget" name="em_name"/> -->
+            <field table="eq_budget" name="dv_manager">
+                <action>
+                    <title>...</title>
+                    <tooltip>Select Value</tooltip>
+                    <command type="selectValue" 
+                    	fieldNames="eq_budget.dv_id,eq_budget.dv_manager,eq_budget.dv_manager_name"
+                        selectFieldNames="em.dv_id,em.em_id,em.name" 
+                        visibleFieldNames="em.em_id,em.name,dv.dv_name"    
+                        showIndex="false"/>
+               </action>
+            </field>
+            <field table="eq_budget" name="dv_manager_name"/>
+            <field table="eq_budget" name="comments" rowspan="3" colspan="2"/>
+  </panel>
+  
+  <dataSource id="dsAscBjUsmsEqDataDefBudgetShowCount" type="grouping">
+        <table name="eq_budget_item" role="main"/>
+        <field name="budget_id" table="eq_budget_item" groupBy="true"/>
+        <field name="Count" formula="sum" dataType="number"
+            baseField="eq_budget_item.total_cost" decimals="0">
+        </field>
+  </dataSource>
+  <panel type="grid" id="budgetItemPanel" showOnLoad="false" dataSource="dsAscBjUsmsEqDataDefBudgetItemDs" layoutRegion="budgetFormPostion">
+        <sortField name="budget_id" table="eq_budget_item" ascending="true"/>
+        <title translatable="true">Select Budget Item</title>
+         <action id="addNewItem" enabled="${!panel.newRecord}">
+              <title translatable="true">Add New Budget Item</title>
+            <!--   <command type="showPanel" panelId="budetItemDetailsPanel" newRecord="true" clearRestriction="true"/> -->
+            </action>
+        <action id="refresh">
+          <title translatable="true">Refresh</title>
+          <command type="showPanel" panelId="budgetItemPanel"/>
+        </action>
+        <field name="budget_id" table="eq_budget_item" hidden="true"/>
+        <field name="budget_item_id" table="eq_budget_item" controlType="link">
+          <command type="showPanel" panelId="budetItemDetailsPanel"/>
+        </field> 
+        <field name="budget_id_old" table="eq_budget_item" controlType="link">
+          <command type="showPanel" panelId="budetItemDetailsPanel"/>
+        </field>
+        <field name="budget_item_name" table="eq_budget_item" controlType="link">
+          <command type="showPanel" panelId="budetItemDetailsPanel"/>
+        </field>
+        <field name="total_cost" table="eq_budget_item" controlType="link" showTotals="true">
+          <command type="showPanel" panelId="budetItemDetailsPanel"/>
+        </field>
+        <field name="type" table="eq_budget_item" controlType="link">
+          <command type="showPanel" panelId="budetItemDetailsPanel"/>
+        </field>
+        
+  </panel>
+  
+    <panel type="form" id="budetItemDetailsPanel" showOnLoad="false" columns="1" dataSource="dsAscBjUsmsEqDataDefBudgetItemDs" layoutRegion="budgetItemFormPostion">
+        <title translatable="true">Budget Item Details</title>
+            <action id="save">
+              <title translatable="true">Save</title>
+              <command type="callFunction" functionName="toSaveForm"/>
+              <command type="showPanel" panelId="budgetItemPanel" applyParentRestriction="false"/>
+             
+            </action>
+            <action id="delete" enabled="${!panel.newRecord}">
+              <title translatable="true">Delete</title>
+              <command type="deleteRecord"/>
+              <command type="callFunction" functionName="deleteRecord"/>
+              <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+              <command type="showPanel" panelId="budgetItemPanel" applyParentRestriction="false"/>
+            </action>
+            <action id="cancel">
+              <title translatable="true">Cancel</title>
+              <command type="showPanel" panelId="budetItemDetailsPanel" show="false"/>
+            </action>
+        <field table="eq_budget_item" name="budget_id" readOnly="true"/>
+        <field table="eq_budget_item" name="budget_item_id" readOnly="true"/>
+        <field table="eq_budget_item" name="csi_id" showSelectValueAction="false" hidden="true">
+            <action id="btnSelect">
+                <title translatable="true">...</title>
+                <command type="openDialog" viewName="asc-bj-usms-eq-def-budget-dialog.axvw"  applyParentRestriction="false"/> 
+            </action>
+        </field>
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget_item" name="budget_item_name" required="true"/>
+        <field table="eq_budget_item" name="eq_name" hidden="true"/>
+        
+        <field table="eq_budget_item" name="brand" hidden="true"/>
+        <field table="eq_budget_item" name="units" hidden="true"/>
+        <field table="eq_budget_item" name="eq_std" hidden="true"/>
+        
+         <field table="eq_budget_item" name="total_cost"/>
+        <field table="eq_budget_item" name="count" hidden="true"/>
+        <field table="eq_budget_item" name="dv_capital" hidden="true"/>
+        <field table="eq_budget_item" name="admin_num" hidden="true"/>
+        <field table="eq_budget_item" name="dv_id" hidden="true"/>
+        <field table="eq_budget_item" name="dp_id" hidden="true"/>
+        <field table="eq_budget_item" name="sch_capital" hidden="true"/>
+        <field table="eq_budget_item" name="teach_num" hidden="true"/>
+   
+        <field table="eq_budget_item" name="other_capital" hidden="true"/>
+        <field table="eq_budget_item" name="type" onchange="changeEnable(this.value)"/>
+        <field table="eq_budget_item" name="date_buy_old_eq"/>
+       
+        <field table="eq_budget_item" name="comments" colspan="2" rowspan="2"/> 
+   </panel>
+ 
+</view>
+

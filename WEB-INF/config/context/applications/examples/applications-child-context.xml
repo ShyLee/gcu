@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <!-- ======================= Supporting beans for examples: EmployeesJob, DocumentJob. ======================== -->
+    <!-- To enable definitions in this file, copy bean definitions from this file to context/applications/applications-child-context.xml file. -->
+    <!-- This is a child Spring context, loaded for each project instance. It will become a child context of the /core/project-child-context.xml context. This means that bean definitions here will override bean definitions with the same names in the parent context. -->
+
+    <!-- ======================= EmployeesJob (example). ========================= -->
+    <!-- Local version of EmployeesJob, used by WFRs. Invokes Employee Service (Employee Service client). TODO: load p:serviceAddress from properties file? -->
+    <bean
+        id="EmployeesJob"
+        class="com.archibus.app.solution.common.webservice.employee.EmployeesJob"
+        scope="prototype"
+        p:employeeServiceClient-ref="employeeServiceClient"
+        p:employeeDao-ref="employeeDao"
+        p:divisionDao-ref="divisionDao"
+        p:departmentDao-ref="departmentDao">
+    </bean>
+
+    <bean
+        id="employeeServiceClient"
+        class="com.archibus.app.solution.common.webservice.employee.client.EmployeeServiceClientImpl">
+        <property
+            name="serviceAddress"
+            value="http://localhost:8081/ServerExample/services/EmployeeService"/>
+    </bean>
+
+    <!-- employeeDao -->
+    <bean
+        id="employee"
+        class="com.archibus.app.common.organization.domain.Employee"
+        scope="prototype">
+    </bean>
+    <bean
+        id="employeeDao"
+        class="com.archibus.app.common.organization.dao.datasource.EmployeeDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- departmentDao -->
+    <bean
+        id="department"
+        class="com.archibus.app.common.organization.domain.Department"
+        scope="prototype">
+    </bean>
+    <bean
+        id="departmentDao"
+        class="com.archibus.app.common.organization.dao.datasource.DepartmentDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- divisionDao -->
+    <bean
+        id="division"
+        class="com.archibus.app.common.organization.domain.Division"
+        scope="prototype">
+    </bean>
+    <bean
+        id="divisionDao"
+        class="com.archibus.app.common.organization.dao.datasource.DivisionDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- ======================= DocumentJob (example). ========================= -->
+    <bean
+        id="DocumentJob"
+        class="com.archibus.app.solution.common.webservice.document.DocumentJob"
+        scope="prototype"
+        p:copyServiceClient-ref="copyServiceClient"
+        p:documentDao-ref="documentDao">
+    </bean>
+
+    <bean
+        id="copyServiceClient"
+        class="com.archibus.app.solution.common.webservice.document.client.CopyServiceClient">
+        <property
+            name="siteRoot"
+            value="http://eliza:8030/afmsharepoint/"/>
+    </bean>
+
+    <!-- DocumentDao provides document management operations. -->
+    <bean
+        id="documentDao"
+        class="com.archibus.dao.jdbc.DocumentDaoImpl">
+    </bean>
+
+</beans>
+

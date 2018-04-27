@@ -1,0 +1,91 @@
+<view version="2.0">
+
+    <!-- dataSource for building info panel -->
+    <dataSource id="blDs">
+        <table name="bl" role="main"/>
+       
+       <field table="bl" name="bl_id"/>
+        <field table="bl" name="srcid"/>
+		<field table="bl" name="date_acquire"/>
+		<field table="bl" name="cgzzxs_id"/>
+		<field table="bl" name="ownship_shape"/>
+		<field table="bl" name="quansxz"/>
+		<field table="bl" name="land_photo"/>
+		<field table="bl" name="quanszh"/>
+		<field table="bl" name="address1"/>
+		<field table="bl" name="date_fazheng"/>
+		<field table="bl" name="guzhuwu_unit"/>
+		<field table="bl" name="height"/>	
+		
+		<field table="bl" name="area_building_manual" />
+		<field table="bl" name="status"/>
+		<field table="bl" name="area_ziyong" />
+		<field table="bl" name="area_lend" />
+		<field table="bl" name="area_rent" />
+		<field table="bl" name="area_invest" />
+		<field table="bl" name="area_danbao" />
+		<field table="bl" name="area_other" />
+	
+		<field table="bl" name="value_type"/>
+		<field table="bl" name="value_net"/>
+		<field table="bl" name="value_original"/>
+		<field table="bl" name="avg_price"/>
+		<field table="bl" name="value_ziyong"/>
+		<field table="bl" name="value_lend"/>
+		<field table="bl" name="value_rent"/>
+		<field table="bl" name="value_invest"/>
+		<field table="bl" name="value_danbao"/>
+		<field table="bl" name="value_other"/>
+    </dataSource>
+    <panel type="form" id="fcAssetInfoPanel" showOnLoad="true" dataSource="blDs" columns="2">
+  		<field table="bl" name="bl_id" hidden="true"/>
+  		
+		<field labelClass="labelFieldset" colspan="2">
+              <title>QuanShu Information</title>
+ 		</field>
+	    <field table="bl" name="srcid" readOnly="true"/>
+		<field table="bl" name="date_acquire" readOnly="true"/>
+		<field table="bl" name="cgzzxs_id" readOnly="true"/>
+		<field table="bl" name="ownship_shape" readOnly="true"/>
+		<field table="bl" name="quansxz" readOnly="true"/>
+		<field table="bl" name="land_photo" readOnly="true"/>
+		<field table="bl" name="quanszh" readOnly="true"/>
+		<field table="bl" name="address1" readOnly="true"/>
+		<field table="bl" name="date_fazheng" readOnly="true"/>
+		<field table="bl" name="guzhuwu_unit" readOnly="true"/>
+		<field table="bl" name="height" readOnly="true"/>	
+		<field></field>
+		
+		<field></field>
+		<field></field>
+		<field labelClass="labelFieldset" colspan="2">
+              <title>Area Information</title>
+ 		</field>
+		<field table="bl" name="area_building_manual" readOnly="true"/>
+		<field table="bl" name="status" readOnly="true"/>
+		<field table="bl" name="area_ziyong" readOnly="true"/>
+		<field table="bl" name="area_lend" readOnly="true"/>
+		<field table="bl" name="area_rent" readOnly="true"/>
+		<field table="bl" name="area_invest" readOnly="true"/>
+		<field table="bl" name="area_danbao" readOnly="true"/>
+		<field table="bl" name="area_other" readOnly="true"/>
+		
+		<field></field>
+		<field></field>
+        <field labelClass="labelFieldset" colspan="2">
+               <title>Value Information</title>
+ 		</field>
+		<field table="bl" name="value_type" readOnly="true"/>
+		<field table="bl" name="value_net" readOnly="true"/>
+		<field table="bl" name="value_original" readOnly="true"/>
+		<field table="bl" name="avg_price" readOnly="true"/>
+		<field table="bl" name="value_ziyong" readOnly="true"/>
+		<field table="bl" name="value_lend" readOnly="true"/>
+		<field table="bl" name="value_rent" readOnly="true"/>
+		<field table="bl" name="value_invest" readOnly="true"/>
+		<field table="bl" name="value_danbao" readOnly="true"/>
+		<field table="bl" name="value_other" readOnly="true"/>
+		
+   </panel>
+   <js file="asc-bj-usms-bl-pracelland-summary-info-fc-asset-tab.js"/> 
+</view>

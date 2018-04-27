@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <!-- ========================= This Spring configuration file contains definitions for the core services beans. ========================= -->
+    <!-- The beans defined here are shared between all projects. -->
+    <!-- A bean belongs here if one of the following conditions is met: -->
+    <!-- 1. The service class belongs to the core. -->
+    <!-- 2. The service bean is referenced in a core Java class, and the reference is not expected to fail (there is no if(containsBean) or try/catch block around getBean call). -->
+    <!-- 3. The service bean is referenced in DWR configuration file. -->
+    <!-- The "ext" package does not belong to the core. -->
+
+    <!-- adminService provides system admin operations. This bean is exposed as a Web Service and through DWR. -->
+    <bean
+        id="adminService"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.service.remoting.AdminService">
+        <property name="target">
+            <bean
+                class="com.archibus.service.remoting.AdminServiceImpl"
+                p:userAccount-ref="userAccount"
+                p:configManager-ref="configManager"
+                p:drawingControlConfig-ref="drawingControlConfig">
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>exceptionHandlingInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- adminServiceForUi provides system admin operations for JS clients. This bean is exposed through DWR. -->
+    <bean
+        id="adminServiceForUi"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.service.remoting.AdminServiceForUi">
+        <property name="target">
+            <bean
+                class="com.archibus.service.remoting.AdminServiceImpl"
+                p:userAccount-ref="userAccount"
+                p:configManager-ref="configManager"
+                p:drawingControlConfig-ref="drawingControlConfig">
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>exceptionHandlingInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- DocumentService provides document management operations. This bean is exposed through DWR. -->
+    <bean
+        id="documentService"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.service.DocumentService">
+        <property name="target">
+            <bean
+                class="com.archibus.service.DocumentServiceImpl"
+                p:documentDao-ref="documentDao">
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <!-- DocumentService requires transactionInterceptor, since it uses database. -->
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- addInManagerService provides Add-in Manager operations, such as writeAddInLicenseFile, updateActivityParameter. This bean is exposed through DWR. -->
+    <bean
+        id="addInManagerService"
+        class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.archibus.service.addinmanager.AddInManagerServiceImpl">
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>com.archibus.service.addinmanager.AddInManagerService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <!-- AddInManagerService requires transactionInterceptor, since it uses database. -->
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+                <!-- AddInManagerService requires eventHandlerContextInterceptor, since it uses Data Source API. -->
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- schemaUpdateWizardService provides operations that update database according to ARCHIBUS data dictionary. This bean is exposed through DWR. -->
+    <bean
+        id="schemaUpdateWizardService"
+        class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.archibus.app.sysadmin.updatewizard.schema.SchemaUpdateWizardServiceImpl">
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>com.archibus.app.sysadmin.updatewizard.schema.SchemaUpdateWizardService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- projectUpdateWizardService provides operations that export/import/compare SQL data. This bean is exposed through DWR. -->
+    <bean
+        id="projectUpdateWizardService"
+        class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.archibus.app.sysadmin.updatewizard.project.ProjectUpdateWizardServiceImpl">
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>com.archibus.app.sysadmin.updatewizard.project.ProjectUpdateWizardService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- appUpdateWizardService provides operations that package the application into a WAR file. This bean is exposed through DWR. -->
+    <bean
+        id="appUpdateWizardService"
+        class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.archibus.app.sysadmin.updatewizard.app.AppUpdateWizardServiceImpl">
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>com.archibus.app.sysadmin.updatewizard.app.AppUpdateWizardService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    
+    
+
+    
+    <bean
+        id="ajaxDataService"
+        class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.archibus.basic.data.service.AjaxDataServiceImpl">
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>com.archibus.basic.data.service.AjaxDataService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,46 @@
+    <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-def-coordinate.axvw" key2="title" key3="Sogou-map Setting Building Coordinate" value="sogou地图设置建筑坐标"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-def-coordinate.axvw" key2="title" key3="duiwaijingmaodaxue" value="对外经贸大学"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-def-coordinate.axvw" key2="title" key3="Sougou map" value="选择搜狗坐标"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-def-coordinate.axvw" key2="title" key3="Bulding" value="建筑和坐标详细"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-def-coordinate.axvw" key2="title" key3="Count Building" value="建筑总栋数"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-def-coordinate.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-def-coordinate.axvw" key2="title" key3="Clear" value="清除"/>
+
+        <string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Filter" value="过滤"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Show" value="显示"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Clear" value="清除"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Sougou Map View Building" value="搜狗地图查看建筑"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="School Building Navigation" value="学校建筑导航"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="tooltip" key3="Export current view of drawing to Docx file." value="导出当前的图形到word文档"/> 
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Select Floor" value="选择楼层平面图"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Select Building" value="选择建筑物"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Legend" value="房间所属单位"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-dwg.axvw" key2="title" key3="Value" value="所属单位"/>
+
+
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch.axvw" key2="title" key3="Filter" value="过滤"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch.axvw" key2="title" key3="Show" value="显示"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch.axvw" key2="title" key3="Clear" value="清除"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch.axvw" key2="title" key3="Sougou Map View Building" value="搜狗地图查看建筑"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch.axvw" key2="title" key3="School Building Navigation" value="学校建筑导航"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch.axvw" key2="tooltip" key3="Export current view of drawing to Docx file." value="导出当前的图形到word文档"/>
+	
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch-brand.axvw" key2="title" key3="Filter" value="过滤"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch-brand.axvw" key2="title" key3="Show" value="显示"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch-brand.axvw" key2="title" key3="Clear" value="清除"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch-brand.axvw" key2="title" key3="Sougou Map View Building" value="搜狗地图查看建筑"/>
+	<string key1="/ab-products/space/inv/sch/sogou-map/sogou-map-navigation-sch-brand.axvw" key2="title" key3="School Building Navigation" value="学校建筑导航"/>
+
+
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="message" key3="Gong Yong She Shi" value="Serv"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="message" key3="Jian Zhu Wu : {0}" value="建筑物 : {0}"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="message" key3="Xiao Qu : {0}" value="校区 : {0}"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="Area" value="面积"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="DOC" value="导出"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="Floor" value="楼层"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="Jian Zhu Wu" value="建筑物"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="Room Category1" value="*"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="Show Room Category Stack Plan" value="大楼内各类别房屋分布叠堆图"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="Usable Area1" value="*"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="title" key3="Xiao Qu" value="校区"/>
+    <string key1="/ab-products/space/inv/sch/sogou-map/asc-bj-usms-bl-type-cht-stack-sogou.axvw" key2="tooltip" key3="Export current view to Docx file." value="输出当前视图为 Docx 文档."/>

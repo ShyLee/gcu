@@ -1,0 +1,224 @@
+<view version="2.0">
+    <title translatable="true">Eq Suit Define</title>
+    <js file="asc-bj-usms-eq-def-suit-eq.js"/>
+    <layout id="mainLayout">
+        <north initialSize="80" split="true"/>
+        <center/>
+    </layout>
+    <layout id="mainCenterLayout" containingLayout="center" region="center">
+        <west initialSize="50%" split="true"/>
+        <center/>
+    </layout>
+    <layout id="mainCenterWestLayout" containingLayout="mainCenterLayout" region="west">
+        <north initialSize="40%" split="true"/>
+        <center/>
+    </layout>
+    <layout id="mainCenterCenterLayout" containingLayout="mainCenterLayout" region="center">
+        <north initialSize="40%" split="true"/>
+        <center/>
+    </layout>
+    
+    <dataSource id="ascBjUsmsEqSeriesDs">
+        <table name="eq_series" role="main"/>
+        <field table="eq_series" name="bl_id"/>
+        <field table="eq_series" name="comments"/>
+        <field table="eq_series" name="date_purchased"/>
+        <field table="eq_series" name="dv_id"/>
+        <field table="eq_series" name="fl_id"/>
+        <field table="eq_series" name="gzsb_t"/>
+        <field table="eq_series" name="rm_id"/>
+        <field table="eq_series" name="series_id"/>
+        <field table="eq_series" name="series_name"/>
+        <field table="eq_series" name="total_price"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqSeriesListDs">
+        <table name="eq_series_list" role="main"/>
+        <field table="eq_series_list" name="comments"/>
+        <field table="eq_series_list" name="csi_id"/>
+        <field table="eq_series_list" name="eq_id"/>
+        <field table="eq_series_list" name="eq_name"/>
+        <field table="eq_series_list" name="eq_num"/>
+        <field table="eq_series_list" name="chandi"/>
+        <field table="eq_series_list" name="brand"/>
+        <field table="eq_series_list" name="eq_std"/>
+        <field table="eq_series_list" name="eq_type"/>
+        <field table="eq_series_list" name="price"/>
+        <field table="eq_series_list" name="series_id"/>
+        <field table="eq_series_list" name="series_list_id"/>
+        <field table="eq_series_list" name="total_price"/>
+        <field table="eq_series_list" name="units"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="units"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsCaculateSumDs" type="grouping" >
+        <table name="eq_series_list" role="main"/>
+        <field table="eq_series_list" name="series_id" groupBy="true"/>
+        <field name="sumPrice" formula="sum" baseField="eq_series_list.total_price" dataType="number" decimals="2"/>
+    </dataSource>
+    <panel type="console" id="consolePanel" dataSource="ascBjUsmsEqSeriesDs" columns="4" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="btnShow">
+            <title translatable="true">Show</title>
+            <command type="showPanel" panelId="eqSeriesPanel"/>
+            <command type="showPanel" panelId="eqSeriesFormPanel" show="false"/>
+            <command type="showPanel" panelId="eqSeriesListPanel" show="false"/>
+            <command type="showPanel" panelId="eqSeriesListDetaiPanel" show="false"/>
+        </action>
+        <action id="btnClear">
+            <title translatable="true">Clear</title>
+            <command type="showPanel" panelId="eqSeriesPanel" applyParentRestriction="false" clearRestriction="true" applySelectionRestriction="false"/>
+        </action>
+        <field table="eq_series" name="dv_id"/>
+        <field table="eq_series" name="date_purchased"/>
+        <field table="eq_series" name="fl_id"/>
+        <field table="eq_series" name="rm_id"/>
+    </panel>
+    <panel type="grid" id="eqSeriesPanel" dataSource="ascBjUsmsEqSeriesDs" layout="mainCenterWestLayout" region="north">
+        <title translatable="true">Eq Series List</title>
+        <action id="btnAddSeries">
+            <title translatable="true">AddNew</title>
+            <command type="showPanel" panelId="eqSeriesFormPanel" newRecord="true"/>
+        </action>
+        <action id="btnRefresh">
+            <title translatable="true">Refresh</title>
+        </action>
+        <field table="eq_series" name="series_id" controlType="link">
+            <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+        <field table="eq_series" name="date_purchased" controlType="link">
+             <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+        <field table="eq_series" name="dv_id" controlType="link">
+             <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+        <field table="eq_series" name="bl_id" controlType="link">
+             <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+        <field table="eq_series" name="fl_id" controlType="link">
+             <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+        <field table="eq_series" name="rm_id" controlType="link">
+             <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+        <field table="eq_series" name="gzsb_t" controlType="link">
+             <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+        <field table="eq_series" name="total_price" controlType="link">
+             <command type="showPanel" panelId="eqSeriesFormPanel"/>
+            <command type="callFunction" functionName="showSeriesList"/>
+        </field>
+    </panel>
+    <panel type="form" id="eqSeriesFormPanel" dataSource="ascBjUsmsEqSeriesDs" showOnLoad="false" columns="2" layout="mainCenterWestLayout" region="center">
+        <title translatable="true">Eq Series DetailInfo</title>
+        <action id="btnAddItem">
+            <title translatable="true">AddNewItem</title>
+            <command type="showPanel" panelId="eqSeriesListDetaiPanel" newRecord="true"/>
+        </action>
+        <action id="btnSave">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="showPanel" panelId="eqSeriesPanel" applyParentRestriction="false"/>
+        </action>
+        <action id="btnDelete"  enabled="${!panel.newRecord}">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="eqSeriesPanel" applyParentRestriction="false"/>
+            <command type="showPanel" panelId="eqSeriesFormPanel" show="false"/>
+            <command type="showPanel" panelId="eqSeriesListPanel" show="false"/>
+            <command type="showPanel" panelId="eqSeriesListDetaiPanel" show="false"/>
+        </action>
+        <action id="btnCancel">
+            <title translatable="true">Cancel</title>
+            <command type="clearForm"/>
+        </action>
+        <field table="eq_series" name="series_id" hidden="true"/>
+        <field table="eq_series" name="series_name" required="true"/>
+        <field table="eq_series" name="date_purchased" required="true"/>
+        <field table="eq_series" name="dv_id" required="true"/>
+        <field table="eq_series" name="bl_id" required="true"/>
+        <field table="eq_series" name="fl_id" />
+        <field table="eq_series" name="rm_id" required="true"/>
+        <field table="eq_series" name="gzsb_t"/>
+        <field/>
+        <field table="eq_series" name="total_price" readOnly="true"/>
+        <field/>
+        <field table="eq_series" name="comments" colspan="2"/>
+    </panel>
+    <panel type="grid" id="eqSeriesListPanel" dataSource="ascBjUsmsEqSeriesListDs" showOnLoad="false" layout="mainCenterCenterLayout" region="north">
+        <title translatable="true" >Eq Series List Detial</title>
+        <field table="eq_series_list" name="series_id" hidden="true"/>
+        <field table="eq_series_list" name="series_list_id" hidden="true"/>
+        <field table="eq_series_list" name="eq_id" controlType="link">
+            <command type="showPanel" panelId="eqSeriesListDetaiPanel"/>
+        </field>
+        <field table="eq_series_list" name="eq_name" controlType="link">
+            <command type="showPanel" panelId="eqSeriesListDetaiPanel"/>
+        </field>
+        <field table="eq_series_list" name="brand" controlType="link">
+            <command type="showPanel" panelId="eqSeriesListDetaiPanel"/>
+        </field>
+        <field table="eq_series_list" name="eq_std" controlType="link">
+            <command type="showPanel" panelId="eqSeriesListDetaiPanel"/>
+        </field>
+        <field table="eq_series_list" name="eq_type"/>
+         <field table="eq_series_list" name="eq_num"/>
+         <field table="eq_series_list" name="price"/>
+        <field table="eq_series_list" name="total_price"/>
+    </panel>
+    
+    <panel type="form" id="eqSeriesListDetaiPanel" dataSource="ascBjUsmsEqSeriesListDs" showOnLoad="false" columns="2" layout="mainCenterCenterLayout" region="center">
+        <title translatable="true">Eq Series List Detail Info</title>
+        <action id="btnSave">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="showPanel" panelId="eqSeriesListPanel" applyParentRestriction="false"/>
+            <command type="callFunction" functionName="saveHidden"/>
+        </action>
+        <action id="btnDelete"  enabled="${!panel.newRecord}">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="eqSeriesListPanel"/>
+            <command type="callFunction" functionName="deleteHidden"/>
+        </action>
+        <action id="btnCancel">
+            <title translatable="true">Cancel</title>
+            <command type="clearForm"/>
+        </action>
+        <field table="eq_series_list" name="series_id" readOnly="true"/>
+        <field table="eq_series_list" name="series_list_id"/>
+        <field table="eq_series_list" name="eq_id">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" fieldNames="eq_series_list.eq_id"
+                    selectFieldNames="eq.eq_id" 
+                    visibleFieldNames="eq.eq_id,eq.eq_name" 
+                    actionListener="transEqInfo"
+                    showIndex="false" />
+            </action>
+        </field>
+        <field table="eq_series_list" name="eq_name" required="true"/>
+        <field table="eq_series_list" name="brand" required="true"/>
+        <field table="eq_series_list" name="eq_std"/>
+        <field table="eq_series_list" name="eq_type"/>
+        <field table="eq_series_list" name="eq_num" required="true" onblur="getCount()"/>
+        <field table="eq_series_list" name="price" required="true" onblur="getCount()"/>
+        <field table="eq_series_list" name="total_price" readOnly="true"/>
+        <field table="eq_series_list" name="comments" colspan="2"/>
+    </panel>
+</view>

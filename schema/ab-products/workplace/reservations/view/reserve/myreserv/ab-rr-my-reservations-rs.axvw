@@ -1,0 +1,63 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <!-- List of reservations -->
+    <dataSource id="ds_ab-rr-my-reservations-rs_grid_reserve_rs">
+        <table name="reserve_rs" role="main"/>
+        <table name="reserve" role="standard"/>
+        <table name="bl" role="standard"/>
+        <field table="reserve_rs" name="res_id"/>
+        <field table="reserve_rs" name="rsres_id"/>
+        <field table="reserve_rs" name="date_start"/>
+        <field table="reserve_rs" name="resource_id"/>
+        <field table="reserve_rs" name="quantity"/>
+        <field table="reserve_rs" name="time_start"/>
+        <field table="reserve_rs" name="time_end"/>
+        <field table="reserve_rs" name="bl_id"/>
+        <field table="reserve_rs" name="fl_id"/>
+        <field table="reserve_rs" name="rm_id"/>
+        <field table="reserve_rs" name="status"/>
+        <field table="reserve" name="res_id"/>
+		<field table="reserve" name="user_created_by"/>
+        <field table="reserve" name="user_requested_for"/>
+        <field table="reserve" name="user_requested_by"/>
+        <field table="reserve" name="reservation_name"/>
+        <field table="bl" name="ctry_id"/>
+        <field table="bl" name="site_id"/>
+    </dataSource>
+    
+    <panel type="grid" id="resReserveReport" dataSource="ds_ab-rr-my-reservations-rs_grid_reserve_rs" showOnLoad="false">
+    	
+        <field table="reserve_rs" name="res_id"/>
+        <field table="reserve" name="res_id" hidden="true"/>
+        <field table="reserve_rs" name="rsres_id"/>
+        <field table="reserve_rs" name="date_start"/>
+        <field table="reserve_rs" name="resource_id"/>
+        <field table="reserve_rs" name="quantity"/>
+        <field table="reserve" name="user_requested_for"/>
+        <field table="reserve" name="user_requested_by"/>
+        <field table="reserve_rs" name="time_start"/>
+        <field table="reserve_rs" name="time_end"/>
+        <field table="reserve_rs" name="bl_id"/>
+        <field table="reserve_rs" name="fl_id"/>
+        <field table="reserve_rs" name="rm_id"/>
+        <field table="reserve_rs" name="status"/>
+        <field table="reserve" name="reservation_name"/>
+        <field id="edit" controlType="button">
+                <title translatable="true">Edit</title>
+        </field>
+        <field id="viewComments" controlType="button">
+                <title translatable="true">View Comments</title>
+				<command type="openDialog" viewName="ab-rr-content-my-reservation-comments.axvw" newRecord="true" width="780" height="400" closeButton="false"/>
+        </field>
+		
+		<sortField name="date_start" table="reserve_rs" ascending="false"/>
+        <sortField name="time_start" table="reserve_rs" ascending="false"/>
+    </panel>
+    
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-my-reservation-detailtab-common.js"/>
+    <js file="ab-rr-my-reservations-rs.js"/>
+</view>

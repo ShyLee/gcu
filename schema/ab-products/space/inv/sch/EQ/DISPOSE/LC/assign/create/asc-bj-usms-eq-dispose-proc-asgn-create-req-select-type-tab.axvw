@@ -1,0 +1,130 @@
+<view version="2.0">
+   
+     <layout id="main">
+        <north id="requestPosition" initialSize="140" />
+        <center  id="gridPosition" />
+     </layout>
+	 <message name="messageConfirmUndo" translatable="true">Are you sure undo this request [{0}] ?</message>
+   
+     
+    <dataSource id="ascBjUsmsProcAsgnCreateReqSelectTypeTabGridDS">
+        <table name="probtype" role="main"/>
+        
+        <field name="prob_type" table="probtype"/>
+        <field name="description" table="probtype"/>
+        
+        <restriction
+         type="sql"
+         sql="probtype.prob_type LIKE ${parameters['prob_type']}"/>
+        <parameter name="prob_type" dataType="text" value=""/>
+    </dataSource>
+    
+    <panel type="grid" controlType="reportGrid" id="ascBjUsmsProcAsgnCreateReqSelectTypeTabGrid" showOnLoad="false" dataSource="ascBjUsmsProcAsgnCreateReqSelectTypeTabGridDS" layoutRegion="requestPosition">
+        <title translatable="true">Request Types</title>
+        
+        <field controlType="button" width="100">
+            <title translatable="true">Select</title>
+            <command type="callFunction" functionName="selectNextTab(this.restriction['probtype.prob_type'])"/>
+        </field>
+        <field name="prob_type" table="probtype" width="150">
+            <title translatable="true">Request Type</title>
+        </field>
+        <field name="description" table="probtype">
+            <title translatable="true">Work Flow</title>
+        </field>
+    </panel>
+    
+    <dataSource id="ascBjUsmsProcAsgnReviewReqSelectTabDS">
+        <table name="activity_log_hactivity_log" role="main"/>
+		<table name="em" role="standard"/>
+        
+        <field name="activity_log_id" table="activity_log_hactivity_log"/>
+        <field name="status" table="activity_log_hactivity_log"/>
+        <field name="requestor" table="activity_log_hactivity_log"/>
+		<field name="name" table="em"/>
+        <field name="prob_type" table="activity_log_hactivity_log"/>
+        <field name="activity_type" table="activity_log_hactivity_log"/>
+        <field name="date_requested" table="activity_log_hactivity_log"/>
+        <field name="description" table="activity_log_hactivity_log"/>
+        <parameter name="activityType" dataType="text" value=""/>
+        <restriction type="sql" sql="activity_log_hactivity_log.requestor = '${user.name}'   AND activity_log_hactivity_log.activity_type= ${parameters['activityType']}"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnReviewReqSelectTabGrid" showOnLoad="false" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnReviewReqSelectTabDS" layoutRegion="gridPosition">
+        <title translatable="true">Requests</title>
+        
+        <sortField table="activity_log_hactivity_log" name="date_requested" ascending="false"/>
+        <field id="viewDetails" controlType="button">
+            <title translatable="true">ViewDetails</title>
+        </field>
+        <field name="activity_log_id" table="activity_log_hactivity_log" width="100">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log_hactivity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log_hactivity_log">
+            <title translatable="true">Request Type</title>
+        </field>
+        <field name="requestor" table="activity_log_hactivity_log" hidden="true"/>
+		<field name="name" table="em">
+			<title translatable="true">ShenQingRen</title>
+        </field>
+        <field name="status" table="activity_log_hactivity_log"/>
+        <field name="date_requested" table="activity_log_hactivity_log"/>
+        <field name="description" table="activity_log_hactivity_log"/>
+
+    </panel>
+	
+     <dataSource id="ascBjUsmsProcAsgnColumnReportDS">
+        <table name="activity_log_step_waiting" role="main"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>
+        <field table="activity_log_step_waiting" name="comments"/>
+        <parameter name="stepRes" dataType="verbatim" value=""/>
+        <restriction type="parsed">
+            <clause relop="AND" op="=" table="activity_log_step_waiting" name="step" value="${parameters['stepRes']}"/>
+        </restriction> 
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnColumnReport"  showOnLoad="false" dataSource="ascBjUsmsProcAsgnColumnReportDS" layoutRegion="gridPosition">
+
+        <title translatable="true">Approve Infomation</title>
+       
+        <field table="activity_log_step_waiting" name="activity_log_id" hidden="true"/>
+        <field table="activity_log_step_waiting" name="step_log_id"  hidden="true"/>
+        <field table="activity_log_step_waiting" name="comments"  />
+        
+    </panel>
+    
+    <dataSource id="ascBjUsmsProcAsgnColumnReportJudgeDS">
+        <table name="helpdesk_step_log" role="main"/>
+        <field table="helpdesk_step_log" name="step_log_id"/>
+        <field table="helpdesk_step_log" name="pkey_value"/>
+        <field table="helpdesk_step_log" name="step"/>
+        <field table="helpdesk_step_log" name="step_status_result"/>
+        
+        <field table="helpdesk_step_log" name="activity_id"/>
+        <field table="helpdesk_step_log" name="status"/>
+    </dataSource>
+	
+    <dataSource id="ascBjUsmsProcAsgnActivityLogJudgeDS">
+        <table name="activity_log" role="main"/>
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="status"/>
+    </dataSource>
+	
+    <dataSource id="ascBjUsmsProcAsgnStepWaitingDS">
+        <table name="activity_log_step_waiting" role="main"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>
+        <field table="activity_log_step_waiting" name="status"/>
+    </dataSource>
+	
+    <dataSource id="ascBjUsmsProcAsgnReviewReqDS">
+        <table name="activity_log_hactivity_log" role="main"/>
+        <field name="activity_log_id" table="activity_log_hactivity_log"/>
+        <field name="status" table="activity_log_hactivity_log"/>
+    </dataSource>
+	
+     <js file="asc-bj-usms-eq-dispose-proc-asgn-create-req-select-type-tab.js"/>
+</view>

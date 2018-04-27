@@ -1,0 +1,11 @@
+<view version="2.0">
+	<title>Return Equipment</title>
+	<tabs workflow="free" id="returnTabs" tabRefreshPolicy="refreshOnSelect">
+		<tab name="eqApproveTab" file="asc-bj-usms-return-approve.axvw" selected="true" useFrame="true">
+		    <title translatable="true">Eq Approve</title>
+	    </tab>
+		<tab name="eqAttachApproveTab" file="asc-bj-usms-return-eq-attach-approve.axvw"  useFrame="true">
+		    <title translatable="true">Attach Approve</title>
+	    </tab>
+	</tabs>
+</view>

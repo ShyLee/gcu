@@ -1,0 +1,232 @@
+<view version="2.0">
+    <title translatable="true">Input Extra Eq</title>
+    <layout id="mainCenter"  >
+        <north id="consoleL" initialSize="80" split="true"/>
+        <center id="center" />
+    </layout>
+    <layout  type="borderLayout" id="centerLayout" containingLayout="mainLayout" region="center">
+        <west initialSize="30%" split="true" autoScroll="true"/>
+        <center id="nestCenter" autoScroll="true"/>
+    </layout>
+    
+    <dataSource id="eq_DS">
+        <table name="eq" role="main" />
+        <table name="csi" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq" name="eq_id" />
+        <field table="eq" name="eq_id_old" />
+        <field table="eq" name="eq_name" />
+        <field table="eq" name="csi_id" />
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="eq_type" />
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="total_price" showTotals="true"/>
+        <field table="eq" name="eq_std" />
+        <field table="eq" name="date_purchased" />
+        <field table="eq" name="buy_type" />
+        <field table="eq" name="vn_id" />
+        <field table="eq" name="danju_id" />
+        <field table="eq" name="date_in_service" />
+        <field table="eq" name="num_serial" />
+        <field table="eq" name="type_use" />
+        <field table="eq" name="is_up" />
+        <field table="eq" name="add_comment" />
+        <field table="eq" name="units"/>
+        <field table="eq" name="sci_resh_id" />
+        <field table="eq" name="subject_funds" />
+        <field table="eq" name="dv_id" />
+        <field table="dv" name="dv_name" />
+        <field table="eq" name="dp_id" />
+        <field table="dp" name="dp_name" />
+        <field table="eq" name="sch_status" />
+        <field table="eq" name="source" />
+        <field table="eq" name="em_id" />
+        <field table="eq" name="em_name" />
+        <field table="eq" name="bl_id" />
+        <field table="eq" name="fl_id" />
+        <field table="eq" name="rm_id" />
+        <field table="eq" name="brand" />
+        <field table="eq" name="add_eq_id" />
+        <field table="eq" name="ctry_name" />
+        <field table="eq" name="ctry_id" />
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="is_label"/>
+        <field table="eq" name="option1"/>
+        <field table="eq" name="option2"/>
+        <field table="eq" name="number2"/>
+        <field table="eq" name="input_type"/>
+        <sortField table="eq" name="eq_id"/>
+        <restriction type="sql" sql="(eq.input_type='2')"/>
+    </dataSource>
+        
+   
+    <panel type ="console" id="consolePanel" dataSource="eq_DS" columns="3" layoutRegion="consoleL">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="consolePanel"/>
+        </action>
+        <field table="eq" name="bl_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.bl_id"
+                    selectFieldNames="bl.bl_id" 
+                    visibleFieldNames="bl.bl_id" 
+                    
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="em_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.em_id,eq.em_name"
+                    selectFieldNames="em.em_id,em.name" 
+                    visibleFieldNames="em.em_id,em.name,em.dv_id" 
+                    
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="eq" name="em_name">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.em_id,eq.em_name"
+                    selectFieldNames="em.em_id,em.name" 
+                    visibleFieldNames="em.em_id,em.name,em.dv_id" 
+                    
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="eq" name="eq_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.eq_id,eq.eq_name"
+                    selectFieldNames="eq.eq_id,eq.eq_name" 
+                    visibleFieldNames="eq.eq_id,eq.eq_name" 
+                    restriction="eq.input_type='2'"
+                    showIndex="false"/>
+            </action>
+        </field>    
+        <field table="eq" name="eq_name">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.eq_id,eq.eq_name"
+                    selectFieldNames="eq.eq_id,eq.eq_name" 
+                    visibleFieldNames="eq.eq_id,eq.eq_name" 
+                    restriction="eq.input_type='2'"
+                    showIndex="false"/>
+            </action>
+        </field>
+    </panel>
+    
+    <panel type ="grid" id="gridPanel" dataSource="eq_DS" layout="centerLayout" region="west" showOnLoad="true">
+        <title translatable="true">Extra Eq List</title>
+        <action id="add">
+            <title>New</title>
+        </action>
+        <indexField table="eq" name="eq_id"/>
+        <field table="eq" name="eq_id" id ="eq_id" controlType="link"/> 
+        <field table="eq" name="eq_name" id ="eq_name" controlType="link"/>
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="total_price" showTotals="true"/>
+        <field table="eq" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="em_id" hidden="true"/>
+        <field table="eq" name="em_name"/>      
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+
+    </panel>
+    
+    <panel type ="form" id="formPanel" dataSource="eq_DS" layout="centerLayout" columns="2" region="center" showOnLoad="false">
+        <title translatable="true">Eq Info</title>
+        <action id="save">
+            <title>Save</title>
+        </action>
+        <field table="eq" name="eq_id" readOnly="true"/>
+        <field table="eq" name="eq_name" required="true"/>
+        <field table="eq" name="dv_id" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.dv_id,dv.dv_name"
+                    selectFieldNames="dv.dv_id,dv.dv_name" 
+                    visibleFieldNames="dv.dv_id,dv.dv_name" />
+            </action>
+        </field>     
+        <field table="dv" name="dv_name" readOnly="true"/>
+        <field table="eq" name="dp_id" required="false">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.dv_id,dv.dv_name,eq.dp_id,dp.dp_name"
+                    selectFieldNames="dp.dv_id,dv.dv_name,dp.dp_id,dp.dp_name" 
+                    visibleFieldNames="dp.dv_id,dv.dv_name,dp.dp_id,dp.dp_name" />
+            </action>
+        </field>     
+        <field table="dp" name="dp_name" readOnly="true" required="false"/>
+        <field table="eq" name="em_id" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.em_id,eq.em_name"
+                    selectFieldNames="em.em_id,em.name" 
+                    visibleFieldNames="em.em_id,em.name" />
+            </action>
+        </field>        
+        <field table="eq" name="em_name" readOnly="true"/>
+        <field table="eq" name="eq_id_old" readOnly="false"/>
+        <field table="eq" name="buy_type" readOnly="true"/>
+        <field table="eq" name="bl_id"  required="true"/>
+        <field table="eq" name="fl_id" />
+        <field table="eq" name="rm_id" />
+        
+        <field table="eq" name="csi_id" />
+        <field table="eq" name="ctry_id" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.ctry_id,eq.ctry_name"
+                    selectFieldNames="ctry.ctry_id,ctry.name" 
+                    visibleFieldNames="ctry.ctry_id,ctry.name" />
+            </action>
+        </field> 
+        <field table="eq" name="ctry_name" readOnly="true"/>
+        <field table="eq" name="brand" />
+        <field table="eq" name="eq_std" />
+        <field table="eq" name="eq_type" />     
+        <field table="eq" name="price"  required="true"/>
+        <field table="eq" name="total_price"  hidden="true"/>
+        
+        <field table="eq" name="date_purchased"  />
+        <field table="eq" name="date_in_service" />     
+        <field table="eq" name="vn_id"  />
+        <field table="eq" name="num_serial" />
+        <field table="eq" name="units" />
+        <field table="eq" name="is_label"  required="true"/>
+        <field table="eq" name="type_use"  required="true"/>
+        <field table="eq" name="eq_warehouse"  required="true"/>
+        <field table="eq" name="source" />
+        <field table="eq" name="is_up"  required="true"/>
+        <field table="eq" name="sch_status" readOnly="true" hidden="false"/>
+        <field table="eq" name="input_type" hidden="true"/>
+        <field/>
+        <field table="eq" name="add_comment" colspan="2" height="30"/>
+    </panel>
+    
+           
+    <js file="asc-bj-usms-eq-input-add-view.js"/>
+</view>

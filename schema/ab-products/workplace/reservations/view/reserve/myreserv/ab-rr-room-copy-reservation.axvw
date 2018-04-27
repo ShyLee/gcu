@@ -1,0 +1,42 @@
+<view version="2.0">
+    <message translatable="true" name="errNotFound">User form loaded but miniconsole not found</message>
+    <message translatable="true" name="CopyOk">The copy has been performed correctly</message>
+    <message translatable="true" name="CancelledNoCopy">A cancelled or rejected reservation cannot be copied</message>
+    <message translatable="true" name="reservationfor">Reservation for:</message>
+    <message translatable="true" name="CopyReservation">Are you sure that you want to copy the reservation?</message>
+    
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <dataSource id="ds_ab-rr-room-copyReservation_form_reserve_rm">
+        <table name="reserve_rm" role="main"/>
+        <field table="reserve_rm" name="date_start"/>
+    </dataSource>
+    
+    <panel id="copyReservationPanel" type="html">
+        <title translatable="true">Copy Reservation</title>
+        <action id="select">
+            <title translatable="true">Select</title>
+        </action>
+        <action id="close">
+            <title translatable="true">Cancel</title>
+			<command type="closeDialog"/>
+        </action>
+        
+        <html>
+            <span translatable="true" id="instructions" name="instructions" class="rm_reserve_information">
+                Select a date to copy the currently selected reservation to
+            </span>
+        </html>
+    </panel>
+    
+    <panel id="dateStartPanel" type="form" dataSource="ds_ab-rr-room-copyReservation_form_reserve_rm">
+        <field table="reserve_rm" name="date_start" readOnly="false" required="false"/>
+    </panel>
+    
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-my-reservation-detailtab-common.js"/>
+    <js file="ab-rr-room-copy-reservation.js"/>
+    
+</view>

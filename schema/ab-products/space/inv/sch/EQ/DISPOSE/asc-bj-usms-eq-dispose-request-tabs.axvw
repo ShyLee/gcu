@@ -1,0 +1,16 @@
+<view version="2.0">
+    <title translatable="true">Create Request</title>
+    
+    <tabs workflow="free" id="createRequestTabs" tabRefreshPolicy="refreshOnSelect">
+        <tab name="selectTab" selected="true" file="asc-bj-usms-eq-dispose-request-tab.axvw">
+            <title translatable="true">Select Request Type</title>
+        </tab>
+        <tab name="requestTab" file="asc-bj-usms-eq-dispose-request-info-tab.axvw" >
+            <title translatable="true">Request Info</title>
+        </tab>
+        <tab name="disposeTab" file="asc-bj-usms-eq-attach-dispose-request-tab.axvw">
+            <title translatable="true">Attach Dispose</title>
+        </tab>
+    </tabs>
+    <js file="asc-bj-usms-eq-dispose-request-tabs.js"/>
+</view>

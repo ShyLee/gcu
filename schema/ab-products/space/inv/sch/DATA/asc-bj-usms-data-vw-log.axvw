@@ -1,0 +1,84 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+		<north id="filterPosition" initialSize="15%" split="true" />
+		<center id="treePosition" />
+	</layout>
+
+
+	<title translatable="true">RiZhiGuanLi</title>
+
+	<dataSource id="abScSearchScUpdateLogFilterDS">
+		<table name="sc_update_log" role="main" />
+		<field name="activity_log_id" />
+		<field name="date_created" />
+		<field name="time_created" />
+		<field name="description" />
+		<field name="dv_id" />
+		<field name="ip_addr" />
+		<field name="log_id" />
+		<field name="new_values" />
+		<field name="old_values" />
+		<field name="operate_type" />
+		<field name="operator" />
+		<field name="role_name" />
+		<field name="sqls" />
+		<field name="table_name" />
+		<field name="task_name" />
+	</dataSource>
+
+	<panel type="console" id="updateLogFilterPanel" dataSource="abScSearchScUpdateLogFilterDS"
+		columns="3" layoutRegion="filterPosition">
+		<title translatable="true">Filter</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+			 <command type="showPanel" panelId="abScUpdateLogGrid"/>
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel" panelId="updateLogFilterPanel" />
+		</action>
+
+		<field table="sc_update_log" name="date_created" readOnly="false"
+			alias="sc_update_log.date_created.from"  op="&gt;=">
+			<title translatable="true">Date Start From</title>
+		</field>
+
+		<field table="sc_update_log" name="date_created" readOnly="false"
+			alias="sc_update_log.date_created.to" op="&lt;=">
+			<title translatable="true">Date Start To</title>
+		</field>
+		<field table="sc_update_log" name="operator" />
+		<field table="sc_update_log" name="operate_type" />
+		<field table="sc_update_log" name="task_name" />
+		<field table="sc_update_log" name="table_name" />
+	</panel>
+
+	<panel type="grid" id="abScUpdateLogGrid"
+		showOnLoad="false" dataSource="abScSearchScUpdateLogFilterDS"
+		layoutRegion="treePosition">
+		<title translatable="true">RiZhiLieBiao</title>
+		<action id="export:PDF">
+            <title>PDF</title>
+            <command type="exportPanel" outputType="pdf" panelId="abScUpdateLogGrid"/>
+        </action>
+        <action id="export:XLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="abScUpdateLogGrid"/>
+        </action>
+		<sortField table="sc_update_log" name="log_id" ascending="false" />
+		<field name="log_id" />
+		<field name="date_created" />
+		<field name="time_created" />
+		<field name="operator" />
+		<field name="role_name" />
+		<field name="dv_id" />
+		<field name="ip_addr" />
+		<field name="operate_type" />
+		<field name="task_name" />
+		<field name="table_name" />
+		<field name="old_values" />
+		<field name="new_values" />
+		<field name="description" />
+	</panel>
+
+</view>

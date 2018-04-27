@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <!--  afm-projects.xml 
+
+    o Refer to the ARCHIBUS System Management help for configuration information. 
+
+    o Add your Web projects to this file. 
+
+    o If there is more than one <project> defined in this file, the login
+      form will allow users to select from a list. 
+
+    o The ARCHIBUS application will connect to _all_ of the <database>
+      connections specified here. If one database connection does not
+      work, the application will not start. 
+
+    o To connect to the sample project, change the "localhost" or the IP
+      address (e.g. 10.1.99.75) attribute in the <jdbc> tag to the IP
+      address of your database server. If the database is configured to
+      listen at a different port, you will need to change the port
+      setting below as well. 
+
+    o Secure passwords are kept in afm-secure.xml. Refer to the Enable
+      task category (Security activity) help topic in the System
+      Management Help.
+
+  -->
+
+<afm-projects>
+<project>
+    <preferences 
+      name="GCU-Oracle" 
+      title="GCU-Oracle" 
+      active="true" 
+      projectType="enterprise"
+
+      projectFolder="/#Attribute%//@webAppDirectory%/projects/gcu"
+      projectGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/gcu/graphics" 
+      projectDrawingsFolder="/#Attribute%//@webAppDirectory%/projects/gcu/drawings"
+      enterpriseGraphicsFolder="/#Attribute%//@webAppDirectory%/projects/gcu/enterprise-graphics"
+
+      drawingsFolderForSmartClient="//workgroupsvr/AIPROJECTS/gcu/drawings" 
+      enterpriseGraphicsFolderForSmartClient="//workgroupsvr/AIPROJECTS/gcu/enterprise-graphics"
+      useDocumentManagementForDrawings="true"
+
+      units="Imperial" 
+      baseUnits="Inches" 
+      logoFile="archibus-20x20-trans.gif" 
+      projectDrawingsSubFolder="projects/gcu/drawings"
+      databaseEngineType="Oracle"
+      preloadTableDefs="true"
+    />
+    <databases>
+      <database role="data" maxNumberOfRecords="100">
+        <login defaultAccount="afm" defaultPassword="afm">default</login>
+        <engine type="Oracle">
+          <jdbc url="jdbc:oracle:thin:@db1:1521:orcl" />
+        </engine>
+      </database>
+      <database role="schema" maxNumberOfRecords="0">
+        <login defaultAccount="afm" defaultPassword="afm" />
+        <engine type="Oracle">
+          <jdbc url="jdbc:oracle:thin:@db1:1521:orcl" />
+        </engine>
+      </database>
+      <database role="security" maxNumberOfRecords="0">
+        <login defaultAccount="afm_secure" defaultPassword="afm" />
+        <engine type="Oracle">
+          <jdbc url="jdbc:oracle:thin:@db1:1521:orcl" />
+        </engine>
+      </database>
+    </databases>
+  </project>
+</afm-projects>

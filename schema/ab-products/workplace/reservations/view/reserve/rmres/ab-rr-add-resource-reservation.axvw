@@ -1,0 +1,34 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <layout file="ab-tabs.axvw"/>
+    
+    <tabs id="createEditResevationTabs" workflow="enforced">
+        <tab name="my-reservations" file="ab-rr-content-my-reservations.axvw">
+            <title translatable="true">My Reservations</title>
+        </tab>
+        <tab name="roomReservation" file="ab-rr-content-add-room-reservation.axvw">
+            <title translatable="true">Room Reservations</title>
+        </tab>
+        <tab name="roomReservationConflicts" file="ab-rr-content-room-reservation-conflicts.axvw">
+            <title translatable="true">Resolve Conflicts</title>
+        </tab>
+        <tab name="roomReservationConfirm" file="ab-rr-content-add-room-reservation-confirm.axvw">
+            <title translatable="true">Confirm Room</title>
+        </tab>
+        <tab name="resourcesReservation" file="ab-rr-content-add-resource-reservation.axvw" selected="true">
+            <title translatable="true">Resource Reservations</title>
+        </tab>
+        <tab name="resourceReservationConflicts" file="ab-rr-content-resource-reservation-conflicts.axvw">
+            <title translatable="true">Resolve Resource Conflicts</title>
+        </tab>
+        <tab name="resourceReservationConfirm" file="ab-rr-add-resource-reservation-confirm.axvw">
+            <title translatable="true">Confirm Resource</title>
+        </tab>
+    </tabs>
+    
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-add-resource-reservation.js"/>
+</view>

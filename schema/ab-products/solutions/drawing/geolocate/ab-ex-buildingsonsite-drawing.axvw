@@ -1,0 +1,72 @@
+
+<view version="2.0">
+    <designInfo type="edit" pattern="ab-viewdef-editform-drilldown-two-level" isAlterable="true"/>
+    <layout file="dashboard-2-1-0.axvw"/>
+    <title translatable="true">Display Campus Plan and Buildings</title>
+    <js file="ab-ex-buildingsonsite-drawing.js"/>
+    <dataSource id="abDpVal_ds_0">
+        <sql dialect="generic">
+            SELECT dwgname
+            FROM bl
+            WHERE dwgname IS NOT NULL
+            GROUP BY dwgname
+        </sql>
+        <table name="bl" role="main"/>
+        <field name="dwgname"  table="bl"/>
+    </dataSource>
+    
+    <panel type="grid" id="abDpVal_topPanel" dataSource="abDpVal_ds_0" selectionEnabled="true" layoutRegion="row1col1">
+        <title translatable="true">Sites</title>
+        <action id="abDpVal_refresh">
+            <title translatable="true">Refresh</title>
+            <command type="showPanel" panelId="abDpVal_topPanel"/>
+        </action>    
+        <field name="dwgname" table="bl" controlType="link" onclick="loadBlsAndDrawing">
+            <command type="showPanel" panelId="abDpVal_bottomPanel"/>
+        </field>
+        <sortField name="dwgname" table="bl" ascending="true"/>
+    </panel>
+    
+    <dataSource id="abDpVal_ds_1">
+        <sql dialect="generic">
+            SELECT bl_id, dwgname, name
+            FROM bl
+            WHERE EXISTS (SELECT 1 FROM afm_dwgs WHERE substring(space_hier_field_values, 1, charindex(';', space_hier_field_values)-1) = bl.bl_id)
+            AND dwgname IS NOT NULL
+        </sql>    
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl"  name="name"/>
+        <field table="bl" name="dwgname"/>
+        <parameter name="drawingName" dataType="verbatim" value="IS NULL"/>
+        <restriction type="sql" sql="bl.dwgname ${parameters['drawingName']}"/>
+    </dataSource>
+    
+    <dataSource id="building_labelNamesDs" type="DrawingControlLabels">
+        <title>Names</title>
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl"  name="name"/>
+    </dataSource>
+  
+    <panel type="grid" id="abDpVal_bottomPanel" dataSource="abDpVal_ds_1" showOnLoad="false" layoutRegion="row2col1" multipleSelectionEnabled="true" assetTypes="bl">
+        <title translatable="true">Buildings</title>
+        <action id="showSelected">
+            <title>Show Selected</title>
+        </action>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="bl" name="dwgname" hidden="true"/>
+        
+        <sortField name="bl_id" table="bl" ascending="true" />
+    </panel>
+    
+      <panel type="drawing" id="abDpVal_cadPanel" layoutRegion="row1col2"
+                assetTypes="bl"
+                selectionMode="0"
+                labelsDataSource="building_labelNamesDs"
+                toolbarSettings="hide=resetAssets,clearAssets">
+        <title translatable="true">[]</title>
+      </panel>
+</view>
+

@@ -1,0 +1,36 @@
+<view version="2.0">
+  <dataSource id="activity_log_ds">
+        <table name="activity_log" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="dv" role="standard"/>
+        <field table="activity_log" name="activity_log_id" />
+        <field table="activity_log" name="activity_type" />
+        <field table="activity_log" name="prob_type" />
+        <field table="activity_log" name="description" />
+        <field table="activity_log" name="comments" />
+        <field table="activity_log" name="status" />
+        <field table="activity_log" name="requestor" />
+        <field table="activity_log" name="requestor_name" />
+        <field table="activity_log" name="notes2" />
+        <field table="activity_log" name="location" />
+        <field table="activity_log" name="bl_id" />
+        <field table="bl" name="name" />
+        <field table="activity_log" name="dv_id" />
+        <field table="dv" name="dv_name" />
+        <field table="activity_log" name="created_name" />
+    </dataSource>
+    
+    <panel type="form" id="approvedInfoGrid" showOnLoad="true" controlType="reportGrid" dataSource="activity_log_ds" columns="2">
+        <action id="next">
+			<title>Next</title>
+		</action>
+        <action id="back">
+			<title>Back</title>
+		</action>
+        <field table="activity_log" name="activity_log_id" hidden="true"/>
+        <field table="activity_log" name="requestor" hidden="true"/>
+        <field table="activity_log" name="requestor_name" readOnly="true"/>
+        <field table="activity_log" name="notes2" hidden="true"/>
+    </panel>
+	<js file="asc-bj-hhu-house-asgn-em-to-rm-select-em-tab.js"/>
+</view>

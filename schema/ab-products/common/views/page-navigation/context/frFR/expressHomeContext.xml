@@ -1,0 +1,6 @@
+<template-context>
+    <translatable-strings
+            dropTargetText = "Faites glisser une tâche ou un rapport ici"
+            backToTopText = "Retour en Haut"
+    />
+</template-context>

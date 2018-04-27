@@ -1,0 +1,137 @@
+<view version="2.0">
+   	<title translatable="true">weixiubushenqinggengxin</title>
+    <layout id="main">
+        <north id="consolePosition" initialSize="70"/>
+        <center id="formPosition"/>
+    </layout>
+    
+    <dataSource id="ds_console">
+		<table name="sc_hos_repair" role="main" />
+		<field table="sc_hos_repair" name="malfunction"/>
+	</dataSource>
+
+    <dataSource id="ds_grid">
+		<table name="sc_hos_repair" role="main" />
+		<table name="em" role="standard" />
+		<field table="em" name="name"/>
+		<field table="sc_hos_repair" name="id"/>
+		<field table="sc_hos_repair" name="bl_id"/>
+		<field table="sc_hos_repair" name="fl_id"/>
+		<field table="sc_hos_repair" name="rm_id"/>
+		<field table="sc_hos_repair" name="type"/>
+		<field table="sc_hos_repair" name="date_report"/>
+		<field table="sc_hos_repair" name="em_report"/>
+		<field table="sc_hos_repair" name="em_report_name"/>
+		<field table="sc_hos_repair" name="phone_long"/>
+		<field table="sc_hos_repair" name="phone_short"/>
+		<field table="sc_hos_repair" name="status"/>
+		<restriction type="sql" sql="sc_hos_repair.status='1' and marked='2'"/>
+	</dataSource>
+
+    <dataSource id="ds_form">
+		<table name="sc_hos_repair" role="main" />
+		<field table="sc_hos_repair" name="id"/>
+		<field table="sc_hos_repair" name="bl_id"/>
+		<field table="sc_hos_repair" name="fl_id"/>
+		<field table="sc_hos_repair" name="rm_id"/>
+		<field table="sc_hos_repair" name="type"/>
+		<field table="sc_hos_repair" name="date_report"/>
+		<field table="sc_hos_repair" name="em_report"/>
+		<field table="sc_hos_repair" name="em_report_name"/>
+		<field table="sc_hos_repair" name="phone_long"/>
+		<field table="sc_hos_repair" name="phone_short"/>
+		<field table="sc_hos_repair" name="em_accept"/>
+		<field table="sc_hos_repair" name="em_repair"/>
+		<field table="sc_hos_repair" name="date_repair"/>
+		<field table="sc_hos_repair" name="date_finish"/>
+		<field table="sc_hos_repair" name="cost_actual"/>
+		<field table="sc_hos_repair" name="status"/>
+		
+		<field table="sc_hos_repair" name="malfunction"/>
+		<field table="sc_hos_repair" name="address"/>
+		<field table="sc_hos_repair" name="comments"/>
+		<field table="sc_hos_repair" name="summarizes"/>
+	</dataSource>
+			 
+    <panel type="console" id="consoleForm" dataSource="ds_console" columns="3"  layoutRegion="consolePosition">
+    	<title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true" >Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+		<field>
+		 	<action id="jianzhuwu">
+            	<title translatable="true">jianzhuwu</title>
+        	</action>
+		</field>
+		<field>
+		 	<action id="feijianzhuwu">
+            	<title translatable="true">feijianzhuwu</title>
+        	</action>
+		</field>
+        <field table="sc_hos_repair" name="malfunction" width="200" height="20"/>
+    </panel>
+
+	<panel id="gridForm" type="grid" dataSource="ds_grid" columns="1"  showOnLoad="true" layoutRegion="formPosition" newRecord="true">
+        <title translatable="true">weixiushenqingliebiao</title>
+		<field id="gengxin" controlType="button" width="50">
+            <title translatable="true">gengxin</title>
+            <command type="callFunction" functionName="controller.onGengxin()"/>
+        </field>
+		<field table="sc_hos_repair" name="id" controlType="link">
+			  <command type="openDialog" panelId="repairInfoPanel"  width="700" height="500" closeButton="true"/>
+		</field>
+		<field table="sc_hos_repair" name="bl_id"/>
+		<field table="sc_hos_repair" name="fl_id"/>
+		<field table="sc_hos_repair" name="rm_id"/>
+		<field table="sc_hos_repair" name="type"/>
+		<field table="sc_hos_repair" name="em_report_name"/>
+		<field table="sc_hos_repair" name="date_report"/>
+		<field table="sc_hos_repair" name="phone_long"/>
+		<field table="sc_hos_repair" name="phone_short"/>
+		<field table="sc_hos_repair" name="status"/>
+    </panel>    
+
+	<panel id="formForm" type="form" dataSource="ds_form" columns="1" showOnLoad="false" newRecord="true">
+        <title translatable="true">gengxinweixiushenqing</title>
+        <action id="save">
+            <title translatable="true">save</title>
+        </action>
+        <action id="quxiao">
+            <title translatable="true">quxiao</title>
+            <command type="closeDialog" panelId="addPanel"/>
+        </action>
+        <field table="sc_hos_repair" name="id" hidden="true"/>
+		<field table="sc_hos_repair" name="date_finish" required="true"/>
+		<field table="sc_hos_repair" name="cost_actual" required="true"/>
+		<field table="sc_hos_repair" name="summarizes"/>
+		<field table="sc_hos_repair" name="status" hidden="true"/>
+    </panel>
+     <panel type="form" id="repairInfoPanel" dataSource="ds_form" columns="2" showOnLoad="false">
+    	<title>Repair Info</title>
+		<field table="sc_hos_repair" name="id"  readOnly="true"/>
+		<field table="sc_hos_repair" name="bl_id"  readOnly="true"/>
+		<field table="sc_hos_repair" name="fl_id"  readOnly="true"/>
+		<field table="sc_hos_repair" name="rm_id"  readOnly="true"/>
+		<field table="sc_hos_repair" name="type"  readOnly="true"/>
+		<field table="sc_hos_repair" name="date_report"  readOnly="true"/>
+		<field table="sc_hos_repair" name="em_report"  readOnly="true"/>
+		<field table="sc_hos_repair" name="em_report_name"  readOnly="true"/>
+		<field table="sc_hos_repair" name="phone_long"  readOnly="true"/>
+		<field table="sc_hos_repair" name="phone_short"  readOnly="true"/>
+		<field table="sc_hos_repair" name="em_accept"  readOnly="true"/>
+		<field table="sc_hos_repair" name="em_repair"  readOnly="true"/>
+		<field table="sc_hos_repair" name="date_repair"  readOnly="true"/>
+		<field table="sc_hos_repair" name="date_finish" readOnly="true"/>
+		<field table="sc_hos_repair" name="cost_actual" readOnly="true"/>
+		<field table="sc_hos_repair" name="status" readOnly="true"/>
+		
+		<field table="sc_hos_repair" name="malfunction" readOnly="true" colspan="2"/>
+		<field table="sc_hos_repair" name="address" readOnly="true" colspan="2"/>
+		<field table="sc_hos_repair" name="comments" readOnly="true" colspan="2"/>
+		<field table="sc_hos_repair" name="summarizes" readOnly="true" colspan="2"/>
+    </panel>        
+    <js file="asc-bj-repair-update-request-to-repairer.js"/>
+</view>

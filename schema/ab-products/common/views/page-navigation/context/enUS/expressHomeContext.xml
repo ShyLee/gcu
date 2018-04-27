@@ -1,0 +1,6 @@
+<template-context>
+    <translatable-strings
+            dropTargetText = "Drag any item here"
+            backToTopText = "Back to Top"
+    />
+</template-context>

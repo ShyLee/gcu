@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<view version="2.0">
+<title>ARCHIBUS Metrics Definitions
+</title>
+<designInfo isAlterable="true" pattern="ab-viewdef-grid" type="grid"/>
+<dataSource id="ds_afm_metric_definitions">
+<table name="afm_metric_definitions" role="main"/>
+<field name="metric_name" table="afm_metric_definitions"/>
+<field name="collect_table" table="afm_metric_definitions"/>
+<field name="collect_date_field" table="afm_metric_definitions"/>
+<field name="collect_formula" table="afm_metric_definitions"/>
+<field name="description" table="afm_metric_definitions"/>
+<field name="collect_frequency" table="afm_metric_definitions"/>
+<field name="collect_group_by" table="afm_metric_definitions"/>
+<field name="collect_where_clause" table="afm_metric_definitions"/>
+<field name="report_aggregate_as" table="afm_metric_definitions"/>
+<field name="report_benchmark_value" table="afm_metric_definitions"/>
+<field name="report_green_up" table="afm_metric_definitions"/>
+<sortField name="metric_name" table="afm_metric_definitions" ascending="true"/>
+</dataSource>
+<panel id="afm_metric_definitions_grid" type="grid" dataSource="ds_afm_metric_definitions">
+<title>ARCHIBUS Metrics Definitions
+</title>
+
+
+<indexField name="metric_name" table="afm_metric_definitions"/>
+
+<action id="exportDOCX">
+<title>DOC
+</title>
+<command outputType="docx" type="exportPanel" panelId="afm_metric_definitions_grid"/>
+</action>
+<action id="exportXLS">
+<title>XLS
+</title>
+<command outputType="xls" type="exportPanel" panelId="afm_metric_definitions_grid"/>
+</action>
+<action id="exportTXFR">
+<title>DATA
+</title>
+<command outputType="txfr" type="exportPanel" panelId="afm_metric_definitions_grid"/>
+</action>
+</panel>
+</view>

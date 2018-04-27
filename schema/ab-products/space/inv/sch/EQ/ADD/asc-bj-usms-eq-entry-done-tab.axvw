@@ -1,0 +1,95 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-entry-done-tab.js"/>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="40%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <table name="em" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="unit"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="servcont_id"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+        <field table="eq" name="attachments_num"/>
+        <field table="eq" name="attachments_price"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="handling_em"/>
+        <field table="eq" name="sci_resh_id"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="approved"/>
+        <field table="eq" name="comments"/>
+        <field table="eq" name="approved_fiance"/>
+        <field table="eq" name="date_fin_approved"/>
+        <field table="eq" name="approved_by_fin"/>
+        <field table="eq" name="sch_status"/>
+    </dataSource>
+    <panel type="grid" id="eqListGridPanel" dataSource="ascBjUsmsEqDs" layout="mainLayout" region="north">
+         <title translatable="true">View Eq Infomation Already Add</title>
+         <action id="btnReAdd">
+            <title translatable="true">ReAdd</title>
+         </action>
+         <field table="eq" name="eq_id" controlType="link">
+            <command type="showPanel" panelId="eqListFormPanel"/>
+         </field>
+         <field table="eq" name="eq_name" controlType="link">
+            <command type="showPanel" panelId="eqListFormPanel"/>
+         </field>
+         <field table="eq" name="eq_type"/>
+         <field table="eq" name="eq_std"/>
+         <field table="eq" name="bl_id"/>
+         <field table="eq" name="fl_id"/>
+         <field table="eq" name="rm_id"/>
+    </panel>
+    
+    <panel type="form" id="eqListFormPanel" showOnLoad="false" dataSource="ascBjUsmsEqDs" columns="3" region="center">
+        <title translatable="true">View Eq Detial Information</title>
+        <field table="eq" name="eq_id" readOnly="true"/>
+        <field table="eq" name="eq_name" readOnly="true"/>
+        <field table="eq" name="eq_type" readOnly="true"/>
+        <field table="eq" name="eq_std" readOnly="true"/>
+        <field table="eq" name="price" readOnly="true"/>
+        <field table="eq" name="unit" readOnly="true"/>
+        <field table="eq" name="source" readOnly="true"/>
+        <field table="eq" name="ctry_name" readOnly="true"/>
+        <field table="eq" name="ctry_id" readOnly="true"/>
+        <field table="eq" name="dv_id" readOnly="true"/>
+        <field table="eq" name="servcont_id" readOnly="true"/>
+        <field table="eq" name="date_manufactured" readOnly="true"/>
+        <field table="eq" name="date_purchased" readOnly="true"/>
+        <field table="eq" name="type_use" readOnly="true"/>
+        <field table="eq" name="csi_id" readOnly="true"/>
+        <field table="eq" name="bl_id" readOnly="true"/>
+        <field table="eq" name="fl_id" readOnly="true"/>
+        <field table="eq" name="rm_id" readOnly="true"/>
+        <field table="eq" name="em_id" readOnly="true"/>
+        <field table="em" name="em_id" hidden="true"/>
+        <field table="em" name="name" readOnly="true"/>
+        <field table="eq" name="attachments_num" readOnly="true"/>
+        <field table="eq" name="attachments_price" readOnly="true"/>
+        <field table="eq" name="subject_funds" readOnly="true"/>
+        <field table="eq" name="handling_em" readOnly="true"/>
+        <field table="eq" name="sci_resh_id" readOnly="true"/>
+        <field table="eq" name="danju_id" readOnly="true"/>
+        <field/>
+        <field table="eq" name="comments" readOnly="true" colspan="3"/>
+    </panel>
+</view>

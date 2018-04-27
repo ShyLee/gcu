@@ -1,0 +1,76 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+        <north  id="northRegion" autoScroll="true" split="true" initialSize="40%"/>
+        <center id="centerRegion" />
+        <south initialSize="4%"/>
+    </layout>
+    <dataSource id="rm_dv_ds">
+       <sql dialect="generic">
+			select nvl(rm.dv_id,'null') ${sql.as} dv_id,nvl(dv.dv_name,'null') ${sql.as} dv_name ,count(rm.rm_id) ${sql.as} count_rm_dv
+			  from rm,dv
+			 where rm.dv_id=dv.dv_id(+) 
+			   and bl_id = ${parameters['blId']}
+			   and rm.feormale=${parameters['feormale']}
+			 group by rm.dv_id,dv.dv_name
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="dv_id" dataType="text"/>
+        <field table="rm" name="dv_name" dataType="text"/>
+        <field table="rm" name="count_rm_dv" dataType="number" decimals="0"/>
+        <parameter name="blId" dataType="text" value=""/>
+        <parameter name="feormale" dataType="text" value=""/>
+        <sortField table="rm" name="dv_id" ascending="true"/>
+    </dataSource>
+    <dataSource id="rm_ds">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="dv_id"/>
+        <field table="rm" name="stu_in_year"/>
+        <field table="bl" name="name"/>
+        <sortField table="rm" name="stu_in_year" ascending="true"/>
+        <sortField table="rm" name="bl_id" ascending="true"/>
+     	<sortField table="rm" name="fl_id" ascending="true"/>
+     	<sortField table="rm" name="rm_id" ascending="true"/>
+    </dataSource>
+    <panel type="grid" id="dvRmInfoPanel" dataSource="rm_dv_ds" layoutRegion="northRegion" showOnLoad="true">
+    	<title></title>
+     	<field table="rm" name="dv_name">
+     		<title>dvName</title>
+        </field>
+     	<field table="rm" name="count_rm_dv" controlType="link">
+     		<title>count dvRm</title>
+     		<command type="callFunction" functionName="onClickDv(false)"/>
+     	</field> 
+    </panel>
+    <panel type="grid" id="dvRmDetailInfoPanel" dataSource="rm_ds" layoutRegion="centerRegion" showOnLoad="false">
+    	<title></title>
+    	<action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="dvRmDetailInfoPanel"/>
+        </action>
+     	<field table="rm" name="bl_id" hidden="true"/> 
+     	<field table="rm" name="stu_in_year"/> 
+     	<field table="bl" name="name"/> 
+     	<field table="rm" name="fl_id"/> 
+     	<field table="rm" name="rm_id"/> 
+     	<indexField table="rm" name="rm_id" />
+    </panel>
+    
+    <dataSource id="rm_count_ds">
+       <sql dialect="generic">
+			select count(rm_id) ${sql.as} count_rm
+			  from rm
+			 where ${parameters['blId']}
+			   and ${parameters['feormale']} and ${parameters['dvId']}
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="count_rm" dataType="number" decimals="0"/>
+        <parameter name="blId" dataType="verbatim" value="1=1"/>
+        <parameter name="feormale" dataType="verbatim" value="1=1"/>
+        <parameter name="dvId" dataType="verbatim" value="1=1"/>
+    </dataSource>
+    <js file="asc-bj-dorm-view-bl-dv-rm-info.js"/>
+</view>

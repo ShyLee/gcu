@@ -1,0 +1,127 @@
+<view version="2.0">
+    <js file="ab-proj-stat-dash-mile-edit.js"/>
+    <message name="invalidFields">One or more invalid fields have not been saved.</message>
+    <title>Edit Milestone</title>
+    
+    <dataSource id="projStatDashMileEdit_ds0">
+        <table name="activity_log" role="main"/>
+        <field name="activity_log_id" table="activity_log" />
+        <field name="project_id" table="activity_log"  />
+        <field name="action_title" table="activity_log" required="true"/> 
+        <field name="status" table="activity_log" />  
+        <field name="pct_complete" table="activity_log"/>          
+        <field name="proj_phase" table="activity_log" />
+        <field name="activity_type" table="activity_log" required="true"/>
+        <field name="work_pkg_id" table="activity_log" />         
+        <field name="site_id" table="activity_log" />
+        <field name="fl_id" table="activity_log" />
+        <field name="bl_id" table="activity_log" />
+        <field name="rm_id" table="activity_log" />
+        <field name="location" table="activity_log" />
+        <field name="prob_type" table="activity_log" />
+        <field name="tr_id" table="activity_log" />
+        <field name="wbs_id" table="activity_log" />
+        <field name="eq_id" table="activity_log" />
+        <field name="date_required" table="activity_log" />
+        <field name="date_scheduled" table="activity_log" /> 
+        <field name="date_scheduled_end" table="activity_log" />              
+        <field name="duration" table="activity_log" required="true"/>
+        <field name="hours_est_design" table="activity_log" required="true"/>
+        <field name="cost_est_design_cap" table="activity_log" required="true"/>
+        <field name="cost_est_design_exp" table="activity_log" required="true"/>
+        <field name="approved_by" table="activity_log" />
+        <field name="created_by" table="activity_log"  />
+        <field name="doc" table="activity_log" />
+        <field name="date_requested" table="activity_log"  />
+        <field name="description" table="activity_log" />  
+        <field name="requestor_type" table="activity_log" />        
+        <field name="cost_act_cap" table="activity_log" />
+        <field name="cost_actual" table="activity_log" />                       
+        <field name="duration_act" table="activity_log"/>
+        <field name="date_started" table="activity_log"/>
+        <field name="hours_actual" table="activity_log"/>
+        <field name="date_completed" table="activity_log" />
+        <field name="verified_by" table="activity_log" />
+    </dataSource>
+
+					<panel type="form" id="projStatDashMileEdit_form1" columns="2" dataSource="projStatDashMileEdit_ds0" showOnLoad="true">
+								<title translatable="true">Milestone Profile</title>
+				        <action id="save">
+				            <title>Save</title>
+				        </action>
+				        <action>
+				            <title>Delete</title>
+				            <command type="deleteRecord"/>
+				            <command type="showPanel" panelId="projStatDashMile_grid" applyParentRestriction="false"/>
+				            <command type="closeDialog" />
+				        </action>
+				        <field name="activity_type" table="activity_log" readOnly="true" colspan="2" value="PROJECT - MILESTONE"/> 
+				        <field name="action_title" table="activity_log" colspan="2" />
+				        <field name="wbs_id" table="activity_log">
+				            <title>WBS Code</title>
+				        </field> 
+				        <field name="activity_log_id" table="activity_log" readOnly="true" />
+				        <field name="project_id" table="activity_log"  readOnly="true" />      
+				        <field name="work_pkg_id" table="activity_log" required="false" />          
+				        <field name="proj_phase" table="activity_log" /> 
+				    </panel>
+				    <panel id="projStatDashMileEdit_form2" dataSource="projStatDashMileEdit_ds0" type="form" columns="2" showOnLoad="true">
+				        <title translatable="true">Milestone Progress</title>  
+				        <field name="status" table="activity_log"  >
+				            <title>Action Item Status</title>
+				        </field>
+				        <field name="pct_complete" table="activity_log"/>
+				        <field name="date_scheduled" table="activity_log" />
+				        <field name="date_required" table="activity_log" />
+				        <field name="date_started" table="activity_log"/>
+				        <field name="date_completed" table="activity_log" />
+				        <field name="duration" table="activity_log" hidden="true" value="0"/>        
+				        <field name="activity_log_id" table="activity_log"  hidden="true"/>
+				    </panel>
+				    <panel id="projStatDashMileEdit_form3" dataSource="projStatDashMileEdit_ds0" type="form" columns="2" showOnLoad="true">
+				        <title translatable="true">Milestone Costs</title> 
+				        <field name="cost_est_design_cap" table="activity_log" required="true"/> 
+				        <field name="cost_est_design_exp" table="activity_log" required="true"/> 
+				        <field name="cost_act_cap" table="activity_log" >  
+				            <title>Cost - Actual (Cap.)</title>    
+				        </field> 
+				        <field name="cost_actual" table="activity_log" >  
+				            <title>Cost - Actual (Exp.)</title>    
+				        </field>
+				        <field name="activity_log_id" table="activity_log"  hidden="true"/>
+				    </panel>
+				    <panel id="projStatDashMileEdit_form4" dataSource="projStatDashMileEdit_ds0" type="form" columns="2" showOnLoad="true">
+				        <title translatable="true">Milestone Location</title>        
+				        <field name="site_id" table="activity_log" />         
+				        <field name="bl_id" table="activity_log" >
+				            <action id="projStatDashMileEditBlId">
+				                <title>...</title>
+				                <command type="selectValue"
+				                    showIndex="true"
+				                    fieldNames="activity_log.site_id, activity_log.bl_id"
+				                    selectFieldNames="bl.site_id, bl.bl_id"
+				                    visibleFieldNames="bl.site_id, bl.bl_id, bl.name">   
+				                    <title>Building Code</title>
+				                </command>         
+				            </action>
+				        </field>
+				        <field name="fl_id" table="activity_log" />
+				        <field name="rm_id" table="activity_log" />
+				        <field name="location" table="activity_log" />
+				        <field name="prob_type" table="activity_log" />  
+				        <field name="eq_id" table="activity_log" />       
+				        <field name="tr_id" table="activity_log" />
+				        <field name="activity_log_id" table="activity_log"  hidden="true"/>
+				    </panel>
+				    <panel id="projStatDashMileEdit_form5" dataSource="projStatDashMileEdit_ds0" type="form" columns="2" showOnLoad="true">
+				        <title translatable="true">Milestone Details</title>                                   
+				        <field name="doc" table="activity_log" colspan="2" />
+				        <field name="description" table="activity_log" colspan="2" />
+				        <field name="date_requested" table="activity_log" />
+				        <field name="created_by" table="activity_log" />
+				        <field name="approved_by" table="activity_log" />
+				        <field name="verified_by" table="activity_log"/>
+				        <field name="activity_log_id" table="activity_log"  hidden="true"/>
+				    </panel>
+
+</view>

@@ -1,0 +1,81 @@
+<view version="2.0">
+	<js file="asc-bj-usms-house-view-rent-history.js"/>
+	<title translatable="true">Rent Query Statistics</title>
+    <layout  type="borderLayout" id="mainLayout">
+        <north  id="FilterBox" autoScroll="true" initialSize="90" split="true" />
+        <center autoScroll="true" id="centerId"/>
+    </layout>
+    
+    <dataSource id="scZzfRentDetailsDs">
+       <table name="sc_zzfrent_details" role="main"/>
+       <table name="sc_zzfcard" role="standard"/>
+       <field table="sc_zzfrent_details" name="card_id"/>
+       <field table="sc_zzfrent_details" name="em_id"/>
+       <field table="sc_zzfcard" name="identi_code"/>
+       <field table="sc_zzfcard" name="em_name"/>
+       <field table="sc_zzfrent_details" name="em_name"/>
+       <field table="sc_zzfrent_details" name="year"/> 
+       <field table="sc_zzfrent_details" name="month"/> 
+       <field table="sc_zzfrent_details" name="date_payrent"/>
+       <field table="sc_zzfrent_details" name="month_rent"/>
+       <field table="sc_zzfrent_details" name="actual_payoff"/>
+       <field table="sc_zzfrent_details" name="payment_to"/>
+       <field table="sc_zzfrent_details" name="amount_payrent"/>
+       <field table="sc_zzfrent_details" name="operator"/>
+    </dataSource>
+    
+  <panel  type="console" id="consoleZzf" dataSource="scZzfRentDetailsDs" columns="2" layoutRegion="FilterBox">
+  	   <title>Filter</title>
+  	   <action id="show">
+  	   		<title>Show</title>
+  	   </action>	
+  	   <action id="clear">
+  	   		<title>Clear</title>
+  	   		<command type="clearPanel" panelId="consoleZzf"/>
+  	   </action>	
+ 	   <field table="sc_zzfcard" name="em_name">
+ 	   		<action>
+ 	   			<title>...</title>
+				<command type="selectValue" 
+					fieldNames="sc_zzfcard.em_name,sc_zzfcard.identi_code"
+					selectFieldNames="em.name,em.identi_code" 
+					visibleFieldNames="em.em_id,em.name,em.identi_code" 
+					/>
+			</action>
+ 	   </field>
+       <field table="sc_zzfcard" name="identi_code">
+       		<action>
+ 	   			<title>...</title>
+				<command type="selectValue" 
+					fieldNames="sc_zzfcard.em_name,sc_zzfcard.identi_code"
+					selectFieldNames="sc_zzfcard.em_name,sc_zzfcard.identi_code" 
+					visibleFieldNames="sc_zzfcard.em_name,sc_zzfcard.identi_code"
+					/>
+			</action>
+       </field>
+  	   <field table="sc_zzfrent_details" name="year"/> 
+       <field table="sc_zzfrent_details" name="month"/> 
+  </panel>
+  
+  <panel type="grid" id="zzfRentDetails" dataSource="scZzfRentDetailsDs" layoutRegion="centerId">
+  	   <title>Rent Details</title>
+  	   <action id="export:XLS">
+	      <title>XLS</title>
+	      <command type="exportPanel" outputType="xls" panelId="zzfRentDetails"/>
+	    </action>
+  	   <field table="sc_zzfrent_details" name="card_id" hidden="true"/>
+       <field table="sc_zzfrent_details" name="year"/> 
+       <field table="sc_zzfrent_details" name="month"/> 
+       <field table="sc_zzfrent_details" name="em_id"/>
+       <field table="sc_zzfcard" name="em_name"/>
+       <field table="sc_zzfcard" name="identi_code"/>
+        <field table="sc_zzfrent_details" name="payment_to"/>
+       <field table="sc_zzfrent_details" name="date_payrent"/>
+       <field table="sc_zzfrent_details" name="month_rent"/>
+       <field table="sc_zzfrent_details" name="amount_payrent"/>
+       <field table="sc_zzfrent_details" name="actual_payoff"/>
+       <field table="sc_zzfrent_details" name="operator" hidden="true"/>
+  </panel>
+
+
+</view>

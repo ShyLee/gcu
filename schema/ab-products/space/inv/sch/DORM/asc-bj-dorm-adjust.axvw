@@ -1,0 +1,144 @@
+<view version="2.0">
+   	<title translatable="true">xue sheng su she tiao zheng</title>
+    <layout id="main">
+        <north id="sitePosition" initialSize="90" split="true"/>
+        <center id="tabs"/>
+    </layout>
+    <dataSource id="dv_ds">
+		<table name="dv" role="main" />
+		<field table="dv" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+	</dataSource>
+	<dataSource id="ds_asc_bj_dorm_assign_console">
+		<table name="sc_student" role="main" />
+		<table name="bl" role="standard" />
+		<table name="dv" role="standard" />
+		<table name="sc_stu_profession" role="standard" />
+		<field table="sc_student" name="stu_in_year"/>
+		<field table="sc_student" name="bl_id"/>
+		<field table="sc_student" name="stu_no"/>
+		<field table="sc_student" name="stu_name"/>
+		<field table="sc_student" name="stu_sex"/>
+		<field table="sc_student" name="bl_id"/>
+		<field table="sc_student" name="fl_id"/>
+		<field table="sc_student" name="rm_id"/>
+		<field table="sc_student" name="dv_id"/>
+		<field table="sc_student" name="dv_id_old"/>
+        <field table="sc_student" name="dv_id_new"/>
+		<field table="sc_student" name="dv_name_old"/>
+		<field table="sc_student" name="dv_name_new"/>
+		<field table="sc_student" name="pro_id"/>
+		<field table="sc_stu_profession" name="pro_name"/>
+		<field table="sc_student" name="pro_name_old"/>
+		<field table="sc_student" name="pro_name_new"/>
+		<field table="sc_student" name="pro_id_old"/>
+        <field table="sc_student" name="pro_id_new"/>
+		<field table="sc_student" name="stay_status"/>
+		<field table="sc_student" name="stu_tec"/>
+		<field table="dv" name="dv_name"/>
+		<field table="dv" name="dv_id"/>
+        <field table="bl" name="name"/>
+	</dataSource>
+    
+    <panel type="console" id="ConsoleForm" dataSource="ds_asc_bj_dorm_assign_console" columns="3"  layoutRegion="sitePosition">
+    	<title translatable="true">Filter</title>
+    	<action id="changelist">
+            <title translatable="true">Show Change</title>
+        </action>
+        <action id="showTree">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+		<field table="sc_student" name="stu_in_year"/>
+		<field table="dv" name="dv_name">
+			<title translatable="true">suoshuyuanxi</title>
+			<action>
+				<title translatable="true">...</title>
+				<command type="selectValue" 
+				         fieldNames="sc_student.dv_id,dv.dv_name"
+					     selectFieldNames="dv.dv_id,dv.dv_name" 
+					     visibleFieldNames="dv.dv_id,dv.dv_name"
+					     restriction="dv.bu_id='02'">
+				</command>
+			</action>
+		</field>
+        <field table="bl" name="name" onchange="changeBlName()">
+        	<title translatable="true">sushe</title>
+			<action>
+				<title translatable="true">...</title>
+				<command type="selectValue" 
+				         fieldNames="sc_student.bl_id,bl.name"
+					     selectFieldNames="bl.bl_id,bl.name" 
+					     visibleFieldNames="bl.bl_id,bl.name"
+					     restriction="bl.bl_id in(select bl_id from rm where rm.rm_cat='301')">
+				</command>
+			</action>
+        </field>
+		<field table="sc_student" name="stu_no">
+			<action>
+				<command type="selectValue" 
+				         fieldNames="sc_student.stu_no,sc_student.stu_name"
+					     selectFieldNames="sc_student.stu_no,sc_student.stu_name" 
+					     visibleFieldNames="sc_student.stu_no,sc_student.stu_name"
+					     showIndex="true">
+				</command>
+			</action>
+		</field>
+		<field table="sc_student" name="stu_name">
+		    <action>
+				<command type="selectValue" 
+				         fieldNames="sc_student.stu_no,sc_student.stu_name"
+					     selectFieldNames="sc_student.stu_no,sc_student.stu_name" 
+					     visibleFieldNames="sc_student.stu_no,sc_student.stu_name"
+					     showIndex="true">
+				</command>
+			</action>
+		</field>
+    </panel>
+	
+	<panel type="grid" id="studentChangeList" dataSource="ds_asc_bj_dorm_assign_console" showOnLoad="false">
+        <title translatable="true">Change List</title>   
+        <field controlType="button" id="change">
+            <title>Change</title>
+            <command type="callFunction" functionName="ascBjUsmsOverallBl.changeStuInfo()"/>
+        </field>     
+        <field table="sc_student" name="stu_no"/>
+        <field table="sc_student" name="stu_name"/>
+        <field table="sc_student" name="stu_sex"/>
+        <field table="sc_student" name="stu_in_year"/>
+        <field table="sc_student" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" hidden="true"/>
+        <field table="sc_student" name="dv_name_old"/>
+        <field table="sc_student" name="dv_id_old" hidden="true"/>
+        <field table="sc_student" name="dv_id_new" hidden="true"/>
+        <field table="sc_student" name="dv_name_new"/>
+        <field table="sc_student" name="pro_id" hidden="true"/>
+        <field table="sc_stu_profession" name="pro_name" hidden="true"/>
+        <field table="sc_student" name="pro_id_old" hidden="true"/>
+        <field table="sc_student" name="pro_name_old"/>
+        <field table="sc_student" name="pro_id_new" hidden="true"/>
+        <field table="sc_student" name="pro_name_new"/>
+        <field table="sc_student" name="bl_id" hidden="true"/>
+		<field table="sc_student" name="fl_id" hidden="true"/>
+		<field table="sc_student" name="rm_id" hidden="true"/>
+        <field table="sc_student" name="stu_tec"/>
+        <field table="sc_student" name="stay_status"/>        
+    </panel>
+	
+    <dataSource id="ds_asc_bj_dorm_assign_tab_sex">
+		<table name="sc_student" role="main" />
+		<field table="sc_student" name="stu_sex"/>
+	</dataSource>
+	
+    <tabs id="campusTabs" layoutRegion="tabs" workflow="free" tabRefreshPolicy="refreshOnSelect" >
+        <tab name="male_tab" selected="true" file="asc-bj-dorm-assign-male-tab2.axvw">
+            <title translatable="true">boys</title>
+        </tab>
+        <tab name="female_tab" file="asc-bj-dorm-assign-female-tab2.axvw">
+            <title translatable="true">girls</title>
+        </tab>
+    </tabs>
+    <js file="asc-bj-dorm-adjust.js"/>
+</view>

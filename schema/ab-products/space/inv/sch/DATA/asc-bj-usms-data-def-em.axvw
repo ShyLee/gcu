@@ -1,0 +1,238 @@
+<view version="2.0">
+    
+	<message name="selectGangWeiJiBieId" translatable="true">Select GangWeiJiBieId</message>
+	<message name="selectZhicBzId" translatable="true">Select ZhicBzId</message>
+	<message name="dingeJiBieYiJingCunZai" translatable="true">Dinge Ji Bie Yi Jing Cun Zai</message>
+	<message name="chakanBtn_title" translatable="true">ChaKan</message>
+	<message name="okMessage" translatable="true">okMessage</message>
+	<message name="errorSave" translatable="true">Could not save the Data.</message>
+	
+    <layout type="borderLayout" id="mainLayout">
+        <north id="search_console" initialSize="12%" split="true"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout type="borderLayout" containingLayout="mainLayout" region="center">
+        <west   id="searchResult" initialSize="40%" split="true"/>
+        <center id="defineTeacher" autoScroll="true"/>
+    </layout>
+    
+    <title translatable="true">Define Employ</title>
+    
+    <dataSource id="abScDefEmDS">
+        <table name="em" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="em" name="sex"/>
+	    <field table="em" name="name"/> 
+        <field table="em" name="em_id"/>
+        <field table="em" name="date_chusheng"/>
+        <field table="em" name="minzu"/>
+        <field table="em" name="zhic_id"/>
+		<field table="em" name="zhiw_id"/>
+        <field table="em" name="zhic_bz_id"/>
+        <field table="em" name="gangwei_id"/>
+        <field table="em" name="biaozhunshenfen_id"/>
+        <field table="em" name="gangweijibie_id"/>
+        <field table="em" name="zaigangzhuangtai_id"/>
+        <field table="em" name="email"/>
+        <field table="em" name="zhengzhimianmao"/>
+        <field table="em" name="phone"/>
+        <field table="em" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+		<field table="em" name="is_waipin"/>
+        <field table="em" name="phone_home"/>
+        <field table="em" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="em" name="bl_id"/>
+		<field table="em" name="fl_id"/>
+        <field table="em" name="image_file"/>
+        <field table="em" name="rm_id"/>
+		<field table="em" name="shanchang"/>
+		<field table="em" name="project_id" />
+		
+		<field table="em" name="date_join_work"/>
+		<field table="em" name="date_work_begin"/>
+        <field table="em" name="date_zhuanzheng"/>
+		<field table="em" name="identi_code"/>
+		<field table="em" name="xueli" />
+		<field table="em" name="contingency_email" />
+		<field table="em" name="status" />
+<!-- 		1;正常;2;调出;3;暂停;8;退休;9;停止;10;其他; -->
+		<restriction type="sql" sql="em.status='1'"/>
+    </dataSource>
+	
+     <dataSource id="ds_afmusers">
+     	 <table name="afm_users" role="main"/>
+        <field table="afm_users" name="user_name"/>
+	    <field table="afm_users" name="email"/> 
+	 </dataSource>
+	 
+	<panel id="searchTeacherPanel" type="console" dataSource="abScDefEmDS" columns="4" labelsPosition="top" layoutRegion="search_console">
+        <title translatable="true">Search restriction</title>
+        <action id="bianjizaigangzhuangtai">
+        	<title translatable="true">bianjizaigangzhuangtai</title>
+        </action>
+        <action id="search">
+            <title translatable="true">Search</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel"   panelId="searchTeacherPanel"/>
+        </action>
+        <field table="em" name="name"/> 
+        <field table="em" name="em_id"/>
+        <field table="em" name="dv_id">
+        	<action>
+				<title translatable="true">...</title>
+				<command type="selectValue"
+					fieldNames="em.dv_id" selectFieldNames="dv.dv_id"
+					visibleFieldNames="dv.dv_id,dv.dv_name">
+				</command>	
+			</action>
+		</field>	
+        <field table="em" name="dp_id">
+        	<action>
+				<title translatable="true">...</title>
+				<command type="selectValue"
+					fieldNames="em.dp_id" selectFieldNames="dp.dp_id"
+					visibleFieldNames="dp.dp_id,dp.dp_name">
+				</command>	
+			</action>
+		</field>
+    </panel>
+    <panel type="grid"  id="abScDefEmGrid" dataSource="abScDefEmDS" layoutRegion="searchResult" recordLimit="100" showOnLoad="true">
+        <sortField name="em_id" table="em" ascending="true"/>
+        <title translatable="true">Employ list  panel</title>
+        <action id="addNew">
+            <title translatable="true">Add New</title>
+<!--             <command type="showPanel" panelId="abScDefEmForm" newRecord="true"/> -->
+        </action>
+        <indexField table="em" name="em_id"/>	
+        <field table="em" name="em_id" controlType="link">
+            <command type="showPanel" panelId="abScDefEmForm"/>
+        </field>
+		<field table="em" name="name" controlType="link">
+            <command type="showPanel" panelId="abScDefEmForm"/>
+        </field>
+		<field table="dv" name="dv_name" controlType="link">
+            <command type="showPanel" panelId="abScDefEmForm"/>
+        </field>
+		<field table="dp" name="dp_name" controlType="link">
+            <command type="showPanel" panelId="abScDefEmForm"/>
+        </field>
+    </panel>
+  
+    <panel type="form" id="abScDefEmForm" showOnLoad="false" columns="2" dataSource="abScDefEmDS" layoutRegion="defineTeacher">
+        <title translatable="true">Define Employ</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="abScDefEmForm" show="false"/>
+            <command type="showPanel" panelId="abScDefEmGrid" applyParentRestriction="false"/>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="showPanel" panelId="abScDefEmForm" show="false"/>
+        </action>
+		<action id="updateStatic">
+                    <title translatable="true">Update When Em Increase or Reduce</title>
+        </action>
+		<field table="em" name="em_id"/>
+		<field table="em" name="name" required="true"/> 
+		
+		<field table="em" name="sex"/>
+		<field table="em" name="email" />
+		<field table="em" name="contingency_email" hidden="true"/>
+		
+		<field table="em" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name" required="true" readOnly="false">
+			<action>
+				<title>...</title>
+				<tooltip>Select Value</tooltip>
+				<command type="selectValue"
+					fieldNames="em.dv_id,dv.dv_name"
+					selectFieldNames="dv.dv_id,dv.dv_name"
+					visibleFieldNames="dv.dv_id,dv.dv_name">
+				</command>
+			</action>
+		</field>
+		<field table="em" name="dp_id" hidden="false"/>
+		<field table="dp" name="dp_name" required="false" readOnly="false">
+			<action>
+				<title>...</title>
+				<tooltip>Select Value</tooltip>
+				<command type="selectValue" 
+				    fieldNames="em.dp_id,dp.dp_name,em.dv_id,dv.dv_name"
+					selectFieldNames="dp.dp_id,dp.dp_name,dv.dv_id,dv.dv_name"
+					visibleFieldNames="dp.dp_id,dp.dp_name,dv.dv_id,dv.dv_name"
+					filterFieldNames="em.dv_id">
+				</command>
+			</action>
+		</field>
+		<field table="em" name="bl_id">
+        	<action>
+				<title translatable="true">...</title>
+				<command type="selectValue"
+					fieldNames="em.bl_id" 
+					selectFieldNames="bl.bl_id"
+					visibleFieldNames="bl.bl_id,bl.name,bl.use1"
+					restriction="bl.site_id is not null">
+					<title>Building</title>
+				</command>
+			</action>
+		</field>	
+		<field table="em" name="fl_id"/>
+		
+		<field table="em" name="rm_id" />
+		<field table="em" name="is_waipin"/>
+		
+		<field table="em" name="zhic_id"/>
+		<field table="em" name="zhiw_id"/>
+		
+        <field table="em" name="zhic_bz_id" showSelectValueAction="false"/>
+        <field table="em" name="gangwei_id"/>
+		
+		<field table="em" name="gangweijibie_id" showSelectValueAction="false"/>
+		<field table="em" name="biaozhunshenfen_id"/>
+		
+		<field table="em" name="identi_code"/>
+        <field table="em" name="date_chusheng"/>
+		
+		<field table="em" name="phone"/>
+        <field table="em" name="phone_home"/>
+		
+        <field table="em" name="minzu"/>
+		<field table="em" name="date_zhuanzheng"/>
+		
+		<field table="em" name="date_join_work"/>
+		<field table="em" name="date_work_begin"/>
+		
+		<field table="em" name="xueli" />
+        <field table="em" name="status"/>
+        
+        <field table="em" name="zhengzhimianmao"/>
+        
+<!-- 		<field table="em" name="image_file" hidden="true"  />		  -->
+		<field rowspan="2">
+			<title>Photo</title>
+			<html>
+				<table border="0">  
+                    <tr>  
+                        <td  align="left" style="padding:0;margin:0"><input type="file" id="uploadFile" size="13" style="width:157px;margin:0;padding:0"/></td>  
+                        <td align="right" ><input type="button"  id="startUpload" value="OK" style="width:50px;"/></td>  
+                    </tr>  
+                </table>
+				<img id="em_photo" style="width:105px;height:140px;display:block" />
+			</html> 
+		</field>
+		<field table="em" name="shanchang" width='207'/>
+    </panel>
+	
+	
+	<js file="asc-bj-usms-def-common.js"/>
+	<js file="asc-bj-usms-data-def-em.js"/>
+	
+</view>

@@ -1,0 +1,119 @@
+  <view version="2.0">
+    <title translatable="true">building area and value change</title>
+    <message name="wrongNoChangeValue" translatable="true">It's invalid no change on area_market or value_market!</message>
+    <message name="wantCancel" translatable="true">If you want cancel,please select cancel button</message>
+    <message name="success" translatable="true">Changed successful!</message>
+    <message name="blName" translatable="true">BuildingName-</message>
+	<dataSource id="valuemarketDS">
+	  <table name="sc_bl_value_chg" role="main"/>
+	  <field table="sc_bl_value_chg" name="bl_record_id"/>
+	  <field table="sc_bl_value_chg" name="bl_id"/>
+	  <field table="sc_bl_value_chg" name="area_book"/>
+	  <field table="sc_bl_value_chg" name="area_add"/>
+	  <field table="sc_bl_value_chg" name="area_market"/>
+	  <field table="sc_bl_value_chg" name="value_book"/>
+	  <field table="sc_bl_value_chg" name="value_add"/>
+	  <field table="sc_bl_value_chg" name="value_market"/>
+	  <field table="sc_bl_value_chg" name="change_cause"/>
+	  <field table="sc_bl_value_chg" name="change_date"/>
+	  <field table="sc_bl_value_chg" name="approver"/>
+	  <field table="sc_bl_value_chg" name="operator"/>
+    <!--   <field table="sc_bl_value_chg" name="bl_chg_type"/> -->
+	  <field table="sc_bl_value_chg" name="name"/>
+	  <field table="sc_bl_value_chg" name="sys_date"/>
+	  <field table="sc_bl_value_chg" name="type"/>
+	</dataSource>
+	
+	<dataSource id="blDS">
+	  <table name="bl" role="main"/>
+	  <field table="bl" name="bl_id"/>
+	  <field table="bl" name="area_building_manual"/>
+	  <field table="bl" name="value_net"/>
+	  <field table="bl" name="value_book"/>
+	</dataSource>
+	
+	<panel type="console" id="accordDateConsole" dataSource="valuemarketDS" columns="2">
+    	<title translatable="true">shaixuan</title>
+    	<action id="show">
+    		<title translatable="true">chakan</title>
+    		<command type="showPanel" panelId="historyGrid"/>
+    	</action>
+    	<action id="clear">
+    		<title translatable="true">qingchu</title>
+    		<command type="clearPanel" panelId="accordDateConsole"/>
+    	</action>
+    	<field table="sc_bl_value_chg" name="change_date" op="&gt;=" alias="date_from" required="false">
+			<title translatable="true">From date</title>
+		</field>
+    	<field table="sc_bl_value_chg" name="change_date" op="&lt;=" alias="date_to" required="false">
+			<title translatable="true">To date</title>
+		</field>
+    </panel>
+	
+	<panel type="grid" id="historyGrid" dataSource="valuemarketDS" >
+	 <title translatable="true"></title>
+	  <field table="sc_bl_value_chg" name="bl_record_id" hidden="true"/>
+	  <field table="sc_bl_value_chg" name="bl_id" hidden="false" />
+	  <field table="sc_bl_value_chg" name="name" hidden="false" />
+	  <field table="sc_bl_value_chg" name="change_cause" />
+	  <field table="sc_bl_value_chg" name="change_date" />
+	  <field table="sc_bl_value_chg" name="approver"/>
+	  <field table="sc_bl_value_chg" name="operator" />
+	  <field table="sc_bl_value_chg" name="sys_date" hidden="false" />
+     <!--   <field table="sc_bl_value_chg" name="bl_chg_type"/> -->
+	  <field table="sc_bl_value_chg" name="type" hidden="false"/>
+	  <field table="sc_bl_value_chg" name="area_book"/>
+	  <field table="sc_bl_value_chg" name="area_market"/>
+	  <field table="sc_bl_value_chg" name="area_add"/>
+	  <field table="sc_bl_value_chg" name="value_book" />
+	  <field table="sc_bl_value_chg" name="value_market"/>
+	  <field table="sc_bl_value_chg" name="value_add" />
+	</panel>
+	
+	<panel type="form" id="marketForm" dataSource="valuemarketDS" columns="2" >
+	 <title translatable="true"></title>
+	  <action id="save">
+	  	<title translatable="true">save</title>
+	  </action>
+	  <action id="cancel">
+	  	<title translatable="true">cancel</title>
+	  	<command type="closeDialog" panelId="marketForm"/>
+	  </action>
+	  <field labelClass="labelFieldset" colspan="2">
+		                    <title>change information</title>
+	  </field>
+	  <field table="sc_bl_value_chg" name="bl_record_id" hidden="true"/>
+	  <field table="sc_bl_value_chg" name="bl_id" hidden="false" readOnly="true"/>
+	  <field table="sc_bl_value_chg" name="name" hidden="false" readOnly="true"/>
+	  
+	  <field table="sc_bl_value_chg" name="change_date" required="true" colspan="1"/>
+	  <field table="sc_bl_value_chg" name="sys_date" hidden="false" value="new Date()"/>
+	  <field table="sc_bl_value_chg" name="approver"/>
+	  <field table="sc_bl_value_chg" name="operator" value="${user.name}" readOnly="true"/>
+	  
+     <!--  <field table="sc_bl_value_chg" name="bl_chg_type" required="true" /> -->
+	  <field table="sc_bl_value_chg" name="type" hidden="false"/>
+	  <field/>
+	  <field labelClass="labelFieldset" colspan="2">
+		                    <title>area change</title>
+	  </field>
+	  <field table="sc_bl_value_chg" name="area_book" readOnly="true">
+	  </field>
+	  <field table="sc_bl_value_chg" name="area_add" readOnly="true" hidden="true"/>
+	  <field table="sc_bl_value_chg" name="area_market" readOnly="false">
+	  </field>
+	  <field labelClass="labelFieldset" colspan="2">
+		                    <title>value change</title>
+	  </field>
+	  <field table="sc_bl_value_chg" name="value_book" readOnly="true"/>
+	  <field table="sc_bl_value_chg" name="value_add" readOnly="true" hidden="true"/>
+	  <field table="sc_bl_value_chg" name="value_market"/>
+	  <field labelClass="labelFieldset" colspan="2">
+		                    <title>change cause</title>
+	  </field>
+	 <field table="sc_bl_value_chg" name="change_cause" colspan="2"/> 
+	   
+	</panel>
+	
+   <js file="asc-bj-usms-data-bl-area-value-chg-dialog.js"/>
+</view>

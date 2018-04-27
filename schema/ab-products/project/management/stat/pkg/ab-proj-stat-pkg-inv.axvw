@@ -1,0 +1,63 @@
+<view version="2.0">   
+    <message name="Invoice">Invoice</message>
+    <js file="ab-proj-stat-pkg-inv.js"/>
+    <js file="ab-proj-stat-common.js"/>
+    
+    <dataSource id="projStatPkgInvDs1">
+        <table name="invoice" role="main" />
+        <field name="project_id" table="invoice"/>
+        <field name="work_pkg_id" table="invoice"/>
+        <field name="invoice_id" table="invoice" />        
+        <field name="status" table="invoice" />
+        <field name="amount_tot_invoice" table="invoice" showTotals="true"/>
+        <field name="date_expected_rec" table="invoice" />
+        <field name="project_id" table="invoice" /> 
+        <field name="work_pkg_id" table="invoice" />
+        <field name="vn_id" table="invoice" /> 
+        <field name="date_sent" table="invoice" />
+        <field name="contact_id_send_to" table="invoice" />
+        <field name="contact_id_remit_to" table="invoice" />
+        <field name="terms" table="invoice" />
+        <field name="amount_closed" table="invoice" showTotals="true" />
+        <field name="qty_invoiced" table="invoice" />
+        <field name="qty_received" table="invoice" />
+        <field name="qty_accepted" table="invoice" />
+        <field name="ac_id" table="invoice" />
+        <field name="bl_id" table="invoice" />
+        <!--field name="ls_id" table="invoice" />
+        <field name="pr_id" table="invoice" /-->
+        <field name="doc" table="invoice" />
+        <field name="description" table="invoice" /> 
+        <restriction type="sql" sql="invoice.project_id IS NOT NULL"/>       
+    </dataSource>
+    
+    <panel type="grid" id="projStatPkgInvGrid" dataSource="projStatPkgInvDs1" showOnLoad="false">
+        <title>Invoices</title>
+        <action id="addNew">
+            <title>Add New</title>
+        </action>
+        <action id="exportDOCX">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="projStatPkgInvGrid"/>
+        </action>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="projStatPkgInvGrid"/>
+        </action> 
+        <sortField name="date_sent" ascending="false"/> 
+        <sortField table="invoice" name="invoice_id" ascending="false"/>
+        <field controlType="button" >
+            <title translatable="true">Edit</title>
+            <command type="openDialog" viewName="ab-proj-stat-pkg-inv-add.axvw"/>
+        </field>
+        <field name="vn_id" table="invoice" />
+        <field name="invoice_id" table="invoice"/>
+        <field name="date_sent" table="invoice" />
+        <field name="date_expected_rec" table="invoice" />
+        <field name="status" table="invoice" />
+        <field name="amount_tot_invoice" table="invoice" showTotals="true" />
+        <field name="amount_closed" table="invoice" showTotals="true"/>
+        <field name="work_pkg_id" table="invoice" />
+        <field name="project_id" table="invoice" hidden="true"/> 
+    </panel>
+</view>

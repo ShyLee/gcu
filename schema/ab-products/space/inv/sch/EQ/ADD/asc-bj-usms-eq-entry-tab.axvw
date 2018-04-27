@@ -1,0 +1,16 @@
+<view version="2.0">
+    
+    <tabs workflow="enforced" id="assignTabs" tabRefreshPolicy="never">
+        <tab name="selectTab" selected="true" file="asc-bj-usms-eq-entry-select-tab.axvw">
+            <title translatable="true">Select Request</title>
+        </tab>
+        
+        <tab name="detailsTab" file="asc-bj-usms-eq-entry-details-tab.axvw">
+            <title translatable="true">Details</title>
+        </tab>
+        
+        <tab name="assignTab" file="asc-bj-usms-eq-entry-done-tab.axvw">
+            <title translatable="true">Entry</title>
+        </tab>
+    </tabs>
+</view>

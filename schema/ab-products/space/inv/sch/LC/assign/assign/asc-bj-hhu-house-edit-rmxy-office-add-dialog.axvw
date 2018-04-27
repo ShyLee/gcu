@@ -1,0 +1,127 @@
+<view version="2.0">
+	<dataSource id="scRmXyDs">
+        <table name="sc_rmxy" role="main"/>
+        <table name="dv" role="standard"/>
+		<table name="sc_rmxy_type" role="standard"/>
+		<field table="sc_rmxy_type" name="description"/>
+        <field table="sc_rmxy_type" name="deal_type"/>
+        <field table="sc_rmxy" name="deal_id"/>
+        <field table="sc_rmxy" name="jia"/>
+        <field table="sc_rmxy" name="principal_jia"/>
+        <field table="sc_rmxy" name="yi"/>
+        <field table="sc_rmxy" name="principal_yi"/>
+        <field table="sc_rmxy" name="rm_address"/>
+        <field table="sc_rmxy" name="rm_area"/>
+        <field table="sc_rmxy" name="rent"/>
+        <field table="sc_rmxy" name="principal_yi"/>
+        <field table="sc_rmxy" name="handing_name_yi"/>
+        <field table="sc_rmxy" name="handing_name_jia"/>
+        <field table="sc_rmxy" name="date_checkin"/>
+        <field table="sc_rmxy" name="doc_deal"/>
+        <field table="sc_rmxy" name="deal_type"/>
+        <field table="sc_rmxy" name="dv_id"/>
+        <field table="dv" name="name"/>
+        <field table="sc_rmxy" name="deal_state"/>
+        <field table="sc_rmxy" name="beizhu"/>
+        <field table="sc_rmxy" name="date_start"/>
+        <field table="sc_rmxy" name="date_end"/>
+        <restriction type="sql" sql="sc_rmxy.deal_id like 'BG%'"/>
+    </dataSource>
+    <dataSource id="rm_ds">
+	    <table name="rm" role="main"/>
+	    <table name="bl" role="standard"/>
+	    <field table="bl" name="site_id"/>
+	    <field table="bl" name="pr_id"/>
+	    <field table="bl" name="bl_id"/>
+	    <field table="bl" name="name"/>
+	    <field table="rm" name="bl_id"/>
+	    <field table="rm" name="fl_id"/>
+	    <field table="rm" name="rm_id"/>
+	    <field table="rm" name="area"/>
+    </dataSource>
+      <dataSource id="scDealRmDs">
+        <table name="sc_deal_rm" role="main"/>
+        <table name="site" role="standard"/>
+        <field table="sc_deal_rm" name="deal_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="sc_deal_rm" name="deal_id"/>
+        <field table="sc_deal_rm" name="deal_rm_id"/>
+        <field table="sc_deal_rm" name="site_id"/>
+        <field table="site" name="name"/>
+        <field table="sc_deal_rm" name="bl_id"/>
+        <field table="sc_deal_rm" name="bl_name"/>
+        <field table="sc_deal_rm" name="rm_id"/>
+        <field table="sc_deal_rm" name="rm_area"/>
+        <field table="sc_deal_rm" name="charge_area"/>
+        <field table="sc_deal_rm" name="comments"/>
+        <field table="sc_deal_rm" name="fl_id"/>
+        <restriction type="sql" sql="sc_deal_rm.deal_id like 'BG%'"/>
+    </dataSource>
+    
+      <dataSource id="activity_log_ds">
+        <table name="activity_log" role="main"/>
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="prob_type"/>
+        <field table="activity_log" name="requestor"/>
+        <field table="activity_log" name="requestor_name"/>
+        <field table="activity_log" name="phone_requestor"/>
+        <field table="activity_log" name="date_requested"/>
+        <field table="activity_log" name="rm_cat"/>
+        <field table="activity_log" name="rm_type"/>
+        <field table="activity_log" name="bl_id"/>
+        <field table="activity_log" name="dv_id"/>
+        <field table="activity_log" name="date_used_from"/>
+        <field table="activity_log" name="date_used_to"/>
+        <field table="activity_log" name="count_rm"/>
+        <field table="activity_log" name="area"/>
+        <field table="activity_log" name="description"/>
+        <field table="activity_log" name="comments"/>
+        <field table="activity_log" name="notes"/>
+        <field table="activity_log" name="notes2"/>
+        <field table="activity_log" name="doc1"/>
+        <field table="activity_log" name="doc2"/>
+        <field table="activity_log" name="location"/>
+        <field table="activity_log" name="created_name"/>
+        <field table="activity_log" name="deal_id" />
+    </dataSource>
+	<panel id="addPanel" type="form" dataSource="scRmXyDs" columns="2">
+        <title translatable="true">Edit Deal Info</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="effective">
+			<title translatable="true">Effective</title>
+		</action>
+        <action id="downLoad">
+            <title translatable="true">downLoad</title>
+            <command type="callFunction" functionName="abCreateDealDialogController.downLoad1()"/>
+        </action>
+        <field table="sc_rmxy" name="deal_id" readOnly="true"/>
+        <field table="sc_rmxy" name="yi"/>
+        <field table="sc_rmxy" name="principal_yi"/>
+        <field table="sc_rmxy" name="handing_name_yi" readOnly="true"/>
+        <field table="sc_rmxy" name="jia" readOnly="true"/>
+        <field table="sc_rmxy" name="principal_jia" />
+        <field table="sc_rmxy" name="handing_name_jia" readOnly="true" />
+        <field table="sc_rmxy" name="dv_id" hidden="true"/>
+        <field table="dv" name="name"/>
+        <field table="sc_rmxy" name="rm_address"/>
+        <field table="sc_rmxy" name="date_checkin"/>
+        <field table="sc_rmxy" name="doc_deal"/>
+        <field table="sc_rmxy" name="deal_state" hidden="true"/>
+        <field table="sc_rmxy" name="deal_type" hidden="true"/>
+        <field></field>
+        <field table="sc_rmxy" name="beizhu"/>
+    </panel>
+    <panel type="grid" id="scDealRmDsGridPanel" dataSource="scDealRmDs" controlType="reportGrid">
+    	<title>Room List</title>
+        <field table="sc_deal_rm" name="deal_id" hidden="true"/>
+		<field table="site" name="name"/>
+        <field table="sc_deal_rm" name="bl_id" hidden="true"/>
+        <field table="sc_deal_rm" name="bl_name"/>
+        <field table="sc_deal_rm" name="rm_id"/>
+        <field table="sc_deal_rm" name="rm_area"/>
+    </panel>
+    <js file="asc-bj-hhu-house-edit-rmxy-office-add-dialog.js"/>
+ </view>

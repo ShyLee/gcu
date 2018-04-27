@@ -1,0 +1,61 @@
+<view version="2.0">
+    <js file="ab-proj-stat-pkg-act-up.js"/>
+    <js file="ab-proj-stat-common.js"/>
+    <title>Update Actions</title>
+    
+    <dataSource id="projStatPkgActUpDs0">
+        <table name="activity_log" role="main"/>
+        <field name="activity_log_id" table="activity_log" />
+        <field name="project_id" table="activity_log"  />
+        <field name="action_title" table="activity_log" required="true"/> 
+        <field name="status" table="activity_log" />  
+        <field name="pct_complete" table="activity_log"/>          
+        <field name="proj_phase" table="activity_log" />
+        <field name="activity_type" table="activity_log" required="true"/>
+        <field name="work_pkg_id" table="activity_log" />         
+        <field name="site_id" table="activity_log" />
+        <field name="fl_id" table="activity_log" />
+        <field name="bl_id" table="activity_log" />
+        <field name="rm_id" table="activity_log" />
+        <field name="location" table="activity_log" />
+        <field name="prob_type" table="activity_log" />
+        <field name="tr_id" table="activity_log" />
+        <field name="wbs_id" table="activity_log" />
+        <field name="eq_id" table="activity_log" />
+        <field name="date_required" table="activity_log" />
+        <field name="date_scheduled" table="activity_log" /> 
+        <field name="date_scheduled_end" table="activity_log" />              
+        <field name="duration" table="activity_log" required="true"/>
+        <field name="hours_est_design" table="activity_log" required="true"/>
+        <field name="cost_est_design_cap" table="activity_log" required="true"/>
+        <field name="cost_est_design_exp" table="activity_log" required="true"/>
+        <field name="approved_by" table="activity_log" />
+        <field name="created_by" table="activity_log"  />
+        <field name="doc" table="activity_log" />
+        <field name="date_requested" table="activity_log"  />
+        <field name="description" table="activity_log" />  
+        <field name="requestor_type" table="activity_log" />
+        
+        <field name="cost_act_cap" table="activity_log" />
+        <field name="cost_actual" table="activity_log" />                       
+        <field name="duration_act" table="activity_log"/>
+        <field name="date_started" table="activity_log"/>
+        <field name="hours_actual" table="activity_log"/>
+        <field name="date_completed" table="activity_log" />
+        <field name="verified_by" table="activity_log" />
+    </dataSource>
+    
+    <panel type="form" id="projStatPkgActUp_form" columns="1" dataSource="projStatPkgActUpDs0" showOnLoad="true">
+        <title translatable="true">Update Actions</title>
+        <action id="save">
+            <title>Save</title>
+        </action>
+        <field name="activity_log_id" table="activity_log" hidden="true" />
+        <field name="status" table="activity_log" onchange="statusListener()"/> 
+        <field name="pct_complete" table="activity_log"/> 
+        <field name="date_started" table="activity_log"/>
+        <field name="date_completed" table="activity_log" />
+        <field name="duration_act" table="activity_log"  hidden="true"/>
+        <field name="verified_by" table="activity_log"/>   
+     </panel>
+</view>

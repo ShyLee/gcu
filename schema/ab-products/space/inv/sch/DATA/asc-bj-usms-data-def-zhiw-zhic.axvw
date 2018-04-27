@@ -1,0 +1,14 @@
+<view version="2.0">
+    <title translatable="true">dingyizhiwuzhicheng</title>
+    
+    <tabs id="createRequestTabs" tabRefreshPolicy="never">
+        <tab name="selectTab" selected="true" file="asc-bj-usms-data-def-pos.axvw">
+            <title translatable="true">zhiwu</title>
+        </tab>
+        
+        <tab name="basicInputTab" file="asc-bj-usms-data-def-title.axvw">
+            <title translatable="true">zhicheng</title>
+        </tab>
+        
+    </tabs>
+</view>

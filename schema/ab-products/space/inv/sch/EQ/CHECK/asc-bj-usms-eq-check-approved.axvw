@@ -1,0 +1,352 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-check-approved.js"/>
+    <title translatable="true">Equipment Check Approve</title>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="70" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterLayout" containingLayout="mainLayout" region="center">
+        <west initialSize="40%" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterWestLayout" containingLayout="mainCenterLayout" region="west">
+        <north initialSize="30%" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterCenterLayout" containingLayout="mainCenterLayout" region="center">
+        <north initialSize="40%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="sch_status"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckResDs">
+        <table name="eq_check_res" role="main"/>
+        <field table="eq_check_res" name="id"/>
+        <field table="eq_check_res" name="check_main_id"/>
+        <field table="eq_check_res" name="flds_name"/>
+        <field table="eq_check_res" name="flds_res"/>
+    </dataSource>
+     <dataSource id="ascBjUsmsEqCheckMainDs">
+        <table name="eq_check_main" role="main"/>
+        <field table="eq_check_main" name="check_main_id"/>
+        <field table="eq_check_main" name="check_date_start"/>
+        <field table="eq_check_main" name="check_date_end"/>
+        <field table="eq_check_main" name="check_name"/>
+        <field table="eq_check_main" name="pub_person"/>
+        <field table="eq_check_main" name="option1"/>
+        <field table="eq_check_main" name="is_done"/>
+         <parameter name="isDone" dataType="text" value=""/>
+        <restriction type="sql" sql="is_done=${parameters['isDone']}"/>
+        <sortField table="eq_check_main" name="check_main_id" ascending="false"/>
+    </dataSource> 
+    <dataSource id="ascBjUsmsEqCheckReportDs">
+        <table name="eq_check_report" role="main"/>
+        <table name="em" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq_check_report" name="audit_date"/>
+        <field table="eq_check_report" name="audit_option"/>
+        <field table="eq_check_report" name="audit_person"/>
+        <field table="eq_check_report" name="audit_status"/>
+        <field table="eq_check_report" name="check_report_id"/>
+        <field table="eq_check_report" name="check_main_id"/>
+        <field table="eq_check_report" name="check_date"/>
+        <field table="eq_check_report" name="check_person"/>
+        <field table="eq_check_report" name="check_person_name"/>
+        <field table="eq_check_report" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_check_report" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_check_report" name="dvleader_option"/>
+        <field table="eq_check_report" name="storeman_option"/> 
+        <field table="eq_check_report" name="check_count"/>
+        <field table="eq_check_report" name="check_sum" showTotals="true"/>
+        <field table="eq_check_report" name="loss_count" showTotals="true"/>
+        <field table="eq_check_report" name="pass_count" showTotals="true"/>
+        <field table="eq_check_report" name="reject_count" showTotals="true"/>
+        <field table="eq_check_report" name="check_sum_attach" showTotals="true"/>
+        <field table="eq_check_report" name="loss_count_attach" showTotals="true"/>
+        <field table="eq_check_report" name="pass_count_attach" showTotals="true"/>
+        <field table="eq_check_report" name="reject_count_attach" showTotals="true"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckDs">
+        <table name="eq_check" role="main"/>
+        <table name="eq" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq_check" name="approved"/>
+        <field table="eq_check" name="check_id"/>
+        <field table="eq_check" name="check_main_id"/>
+        <field table="eq_check" name="eq_id"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq_check" name="price" showTotals="true"/>
+        <field table="eq_check" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_check" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_check" name="loss_option"/>
+        <field table="eq_check" name="check_doc"/>
+        <field table="eq_check" name="check_doc_02"/>
+        <field table="eq_check" name="check_doc_03"/>
+        <field table="eq_check" name="option_approve"/>
+        <field table="eq_check" name="option1"/>
+        <field table="eq_check" name="option2"/>
+        <field table="eq_check" name="option3"/>
+    </dataSource>
+    <dataSource id="eq_check_attach_ds">
+        <table name="eq_check_attach" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq_check_attach" name="check_id"/>
+        <field table="eq_check_attach" name="check_main_id"/>
+        <field table="eq_check_attach" name="eq_id"/>
+        <field table="eq_check_attach" name="eq_attach_id"/>
+        <field table="eq_check_attach" name="eq_attach_name"/>
+        <field table="eq_check_attach" name="price" showTotals="true"/>
+        <field table="eq_check_attach" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_check_attach" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_check_attach" name="loss_option"/>
+        <field table="eq_check_attach" name="check_doc"/>
+        <field table="eq_check_attach" name="check_doc_02"/>
+        <field table="eq_check_attach" name="check_doc_03"/>
+        <field table="eq_check_attach" name="approved"/>
+        <field table="eq_check_attach" name="option1"/>
+        <field table="eq_check_attach" name="option_approve"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckLossCountDs" type="grouping">
+        <table name="eq_check" role="main"/>
+        <field table="eq_check" name="check_main_id" groupBy="true"/>
+        <field name="count" formula="count" baseField="eq_check.eq_id" dataType="number" size="6" decimals="0"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckLossSumPriceDs" type="grouping">
+        <table name="eq_check" role="main"/>
+        <field table="eq_check" name="check_main_id" groupBy="true"/>
+        <field name="sum_price" formula="sum" baseField="eq_check.price" dataType="number" size="6" decimals="0"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqAttachCheckLossCountDs" type="grouping">
+        <table name="eq_check_attach" role="main"/>
+        <field table="eq_check_attach" name="check_main_id" groupBy="true"/>
+        <field name="count" formula="count" baseField="eq_check_attach.eq_id" dataType="number" size="6" decimals="0"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqAttachCheckLossSumPriceDs" type="grouping">
+        <table name="eq_check_attach" role="main"/>
+        <field table="eq_check_attach" name="check_main_id" groupBy="true"/>
+        <field name="sum_price" formula="sum" baseField="eq_check_attach.price" dataType="number" size="6" decimals="0"/>
+    </dataSource>
+    
+    <panel type="form" id="consoleForm" dataSource="ascBjUsmsEqCheckMainDs" columns="4" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="btnShow">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="btnClear">
+            <title translatable="true">Clear</title>
+        </action>
+        <field/>
+        <field table="eq_check_main" name="option1" >
+            <title translatable="true">Check Year</title>
+        </field>
+        <field id="txtMessage" colspan="2">
+            <html>
+                <span translatable="true">please Insert Like '2012' de si wei shu zi </span>
+            </html>
+        </field>
+    </panel>
+    
+    <panel type="grid" id="eqCheckMainPanel" dataSource="ascBjUsmsEqCheckMainDs" layout="mainCenterWestLayout" region="north">
+        <title translatable="true">Check History List</title>
+        <field table="eq_check_main" name="check_main_id" controlType="link" hidden="true">
+            <command type="callFunction" functionName="showCheckReportPanel"/>
+        </field>
+        <field table="eq_check_main" name="check_name" controlType="link" width="150">
+            <command type="callFunction" functionName="showCheckReportPanel"/>
+        </field>
+        <field table="eq_check_main" name="check_date_start" controlType="link" width="100">
+             <command type="callFunction" functionName="showCheckReportPanel"/>
+        </field>
+        <field table="eq_check_main" name="check_date_end" controlType="link" width="100">
+             <command type="callFunction" functionName="showCheckReportPanel"/>
+        </field>
+        <field table="eq_check_main" name="is_done"/>
+    </panel>
+    
+    <panel type="grid" id="eqCheckReportPanel" showOnLoad="false" dataSource="ascBjUsmsEqCheckReportDs" layout="mainCenterWestLayout" region="center">        
+        <title translatable="true">Eq Check List By Dv</title>
+         <action id="btnClose">
+            <title translatable="true">Close This Check</title>
+        </action>
+        <field table="eq_check_report" name="audit_status"/>
+        <field table="eq_check_report" name="check_main_id" controlType="link" hidden="true">
+            <command type="callFunction" functionName="eqCheckReportMethod"/>
+        </field>
+        <field table="eq_check_report" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" controlType="link">
+            <command type="callFunction" functionName="eqCheckReportMethod"/>
+        </field>
+        <field table="eq_check_report" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name">
+        	<command type="callFunction" functionName="eqCheckReportMethod"/>
+        </field>
+        <field table="eq_check_report" name="check_sum" controlType="link" showTotals="true">
+            <command type="callFunction" functionName="eqCheckReportMethod"/>
+        </field>
+        <field table="eq_check_report" name="pass_count" showTotals="true"/>
+        <field table="eq_check_report" name="reject_count" showTotals="true"/>
+        <field table="eq_check_report" name="check_sum_attach" showTotals="true"/>
+        <field table="eq_check_report" name="pass_count_attach" showTotals="true"/>
+        <field table="eq_check_report" name="reject_count_attach" showTotals="true"/>
+        <field table="eq_check_report" name="check_person" hidden="true"/>
+        <field table="eq_check_report" name="check_person_name"/>
+        <field table="eq_check_report" name="check_date"/>
+        
+        <field table="eq_check_report" name="dvleader_option"/>
+        <field table="eq_check_report" name="storeman_option"/>
+    </panel>
+    <tabs workflow="free" id="needApproveTabs" tabRefreshPolicy="never" layout="mainCenterCenterLayout" region="north">
+    	 <tab name="eqTab"  selected="true">
+		    <title translatable="true">Eq Check do</title>
+		    <panel type="grid" id="eqCheckPanel" showOnLoad="false" dataSource="ascBjUsmsEqCheckDs" >
+		        <action id="btnCloseDv">
+		            <title translatable="true">Dv Approved</title>
+		        </action>
+		        <field id="btnView" controlType="button" width="120">
+		            <title translatable="true">View</title>
+		            <command type="callFunction" functionName="viewDocuments"/>
+		        </field>
+		        <field table="eq_check" name="check_main_id" hidden="true"/>
+		        <field table="eq_check" name="eq_id" controlType="link">
+		            <command type="callFunction" functionName="controller.alertEqCard()"/>
+		        </field>
+		        <field table="eq" name="eq_name" controlType="link">
+		            <command type="callFunction" functionName="controller.alertEqCard()"/>
+		        </field>
+		        <field table="eq_check" name="price" showTotals="true"/>
+		        <field table="eq_check" name="dv_id" hidden="true"/>
+		        <field table="dv" name="dv_name"/>
+		        <field table="eq_check" name="dp_id" hidden="true"/>
+		        <field table="dp" name="dp_name"/>
+		        <field table="eq_check" name="loss_option"/>
+		        <field table="eq_check" name="approved"/>
+		    </panel>
+        </tab>
+        <tab name="attachTab" >
+            <title translatable="true">Attach Check To</title>
+            <panel type="grid" id="eqAttachCheckPanel" showOnLoad="false" dataSource="eq_check_attach_ds" >
+                <title></title>
+		        <field id="btnView" controlType="button" width="120">
+		            <title translatable="true">View</title>
+		            <command type="callFunction" functionName="viewAttachDocuments"/>
+		        </field>
+		        <field table="eq_check_attach" name="check_main_id" hidden="true"/>
+		        <field table="eq_check_attach" name="eq_id" controlType="link">
+		            <command type="callFunction" functionName="controller.alertEqCard()"/>
+		        </field>
+		        <field table="eq_check_attach" name="eq_attach_id"/>
+		        <field table="eq_check_attach" name="eq_attach_name"/>
+		        <field table="eq_check_attach" name="price" showTotals="true"/>
+		        <field table="eq_check_attach" name="dv_id" hidden="true"/>
+		        <field table="dv" name="dv_name"/>
+		        <field table="eq_check_attach" name="dp_id" hidden="true"/>
+        		<field table="dp" name="dp_name"/>
+		        <field table="eq_check_attach" name="loss_option"/>
+		        <field table="eq_check_attach" name="approved"/>
+		    </panel>
+        </tab>
+    </tabs>
+    <tabs workflow="free" id="approveTabs"  tabRefreshPolicy="never" layout="mainCenterCenterLayout" region="center">
+    	 <tab name="eqApprove"  selected="true">
+		    <title translatable="true">Eq Check Pass List</title>
+		    <panel type="grid" id="checkPassListPanel" showOnLoad="false" dataSource="ascBjUsmsEqCheckDs" >
+		    	<title></title>
+		        <field id="btnView" controlType="button">
+		            <title translatable="true">View</title>
+		            <command type="callFunction" functionName="viewDocumentsAlready"/>
+		        </field>
+		        <field table="eq_check" name="check_id" hidden="true"/>
+		        <field table="eq_check" name="check_main_id" hidden="true"/>
+		        <field table="eq_check" name="eq_id" controlType="link">
+		            <command type="callFunction" functionName="controller.showEqCard()"/>
+		        </field>
+		        <field table="eq" name="eq_name" controlType="link">
+		            <command type="callFunction" functionName="controller.showEqCard()"/>
+		        </field>
+		        <field table="eq_check" name="price" showTotals="true"/>
+		        <field table="eq_check" name="dv_id" hidden="true"/>
+		        <field table="dv" name="dv_name"/>
+		        <field table="eq_check" name="dp_id" hidden="true"/>
+		        <field table="dp" name="dp_name"/>
+		        <field table="eq_check" name="loss_option"/>
+		        <field table="eq_check" name="approved"/>
+		    </panel>
+        </tab>
+        <tab name="eqAttachApprove">
+            <title translatable="true">EqAttach Check Pass List</title>
+            <panel type="grid" id="checkAttachPassListPanel" showOnLoad="false" dataSource="eq_check_attach_ds" >
+            	<title></title>
+		        <field id="btnView" controlType="button">
+		            <title translatable="true">View</title>
+		            <command type="callFunction" functionName="viewAttachDocumentsAlready"/>
+		        </field>
+		        <field table="eq_check_attach" name="check_id" hidden="true"/>
+		        <field table="eq_check_attach" name="check_main_id" hidden="true"/>
+		        <field table="eq_check_attach" name="eq_id" controlType="link">
+		            <command type="callFunction" functionName="controller.showEqCard()"/>
+		        </field>
+		        <field table="eq_check_attach" name="eq_attach_id"/>
+		        <field table="eq_check_attach" name="eq_attach_name"/>
+		        <field table="eq_check_attach" name="price" showTotals="true"/>
+		        <field table="eq_check_attach" name="dv_id" hidden="true"/>
+		        <field table="dv" name="dv_name"/>
+		        <field table="eq_check_attach" name="dp_id" hidden="true"/>
+        		<field table="dp" name="dp_name"/>
+		        <field table="eq_check_attach" name="loss_option"/>
+		        <field table="eq_check_attach" name="approved"/>
+		    </panel>
+        </tab>
+    </tabs>
+
+    <panel type="form" id="checkOptionPanel" dataSource="ascBjUsmsEqCheckDs" showOnLoad="false" columns="2">
+        <title translatable="true">Check Upload Document</title>
+        <action id="btnApprovePass">
+            <title translatable="true">Pass</title>
+        </action>
+        <action id="btnApproveReject">
+            <title translatable="true">Reject</title>
+        </action>
+        <field table="eq_check" name="check_id" readOnly="true" hidden="true"/>
+        <field table="eq_check" name="check_main_id" readOnly="true" hidden="true"/>
+        <field table="eq_check" name="eq_id" readOnly="true"/>
+        <field table="eq" name="eq_name" readOnly="true"/>
+        <field table="eq_check" name="loss_option" readOnly="true"/>
+        <field table="eq_check" name="check_doc" readOnly="true"/>
+        <field table="eq_check" name="check_doc_03" readOnly="true" colspan="2"/>
+        <field table="eq_check" name="option1" colspan="2"/>
+        <field table="eq_check" name="option_approve" colspan="2"/>
+    </panel>
+    
+    <panel type="form" id="checkAttachOptionPanel" dataSource="eq_check_attach_ds" showOnLoad="false" columns="2">
+        <title translatable="true">Check Upload Document</title>
+        <action id="btnApprovePass">
+            <title translatable="true">Pass</title>
+        </action>
+        <action id="btnApproveReject">
+            <title translatable="true">Reject</title>
+        </action>
+        <field table="eq_check_attach" name="check_id" readOnly="true" hidden="true"/>
+        <field table="eq_check_attach" name="check_main_id" readOnly="true" hidden="true"/>
+        <field table="eq_check_attach" name="eq_id" readOnly="true"/>
+        <field table="eq_check_attach" name="eq_attach_id" readOnly="true"/>
+        <field table="eq_check_attach" name="eq_attach_name" readOnly="true"/>
+        <field table="eq_check_attach" name="loss_option" readOnly="true"/>
+        <field table="eq_check_attach" name="check_doc" readOnly="true" colspan="2"/>
+        <field table="eq_check_attach" name="check_doc_03" readOnly="true" colspan="2"/>
+        <field table="eq_check_attach" name="option1" colspan="2" />
+        <field table="eq_check_attach" name="option_approve" colspan="2" />
+    </panel>
+</view>

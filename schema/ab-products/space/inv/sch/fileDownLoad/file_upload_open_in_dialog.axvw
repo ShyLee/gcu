@@ -1,0 +1,10 @@
+<view version="2.0">
+	
+    <title translatable="true">File Upload Open in Dialog</title>
+	<panel  type="form" dataSource="none" cssClass="htmlWizardPanel" id="OpenInDialog"> 
+		<action id="upload">
+			<title>upload file</title>
+		</action>
+	</panel>
+	<js file="file_upload_open_in_dialog.js" />
+</view>

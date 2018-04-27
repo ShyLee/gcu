@@ -1,0 +1,243 @@
+<view version="2.0">
+            <js file="schema/ab-core/controls/progress/ab-progress.js"/>
+         
+			<js file="asc-bj-usms-house-common.js"/>
+            <js file="asc-bj-usms-house-payment-fn-rent-check.js" />
+    
+            <title translatable="true">check the rent</title>
+                <layout
+                    type="borderLayout"
+                    id="mainLayout">
+                    <north
+                        id="instruct"
+                        autoScroll="true"
+                        split="true"
+                        initialSize="100"
+                        minSize="100"/>
+                    <center autoScroll="true"/>
+                </layout>
+            
+                <layout
+                    type="borderLayout"
+                    id="projectLayout"
+                    containingLayout="mainLayout"
+                    region="center">
+                    <north
+                        id="importPanel" 
+                        autoScroll="true"
+                        split="true"
+                        initialSize="200"
+                        minSize="100"/>
+                    <center id="diffRecords" autoScroll="true"/>
+                </layout>
+            <dataSource id="rentDetailsDs">
+            	<table name="sc_zzfrent_details" role="main"/>
+            	<field table="sc_zzfrent_details" name="rent_detail_id"/>
+            	<field table="sc_zzfrent_details" name="card_id"/>
+                <field table="sc_zzfrent_details" name="rent_id"/>
+                <field table="sc_zzfrent_details" name="year"/>
+                <field table="sc_zzfrent_details" name="month"/>
+                <field table="sc_zzfrent_details" name="payment_to"/>
+                <field table="sc_zzfrent_details" name="amount_payrent"/>
+            	<field table="sc_zzfrent_details" name="actual_payoff"/>
+            </dataSource>   
+            
+             <dataSource id="rentDetDs">
+            	<table name="sc_zzfrent_details" role="main"/>
+            	<field table="sc_zzfrent_details" name="rent_detail_id"/>
+            	<field table="sc_zzfrent_details" name="card_id"/>
+                <field table="sc_zzfrent_details" name="rent_id"/>
+                <field table="sc_zzfrent_details" name="year"/>
+                <field table="sc_zzfrent_details" name="month"/>
+                <field table="sc_zzfrent_details" name="is_check"/>
+                <field table="sc_zzfrent_details" name="payment_to"/>
+                <field table="sc_zzfrent_details" name="amount_payrent"/>
+            	<field table="sc_zzfrent_details" name="actual_payoff"/>
+            	<restriction type="sql" sql="payment_to = 'finance' and (sc_zzfrent_details.is_check !='2' or sc_zzfrent_details.amount_payrent !=sc_zzfrent_details.actual_payoff)"/>
+            </dataSource>  
+            
+            
+             <dataSource id="rentDs">
+            	<table name="sc_zzfrent" role="main"/>
+            	<field table="sc_zzfrent" name="rent_id"/>
+            	<field table="sc_zzfrent" name="card_id"/>
+                <field table="sc_zzfrent" name="rent_id"/>
+                <field table="sc_zzfrent" name="year"/>
+                <field table="sc_zzfrent" name="month"/>
+            	<field table="sc_zzfrent" name="payment_to"/>
+            	<field table="sc_zzfrent" name="is_finish"/>
+            </dataSource>
+                
+                
+                
+            <dataSource id="sc_zzfrent_details_ds">
+                <table name="sc_zzfrent_details" role="main"/>
+                <table name="sc_zzfcard" role="standard"/>
+                <field table="sc_zzfrent_details" name="rent_detail_id"/>
+                <field table="sc_zzfrent_details" name="em_id"/>
+                <field table="sc_zzfrent_details" name="card_id"/>
+                <field table="sc_zzfrent_details" name="rent_id"/>
+                <field table="sc_zzfrent_details" name="em_name"/>
+                <field table="sc_zzfrent_details" name="card_id"/>
+                <field table="sc_zzfrent_details" name="year" />
+                <field table="sc_zzfrent_details" name="month" />
+                <field table="sc_zzfrent_details" name="area_lease"/>
+                <field table="sc_zzfrent_details" name="note1"/>
+                <field table="sc_zzfcard" name="bl_id"/>
+                <field table="sc_zzfcard" name="fl_id"/>
+                <field table="sc_zzfcard" name="rm_id"/>
+                <field table="sc_zzfcard" name="area_lease" />
+                <field table="sc_zzfcard" name="dv_name" />
+                <field table="sc_zzfcard" name="date_checkin"/>
+                <field table="sc_zzfcard" name="date_checkout_ought" />
+                <field table="sc_zzfrent_details" name="month_rent"/>
+                <field table="sc_zzfrent_details" name="amount_payrent"/>
+                <field table="sc_zzfrent_details" name="cash_clean"/>
+                <field table="sc_zzfrent_details" name="actual_payoff"/>
+                <field table="sc_zzfrent_details" name="actual_cash_clean"/>
+                <restriction type="sql" sql="sc_zzfcard.payment_to='finance' and sc_zzfrent_details.card_id = sc_zzfcard.card_id and (sc_zzfrent_details.actual_payoff != sc_zzfrent_details.amount_payrent)"/>
+          </dataSource> 
+         <panel type="html" id="instruction" layoutRegion="instruct">
+            <html>
+             <table id="instruct_book" class="panel">
+                            <tr>
+                                <td align="left" style="font-Size:13px;">
+                                    <b translatable="true">Instruction</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="font-Size:12px;">
+                                    <b translatable="true">(1)please check the excel format</b>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td align="left" style="font-Size:12px;">
+                                    <b translatable="true">(2)please confirm the data has created</b>
+                                </td>
+                            </tr>
+              </table>
+              </html>
+         </panel>
+         
+         <tabs id="importFileTabs" layoutRegion="importPanel">
+           
+            <tab name="importFileTabs_selection" useFrame="false" selected="true">
+              <title translatable="true">Import Files</title>
+                <panel type="html" id="selectionPanel" >
+                    <action id="download">
+                        <title translatable="true">download model</title>
+                    </action>                    
+                    <action id="import">
+                        <title translatable="true">Begin Import</title>
+                    </action>
+                                        
+                    <html>
+                        <table id="selectionTable" class="panel">
+                            <tr>
+                                <td align="right">
+                                <!-- 核对日期 -->
+                                    <b translatable="true">Check Date</b>
+                                </td>
+                                <td>
+                                    <input type="text" id="time"
+                                        name="timeName" size="30" />
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <!-- 代扣月份 -->
+                                <td align="right">
+                                    <b translatable="true">Rent Delegete Month</b>
+                                </td>
+                                <td>
+                                    <input type="text" id="yearMonth"
+                                        name="yearMonthName" size="30" />
+                                </td>
+                            </tr>
+                            <tr id="in1">
+                                <td align="right">
+                                    <b translatable="true">Rent Excel</b>
+                                </td>
+                                <td>
+                                    <input type="file" id="inLocalFileBrow" name="filename" size="60">
+                                    </input>
+                                </td>
+                            </tr>
+                        </table>
+                    </html>
+                </panel>
+    
+            </tab>
+            <tab name="importFileTabs_progress" useFrame="false">
+                <title translatable="true">Import Progress</title>
+                <panel type="html" id="reportProgressPanel">
+           			<action id="updatePayLast">
+                		<title>Update datePayLast</title> 
+               		</action>
+                </panel>
+            </tab>
+        </tabs>
+               
+         <!-- 检查不同数据的列表 -->
+         <panel type="grid" id="diffRecords" dataSource="sc_zzfrent_details_ds" layoutRegion="diffRecords" showOnLoad="false">
+                <title>Different Record</title>
+                <!--交互 事件为打开对话框  说明代扣不相同的原因-->
+                <sortField name="card_id"/>
+                <field controlType="button">
+                    <title>Edit DATA</title>
+<!--                     <command type="openDialog" panelId='editDiff'></command> -->
+                    <command type="callFunction" functionName="editController.xiuGai();"/>
+                </field>
+                <field table="sc_zzfrent_details" name="rent_detail_id" hidden="true"/>
+                <field table="sc_zzfrent_details" name="card_id" hidden="true"/>
+                <field table="sc_zzfrent_details" name="rent_id" hidden="true"/>
+                <field table="sc_zzfrent_details" name="year" />
+                <field table="sc_zzfrent_details" name="month" />
+                <field table="sc_zzfrent_details" name="em_id"/>
+                <field table="sc_zzfrent_details" name="em_name"/>
+                <field table="sc_zzfcard" name="dv_name"/>
+                <field table="sc_zzfrent_details" name="month_rent"/>
+                <field table="sc_zzfrent_details" name="amount_payrent"/>
+<!--                 <field table="sc_zzfrent_details" name="cash_clean"/> -->
+                <field table="sc_zzfrent_details" name="actual_payoff"/>
+<!--                 <field table="sc_zzfrent_details" name="actual_cash_clean"/> -->
+                <field table="sc_zzfrent_details" name="note1"/>
+         </panel>
+         
+         <!-- 编辑数据的 表单-->
+         <panel type="form" id="editDiff" columns="2" showOnLoad="false" dataSource="sc_zzfrent_details_ds" >
+                <title  translatable="true">bian ji yuan yin</title> 
+                <action id="save">
+                    <title>Save Form</title>
+<!--                     <command type="callFunction" functionName="editController.saveEditDiff()"/> -->
+                    <command type="saveForm"/>
+                    <command type="showPanel" panelId="diffRecords" applyParentRestriction="false"/>
+                    <command type="callFunction" functionName="editController.refreshPanel()" />
+                    <command type="closeDialog"/>
+                </action>
+                <action id="cancel">
+                    <title>Cancel Edit</title>
+                    <command type="callFunction" functionName="editController.refreshPanel()" />
+                    <command type="closeDialog"/>
+                </action>
+                <field table="sc_zzfrent_details" name="rent_detail_id" hidden="true"/>
+                <field table="sc_zzfrent_details" name="em_id" readOnly="true"/>
+                <field table="sc_zzfrent_details" name="em_name" readOnly="true"/>
+                <field table="sc_zzfcard" name="bl_id"/>
+                <field table="sc_zzfcard" name="fl_id"/>
+                <field table="sc_zzfcard" name="rm_id"/>
+                <field table="sc_zzfcard" name="area_lease" readOnly="true"/>
+                <field table="sc_zzfrent_details" name="year" readOnly="true"/>
+                <field table="sc_zzfrent_details" name="month" readOnly="true"/>
+                <field table="sc_zzfcard" name="date_checkin" required="false" readOnly="true"/>
+                <field table="sc_zzfcard" name="date_checkout_ought" required="false" readOnly="true"/>
+                <field table="sc_zzfrent_details" name="amount_payrent" readOnly="true">
+                     <title>ying kou jin e</title>
+                </field>
+                <field table="sc_zzfrent_details" name="actual_payoff">
+                     <title>shi kou jin e</title>
+                </field>
+                <field table="sc_zzfrent_details" name="note1" colspan="2"/>
+         </panel>     
+</view>

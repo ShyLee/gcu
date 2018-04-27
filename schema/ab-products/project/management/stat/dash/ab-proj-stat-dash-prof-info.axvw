@@ -1,0 +1,12 @@
+<view version="2.0">
+    
+    <panel id="projStatDashProfInfo_info" type="html" dataSource="none" showOnLoad="true">
+        <html><h1 style="font-size:14px">Project Profile</h1>
+        <p style="font-size:11px">Select Edit to edit the complete Project Profile.<br/></p>
+        <ul style="font-size:11px">
+        <li><b>Cost - Budgeted: </b>Total Budgeted Project cost.  </li>
+        <li><b>Project Funding: </b>Funding amount derived from the Project Funds table.  </li>
+        <li><b>% Project Actions Complete (by Cost): </b>Average of the '% Complete' values for all action items weighted by estimated cost.  </li>
+        </ul></html>
+    </panel>
+</view>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<!-- ======================== Paginated reports preferences. ======================= -->
+
+	<bean id="reportPropertiesDef"
+		class="com.archibus.model.view.report.ReportPropertiesDef">
+
+        <!-- The default for the US is letter format.  Other locales, such
+        as RTL locales using Hebrew or Arabic, will also need a different
+        default. -->
+
+		<property name="localesToDocumentTemplates">
+			<map>
+				<entry>
+					<key>
+						<value>en_US</value>
+					</key>
+					<value>report-letter.docx</value>
+				</entry>
+			</map>
+		</property>
+
+        <!-- The default for most locales is A4 format. -->
+		<property name="defaultDocumentTemplate" value="report-a4.docx" />
+
+		<property name="logoImageFile" value="archibus-logo.gif" />
+		<property name="showDateInHeader" value="true" />
+		<property name="showLogoInHeader" value="true" />
+		<property name="showBarCodes" value="false" />
+		<property name="autoGenerateLegendColors" value="true" />
+		<property name="drawingHighlightFileFormat" value="EMF" />
+
+		<property name="recordsPerReportFile" value="2500" />
+		<property name="drawingsPerFile" value="500" />
+
+		<property name="tableLedgerShadingColor">
+			<bean class="com.archibus.model.drawing.Color">
+				<constructor-arg type="int" value="0x95B3D7" />
+			</bean>
+		</property>
+		<property name="tableTotalShadingColor">
+			<bean class="com.archibus.model.drawing.Color">
+				<constructor-arg type="int" value="0x95B3D7" />
+			</bean>
+		</property>
+		<property name="tableBorderColor">
+			<bean class="com.archibus.model.drawing.Color">
+				<constructor-arg type="int" value="0x1181BB" />
+			</bean>
+		</property>
+		
+		<!-- drawing highlight for paginated reporting -->
+		<property name="fillOpacity" value="0.7" />
+		<property name="hatchPatternOpacity" value="0.9" />
+		<property name="hatchPatternPrinterScale" value="384" />
+		<property name="textBoxDisplay" value="true" />
+		<property name="textBoxOpacity" value="0.3" />
+		<property name="labelFont" value="Arial" />
+		<property name="labelHeight" value="8" />
+	</bean>
+</beans>

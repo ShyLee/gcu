@@ -1,0 +1,15 @@
+<view version="2.0">
+    <title translatable="true">Approve Request</title>
+    
+    <tabs workflow="enforced" id="createRequestTabs" tabRefreshPolicy="never">
+        
+        <tab name="selectRequestTab" selected="true" file="asc-bj-usms-eq-proc-check-approve-req-select-tab.axvw">
+            <title translatable="true">Select Request</title>
+        </tab>
+        
+        <tab name="approveRequestTab" file="asc-bj-usms-eq-proc-check-approve-req-approve-tab.axvw">
+            <title translatable="true">Approve</title>
+        </tab>
+        
+    </tabs>
+</view>

@@ -1,0 +1,32 @@
+<view version="2.0">
+    <title>View Users Logged Into ARCHIBUS</title>
+    <js file="ab-logged-in-users.js"/>
+    
+    <dataSource id="loggedInUsersDs">
+        <table name="afm_users" role="main"/>
+        <field name="user_name" table="afm_users"/>
+        <field name="role_name" table="afm_users"/>
+        <field name="email" table="afm_users"/>
+        <field name="location" table="afm_users" dataType="text">
+            <title>Location</title>
+        </field>
+        <field name="division" table="afm_users" dataType="text">
+            <title>Division</title>
+        </field>
+        <field name="department" table="afm_users" dataType="text">
+            <title>Department</title>
+        </field>
+        <field name="employee_number" table="afm_users" dataType="text">
+            <title>Employee Number</title>
+        </field>
+        <restriction type="sql" sql="user_name IS NULL"/>
+    </dataSource>
+    
+    <panel type="grid" controlType="reportGrid" id="loggedInUsersGrid" dataSource="loggedInUsersDs">
+        <title>Number of Users Logged Into ARCHIBUS</title>
+        <action id="refresh">
+            <title>Refresh</title>
+            <command type="showPanel" panelId="loggedInUsersGrid"/>
+        </action>
+    </panel>
+</view>

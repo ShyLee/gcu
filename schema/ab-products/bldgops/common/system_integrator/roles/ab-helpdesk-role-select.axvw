@@ -1,0 +1,41 @@
+<view version="2.0">
+    <!--
+    @summary
+    System Integrator - Helpdesk Roles - Select<br />
+    This view allows the user to:
+    <ul>
+    <li>Select a role to update</li>
+    <li>Create a new role</li>
+    </ul>
+    -->
+    <message name="confirmDelete" translatable="true">Are you sure you want to delete these items?</message>
+    <message name="selectTitle" translatable="true">-select-</message>
+    <dataSource id="ds_ab-helpdesk-role-select_grid_roles">
+        <table name="helpdesk_roles" role="main"/>
+        <field name="role" table="helpdesk_roles"/>
+        <field name="step_type" table="helpdesk_roles"/>
+        <field name="class" table="helpdesk_roles"/>
+        <field name="method" table="helpdesk_roles"/>
+    </dataSource>
+	
+    <panel type="grid" id="roles_report" controlType="reportGrid" dataSource="ds_ab-helpdesk-role-select_grid_roles" multipleSelectionEnabled="true" useParentRestriction="false">
+        <title translatable="true">Service Desk Roles</title>
+        <action id="add">
+            <title translatable="true">Add Role</title>
+            <command type="selectTabPage" tabPageName="edit" newRecord="true"/>
+        </action>
+        <action type="javascript" onclick="ABHDC_deleteItems('roles_report', 'helpdesk_roles')">
+            <title translatable="true">Delete Selected</title>
+        </action>
+        <field controlType="button">
+            <command type="selectTabPage" tabPageName="edit"/>
+            <title translatable="true">Select</title>
+        </field>
+        <field name="role" table="helpdesk_roles"/>
+        <field name="step_type" table="helpdesk_roles"/>
+        <field name="class" table="helpdesk_roles"/>
+        <field name="method" table="helpdesk_roles"/>
+    </panel>
+	
+    <js file="ab-helpdesk-common-v2.js"/>
+</view>

@@ -1,0 +1,69 @@
+<view version="2.0">
+	<js file="asc-bj-usms-data-bl-wizard-build-tab3.js"/>
+	<message name="message_cancelconfirm" translatable="true">Are you sure you want to cancel?</message>
+    
+	<dataSource id="tsBl">
+      
+	  <table name="bl" role="main"/>
+	  
+	  <field table="bl" name="bl_id"/>
+	  <field table="bl" name="build_company"/>
+      <field table="bl" name="value_book"/>  	
+	  <field table="bl" name="project_reply_docno"/>	
+	  <field table="bl" name="plan_number"/>
+	  <field table="bl" name="construction_permit"/>
+	  <field table="bl" name="check_record_no"/>
+	  <field table="bl" name="exam_accept_number"/>
+	  <field table="bl" name="area_plan"/>
+	  <field table="bl" name="project_code"/>
+	  <field table="bl" name="archive_no"/>
+	  <field table="bl" name="design_org"/>
+	  <field table="bl" name="designer"/>
+	  <field table="bl" name="project_super_org"/>
+	  <field table="bl" name="supervis_org"/>
+	  <field table="bl" name="supervisor"/>
+	  <field table="bl" name="build_org"/>
+	  <field table="bl" name="qa_period"/>
+	  	
+	</dataSource>
+	
+
+	<panel type="form" id="tsBlForm" dataSource="tsBl" columns="2">
+		
+		<title translatable="true">Build Information</title>
+		<action id="return">
+			<title translatable="true">Return</title>
+			<command type="callFunction" functionName="rplmBuildingBuildController.returnToIndex()"/>
+		</action>
+		<action id="clear">
+			<title translatable="true">Cancel</title>
+			<command type="showPanel" panelId="tsBlForm" applyParentRestriction="true"/>
+		</action>
+		<action id="save">
+			<title translatable="true">Save</title>
+			<command type="saveForm"/>
+			<!-- <command type="callFunction" functionName="rplmBuildingBuildController.openNextTab()"/> -->
+		</action>
+		<field table="bl" name="bl_id" readOnly="true" hidden="false"/>
+		<field table="bl" name="build_company"/>
+      	<field table="bl" name="value_book"/>  	
+	  	<field table="bl" name="project_reply_docno"/>	
+	  	<field table="bl" name="plan_number"/>
+	  	<field table="bl" name="construction_permit"/>
+	  	<field table="bl" name="check_record_no"/>
+	  	<field table="bl" name="exam_accept_number"/>
+	  	<field table="bl" name="area_plan"/>
+	  	<field table="bl" name="project_code"/>
+	  	<field table="bl" name="archive_no"/>
+	  	<field table="bl" name="design_org"/>
+	  	<field table="bl" name="designer"/>
+	  	<field table="bl" name="project_super_org"/>
+	  	<field table="bl" name="supervis_org"/>
+	  	<field table="bl" name="supervisor"/>
+	  	<field table="bl" name="build_org"/>
+	  	<field table="bl" name="qa_period"/>
+	
+	</panel>
+    
+
+</view>

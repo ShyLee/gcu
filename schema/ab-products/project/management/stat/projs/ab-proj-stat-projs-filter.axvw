@@ -1,0 +1,109 @@
+<view version="2.0">
+    <js file="ab-proj-stat-projs-filter.js"/>
+    
+    <dataSource id="projStatProjsFilter_ds1">        
+        <table name="project" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="ctry" role="standard"/>
+        <table name="program" role="standard"/>
+        <field name="project_id" table="project"/>
+        <field name="project_name" table="project"/>
+        <field name="proj_mgr" table="project"/>
+        <field name="dept_contact" table="project"/>
+        <field name="requestor" table="project"/>
+        <field name="date_start" table="project"/>
+        <field name="date_end" table="project"/>
+        <field name="status" table="project"/>
+        <field name="project_status" dataType="text" >
+        		<sql dialect="generic">'CLOSED'</sql>
+        </field>
+        <field name="date_completed" table="project"/>
+        <field name="program_id" table="project"/>
+        <field name="program_type" table="program"/>
+        <field name="project_type" table="project"/>        
+        <field name="cost_budget" table="project"/>
+        <field name="cost_paid" table="project"/>
+        <field name="project_num" table="project"/>
+        <field name="contact_id" table="project"/>
+        <field name="dv_id" table="project"/>
+        <field name="dp_id" table="project"/>
+        <field name="site_id" table="project"/>
+        <field name="geo_region_id" table="ctry"/>
+        <field name="bl_id" table="project"/>
+        <field name="ctry_id" table="bl"/>
+    </dataSource>
+    
+    <panel id="projStatProjsFilter_filter" dataSource="projStatProjsFilter_ds1" type="console" showOnLoad="true" columns="2">
+        <title>Filter Projects</title>
+        <action id="show">
+            <title>Show</title>
+        </action>
+        <action imageName="/schema/ab-system/graphics/ab-icon-helpview.gif" id="projStatProjs_filter_help">
+            <tooltip>Help</tooltip>
+            <command type="openDialog" viewName="ab-proj-stat-projs-filter-info.axvw" height="150" width="500"/>
+        </action>
+        <field name="program_type" table="program"/>
+        <field name="program_id" table="project">
+            <action id="projStatProjs_selValProg">
+                <title>...</title>
+                <command type="selectValue"
+                    fieldNames="program.program_type, project.program_id"
+                    selectFieldNames="program.program_type, program.program_id"
+                    visibleFieldNames="program.program_id, program.summary">
+                    <title>Program Name</title>  
+                </command>         
+            </action>
+        </field>
+        <field name="project_type" table="project"/>
+        <field name="project_status" dataType="text" >
+        		<title>Project Status</title>
+            <action id="projStatProjs_selValStatus">
+                <title>...</title>
+                <command type="selectValue"
+                    fieldNames="project.project_status"
+                    selectFieldNames="project.status"
+                    visibleFieldNames="project.status"
+                    selectValueType="multiple"
+                    restriction="project.status NOT IN ('Created') AND project.status NOT LIKE ('Requested%')">
+                    <title>Project Status</title>  
+                </command>         
+            </action>
+        </field>
+        <field name="project_name" table="project"/>
+        <field name="project_id" table="project"/>        
+        <field/>
+        <field/>
+        <field name="proj_mgr" table="project"/>
+        <field name="contact_id" table="project"/>  
+        <field name="dept_contact" table="project"/>
+        <field name="requestor" table="project"/>
+        <field/>
+        <field/>
+        <field name="geo_region_id" table="ctry"/>
+        <field name="ctry_id" table="bl">
+            <action id="projStatProjs_selValCtry">
+                <title>...</title>
+                <command type="selectValue"
+                    fieldNames="ctry.geo_region_id, bl.ctry_id"
+                    selectFieldNames="ctry.geo_region_id, ctry.ctry_id"
+                    visibleFieldNames="ctry.ctry_id, ctry.name">
+                    <title>Country Code</title>  
+                </command>         
+            </action>
+        </field>        
+        <field name="site_id" table="project" />                   
+        <field name="bl_id" table="project">
+            <action id="projStatProjs_selValBl">
+                <title>...</title>
+                <command type="selectValue"
+                    fieldNames="project.site_id, project.bl_id"
+                    selectFieldNames="bl.site_id, bl.bl_id"
+                    visibleFieldNames="bl.bl_id, bl.name">
+                    <title>Building Code</title>  
+                </command>         
+            </action>
+        </field> 
+        <field name="dv_id" table="project"/>
+        <field name="dp_id" table="project"/>
+    </panel>
+</view>

@@ -1,0 +1,61 @@
+<view version="2.0">
+	<js file="jquery-1.8.0.min.js"/>
+    <js file="asc_bj_ts_file_upload.js"/>
+	<css>
+		input[name='pk']{
+			display:none;
+		}
+		iframe{
+			display:none;
+		}
+	</css>
+	<css file="bootstrap.css" />
+    <title translatable="true">File Upload Page</title>
+	<dataSource id="file_type_ds">
+		<table name="doccat" role="main" />
+		<field name="doc_cat" table="doccat" />
+	</dataSource>
+     <panel type="html" id="fileupload">
+      <title translatable="true">File Upload</title>
+     <html>
+     <iframe src="about:blank" name="hiddenUpload" id="hiddenUpload" ></iframe>
+     <p id="hint"  class="text-error" style="display:none;text-indent:30px;font-size:14px"></p>
+	 <form name="uploadfile" id="upload" action="/archibus/schema/ab-products/space/inv/sch/fileDownLoad/jsp/FileUpload.jsp" target="hiddenUpload" method="post" enctype="multipart/form-data">
+    <table id="tb" class="table-condensed table-bordered" style="margin:10 10">
+    	<tr>
+    		<td>
+    			<span translatable="true">File</span>
+    		</td>
+    		<td>
+    			<input type="text" name="pk" hidden="true" style="display:none" value="test" />
+				<input type="text" name="uploader" id="uploader" style="display:none"  hidden="true" />
+				<input type="text" name="tableName" id="tableName" style="display:none"  hidden="true"/>
+    			<input type="file" name="file"  class="input-xlarge"/> <br />
+			
+    		</td>
+    	  </tr>
+		   <tr>
+    		<td>
+    			<span translatable="true">File Type</span>
+    		</td>
+    		<td>
+			  <select type="text" name="filetype" id="filetype"/> <br />
+    		</td>
+    	</tr>
+		 	<tr>
+    		<td>
+    			<span translatable="true">Description</span>
+    		</td>
+    		<td>
+				<textarea name="desc" rows="3" cols="50" style="width:460px;height:100px"></textarea>	
+    		</td>
+    	</tr>
+    </table>
+    <br/>
+	<button style="margin-left:10" id="formSubmit" class="btn btn-primary"><span translatable="true">Submit</span></button>
+	 <button type="button" class="btn"><span translatable="true">Cancel</span></button>
+	</form>
+	
+   </html>
+   </panel>
+</view>

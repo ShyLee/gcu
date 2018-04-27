@@ -1,0 +1,31 @@
+<view version="2.0">
+	<js file="ab-rplm-contacts-list.js"/>
+	<message name="error_no_contact_selected" translatable="true">To perform this action you must first select a contact.</message>
+	<dataSource id="dsContacts">
+		<table name="contact"/>
+		<field table="contact" name="contact_id"/>
+		<field table="contact" name="name_last"/>
+		<field table="contact" name="name_first"/>
+		<field table="contact" name="email"/>
+		<field table="contact" name="phone"/>
+		<field table="contact" name="contact_type"/>
+		<field table="contact" name="company"/>
+	</dataSource>
+	<panel type="grid" id="gridContacts" dataSource="dsContacts">
+		<sortField name="contact_id" table="contact" ascending="true"/>
+		<title translatable="true">Contacts from other Leases</title>
+		<action id="save">
+			<title translatable="true">Save</title>
+		</action>
+		<action id="close">
+			<title translatable="true">Close</title>
+		</action>
+		<field table="contact" name="contact_id" controlType="link" onclick="selectLine"/>
+		<field table="contact" name="name_last" controlType="link" onclick="selectLine"/>
+		<field table="contact" name="name_first" controlType="link" onclick="selectLine"/>
+		<field table="contact" name="email" controlType="link" onclick="selectLine"/>
+		<field table="contact" name="phone" controlType="link" onclick="selectLine"/>
+		<field table="contact" name="contact_type" controlType="link" onclick="selectLine"/>
+		<field table="contact" name="company" controlType="link" onclick="selectLine"/>
+	</panel>
+</view>

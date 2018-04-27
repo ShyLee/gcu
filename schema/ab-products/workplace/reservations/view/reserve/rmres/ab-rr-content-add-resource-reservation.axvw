@@ -1,0 +1,440 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+     <layout id="main">
+        <north id="console" initialSize="235" split="false" autoScroll="false"/>
+        <center id="nestedMainLayout" autoScroll="false"/>
+    </layout>
+    
+    <layout id="nested_north" containingLayout="main" region="north">
+        <north id="northConsole" initialSize="165" split="false" autoScroll="false"/> 
+        <center id="centerConsole" autoScroll="false"  />
+    </layout>
+    
+    <layout id="nested_center" containingLayout="main" region="center">
+        <north id="timeline" initialSize="215" split="false" autoScroll="false"/> 
+        <center id="bottom" autoScroll="false"  />
+    </layout>
+    
+    <message translatable="true" name="emptyResult">There is no resource available within the selected timeframe, or there is no resource at all defined for this location.</message>
+    <message translatable="true" name="selectTimeError">The start time must be earlier than the end time</message>
+    <message translatable="true" name="titleUnique">Unique Resources Selection</message>
+    <message translatable="true" name="titleLimited">Limited and Unlimited Resources List</message>
+    <message translatable="true" name="titleLimitedSelection">Limited and Unlimited Resources Selection</message>
+    <message translatable="true" name="titleResourceReserveID">Resource Reservation</message>
+    <message translatable="true" name="titleResource">Resource Code</message>
+    <message translatable="true" name="titleFrom">Time Start</message>
+    <message translatable="true" name="titleUntil">Time End</message>
+    <message translatable="true" name="titleAvQuantity">Min.Av.Qty</message>
+    <message translatable="true" name="titleResQuantity">Requested Quantity</message>
+    <message translatable="true" name="approval">Approval Required</message>
+    <message translatable="true" name="info">Info</message>
+    <message translatable="true" name="nextButton">Next</message>
+    <message translatable="true" name="cancelButton">Cancel</message>
+    <message translatable="true" name="warningMessage">Some required fields have not been entered, please enter or select values for them!</message>
+    <message translatable="true" name="reservationfor">Reservation for:</message>
+    <message translatable="true" name="msgBackExit">Are you sure that you want to cancel the process?</message>
+    <message translatable="true" name="selectResourceAndTimeError">You must select a Resource and a time period to validate this step</message>
+    <message translatable="true" name="tooltipExistReserv">Existing Reservation</message>
+    <message translatable="true" name="tooltipNewReserv">New Reservation</message>
+    <message translatable="true" name="tooltipTimeStart">Time Start</message>
+    <message translatable="true" name="tooltipTimeEnd">Time End</message>
+    <message translatable="true" name="errorOutOfRoomTimeScope">The resource reservation must be within the room reservation's timeslot.</message>
+    <message translatable="true" name="errorStartTimeScope">The resource reservation's start time can't be earlier than the room reservation's start time.</message>
+    <message translatable="true" name="errorEndTimeScope">The resource reservation's end time can't be later than the room reservation's end time.</message>
+    <message translatable="true" name="add">Add</message>
+    <message translatable="true" name="edit">Edit</message>
+    <message translatable="true" name="remove">Remove</message>
+    <message translatable="true" name="removeConfirm">Are you sure that you want to delete the reservation?</message>
+    
+    <message translatable="true" name="hdOpt1">Every:</message>
+    <message translatable="true" name="hdOpt2">Every week on:</message>
+    <message translatable="true" name="bdOpt2_1">Sun</message>
+    <message translatable="true" name="bdOpt2_2">Mon</message>
+    <message translatable="true" name="bdOpt2_3">Tue</message>
+    <message translatable="true" name="bdOpt2_4">Wed</message>
+    <message translatable="true" name="bdOpt2_5">Thu</message>
+    <message translatable="true" name="bdOpt2_6">Fri</message>
+    <message translatable="true" name="bdOpt2_7">Sat</message>
+    <message translatable="true" name="bdOpt3_1_1">1st</message>
+    <message translatable="true" name="bdOpt3_1_2">2nd</message>
+    <message translatable="true" name="bdOpt3_1_3">3rd</message>
+    <message translatable="true" name="bdOpt3_1_4">4th</message>
+    <message translatable="true" name="bdOpt3_1_5">last</message>
+    <message translatable="true" name="bdOpt3_2_7">Sun  of the month</message>
+    <message translatable="true" name="selectDateEnd">Please select a Date End</message>
+    <message translatable="true" name="fillDays">Please fill in the number of days field</message>
+    <message translatable="true" name="fillPattern">Please define the recurrence pattern to calculate the dates</message>
+    <message translatable="true" name="fillGreaterDateEnd">Date Start must be before Date End</message>
+    <message translatable="true" name="RecurringConfError">Please change the recurrence pattern, the one selected is generating no dates</message>
+    <message translatable="true" name="recurringText">(Recurring)</message>
+    <message translatable="true" name="allDatesOccupiedError">The selected resource is occupied all the dates you're trying to reserve. Please change the time or date period, or select another resource.</message>
+    <message translatable="true" name="showHidePanel">Show/Hide Panel</message>
+    <message translatable="true" name="recurringresfor">Recurring Res. for:</message>
+    <message translatable="true" name="timeSelectedNotAvailable">The selected time period for this reservation is occupied. Please change the time or date period</message>
+    <message translatable="true" name="isRemoveAll">Do you wish to remove all new reservations for this resource?</message>
+    <message translatable="true" name="onlyAvailableInRoomReservevation">resource is only available in the room reservation times</message>
+    <message translatable="true" name="timeConsoleError">Both time console values should be filled</message>
+    <message translatable="true" name="daysInputError">Please fill in days field correctly! It should be an integer which is greater than zero.</message>
+    <message translatable="true" name="selectQuantityError">Please select a quantity higher than zero</message>
+    <message translatable="true" name="timeSelectedOutOfResourceAvailableScope">Resource is only available between[{0}] and [{1}]</message>
+    <message translatable="true" name="timeSelectedOutOfRoomAvailableScope">Resource is only available in the given timeslot of the room reservation (from [{0}] to [{1}])</message>
+    <message translatable="true" name="quantitySelectedOutOfScope">There are not enough resources available: Resources requested: [{0}], Resources available: [{1}]</message>
+    <message translatable="true" name="timeFieldEmpty">Please select the time start and time end</message>
+    <message translatable="true" name="quantityEmpty">Please select a quantity</message>
+    <message translatable="true" name="selectedTimezone">Selected timezone:</message>
+    <message translatable="true" name="resourceStandard">Resource Standard</message>
+    
+	<!-- resource search console -->
+    <dataSource id="ds_ab-rr-content-add-resource-reservation_reserve_rs">
+        <table name="reserve_rs" role="main"/>
+        <table name="reserve" role="standard"/>
+       
+        <table name="bl" role="standard"/>
+        
+        <field table="bl" name="ctry_id"/>
+        <field table="bl" name="site_id"/>
+        <field table="reserve_rs" name="bl_id"/>
+        <field table="reserve" name="date_start"/>
+        <field table="reserve" name="time_start"/>
+        <field table="reserve" name="time_end"/>
+        <field table="reserve" name="date_end"/>
+        <field table="reserve" name="res_type"/>
+        
+    </dataSource>
+   
+    <panel id="selectResourceConsolePanel" type="form" columns="3" dataSource="ds_ab-rr-content-add-resource-reservation_reserve_rs" layoutRegion="northConsole">
+        <title translatable="true">Select Resource</title>
+        
+        <action id="showResources">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+        <action id="showAlternatives">
+            <title translatable="true">Check alternative</title>
+        </action>
+        <action type="command" id="btnHelp">
+            <title translatable="true">Timeline Help</title>
+            <command type="showHelp" file="/help/user/Subsystems/webc/Content/web_user/res/reserve/timeline.htm"/>
+        </action>
+        
+        <!-- first row -->
+        <field table="bl" name="ctry_id" readOnly="false" required="true"/>
+        <field table="reserve" name="date_start" readOnly="false" required="true"/>
+      <!-- 
+        <field table="resources" name="resource_std" readOnly="false"  required="false">
+           <action>
+           	<title>...</title>
+            <command type="callFunction" functionName="selectResourceStd()" />
+           </action>
+        </field>
+       -->  
+        
+         <field>
+            <title translatable="true">Resource Standard</title>
+            <html>
+                 
+                <input type="text" id="resources.resource_std" class="inputField"/>
+                <input style="color:black;" type="button" value="..." id="onSelectResource_std"
+                 onclick="selectResourceStd()" class="selectValue_AbActionButtonFormStdWidth"/>
+             <!--
+            	<input  class="inputField" type="text" maxlength="16" size="16" />
+				<img id="resource_std_selectValue" class="selectValue_Button" ext:qtip="Select Value" tabindex="" value="..." onclick="selectResourceStd();return false;" src="ab-icons-ellipses.gif"/>
+            -->
+            </html>
+        </field>
+        
+        <!-- second row -->
+        <field table="bl" name="site_id" readOnly="false" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id,bl.site_id"
+                 selectFieldNames="site.ctry_id,site.site_id"
+                 visibleFieldNames="site.site_id,site.ctry_id">
+                 <title>Site Code</title>
+               </command>
+            </action>
+        </field>
+        <field table="reserve" name="time_start" readOnly="false" required="false" onchange="onChangeTimes('reserve.time_start')"/>
+        <field/>
+        
+        <!-- thrid row -->
+        <field table="reserve_rs" name="bl_id" readOnly="false" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id,bl.site_id,reserve_rs.bl_id"
+                 selectFieldNames="bl.ctry_id,bl.site_id,bl.bl_id"
+                 visibleFieldNames="bl.bl_id,bl.site_id,bl.ctry_id">
+                 <title>Building Code</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="time_end" readOnly="false" required="false" onchange="onChangeTimes('reserve.time_end')"/>
+        <field table="reserve" name="res_type" readOnly="false" required="true" onchange="optionResType()"/>
+    </panel>
+    
+    <!--Start-Guo added for resourece recuring reservation-->
+    <!-- Options specific to recurring reservation -->
+    <panel id="resource_recurring_panel" type="form" columns="1" tabOrder="column" formLabelWidth="30" dataSource="ds_ab-rr-content-add-resource-reservation_reserve_rs" showOnLoad="true" layoutRegion="northConsole">
+        <title translatable="true">Recurring Reservation Options</title>
+        <action id="showOrHide">
+            <title translatable="true">Show/Hide Panel</title>
+        </action>
+        <field table="reserve" name="date_end" readOnly="false" required="false"/>
+        <field>
+            <html>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" name="recurrent_type" id="day" value="day" onclick="ABRV_RP_typeRecurringReservation()"></input>
+                        </td>
+                        <td>
+                            <input type="text" id="ndays" size="3"/>
+                            <span translatable="true" style="margin-left:4px">days</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="recurrent_type" id="week" value="week" onclick="ABRV_RP_typeRecurringReservation()"></input>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="weekly_mon" value="1"></input>
+                            <input type="checkbox" id="weekly_tue" value="2"></input>
+                            <input type="checkbox" id="weekly_wed" value="3"></input>
+                            <input type="checkbox" id="weekly_thu" value="4"></input>
+                            <input type="checkbox" id="weekly_fri" value="5"></input>
+                            <input type="checkbox" id="weekly_sat" value="6"></input>
+                            <input type="checkbox" id="weekly_sun" value="0"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="recurrent_type" id="month" value="month" onclick="ABRV_RP_typeRecurringReservation()"></input>
+                        </td>
+                        <td>
+                            <input type="radio" name="recurrent_type2" id="first" value="1"></input>
+                            <input type="radio" name="recurrent_type2" id="second" value="2"></input>
+                            <input type="radio" name="recurrent_type2" id="third" value="3"></input>
+                            <input type="radio" name="recurrent_type2" id="fourth" value="4"></input>
+                            <input type="radio" name="recurrent_type2" id="last" value="5"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            <input type="radio" name="recurrent_type3" id="month_mon" value="1"></input>
+                            <input type="radio" name="recurrent_type3" id="month_tue" value="2"></input>
+                            <input type="radio" name="recurrent_type3" id="month_wed" value="3"></input>
+                            <input type="radio" name="recurrent_type3" id="month_thu" value="4"></input>
+                            <input type="radio" name="recurrent_type3" id="month_fri" value="5"></input>
+                            <input type="radio" name="recurrent_type3" id="month_sat" value="6"></input>
+                            <input type="radio" name="recurrent_type3" id="month_sun" value="0"></input>
+                        </td>
+                    </tr>
+                </table>
+            </html>
+        </field>
+    </panel>    
+    
+    <dataSource id="ds_ab-rr-content-add-resource-reservation_afm_timezones">
+        <table name="afm_timezones" role="main"/>
+        <field table="afm_timezones" name="timezone_id"/>
+    </dataSource>
+   
+	 <panel id="select_timezone" type="form" columns="3" layoutRegion="centerConsole"
+	 	dataSource="ds_ab-rr-content-add-resource-reservation_afm_timezones">
+        <title translatable="true"> </title>
+        <field table="afm_timezones" name="timezone_id" readOnly="false" required="false">
+            <title translatable="true">Select Timezone</title>
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="afm_timezones.timezone_id"
+                 selectFieldNames="afm_timezones.timezone_id"
+                 visibleFieldNames="afm_timezones.timezone_id"
+                 actionListener="afterSelectTimezone">
+                 <title>Time Zone</title>
+                </command>
+            </action>
+        </field>
+    </panel>
+	
+	<panel id="actionsPanel" type="html" layoutRegion="centerConsole">
+    	<title></title>
+
+        <action id="btnNext" cssClass="borderButton">
+        	<title translatable="true" >Next</title>
+        	<command type="callFunction" functionName="onConfirmNext()" />
+        </action>
+        <action id="btnCancel">
+        	<title translatable="true" >Cancel</title>
+        	<command type="callFunction" functionName="onCancel()" />
+        </action>		
+    </panel>
+	
+	
+    
+    <tabs id="resourceTimelineTabs" workflow="free" tabRefreshPolicy="never" layoutRegion="timeline">
+        <tab name="tabtimeline-0">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-0" type="html">
+                <html>
+                    <div id="timeline-0" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-1">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-1" type="html">
+                <html>
+                    <div id="timeline-1" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-2">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-2" type="html">
+                <html>
+                    <div id="timeline-2" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-3">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-3" type="html">
+                <html>
+                    <div id="timeline-3" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+       
+        <tab name="tabtimeline-4">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-4" type="html">
+                <html>
+                    <div id="timeline-4" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-5">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-5" type="html">
+                <html>
+                    <div id="timeline-5" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-6">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-6" type="html">
+                <html>
+                    <div id="timeline-6" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-7">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-7" type="html">
+                <html>
+                    <div id="timeline-7" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-8">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-8" type="html">
+                <html>
+                    <div id="timeline-8" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="tabtimeline-9">
+            <title translatable="true"> </title>
+            <panel id="resourceTimeline-9" type="html">
+                <html>
+                    <div id="timeline-9" style="position:relative;height:180px;">
+                    </div>
+                </html>
+            </panel>
+        </tab>
+        
+    </tabs>
+ 
+    <dataSource id="ds_ab-rr-content-add-resource-reservation_reserve_rs_resources">
+        <table name="reserve_rs" role="main"/>
+        <table name="resources" role="standard"/>
+        
+        <field table="reserve_rs" name="resource_id"/>
+        <field table="resources" name="day_start"/>
+        <field table="resources" name="day_end"/>
+        <field table="reserve_rs" name="time_start"/>
+        <field table="reserve_rs" name="time_end"/>
+        <field table="reserve_rs" name="quantity"/>
+        <field table="reserve_rs" name="comments"/>
+    </dataSource>
+    
+    <panel id="nonUniqueDetailPanel" type="form" columns="3"  showOnLoad="false"
+    	 dataSource="ds_ab-rr-content-add-resource-reservation_reserve_rs_resources" layoutRegion="bottom">
+        <title translatable="true">Add Resource Reservation Details</title>
+        
+        <action id="save">
+            <title translatable="true">OK</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+        </action>
+        
+        <field table="reserve_rs" name="resource_id" required="true"/>
+        <field table="resources" name="day_start" required="true" readOnly="false"/>
+        <field table="resources" name="day_end" required="true" readOnly="false"/>
+        
+        <field table="reserve_rs" name="time_start" readOnly="false" required="true"/>
+        <field table="reserve_rs" name="time_end" readOnly="false" required="true"/>
+        <field table="reserve_rs" name="quantity" readOnly="false" required="true"/>
+        
+        <field table="reserve_rs" name="comments" readOnly="false" required="false" colspan="3" />
+    </panel>
+    
+    <panel id="buildNonUniqueResourcesListPanel" type="html" showOnLoad="false" layoutRegion="bottom">
+    	<title translatable="true">Limited and Unlimited Resources List</title>
+        <html>
+            <div id="buildNonUniqueResourcesList"> 
+            </div>
+        </html>
+    </panel>
+    
+    <panel id="selectedNonUniqueResourcesListPanel" type="html"  showOnLoad="false" layoutRegion="bottom">
+    	<title translatable="true">Limited and Unlimited Resources Selection</title>
+        <html>
+            <div id="selectedNonUniqueResourcesList"> 
+            </div>
+        </html>
+    </panel>
+    
+    <js file="ab-timeline-model.js"/>
+    <js file="ab-timeline-controller.js"/>
+
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-my-reservation-detailtab-common.js" />
+    <js file="ab-rr-content-add-resource-reservation.js" />
+    <js file="ab-rr-content-add-resource-reservation-timezone.js" />
+    <js file="ab-rr-content-add-recurring-panel.js" />
+</view>

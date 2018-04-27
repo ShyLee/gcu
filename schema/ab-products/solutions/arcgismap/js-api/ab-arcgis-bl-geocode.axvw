@@ -1,0 +1,55 @@
+<!-- map with GeoCode functionality  -->
+
+<view version="2.0" docType="html4/strict">
+  <title>Example: Map with Address Geocoder</title>
+  
+  <layout file="dashboard-1-1-0.axvw"/>
+  <!-- esri js library -->
+  <js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+  <!-- ab-core js libraries -->
+  <js file="ab-arcgis-map.js"/>
+  <js file="ab-arcgis-geocoder.js"/>
+  <css file="ab-arcgis-map.css"/>
+  <!-- esri map theme -->
+  <css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css" />
+  <!-- view js -->
+  <js file="ab-arcgis-bl-geocode.js"/>
+
+  <dataSource id="blDS">
+    <table name="bl" role="main"/>
+    <field name="bl_id" table="bl"/>
+    <field name="address1" table="bl"/>
+    <field name="city_id" table="bl"/>
+    <field name="state_id" table="bl"/>
+    <field name="ctry_id" table="bl"/>
+    <field name="zip" table="bl"/>
+    <field name="lat" table="bl"/>
+    <field name="lon" table="bl"/>
+  </dataSource>
+
+  <panel type="grid" id="blPanel" multipleSelectionEnabled="true" dataSource="blDS" layoutRegion="row1col1">
+    <title translatable="true">Buildings</title>
+    <action id="showBuildings" >
+    	<title>Show Buildings</title>
+    </action>
+    <action id="geocodeBuildings">
+      <title translatable="true">Geocode Buildings</title>
+    </action>
+    <field name="bl_id" table="bl"/>
+    <field name="address1" table="bl"/>
+    <field name="city_id" table="bl"/>
+    <field name="state_id" table="bl"/>
+    <field name="ctry_id" table="bl"/>
+    <field name="zip" table="bl"/>
+    <field name="lat" table="bl"/>
+    <field name="lon" table="bl"/>
+  </panel>
+
+  <panel type="html" id="mapPanel" layoutRegion="row1col2">
+    <title translatable="true">Map</title>
+    <html>    
+      	<div id="map"> </div>
+    </html>
+  </panel>
+  
+</view>

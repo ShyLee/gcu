@@ -1,0 +1,11 @@
+<view version="2.0">
+	<title>Dispose View</title>
+	<tabs workflow="free" id="returnTabs" tabRefreshPolicy="refreshOnSelect">
+		<tab name="eqViewTab" file="asc-bj-usms-eq-view-dispose-tab.axvw" selected="true">
+		    <title translatable="true">Eq Dispose View</title>
+	    </tab>
+		<tab name="eqAttachViewTab" file="asc-bj-usms-eq-attach-view-dispose-tab.axvw">
+		    <title translatable="true">Attach Dispose View</title>
+	    </tab>
+	</tabs>
+</view>

@@ -1,0 +1,354 @@
+<view version="2.0">
+
+	<css>
+		.prominentLabel {font-weight: bold; font-size: 12px !important;
+		text-align: right; white-space: normal;} .iw_poi_title
+		{color:#CC5522;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
+		.iw_poi_content {font:12px
+		arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
+	</css>
+	<layout id="main">
+		<north id="tabsPosition" initialSize="30" split="false" />
+		<center/>
+	</layout>
+	<layout id="mainPosition" containingLayout="main" region="center">
+		<north id="schoolPosition" initialSize="30%" split="true" />
+		<center id="parcelPosition" />
+	</layout>
+
+
+	<title translatable="true">
+		Xue Xiao Zong Di Jian Zhu Wu Tong Ji Fen Xi
+	</title>
+
+	<!-- datasource for rmcat report -->
+	<dataSource
+		id="asc-bj-usms-overall-parcelland-bl-whole_grid_parcelland">
+		<table name="sc_parcelland" role="main" />
+		<field table="sc_parcelland" name="land_code" />
+		<!--
+		<field table="sc_parcelland" name="parcelland_address" />
+		-->
+		<field table="sc_parcelland" name="date_receipt"/>
+		<field table="sc_parcelland" name="assets_num"/>
+		<field table="sc_parcelland" name="atype_code"/>
+		<field table="sc_parcelland" name="atype_name"/>
+		<field table="sc_parcelland" name="assets_name"/>
+		<field table="sc_parcelland" name="measure_unit"/>
+		<field table="sc_parcelland" name="srcid"/>
+		<field table="sc_parcelland" name="date_build"/>
+		<field table="sc_parcelland" name="cgzzxs_id"/>
+		<field table="sc_parcelland" name="chanqx_sid"/>
+		<field table="sc_parcelland" name="quansxz_id"/>
+		<field table="sc_parcelland" name="land_photo"/>
+		<field table="sc_parcelland" name="certificate"/>
+		<field table="sc_parcelland" name="dihao"/>
+		<field table="sc_parcelland" name="date_faz"/>
+		<field table="sc_parcelland" name="area_land"/>
+		<field table="sc_parcelland" name="parcelland_address"/>
+		<field table="sc_parcelland" name="value_type"/>
+		<field table="sc_parcelland" name="value_book"/>
+		<field table="sc_parcelland" name="value_fiscal_alloc"/>
+		<field table="sc_parcelland" name="business_income"/>
+		<field table="sc_parcelland" name="ysw_income"/>
+		<field table="sc_parcelland" name="other_funds"/>
+		<field table="sc_parcelland" name="czxjy_funds"/>
+		<field table="sc_parcelland" name="account_proof"/>
+		<field table="sc_parcelland" name="area_tudi"/>
+		<field table="sc_parcelland" name="avg_price"/>
+		<field table="sc_parcelland" name="use_dp"/>
+		<field table="sc_parcelland" name="use_status"/>
+		<field table="sc_parcelland" name="area_ziyong"/>
+		<field table="sc_parcelland" name="area_lend"/>
+		<field table="sc_parcelland" name="area_rent"/>
+		<field table="sc_parcelland" name="area_invest"/>
+		<field table="sc_parcelland" name="area_danbao"/>
+		<field table="sc_parcelland" name="area_other"/>
+		<field table="sc_parcelland" name="value_ziyong"/>
+		<field table="sc_parcelland" name="value_lend"/>
+		<field table="sc_parcelland" name="value_rent"/>
+		<field table="sc_parcelland" name="value_invest"/>
+		<field table="sc_parcelland" name="value_danbao"/>
+		<field table="sc_parcelland" name="value_other"/>
+		<field table="sc_parcelland" name="lend_df_dp"/>
+		<field table="sc_parcelland" name="rent_df_dp"/>
+		<field table="sc_parcelland" name="description"/>
+		<field table="sc_parcelland" name="operator"/>
+		<field table="sc_parcelland" name="auditor"/>
+		<field table="sc_parcelland" name="accounted"/>
+		<field table="sc_parcelland" name="nothandle"/>
+		<field table="sc_parcelland" name="land_photo" />
+	</dataSource>
+
+
+	<!-- whole school summary data -->
+	<!-- base university info panel-->
+	<tabs id="campusTabs" layoutRegion="tabsPosition">
+		<tab name="univer">
+			<title translatable="true">XueXiaoGanKuang</title>
+		</tab>
+	</tabs>
+
+	<!-- Display records from the aggregated DataSource in a grid -->
+	<panel type="form" id="landPhoto" labelsPosition="top"
+		dataSource="asc-bj-usms-overall-parcelland-bl-whole_grid_parcelland"
+		showOnLoad="false" layoutRegion="schoolPosition">
+		<title translatable="true">Xiao Qu Tu</title>
+		<field table="sc_parcelland" name="land_code"
+			hidden="true" />
+		<field table="sc_parcelland" name="land_photo"
+			displayField="land_photo" hidden="true"/>
+		<!-- inline image display field -->
+		<field rowspan="3">
+            <html>
+                <img  id="land_photo" style="width:400px;height:140px"/>
+            </html>
+        </field>
+
+	</panel>
+	<panel type="grid" id="ascBjUsmsOverallBlWhole_blGrid"
+		dataSource="asc-bj-usms-overall-parcelland-bl-whole_grid_parcelland"
+		layoutRegion="parcelPosition">
+		<title translatable="true">XueXiao SuoYou ZongDi</title>
+		<sortField name="land_code" table="sc_parcelland"
+			ascending="true" />
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls"
+				panelId="ascBjUsmsOverallBlWhole_blGrid" />
+		</action>
+		<action id="fixedExportland">
+			<title translatable="true">fixedExportland</title>
+		</action>
+		<action id="fixedExportcaizheng">
+			<title translatable="true">fixedExportcaizheng</title>
+		</action>
+		<field id="showBlList" controlType="button" width="120">
+			<title translatable="true">ChaKanZongDiSuoYouJianZhu</title>
+		</field>
+<!-- 		<field name="xuhao" dataType="text"> -->
+<!-- 			<title translatable="true">xuhao</title> -->
+<!-- 		</field> -->
+		<field table="sc_parcelland" name="land_code"
+			controlType="link">
+			<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="assets_num" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="atype_code" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="atype_name" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="assets_name" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="measure_unit" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="srcid" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="date_build" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="cgzzxs_id" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="chanqx_sid" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="date_receipt" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="quansxz_id" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="land_photo" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="certificate" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="dihao" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="date_faz" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_land" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="parcelland_address" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_type" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_book" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_fiscal_alloc" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="business_income" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="ysw_income" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="other_funds" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="czxjy_funds" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="account_proof" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_tudi" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="avg_price" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="use_dp" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="use_status" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_ziyong" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_lend" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_rent" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_invest" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_danbao" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="area_other" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_ziyong" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_lend" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_rent" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_invest" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_danbao" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="value_other" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="lend_df_dp" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="rent_df_dp" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="description" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="operator" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="auditor" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="accounted" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+		<field table="sc_parcelland" name="nothandle" controlType="link">
+		<command type="callFunction" functionName="showLandPhoto" />
+		</field>
+	</panel>
+
+	<dataSource id="asc-bj-usms-overall-parcelland-bl-whole_grid_bl">
+		<table name="bl" role="main" />
+
+		<field table="bl" name="name" />
+		<field table="bl" name="bl_id" />
+		<!--
+		<field table="bl" name="parcelland_address" />
+		-->
+		<field table="bl" name="ownership_code" />
+		<field table="bl" name="land_code" />
+		<field table="bl" name="area_building_manual" showTotals="true" />
+		<field table="bl" name="construction_type" />
+		<field table="bl" name="use1" />
+		<field table="bl" name="count_upground" />
+		<field table="bl" name="count_underground" />
+		<field table="bl" name="area_underground" />
+		<field table="bl" name="count_rm_keyong" showTotals="true">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field table="bl" name="area_rm" showTotals="true" />
+		<field name="area_bl_comn_gp" showTotals="true">
+			<title translatable="true">Common Area</title>
+		</field>
+		<field table="bl" name="area_serv" showTotals="true" />
+		<parameter name="parcellandAddressRes" dataType="text" value="" />
+		<!--
+		<restriction type="sql"
+			sql="bl.parcelland_address=${parameters['parcellandAddressRes']}" />
+			-->
+	</dataSource>
+
+	<panel type="grid" id="ascBjUsmsOverallParcellandBlMain_blGrid"
+		dataSource="asc-bj-usms-overall-parcelland-bl-whole_grid_bl"
+		showOnLoad="false"
+		showCounts="true">
+		<title translatable="true">ZongDi SuoYou JianZhuWu</title>
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls"
+				panelId="ascBjUsmsOverallParcellandBlMain_blGrid" />
+		</action>
+
+		<sortField name="bl_id" table="bl" ascending="true" />
+		<field id="showBlInfo" controlType="button">
+			<title translatable="true">ChaKanXiangQing</title>
+		</field>
+		<field table="bl" name="name" />
+		<field table="bl" name="bl_id" />
+		<!--
+		<field table="bl" name="parcelland_address" />
+		-->
+		<field table="bl" name="ownership_code" />
+		<field table="bl" name="land_code" />
+		<field table="bl" name="area_building_manual" showTotals="true" />
+		<field table="bl" name="construction_type" />
+		<field table="bl" name="use1" />
+		<field table="bl" name="count_upground" />
+		<field table="bl" name="count_underground" />
+		<field table="bl" name="area_underground" />
+		<field table="bl" name="count_rm_keyong" showTotals="true">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field table="bl" name="area_rm" showTotals="true" />
+		<field name="area_bl_comn_gp" showTotals="true">
+			<title translatable="true">Common Area</title>
+		</field>
+		<field table="bl" name="area_serv" showTotals="true" />
+
+	</panel>
+
+	<js file="asc-bj-usms-overall-parcelland-bl.js" />
+
+</view>

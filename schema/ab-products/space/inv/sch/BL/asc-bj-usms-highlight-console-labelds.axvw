@@ -1,0 +1,69 @@
+
+
+<view version="2.0">
+
+  <!-- Divisions -->
+    <dataSource id="labelDivisionsDs" type="DrawingControlLabels">
+        <title>Divisions</title>
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+       
+        <field table="rm" name="dp_id" hidden="true"/>
+
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="dv_id" hidden="true"/>
+	    <field table="dv" name="dv_name"/>
+<!-- 	    <field table="dv" name="name"  hidden="${record['dv.name'] is null}"/> -->
+        <parameter name="occupancy" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="${parameters['occupancy']}"/>
+    </dataSource>
+  
+  
+  <!-- Names and the Room Categories -->
+  <dataSource id="labelCategoriesDs" type="DrawingControlLabels">
+    <title>Room Categories</title>
+    <table name="rm" role="main"/>
+    <table name="rmcat" role="standard"/>
+    <field name="bl_id" hidden="true"/>
+    <field name="fl_id" hidden="true"/>
+    <field name="rm_id"/>
+    <field table="rmcat" name="rmcat_name"/>
+
+      <parameter name="occupancy" dataType="verbatim" value="1=1"/>
+      <restriction type="sql" sql="${parameters['occupancy']}"/>
+  </dataSource>
+  
+  <!-- Names only -->
+  <dataSource id="labelNamesDs" type="DrawingControlLabels">
+    <title>Room ID</title>
+    <table name="rm" role="main"/>
+    <field name="bl_id" hidden="true"/>
+    <field name="fl_id" hidden="true"/>
+    <field name="rm_id"/>
+
+      <parameter name="occupancy" dataType="verbatim" value="1=1"/>
+      <restriction type="sql" sql="${parameters['occupancy']}"/>
+  </dataSource>
+  
+  <!-- Names, Room Type, and the Area -->
+  <dataSource id="labelDetailsDs" type="DrawingControlLabels">
+    <title>Details</title>
+    <table name="rm" role="main"/>
+	<table name="dv" role="standard"/>
+	<table name="rmtype" role="standard"/>
+    <field name="bl_id" hidden="true"/>
+    <field name="fl_id" hidden="true"/>
+    <field name="rm_id"/>
+   
+	<field table="rm" name="dv_id" hidden="true"/>
+	<field table="dv" name="dv_name"/>
+	<field table="rmtype" name="rmtype_name"/>
+	<field name="area"/>
+    <parameter name="occupancy" dataType="verbatim" value="1=1"/>
+    <restriction type="sql" sql="${parameters['occupancy']}"/>
+  </dataSource>
+
+</view>

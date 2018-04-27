@@ -1,0 +1,177 @@
+<view version="2.0">
+	<!--Title for Browser titlebar set-->
+	<preferences>
+		<pdfButton show="false" style="portrait" />
+	</preferences>
+
+	<layout file="drill-down.axvw" />
+
+	<message translatable="true" name="deleteRecord">The record will be deleted.</message>
+	<message translatable="true" name="noTimeError">The start time and end time must be entered</message>
+	<message translatable="true" name="wrongTimeScopeError">The start time must be earlier than end time</message>
+	<message translatable="true" name="outOfTimelineLimitsError">The selected resource times are outside of the Timeline limits. Reservations outside the timeline range won't be supported</message>
+	<message translatable="true" name="pendingReservationsError">There are pending reservations for that resource that may need to be modified or canceled if you make this resource non-reservable. Do you wish to continue?</message>
+	<message translatable="true" name="noUserToNotifyError">If you select the notification action when the room approval time expired, you must select the user to notify</message>
+
+	<title translatable="true">Resources</title>
+
+	<!-- Site DataSource -->
+	<dataSource id="siteDs">
+		<table name="site" role="main" />
+
+		<field name="ctry_id" table="site" required="false" />
+		<field name="site_id" table="site" required="false" />
+	</dataSource>
+
+	<!-- Resource DataSource -->
+	<dataSource id="resourcesDs">
+		<table name="resources" role="main" />
+
+		<field name="resource_id" table="resources" required="false" />
+		<field name="resource_name" table="resources" required="false" />
+	</dataSource>
+
+	<!--  Resource DataSource for Details -->
+	<dataSource id="resourceDetailsDs">
+		<table name="resources" role="main" />
+
+		<field name="resource_id" table="resources" required="false" />
+		<field name="resource_name" table="resources" required="false" />
+		<field name="resource_std" table="resources" required="false" />
+		<field name="resource_type" table="resources" required="false" />
+		<field name="site_id" table="resources" required="false" />
+		<field name="bl_id" table="resources" required="false" />
+		<field name="reservable" table="resources" required="false" />
+		<field name="approval" table="resources" required="false" />
+		<field name="room_service" table="resources" required="false" />
+		<field name="quantity" table="resources" required="false" />
+		<field name="default_calculation" table="resources" required="false" />
+		<field name="pre_block" table="resources" required="false" />
+		<field name="post_block" table="resources" required="false" />
+		<field name="day_start" table="resources" required="false" />
+		<field name="day_end" table="resources" required="false" />
+		<field name="max_days_ahead" table="resources" required="false" />
+		<field name="available_for_group" table="resources" required="false" />
+		<field name="room_service_group" table="resources" required="false" />
+		<field name="announce_days" table="resources" required="false" />
+		<field name="announce_time" table="resources" required="false" />
+		<field name="cancel_days" table="resources" required="false" />
+		<field name="cancel_time" table="resources" required="false" />
+		<field name="cost_unit" table="resources" required="false" />
+		<field name="cost_per_unit" table="resources" required="false" />
+		<field name="cost_late_cancel_pct" table="resources" required="false" />
+		<field name="doc_image" table="resources" required="false" />
+		<field name="group_name" table="resources" required="false" readOnly="false" />
+		<field name="approve_days" table="resources" required="false" />
+		<field name="eq_id" table="resources" required="false" />
+		<field name="action_approval_expired" table="resources" required="false" />
+		<field name="user_approval_expired" table="resources" required="false" />
+	</dataSource>
+
+	<!-- Site List Panel -->
+	<panel type="grid" id="sites_list" showOnLoad="true" selectionEnabled="true" layout="nestedLayout_1" region="north"
+		dataSource="siteDs">
+		<title translatable="true">Sites</title>
+
+		<field name="ctry_id" table="site" controlType="link">
+			<command type="showPanel" panelId="resources_list" />
+		</field>
+		<field name="site_id" table="site" required="false" controlType="link">
+			<command type="showPanel" panelId="resources_list" />
+		</field>
+
+		<sortField name="ctry_id" table="site" ascending="true" />
+		<sortField name="site_id" table="site" ascending="true" />
+	</panel>
+
+	<!-- Resource List Panel -->
+	<panel type="grid" id="resources_list" showOnLoad="false" selectionEnabled="true" dataSource="resourcesDs"
+		layout="nestedLayout_1" region="center">
+		<title translatable="true">Resources</title>
+		<action id="addNew">
+			<title translatable="true">Add New</title>
+			<command type="showPanel" panelId="resources_form" newRecord="true" />
+		</action>
+
+		<field name="resource_id" table="resources" required="false" controlType="link">
+			<command type="showPanel" panelId="resources_form" />
+		</field>
+		<field name="resource_name" table="resources" required="false" controlType="link">
+			<command type="showPanel" panelId="resources_form" />
+		</field>
+
+		<sortField name="resource_id" table="resources" ascending="true" />
+	</panel>
+	
+	<!-- Resource Form for Updating Resources -->
+	<panel type="form" id="resources_form" showOnLoad="false" columns="2" afterRefresh="resourcesFormAfterRefresh"
+		dataSource="resourceDetailsDs" layout="mainLayout" region="center">
+		<title translatable="true">Resources</title>
+
+		<action id="save">
+			<title translatable="true">Save</title>
+			<command type="callFunction" functionName="onSaveForm" />
+		</action>
+		<action id="delete">
+			<title translatable="true">Delete</title>
+			<command type="callFunction" functionName="ABRV_deleteRecord('resources_form', 'resources_list', false)"/>
+		</action>
+
+		<field name="resource_id" table="resources" required="true" />
+		<field name="max_days_ahead" table="resources" required="true" />
+		<field name="resource_name" table="resources" required="true" showSelectValueAction="true"/>
+		<field name="available_for_group" table="resources" required="false" />
+		<field name="resource_std" table="resources" required="true" />
+		<field name="room_service_group" table="resources" required="false" />
+		<field name="resource_type" table="resources" required="true" />
+		<field name="announce_days" table="resources" required="true" />
+		<field name="site_id" table="resources" required="false" />
+		<field name="announce_time" table="resources" required="true" />
+		<field name="bl_id" table="resources" required="false" />
+		<field name="cancel_days" table="resources" required="true" />
+		<field name="reservable" table="resources" required="true" />
+		<field name="cancel_time" table="resources" required="true" />
+		<field name="approval" table="resources" required="true" />
+		<field name="cost_unit" table="resources" required="true" />
+		<field name="room_service" table="resources" required="true" />
+		<field name="cost_per_unit" table="resources" required="true" />
+		<field name="quantity" table="resources" required="true" />
+		<field name="cost_late_cancel_pct" table="resources" required="true" />
+		<field name="default_calculation" table="resources" required="true" />
+		<field name="doc_image" table="resources" required="false" />
+		<field name="pre_block" table="resources" required="true" />
+		<field name="approve_days" table="resources" required="true" />
+		<field name="post_block" table="resources" required="true" />
+		<field name="group_name" table="resources" required="false" readOnly="false">
+			<action>
+				<title>...</title>
+				<command type="selectValue" 
+					fieldNames="resources.group_name"
+					selectFieldNames="afm_groupsforroles.group_name" 
+					visibleFieldNames="afm_groupsforroles.group_name"
+					restriction="afm_groupsforroles.role_name IN (SELECT DISTINCT role_name FROM afm_roleprocs WHERE activity_id='AbWorkplaceReservations' AND process_id='Approval')">
+					<title>Group Allowed to Approve</title>
+				</command>
+			</action>
+		</field>
+		<field name="day_start" table="resources" required="true" />
+		<field name="action_approval_expired" table="resources" required="true" onchange="onChangeAction()" />
+		<field name="day_end" table="resources" required="true" />
+		<field name="user_approval_expired" table="resources" required="false">
+			<action id="btnSelectUser">
+				<title>...</title>
+				<command type="selectValue" 
+					fieldNames="resources.user_approval_expired"
+					selectFieldNames="afm_users.user_name" visibleFieldNames="afm_users.user_name"
+					restriction="(afm_users.user_name IN (SELECT DISTINCT user_name FROM afm_userprocs WHERE activity_id='AbWorkplaceReservations' AND process_id='Approval')) OR (afm_users.role_name IN (SELECT DISTINCT role_name FROM afm_roleprocs WHERE activity_id='AbWorkplaceReservations' AND process_id='Approval'))">
+					<title>User to Notify if Approval Time Expired</title>
+				</command>
+			</action>
+		</field>
+		<field name="eq_id" table="resources" required="false" />
+	</panel>
+
+	<!-- JS functions specific to this page -->
+	<js file="ab-rr-common.js" />
+	<js file="ab-rr-resource.js" />
+</view>

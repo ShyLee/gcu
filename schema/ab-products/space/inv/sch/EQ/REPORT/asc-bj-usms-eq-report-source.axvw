@@ -1,0 +1,78 @@
+<view version="2.0">
+	<title translatable="true">dveqsource</title>	
+	<dataSource id="dv_DS">
+		<sql dialect="generic">
+			SELECT dv.dv_id as dvId
+			,dv.dv_name as dvname
+			,A.t_eq as gz_count,A.t_price as gz_sum
+			,B.t_eq as jz_count,B.t_price as jz_sum
+			,C.t_eq as zz_count,C.t_price as zz_sum
+			,D.t_eq as dr_count,D.t_price as dr_sum
+			,E.t_eq as qt_count,E.t_price as qt_sum
+			,F.t_eq as total_count,F.t_price as total_sum
+			FROM dv LEFT JOIN
+			(select dv_id , sum(price) as t_price,count(eq_id) as t_eq from eq where source = '1' group by dv_id) A on dv.dv_id = A.dv_id
+			LEFT JOIN
+			(select dv_id , sum(price) as t_price,count(eq_id) as t_eq from eq where source = '2' group by dv_id) B on dv.dv_id = B.dv_id
+			LEFT JOIN
+			(select dv_id , sum(price) as t_price,count(eq_id) as t_eq from eq where source = '3' group by dv_id) C on dv.dv_id = C.dv_id
+			LEFT JOIN
+			(select dv_id , sum(price) as t_price,count(eq_id) as t_eq from eq where source = '4' group by dv_id) D on dv.dv_id = D.dv_id
+			LEFT JOIN
+			(select dv_id , sum(price) as t_price,count(eq_id) as t_eq from eq where source not in ('1','2','3','4')  group by dv_id) E on dv.dv_id = E.dv_id
+			LEFT JOIN
+			(select dv_id , sum(price) as t_price,count(eq_id) as t_eq from eq group by dv_id) F on dv.dv_id = F.dv_id	 order by dv.dv_id		
+		</sql>
+		<table name="dv" role="main"/>
+		<sortField table="dv" name="dvId"/>
+		<field name="dvname" dataType="text">
+			<title translatable="true">dvid</title>
+		</field>
+		<field name="gz_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="gz_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="jz_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="jz_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="zz_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="zz_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="dr_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="dr_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="qt_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="qt_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="total_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="total_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+	</dataSource>
+	<panel type="grid" id="gridPanel" dataSource="dv_DS" >
+		<action id="exportXLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="gridPanel"/>
+		</action>
+		<action id="report">
+			<title>Report</title>
+		</action>
+	</panel>
+	<js file="asc-bj-usms-eq-report-source.js"/>
+</view>

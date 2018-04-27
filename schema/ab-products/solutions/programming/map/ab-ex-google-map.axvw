@@ -1,0 +1,41 @@
+
+<!-- Custom HTML View that displays Google Map -->
+<view version="2.0">
+    <title translatable="true">Custom HTML Component Example - Google Map Integration for Firefox</title>
+
+    <!-- Include google Map API -->
+    <js url="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false"/>
+    <!-- Include custom JS code to initialize the map -->
+    <js file="ab-ex-google-map.js"/>
+    <js file="ab-gmap-map.js"/>
+    
+    <!-- Report that displays the list of buildings -->
+    <dataSource id="googleMap_buildingDs">
+        <table name="bl"/>
+        <field name="bl_id"/>
+        <field name="address1"/>
+        <field name="address2"/>
+        <field name="ctry_id"/>
+        <restriction type="sql" sql="ctry_id='USA'"/>
+    </dataSource>
+    
+    <panel type="grid" id="googleMap_buildingGrid" dataSource="googleMap_buildingDs">
+        <title>Buildings</title>
+        <field name="bl_id"/>
+        <field name="address1"/>
+        <field name="address2"/>
+        <field name="ctry_id"/>
+        <!-- Per-row button to display the location of the building on the map -->
+        <field controlType="button" id="showOnMap">
+            <title>Show</title>
+        </field>
+    </panel>
+
+    <!-- Custom HTML content used to display a map -->
+    <panel type="html" id="googleMap_mapPanel">
+        <title>Location Map</title>
+        <html>
+            <div id="mapContainer" style="height:400px;width:600px;"/>
+        </html>
+    </panel>
+</view>

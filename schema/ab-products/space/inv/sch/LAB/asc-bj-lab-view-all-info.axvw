@@ -1,0 +1,59 @@
+<view version="2.0">
+	<title translatable="true">All Lab List</title>
+	<dataSource id="lab_ds">
+		<table name="sc_lab" role="main"/>
+		<table name="dv" role="standard"/>
+		<table name="dp" role="standard"/>
+		<field table="sc_lab" name="id"/>
+		<field table="sc_lab" name="bl_id"/>
+		<field table="sc_lab" name="comments"/>
+		<field table="sc_lab" name="date_in_service"/>
+		<field table="sc_lab" name="dp_id"/>
+		<field table="sc_lab" name="dv_id"/>
+		<field table="sc_lab" name="em_id"/>
+		<field table="sc_lab" name="em_name"/>
+		<field table="sc_lab" name="lab_id"/>
+		<field table="sc_lab" name="fl_id"/>
+		<field table="sc_lab" name="lab_function"/>
+		<field table="sc_lab" name="lab_max_num"/>
+		<field table="sc_lab" name="lab_name"/>
+		<field table="sc_lab" name="lab_sets_num"/>
+		<field table="sc_lab" name="lab_sets_pre_num"/>
+		<field table="sc_lab" name="rm_area"/>
+		<field table="sc_lab" name="rm_class"/>
+		<field table="sc_lab" name="rm_id"/>
+		<field table="sc_lab" name="option1"/>
+		<field table="dv" name="dv_name"/>
+		<field table="dp" name="dp_name"/>
+	</dataSource>
+	<panel type="grid"  id="labListPanel" dataSource="lab_ds" showOnLoad="true">
+		<title>Lab List</title>
+		<action id="export">
+			<title translatable="true">Export</title>
+			<command type="exportPanel" outputType="xls" panelId="labListPanel"/>
+		</action>
+		<field table="sc_lab" name="id" hidden="true"/>
+		<field table="sc_lab" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name"/>
+		<field table="sc_lab" name="dp_id" hidden="true"/>
+		<field table="dp" name="dp_name">
+			<title translatable="true">Lab Name</title>
+		</field>
+		<field table="sc_lab" name="lab_id"/>		
+		<field table="sc_lab" name="lab_name"/>
+		<field table="sc_lab" name="date_in_service"/>
+		<field table="sc_lab" name="bl_id" hidden="true"/>
+		<field table="sc_lab" name="fl_id" hidden="true"/>
+		<field table="sc_lab" name="option1">
+			<title translatable="true">Room</title>
+		</field>
+		<field table="sc_lab" name="rm_area"/>
+		<field table="sc_lab" name="rm_class"/>
+		<field table="sc_lab" name="lab_function"/>
+		<field table="sc_lab" name="lab_sets_num"/>
+		<field table="sc_lab" name="lab_sets_pre_num"/>
+		<field table="sc_lab" name="lab_max_num"/>
+		<field table="sc_lab" name="em_id" hidden="true"/>
+		<field table="sc_lab" name="em_name"/>
+	</panel>
+</view>

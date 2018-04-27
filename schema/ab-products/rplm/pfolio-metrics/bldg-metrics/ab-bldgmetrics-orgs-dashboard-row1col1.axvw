@@ -1,0 +1,46 @@
+
+<view version="2.0">
+	
+	
+	<js file="ab-bldgmetrics-orgs-dashboard-row1col1.js"/>
+		
+	<dataSource id="abBldgMetricsOrgsDashboardRow1Col1_ds">
+		<sql dialect="generic">
+			select 
+				sum(rm.cost)/sum( rm.area)  ${sql.as} cost_per_area,
+				sum( rm.area)/count(em.em_id)  ${sql.as} area_per_em,
+
+				sum((SELECT AVG(1000 * (cost_estimated + cost_est_cap)/cost_to_replace) FROM activity_log , rm ${sql.as} a WHERE  cost_to_replace > 0  AND activity_type = 'ASSESSMENT' AND activity_log.rm_id = a.rm_id and activity_log.fl_id = a.fl_id and activity_log.bl_id = a.bl_id))  ${sql.as} fci
+			from rm, em
+			where 
+				em.rm_id = rm.rm_id and em.fl_id = rm.fl_id and em.bl_id = rm.bl_id  and ${parameters['treeSelection']}
+				
+			
+		</sql>
+		<table name="rm" role="main"/>
+		<field table="rm" name="cost_per_area" dataType="number" decimals="2"/>
+		<field table="rm" name="area_per_em" dataType="number" decimals="2"/>
+		<field table="rm" name="fci" dataType="number" decimals="2"/>
+		<parameter name="treeSelection" dataType="verbatim" value="1=1"/>
+	</dataSource>
+	
+	
+	<panel type="columnReport" id="abBldgMetricsOrgsDashboardRow1Col1_report" columns="1" dataSource="abBldgMetricsOrgsDashboardRow1Col1_ds">
+		<action id="more">
+			<title translatable="true">More...</title>
+			<command type="callFunction" functionName="View.getOpenerView().controllers.get('abBldgMetricsOrgs_ctrl').tabsOrgsMetrics.selectTab('statisticsTab')"/>
+		</action>
+			
+		<field table="rm" name="cost_per_area">
+			<title translatable="true">Cost per Area</title>
+		</field>	
+		<field table="rm" name="area_per_em">
+			<title translatable="true">Area per Employee</title>
+		</field>	
+		<field table="rm" name="fci">
+			<title translatable="true">FCI</title>
+		</field>	
+			
+	</panel>
+	
+</view>

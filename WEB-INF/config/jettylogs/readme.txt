@@ -1,0 +1,1 @@
+StarTeam will not create this folder if there are no files.

@@ -1,0 +1,126 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-check-dv-view.js"/>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="70" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterLayout" containingLayout="mainLayout" region="center">
+        <west initialSize="40%" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterWestLayout" containingLayout="mainCenterLayout" region="west">
+        <north initialSize="30%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="sch_status"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckResDs">
+        <table name="eq_check_res" role="main"/>
+        <field table="eq_check_res" name="id"/>
+        <field table="eq_check_res" name="check_main_id"/>
+        <field table="eq_check_res" name="flds_name"/>
+        <field table="eq_check_res" name="flds_res"/>
+    </dataSource>
+     <dataSource id="ascBjUsmsEqCheckMainDs">
+        <table name="eq_check_main" role="main"/>
+        <field table="eq_check_main" name="check_main_id"/>
+        <field table="eq_check_main" name="check_date_start"/>
+        <field table="eq_check_main" name="check_date_end"/>
+        <field table="eq_check_main" name="pub_person"/>
+        <field table="eq_check_main" name="option1"/>
+        <field table="eq_check_main" name="is_done"/>
+        <sortField table="eq_check_main" name="check_main_id" ascending="false"/>
+    </dataSource> 
+    <dataSource id="ascBjUsmsEqCheckReportDs">
+        <table name="eq_check_report" role="main"/>
+        <field table="eq_check_report" name="audit_date"/>
+        <field table="eq_check_report" name="audit_option"/>
+        <field table="eq_check_report" name="audit_person"/>
+        <field table="eq_check_report" name="audit_status"/>
+        <field table="eq_check_report" name="check_report_id"/>
+        <field table="eq_check_report" name="check_sum"/>
+        <field table="eq_check_report" name="check_main_id"/>
+        <field table="eq_check_report" name="check_date"/>
+        <field table="eq_check_report" name="check_person"/>
+        <field table="eq_check_report" name="dv_id"/>
+        <field table="eq_check_report" name="dvleader_option"/>
+        <field table="eq_check_report" name="storeman_option"/>
+        <restriction type="sql" sql="dv_id='${user.employee.organization.divisionId}'"/> 
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckDs">
+        <table name="eq_check" role="main"/>
+        <field table="eq_check" name="approved"/>
+        <field table="eq_check" name="check_id"/>
+        <field table="eq_check" name="check_report_id"/>
+        <field table="eq_check" name="check_main_id"/>
+        <field table="eq_check" name="eq_id"/>
+        <field table="eq_check" name="price"/>
+        <field table="eq_check" name="dv_id"/>
+        <field table="eq_check" name="loss_option"/>
+        <restriction type="sql" sql="dv_id='${user.employee.organization.divisionId}'"/>
+    </dataSource>
+    
+    <panel type="form" id="consoleForm" dataSource="ascBjUsmsEqCheckMainDs" columns="4" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="btnShow">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="btnClear">
+            <title translatable="true">Clear</title>
+        </action>
+        <field/>
+        <field table="eq_check_main" name="option1" >
+            <title translatable="true">Check Year</title>
+        </field>
+        <field id="txtMessage" colspan="2">
+            <html>
+                <span translatable="true">please Insert Like '2012' de si wei shu zi </span>
+            </html>
+        </field>
+    </panel>
+    
+    <panel type="grid" id="eqCheckMainPanel" dataSource="ascBjUsmsEqCheckMainDs" layout="mainCenterWestLayout" region="north">
+        <title translatable="true">Check History List</title>
+        <field table="eq_check_main" name="check_main_id" controlType="link">
+            <command type="callFunction" functionName="showCheckReportPanel"/>
+        </field>
+        <field table="eq_check_main" name="check_date_start" controlType="link">
+             <command type="callFunction" functionName="showCheckReportPanel"/>
+        </field>
+        <field table="eq_check_main" name="check_date_end" controlType="link">
+             <command type="callFunction" functionName="showCheckReportPanel"/>
+        </field>
+        <field table="eq_check_main" name="is_done"/>
+    </panel>
+    
+    <panel type="grid" id="eqCheckReportPanel" showOnLoad="false" dataSource="ascBjUsmsEqCheckReportDs" layout="mainCenterWestLayout" region="center">        
+        <title translatable="true">Eq Check List By Dv</title>
+        <field table="eq_check_report" name="audit_status"/>
+        <field table="eq_check_report" name="check_main_id" controlType="link">
+            <command type="callFunction" functionName="eqCheckReportMethod"/>
+        </field>
+        <field table="eq_check_report" name="dv_id" controlType="link">
+            <command type="callFunction" functionName="eqCheckReportMethod"/>
+        </field>
+        <field table="eq_check_report" name="check_sum" controlType="link">
+            <command type="callFunction" functionName="eqCheckReportMethod"/>
+        </field>
+        <field table="eq_check_report" name="check_person"/>
+        <field table="eq_check_report" name="check_date"/>
+        
+        <field table="eq_check_report" name="dvleader_option"/>
+        <field table="eq_check_report" name="storeman_option"/>
+    </panel>
+    <panel type="grid" id="eqCheckPanel" showOnLoad="false" dataSource="ascBjUsmsEqCheckDs" layout="mainCenterLayout" region="center">
+        <title translatable="true">Eq Check By EqID</title>
+        <field table="eq_check" name="check_main_id"/>
+        <field table="eq_check" name="eq_id"/>
+        <field table="eq_check" name="price"/>
+        <field table="eq_check" name="dv_id"/>
+        <field table="eq_check" name="loss_option"/>
+        <field table="eq_check" name="approved"/>
+    </panel>
+</view>

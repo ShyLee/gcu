@@ -1,0 +1,136 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="13%" split="true"/>
+        <center id="rmcatPosition"/>
+    </layout>
+    <message name="total" translatable="true">Total</message>
+	
+    <dataSource id="ds_asc-bj-usms-overall-rmtype-main_grid_rmtype" type="grouping">
+    	<sql dialect="generic">
+    		SELECT in_rmtype.rm_cat,
+       		       in_rmtype.rm_type,
+                   '1' AS xuhao,
+                   SUM(in_rmtype.count_rm) AS count_rm,
+                   SUM(in_rmtype.rmtype_bl_area_jianzhu) AS area_jianzhu,
+                   SUM(in_rmtype.rmtype_bl_area_shiyong) AS area_shiyong 
+            FROM  ( SELECT rm.bl_id  AS bl_id,
+                          bl.gongtanlv,
+                          bl.area_building_manual,
+                          bl.area_rm,
+                          rm.rm_type AS rm_type,
+                          rm.rm_cat AS rm_cat,
+                          COUNT(rm.rm_id) AS count_rm,
+                          CASE WHEN bl.gongtanlv =1 THEN 0 ELSE SUM(rm.area)/(1-bl.gongtanlv) END AS rmtype_bl_area_jianzhu,
+                          SUM(rm.area) AS rmtype_bl_area_shiyong
+                    FROM rm,bl
+                    WHERE rm.bl_id=bl.bl_id 
+                          and bl.site_id=${parameters['siteIdRes']}
+                          and bl.acc_type !='yxz' and bl.site_id is not null
+                    GROUP BY rm.rm_cat,rm.rm_type,  rm.bl_id, bl.gongtanlv,bl.area_building_manual,bl.area_rm
+                    ORDER by rm.rm_type )  in_rmtype
+            GROUP BY '1',in_rmtype.rm_type,in_rmtype.rm_cat
+			
+        </sql>
+		<table name="rmtype" role="main" />
+		
+		<field table="rmtype" name="xuhao" groupBy="true" >
+			<title translatable="true">Xu Hao</title>
+        </field>
+		
+		<field table="rmtype" name="rm_type" groupBy="true" >
+			<title translatable="true">Room Type</title>
+        </field>
+        
+		<field name="total_count_rm" formula="SUM" dataType="number" 
+			baseField="rmtype.count_rm" decimals="0">
+			<title translatable="true">Room Count</title>
+		</field>
+		
+		
+		<field name="total_area_jianzhu" formula="SUM" dataType="number" 
+			baseField="rmtype.area_jianzhu" decimals="2" >
+			<title translatable="true">Structure Area</title>
+		</field>
+		
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="rmtype.area_shiyong" decimals="2">
+			<title translatable="true">Usable Area</title>
+		</field>
+		
+		<field name="percent_area" dataType="number"  size="6" decimals="2">
+			<title translatable="true">Zhan Bi</title>
+		</field>
+		
+		<sortField name="rm_type"  table="rmtype" ascending="true" /> 
+		<parameter name="siteIdRes" dataType="text" value=""/>
+	</dataSource>
+   	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-rmtype-main_basic_site">
+    	<table name="site" role="main"/>
+		<!--basic info-->
+		<field table="site" name="name"/>
+		<field table="site" name="site_id"/>
+		<field name="count_rmtype" dataType="number"  size="6" decimals="0">
+			<title translatable="true">Fang Wu Lei Xing shu</title>
+			<sql dialect="generic">
+    	          (select count (distinct rm.rm_type) from rm,bl where rm.bl_id=bl.bl_id  and bl.site_id=site.site_id)
+            </sql>
+		</field>
+	    <parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="site.site_id=${parameters['siteIdRes']}"/>
+    </dataSource>
+	
+	<!-- base university info panel-->
+    <panel type="columnReport" id="ascBjUsmsOverallRmtypeMain_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-rmtype-main_basic_site" columns="3"  layoutRegion="sitePosition">
+		<field table="site" name="site_id" hidden="true"/>
+		<field table="site" name="name"/>
+		<field name="count_rmtype" dataType="number"  size="6" decimals="0">
+			<title translatable="true">Fang Wu Lei Xing shu</title>
+		</field>
+		<field></field>
+		
+    </panel>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallRmtypeMain_rmtypeGrid" dataSource="ds_asc-bj-usms-overall-rmtype-main_grid_rmtype" layoutRegion="rmcatPosition">
+        <title>SuoYou Fang Wu LeiXing</title>
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallRmtypeMain_rmtypeGrid"/>
+		</action>
+		
+		<field table="rmtype" name="xuhao">
+			<title translatable="true">Xu Hao</title>
+        </field>
+		
+		<field table="rmtype" name="rm_type" >
+			<title translatable="true">Room Type</title>
+        </field>
+        
+		<field name="total_count_rm" formula="SUM" dataType="number" 
+			baseField="rmtype.count_rm" decimals="0">
+			<title translatable="true">Room Count</title>
+		</field>
+		
+		
+		<field name="total_area_jianzhu" formula="SUM" dataType="number" 
+			baseField="rmtype.area_jianzhu" decimals="2" >
+			<title translatable="true">Structure Area</title>
+		</field>
+		
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="rmtype.area_shiyong" decimals="2">
+			<title translatable="true">Usable Area</title>
+		</field>
+		
+		
+    </panel>
+	
+    
+    <js file="asc-bj-usms-overall-rmtype-main.js"/>
+	<js file="asc-bj-usms-overall-common.js"/>
+</view>

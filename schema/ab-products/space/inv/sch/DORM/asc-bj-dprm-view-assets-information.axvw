@@ -1,0 +1,78 @@
+<view version="2.0">
+    <layout id="main">
+        <north id="sushePositon" initialSize="22%" split="false"/>
+        <center id="zichanPositon"/>
+    </layout>   
+
+     <dataSource id="ds_rm">
+        <table name="rm" role="main"/>
+        <table name="sc_student" role="standard"/>
+        <field table="rm" name="bl_id"/>
+		<field table="rm" name="fl_id"/>
+		<field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_manual"/>
+        <field table="rm" name="kongxian" dataType="integer">
+            <sql dialect="generic">
+            	(rm.cap_em-
+				(SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ))
+            </sql>
+		</field>
+		<restriction type="sql" sql="1=1"/>
+    </dataSource>
+
+     <dataSource id="ds_eq">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+		<field table="eq" name="eq_name"/>
+		<field table="eq" name="eq_std"/>
+		<field table="eq" name="eq_type"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="asset_code"/>
+        <field table="eq" name="comments"/>
+<!-- 		<parameter name="blIdRes" dataType="text" value=""/> -->
+<!-- 		<parameter name="flIdRes" dataType="text" value=""/> -->
+<!-- 		<parameter name="rmIdRes" dataType="text" value=""/> -->
+<!-- 		<restriction type="sql" sql="eq.bl_id=${parameters['blIdRes']} and eq.fl_id=${parameters['flIdRes']}  -->
+<!-- 									and eq.rm_id=${parameters['rmIdRes']}"/> -->
+		<restriction type="sql" sql="1=1"/>
+    </dataSource>
+    <!--form/columnReport -->
+    <panel type="form" id="Grid1" dataSource="ds_rm" columns="3"  layoutRegion="sushePositon">
+    	<title translatable="true">sushe</title>
+        <field table="rm" name="bl_id" required="false" readOnly="true"/>
+		<field table="rm" name="fl_id" required="false" readOnly="true"/>
+		<field table="rm" name="rm_id" required="false" readOnly="true"/>
+        <field table="rm" name="rm_type" readOnly="true">
+        	<title translatable="true">susheleixing</title>
+        </field>
+        <field table="rm" name="cap_em" readOnly="true">
+            <title translatable="true">biaozhun</title>
+        </field>
+        <field table="rm" name="kongxian" readOnly="true">
+            <title translatable="true">kongxian</title>
+        </field>
+        <field table="rm" name="area" readOnly="true"/>
+        <field table="rm" name="area_manual" readOnly="true"/>
+    </panel>
+      
+    <panel type="grid" id="Grid2" dataSource="ds_eq" layoutRegion="zichanPositon">
+        <title translatable="true">zichan</title>
+        <field table="eq" name="eq_id"/>
+		<field table="eq" name="eq_name"/>
+		<field table="eq" name="eq_std"/>
+		<field table="eq" name="eq_type"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="asset_code"/>
+        <field table="eq" name="comments">
+        	<title translatable="true">beizhu</title>
+        </field>
+    </panel>
+    
+    <js file="asc-bj-dprm-view-assets-information.js"/>
+    <js file="ab-sp-common.js"/>
+</view>

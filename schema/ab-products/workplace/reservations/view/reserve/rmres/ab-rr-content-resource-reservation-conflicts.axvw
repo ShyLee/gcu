@@ -1,0 +1,48 @@
+<!-- Create Resolve Conflict dialog -->
+<view version="2.0">
+	<preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+	
+    <message translatable="true" name="msgBackExit">Are you sure that you want to cancel the process?</message>
+    <message translatable="true" name="msgGoBack">Warning, all resolved conflicts will be lost, Are you sure that you want to go back?</message>
+    <message translatable="true" name="errorTabs">This view can only be used as a part of the Room Reservations</message>
+    <message translatable="true" name="errNotFound">User form loaded but miniconsole not found</message>
+    <message translatable="true" name="date">Date Start</message>
+    <message translatable="true" name="resource">Resource Code</message>
+    <message translatable="true" name="quantity">Requested Quantity</message>
+    <message translatable="true" name="startTime">Time Start</message>
+    <message translatable="true" name="endTime">Time End</message>
+    <message translatable="true" name="reason">Reason</message>
+    <message translatable="true" name="status">Status of Resource</message>
+    <message translatable="true" name="btnGoBackTitle">Go Back</message>
+    <message translatable="true" name="btnPrintTitle">Print</message>
+    <message translatable="true" name="btnCancelTitle">Cancel</message>
+    <message translatable="true" name="btnNextTitle">Next</message>
+    <message translatable="true" name="btnEdit">Edit</message>
+    <message translatable="true" name="btnDelete">Delete</message>
+    
+    <panel type="html" id="rsConflictReport">
+        <title translatable="true">Resolve Conflicts</title>
+        <html>
+            <!-- The grid will be created inside this div element -->
+            <div id="rsReport_grid"/>
+        </html>
+    </panel>
+    
+    <panel id="actionListPanel" type="html">
+        <html>
+            <hr/>
+            <div id="actionList" style="margin-left:auto;margin-right:auto;text-align:center;/">
+                <input type="button" id="btnGoBack" onclick="onGoBack()" value="" class="perRowButton"/>
+                <!--<input type="button" id="btnPrint" onclick="onPrintConflicts()" value="" class="perRowButton"/>-->
+                <input type="button" id="btnCancel" onclick="onCancel()" value="" class="perRowButton"/>
+                <input type="button" id="btnNext" onclick="onConfirmNext()" value="" class="perRowButton"/>
+            </div>
+        </html>
+    </panel>
+    
+    <!-- JS functions specific to this tab     -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-content-resource-reservation-conflicts.js"/>
+</view>

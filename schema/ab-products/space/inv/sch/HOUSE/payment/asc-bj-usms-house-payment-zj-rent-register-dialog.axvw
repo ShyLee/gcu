@@ -1,0 +1,178 @@
+<view version="2.0">
+	<title>Payment Info</title>
+	<layout type="borderLayout" id="mainLayout">
+		<north id="baseInfoRegion" initialSize="45%"  split="true" />
+		<center id="paymentInfoRegion" />
+	</layout>
+	
+	<dataSource id="ZzfRentDs">
+		<table name="sc_zzfrent" role="main"/>
+		<field table="sc_zzfrent" name="rent_id"/>
+		<field table="sc_zzfrent" name="card_id"/>
+	</dataSource>
+	
+	<dataSource id="scZzfcardScZzfrentDetailsDs">
+		<table name="sc_zzfcard" role="main" />
+		<table name="bl" role="standard" />
+		<field table="bl" name="name" />
+<!--         申请信息 -->
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="date_register" />
+        <field table="sc_zzfcard" name="apply_reason" />
+        <field table="sc_zzfcard" name="apply_beizhu" />
+<!--         人员信息 -->
+        <field table="sc_zzfcard" name="card_type"/>
+        <field table="sc_zzfcard" name="is_em" />
+        <field table="sc_zzfcard" name="em_id" />
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" />
+        <field table="sc_zzfcard" name="sex"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="phone_home"/>
+        <field table="sc_zzfcard" name="email"/>
+        <field table="sc_zzfcard" name="dv_id"/>
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="date_work_begin"/>
+        <field table="sc_zzfcard" name="xueli" />
+        <field table="sc_zzfcard" name="zhiw_id" />
+        <field table="sc_zzfcard" name="zhic_id" />
+        <field table="sc_zzfcard" name="marriage_stat" />
+        <field table="sc_zzfcard" name="is_working_parents" />
+        <field table="sc_zzfcard" name="po_em_id" />
+        <field table="sc_zzfcard" name="po_name"/>
+        <field table="sc_zzfcard" name="po_identi_code" />
+        <field table="sc_zzfcard" name="po_dv_id"/>
+        <field table="sc_zzfcard" name="po_dv_name"/>
+        <field table="sc_zzfcard" name="curr_addr"/>
+<!--         房间信息 -->
+        <field table="sc_zzfcard" name="site_id" />
+        <field table="sc_zzfcard" name="pr_id" />
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="sc_zzfcard" name="unit_code"/>
+        <field table="sc_zzfcard" name="fl_id" />
+        <field table="sc_zzfcard" name="rm_id" />
+        <field table="sc_zzfcard" name="rm_cat"/>
+        <field table="sc_zzfcard" name="rmcat_name"/>
+        <field table="sc_zzfcard" name="rm_type"/>
+        <field table="sc_zzfcard" name="rmtype_name"/>
+        <field table="sc_zzfcard" name="is_left"/>
+        <field table="sc_zzfcard" name="is_low_high"/>
+        <field table="sc_zzfcard" name="huxing"/>
+        <field table="sc_zzfcard" name="chaoxiang"/>
+        <field table="sc_zzfcard" name="area"/>
+        <field table="sc_zzfcard" name="area_comn_rm"/>
+        <field table="sc_zzfcard" name="area_lease"/>
+        <field table="sc_zzfcard" name="eq_desc"/>
+        <field table="sc_zzfcard" name="weixiu_log"/>
+<!--         合同信息 -->
+        <field table="sc_zzfcard" name="lease_id"/>
+        <field table="sc_zzfcard" name="htqx"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="payment_to"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="is_day_first"/>
+        <field table="sc_zzfcard" name="rent_rate"/>
+        <field table="sc_zzfcard" name="cash_deposit"/>
+        <field table="sc_zzfcard" name="rent_type"/>
+        <field table="sc_zzfcard" name="rent_level"/>
+        <field table="sc_zzfcard" name="curr_rent_rate"/>
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="rent_pay_id"/>
+        <field table="sc_zzfcard" name="rent_pay_people"/>
+        <field table="sc_zzfcard" name="cash_clean"/>
+        <field table="sc_zzfcard" name="clean_people_id"/>
+        <field table="sc_zzfcard" name="clean_pay_people"/>
+        <field table="sc_zzfcard" name="sponsor"/>
+        <field table="sc_zzfcard" name="sponsor_name"/>
+        <field table="sc_zzfcard" name="sponsor_dv" />
+<!--     	入住登记信息 -->
+        <field table="sc_zzfcard" name="doc1"/>
+        <field table="sc_zzfcard" name="doc2"/>
+        <field table="sc_zzfcard" name="doc_lease" />
+        <field table="sc_zzfcard" name="rmsrc_situation"/>
+        <field table="sc_zzfcard" name="key_checkin"/>
+        <field table="sc_zzfcard" name="comment_checkin"/>
+<!--         后台必须信息 -->
+        <field table="sc_zzfcard" name="date_created" />
+        <field table="sc_zzfcard" name="date_payrent_last" />
+        <field table="sc_zzfcard" name="card_status" />
+        <field table="sc_zzfcard" name="payment_chg_id"/>
+        <field table="sc_zzfcard" name="payment_change"/>
+	</dataSource>
+	<dataSource id="sc_zzfrent_ds">
+        <table name="sc_zzfrent" role="main"/>
+        <field table="sc_zzfrent" name="rent_id"/>
+        <field table="sc_zzfrent" name="year"  />
+        <field table="sc_zzfrent" name="month"/>
+        <field table="sc_zzfrent" name="operator"/>
+        <field table="sc_zzfrent" name="area"/>
+        <field table="sc_zzfrent" name="count_rm"/>
+        <field table="sc_zzfrent" name="count_em"/>
+        <field table="sc_zzfrent" name="tot_rent"/>
+        <field table="sc_zzfrent" name="all_rm_count"/>
+        <field table="sc_zzfrent" name="all_em_count"/>
+        
+        <field table="sc_zzfrent" name="date_checkin_start"/>
+        <field table="sc_zzfrent" name="date_checkin_end"/>
+        
+        <field table="sc_zzfrent" name="card_id"/>
+        <field table="sc_zzfrent" name="yearmonth_start"/>
+        <field table="sc_zzfrent" name="yearmonth_end"/>
+        <field table="sc_zzfrent" name="is_day_first"/>
+        <field table="sc_zzfrent" name="need_rent"/>
+        <field table="sc_zzfrent" name="actual_rent"/>
+        <field table="sc_zzfrent" name="comments"/>
+        <field table="sc_zzfrent" name="payment_to"/>
+        <field table="sc_zzfrent" name="date_created"/>
+        <restriction type="sql" sql="sc_zzfrent.payment_to='house'"/>
+    </dataSource>
+	<panel id="addForm" dataSource="scZzfcardScZzfrentDetailsDs" columns="3" type="form" layoutRegion="baseInfoRegion">
+		<title>baseInfo</title>
+		<field table="sc_zzfcard" name="card_id" hidden="true" />
+		<field table="sc_zzfcard" name="em_name" readOnly="true" />
+		<field table="sc_zzfcard" name="em_id"  readOnly="true"/>
+		<field table="sc_zzfcard" name="identi_code" readOnly="true" />
+		<field table="sc_zzfcard" name="sex" readOnly="true" />
+		<field table="bl" name="name" readOnly="true" />
+		<field table="sc_zzfcard" name="bl_id" hidden="true" />
+		<field table="sc_zzfcard" name="fl_id" hidden="true" />
+		<field table="sc_zzfcard" name="rm_id" readOnly="true" />
+		<field table="sc_zzfcard" name="rent_period" readOnly="true" />
+		<field table="sc_zzfcard" name="date_checkin"  readOnly="true"/>
+		<field table="sc_zzfcard" name="date_checkout_ought"  readOnly="true"/>
+		<field table="sc_zzfcard" name="date_first_pay"  readOnly="true"/>
+		<field table="sc_zzfcard" name="rent_type" readOnly="true"/>
+		<field table="sc_zzfcard" name="curr_rent_rate"  readOnly="true"/>
+		<field table="sc_zzfcard" name="area_lease" readOnly="true" />
+		<field table="sc_zzfcard" name="desposit_payoff" readOnly="true" />
+		<field table="sc_zzfcard" name="cash_deposit" readOnly="true" />
+		<field table="sc_zzfcard" name="date_payrent_last" readOnly="true"/>
+		<field table="sc_zzfcard" name="is_day_first" hidden="true"/>
+		<field table="sc_zzfcard" name="payment_chg_id" hidden="true"/>
+		<field table="sc_zzfcard" name="payment_change" readOnly="true" colspan="2"/>
+	</panel>
+	<panel id="paymentPanel" dataSource="sc_zzfrent_ds" columns="2" type="form" layoutRegion="paymentInfoRegion">
+		<title>Payment Info</title>
+		<action id="calculate">
+			<title translatable="true">calculate</title>
+		</action>
+		<action id="save">
+			<title translatable="true">Save</title>
+		</action>
+		<field table="sc_zzfrent" name="rent_id" hidden="true"/>
+		<field table="sc_zzfrent" name="card_id" hidden="true"/>
+		<field table="sc_zzfrent" name="date_checkin_start" />
+        <field table="sc_zzfrent" name="date_checkin_end" />
+	    <field table="sc_zzfrent" name="yearmonth_start" readOnly="true"/>
+        <field table="sc_zzfrent" name="yearmonth_end"/>
+        <field table="sc_zzfrent" name="is_day_first" required="true" readOnly="true"/>
+        <field table="sc_zzfrent" name="need_rent" readOnly="true"/>
+        <field table="sc_zzfrent" name="actual_rent" required="true"/>
+        <field></field>
+        <field table="sc_zzfrent" name="comments" colspan="2"/>
+	</panel>
+	<js file="asc-bj-usms-house-payment-zj-rent-register-dialog.js"/>
+	<js file="asc-bj-usms-house-common.js"/>
+</view>

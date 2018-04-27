@@ -1,0 +1,87 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-add-search-summary-dialog.js"/>
+    <layout id="mainLayout" type="borderLayout">
+        <north initialSize="40%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqAddSearchSummaryAddEqDs">
+        <table name="add_eq" role="main"/>
+        <field table="add_eq" name="add_eq_id" />
+        <field table="add_eq" name="type"/>
+        <field table="add_eq" name="budget_item_id" />
+        <field table="add_eq" name="budget_id" />
+        <field table="add_eq" name="csi_id" />
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="brand"/>
+        <field table="add_eq" name="eq_std"/>
+        <field table="add_eq" name="use"/>
+        <field table="add_eq" name="dv_id"/>
+        <field table="add_eq" name="count"/>
+        <field table="add_eq" name="price" />
+        <field table="add_eq" name="total_price"/>
+        <field table="add_eq" name="units"/>
+        <field table="add_eq" name="date_purchased"/>
+        <field table="add_eq" name="supplier_agreement_id"/>
+        <field table="add_eq" name="date_manufactured"/>
+        <field table="add_eq" name="date_acceptance" />
+        <field table="add_eq" name="warranty_id" />
+        <field table="add_eq" name="policy_id"/>
+        <field table="add_eq" name="ctry_name" />
+        <field table="add_eq" name="ctry_id" />
+        <field table="add_eq" name="contract_id"/>
+        <field table="add_eq" name="comments"/>
+        <field table="add_eq" name="date_request"/>
+        <field table="add_eq" name="date_response"/>
+        <field table="add_eq" name="response_status"/>
+        <field table="add_eq" name="response_comments"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqSnDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="add_eq_id" />
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="comments"/>
+    </dataSource>
+     <panel type="form" id="BZDetialPanel" dataSource="ascBjUsmsEqAddSearchSummaryAddEqDs" layout="mainLayout" region="north" columns="3">
+        <title translatable="true">She bei bao zeng dan</title>
+        
+        <field table="add_eq" name="add_eq_id" readOnly="true"/>
+        <field table="add_eq" name="eq_name" readOnly="true"/>
+        <field table="add_eq" name="type" readOnly="true"/>
+        <field table="add_eq" name="csi_id" readOnly="true"/>
+        <field table="add_eq" name="dv_id" readOnly="true"/>
+        <field table="add_eq" name="units" readOnly="true"/>
+        <field table="add_eq" name="brand" readOnly="true"/>
+        <field table="add_eq" name="use" readOnly="true"/>
+        <field table="add_eq" name="ctry_name" readOnly="true"/> 
+        <field table="add_eq" name="count" readOnly="true"/>
+        <field table="add_eq" name="price" readOnly="true"/>
+        <field table="add_eq" name="total_price" readOnly="true"/>
+        <field table="add_eq" name="date_purchased" readOnly="true"/>
+        <field table="add_eq" name="date_acceptance" readOnly="true"/>
+    </panel>
+    <panel type="grid" id="SNPanelGrid" dataSource="ascBjUsmsEqSnDs" layout="mainLayout" region="center">
+        <title translatable="true">Eq Bao Zeng item List</title>
+        <field table="eq" name="add_eq_id" />
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="comments"/>
+    </panel>
+</view>

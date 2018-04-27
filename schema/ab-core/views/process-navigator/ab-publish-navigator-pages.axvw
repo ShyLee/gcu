@@ -1,0 +1,37 @@
+<view version="2.0">
+    <dataSource id="expressRoles_ds">
+        <table name="afm_processes" role="main"/>
+        <table name="afm_users" role="standard"/>
+        <field table="afm_processes" name="activity_id"/>
+        <field table="afm_processes" name="process_id"/>
+        <field table="afm_processes" name="dashboard_view"/>
+        <field table="afm_users" name="role_name"/>
+        <field table="afm_users" name="locale"/>
+        <field table="afm_users" name="home_page"/>
+         <sql dialect="generic">
+            SELECT DISTINCT afm_processes.activity_id,afm_processes.process_id,afm_processes.dashboard_view,afm_users.role_name,afm_users.home_page,afm_users.locale
+	    FROM afm_processes 
+	    INNER JOIN afm_users ON afm_users.role_name = afm_processes.process_id 
+            WHERE afm_users.home_page = 'express-navigator.html'
+	    AND afm_processes.activity_id = 'AbNavigationPages'
+	    AND afm_processes.dashboard_view IS NOT NULL
+	    ORDER BY afm_processes.process_id 
+        </sql>
+    </dataSource>
+
+    <panel type="grid" id="reportGridBaseline_grid" dataSource="expressRoles_ds">
+	<title translatable="true">Publish Navigation Pages by Role</title>
+	<field table="afm_processes" name="activity_id" hidden="true"/>
+	<field table="afm_processes" name="process_id" hidden="true"/>
+	<field table="afm_users" name="role_name"/>
+        <field table="afm_users" name="locale"/>
+        <field table="afm_processes" name="dashboard_view">
+	    <title translatable="true">Home Tab Descriptor</title>
+	</field>
+	
+	<field controlType="button">
+	    <title translatable="true">Publish</title>
+	    <command type="workflowRule" ruleId="AbCommonResources-generateNavigatorPagesForRole" showMessageAsPopup="true"/>
+	</field>
+    </panel>
+</view>

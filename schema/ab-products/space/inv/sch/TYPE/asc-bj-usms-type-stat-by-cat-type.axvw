@@ -1,0 +1,133 @@
+<view version="2.0">
+    <title translatable="true">View Room Type Summary by Room Category</title>
+    
+    <layout id="main">
+        <north id="rmcatPosition" initialSize="60%" split="true"/>
+        <center id="rmtypePosition"/>
+    </layout>
+    
+	<message name="total" translatable="true">Total</message>
+	<message name="secondPanelTitle" translatable="true">Room Category : {0}</message>
+	<message name="chartPanelTitle" translatable="true">Room Category : {0}</message>
+	
+   
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_ab-sc-rpt-rmtype-area-by-rmcat_grid_rmcat" >
+		<table name="rmcat" role="main" />
+		
+		<field table="rmcat" name="rm_cat" hidden="true" controlType="link">
+			<title translatable="true">Room Category</title>
+			<command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+		
+		<field table="rmcat" name="rmtype_name"  controlType="link">
+			<command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+		<field table="rmcat" name="area" controlType="link">
+			<title translatable="true">Total Usable Area</title>
+			<command type="callFunction" functionName="onRefreshSecondReport"/>
+		</field>
+		<field table="rmcat" name="area_jianzhu"  controlType="link">
+			<title translatable="true">Total Structure Area</title>
+			<command type="callFunction" functionName="onRefreshSecondReport"/>
+		</field>
+		
+		<field name="percent_area" dataType="number"  size="6" decimals="2" controlType="link">
+			<title translatable="true">Percentage Area</title>
+			<command type="callFunction" functionName="onRefreshSecondReport"/>
+			<sql dialect="generic">rmcat.area_jianzhu/(SELECT decode(SUM(ino.area_jianzhu),0,1) FROM rmcat ino)</sql>
+		</field>
+		
+		<restriction type="sql" sql="rmcat.area &gt; 0"/>
+		<sortField name="rm_cat" table="rmcat" ascending="true" />
+	</dataSource>
+	
+	<!-- datasource for rmtype report-->
+    <dataSource id="ds_ab-sc-rpt-rmtype-area-by-rmcat_grid_rmtype">
+		<table name="rmtype" role="main" />
+		<table name="rmcat" role="standard"/>
+		
+		<field name="rm_cat" table="rmtype" hidden="true"/>
+		<field name="rm_type" table="rmtype" hidden="true"/>
+		<field name="rmcat_name" table="rmcat"/>
+		<field name="rmtype_name" table="rmtype"/>
+		<field name="area" table="rmtype">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		<field name="tot_count" table="rmtype">
+			<title translatable="true">Room Count</title>
+		</field>
+		
+		<field name="percent_area" dataType="number" size="6" decimals="2">
+            <title translatable="true">Percentage Area</title>
+			<sql dialect="generic">rmtype.area_jianzhu/(SELECT decode(SUM(ino.area_jianzhu),0,1) FROM rmtype ino)</sql>
+        </field>
+		
+		<sortField name="rm_type" table="rmtype" ascending="true" />
+		
+		<restriction type="sql" sql="rmtype.rm_cat=${parameters['rmcatRes']}"/>
+		<parameter name="rmcatRes" dataType="text" value=""/>
+	</dataSource>
+	
+	<dataSource id="ds_ab-sc-rpt-rmtype-area-by-rmcat_cht_rmtype">
+		<table name="rmtype" role="main" />
+		
+		<field name="rm_cat" table="rmtype"/>
+		<field name="rm_type" table="rmtype">
+			<title translatable="true">Room Type</title>
+        </field>
+		
+		<field name="area" table="rmtype">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+	</dataSource>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="abScRptRmtypeAreabyRmcat_rmcatSumGrid" dataSource="ds_ab-sc-rpt-rmtype-area-by-rmcat_grid_rmcat" layoutRegion="rmcatPosition">
+        <title translatable="true">University All Room Category</title>
+		
+		<action id="export:XLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="abScRptRmtypeAreabyRmcat_rmcatSumGrid"/>
+		</action>	
+    </panel>
+	
+    <panel type="grid" id="abScRptRmtypeAreabyRmcat_rmtypeSumGrid" dataSource="ds_ab-sc-rpt-rmtype-area-by-rmcat_grid_rmtype" showOnLoad="false" layoutRegion="rmtypePosition">
+        <title translatable="true">Room Category</title>
+		<action id="showChart">
+			<title translatable="true">Show Chart</title>
+			<command type="callFunction" functionName="onShowRoomsSumInPieChart"/>
+		</action>
+		
+		<action id="XLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="abScRptRmtypeAreabyRmcat_rmtypeSumGrid"/>
+		</action>
+    </panel>
+
+	<panel 	id="abScRptRmtypeAreabyRmcatChartPie" 
+    		type="chart" 
+    		controlType="pieChart" 
+    		dataSource="ds_ab-sc-rpt-rmtype-area-by-rmcat_cht_rmtype" 
+    		showLegendOnLoad="true"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+			layoutRegion="rmtypePosition"
+			fillType="solid"
+			showOnLoad="false"
+			hidden="true">
+        <title translatable="true">Room Category</title>
+		
+        <groupingAxis dataSource="ds_ab-sc-rpt-rmtype-area-by-rmcat_cht_rmtype" table="rmtype" field="rmtype_name" labelRotation="45">
+            <title translatable="true">Room Type</title>
+        </groupingAxis>
+        <dataAxis dataSource="ds_ab-sc-rpt-rmtype-area-by-rmcat_cht_rmtype" table="rmtype" field="area" labelPosition="callout">
+            <title translatable="true">Bai Fen Bi</title>
+        </dataAxis>
+    </panel>
+	
+    
+    <js file="asc-bj-usms-type-stat-by-cat-type.js"/>
+</view>

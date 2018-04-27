@@ -1,0 +1,305 @@
+/*
+ * DBFReader Class for reading the records assuming that the given InputStream comtains DBF data.
+ * 
+ * This file is part of JavaDBF packege.
+ * 
+ * Author: anil@linuxense.com License: LGPL (http://www.gnu.org/copyleft/lesser.html)
+ * 
+ * $Id: DBFReader.java,v 1.8 2004/03/31 10:54:03 anil Exp $
+ */
+
+package com.archibus.service.school.javadbf;
+
+import java.io.*;
+import java.util.GregorianCalendar;
+
+/**
+ * DBFReader class can creates objects to represent DBF data.
+ * 
+ * This Class is used to read data from a DBF file. Meta data and records can be queried against
+ * this document.
+ * 
+ * <p>
+ * DBFReader cannot write anythng to a DBF file. For creating DBF files use DBFWriter.
+ * 
+ * <p>
+ * Fetching rocord is possible only in the forward direction and cannot re-wound. In such situation,
+ * a suggested approach is to reconstruct the object.
+ * 
+ * <p>
+ * The nextRecord() method returns an array of Objects and the types of these Object are as follows:
+ * 
+ * <table>
+ * <tr>
+ * <th>xBase Type</th>
+ * <th>Java Type</th>
+ * </tr>
+ * 
+ * <tr>
+ * <td>C</td>
+ * <td>String</td>
+ * </tr>
+ * <tr>
+ * <td>N</td>
+ * <td>Integer</td>
+ * </tr>
+ * <tr>
+ * <td>F</td>
+ * <td>Double</td>
+ * </tr>
+ * <tr>
+ * <td>L</td>
+ * <td>Boolean</td>
+ * </tr>
+ * <tr>
+ * <td>D</td>
+ * <td>java.util.Date</td>
+ * </tr>
+ * </table>
+ */
+public class DBFReader extends DBFBase {
+    
+    DataInputStream dataInputStream;
+    
+    DBFHeader header;
+    
+    /* Class specific variables */
+    boolean isClosed = true;
+    
+    /**
+     * Initializes a DBFReader object.
+     * 
+     * When this constructor returns the object will have completed reading the hader (meta date)
+     * and header information can be quried there on. And it will be ready to return the first row.
+     * 
+     * @param InputStream where the data is read from.
+     */
+    public DBFReader(final InputStream in) throws DBFException {
+        
+        try {
+            
+            this.dataInputStream = new DataInputStream(in);
+            this.isClosed = false;
+            this.header = new DBFHeader();
+            this.header.read(this.dataInputStream);
+            
+            /* it might be required to leap to the start of records at times */
+            final int t_dataStartIndex =
+                    this.header.headerLength - (32 + (32 * this.header.fieldArray.length)) - 1;
+            if (t_dataStartIndex > 0) {
+                
+                this.dataInputStream.skip(t_dataStartIndex);
+            }
+        } catch (final IOException e) {
+            
+            throw new DBFException(e.getMessage());
+        }
+    }
+    
+    @Override
+    public String toString() {
+        
+        final StringBuffer sb =
+                new StringBuffer(this.header.year + "/" + this.header.month + "/" + this.header.day
+                        + "\n" + "Total records: " + this.header.numberOfRecords
+                        + "\nHEader length: " + this.header.headerLength + "");
+        
+        for (final DBFField element : this.header.fieldArray) {
+            
+            sb.append(element.getName());
+            sb.append("\n");
+        }
+        
+        return sb.toString();
+    }
+    
+    /**
+     * Returns the number of records in the DBF.
+     */
+    public int getRecordCount() {
+        
+        return this.header.numberOfRecords;
+    }
+    
+    /**
+     * Returns the asked Field. In case of an invalid index, it returns a
+     * ArrayIndexOutofboundsException.
+     * 
+     * @param index. Index of the field. Index of the first field is zero.
+     */
+    public DBFField getField(final int index) throws DBFException {
+        
+        if (this.isClosed) {
+            
+            throw new DBFException("Source is not open");
+        }
+        
+        return this.header.fieldArray[index];
+    }
+    
+    /**
+     * Returns the number of field in the DBF.
+     */
+    public int getFieldCount() throws DBFException {
+        
+        if (this.isClosed) {
+            
+            throw new DBFException("Source is not open");
+        }
+        
+        if (this.header.fieldArray != null) {
+            
+            return this.header.fieldArray.length;
+        }
+        
+        return -1;
+    }
+    
+    /**
+     * Reads the returns the next row in the DBF stream.
+     * 
+     * @returns The next row as an Object array. Types of the elements these arrays follow the
+     *          convention mentioned in the class description.
+     */
+    public Object[] nextRecord() throws DBFException {
+        
+        if (this.isClosed) {
+            
+            throw new DBFException("Source is not open");
+        }
+        
+        final Object recordObjects[] = new Object[this.header.fieldArray.length];
+        
+        try {
+            
+            boolean isDeleted = false;
+            do {
+                
+                if (isDeleted) {
+                    
+                    this.dataInputStream.skip(this.header.recordLength - 1);
+                }
+                
+                final int t_byte = this.dataInputStream.readByte();
+                if (t_byte == this.END_OF_DATA) {
+                    
+                    return null;
+                }
+                
+                isDeleted = (t_byte == '*');
+            } while (isDeleted);
+            
+            for (int i = 0; i < this.header.fieldArray.length; i++) {
+                
+                switch (this.header.fieldArray[i].getDataType()) {
+                
+                    case 'C':
+                        
+                        final byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
+                        this.dataInputStream.read(b_array);
+                        recordObjects[i] = new String(b_array, 0, b_array.length, "GBK").trim();
+                        break;
+                    
+                    case 'D':
+                        
+                        final byte t_byte_year[] = new byte[4];
+                        this.dataInputStream.read(t_byte_year);
+                        
+                        final byte t_byte_month[] = new byte[2];
+                        this.dataInputStream.read(t_byte_month);
+                        
+                        final byte t_byte_day[] = new byte[2];
+                        this.dataInputStream.read(t_byte_day);
+                        
+                        try {
+                            
+                            final GregorianCalendar calendar =
+                                    new GregorianCalendar(
+                                        Integer.parseInt(new String(t_byte_year)),
+                                        Integer.parseInt(new String(t_byte_month)) - 1,
+                                        Integer.parseInt(new String(t_byte_day)));
+                            
+                            recordObjects[i] = calendar.getTime();
+                        } catch (final NumberFormatException e) {
+                            /* this field may be empty or may have improper value set */
+                            recordObjects[i] = null;
+                        }
+                        
+                        break;
+                    
+                    case 'F':
+                        
+                        try {
+                            
+                            byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
+                            this.dataInputStream.read(t_float);
+                            t_float = Utils.trimLeftSpaces(t_float);
+                            if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
+                                
+                                recordObjects[i] = new Float(new String(t_float));
+                            } else {
+                                
+                                recordObjects[i] = null;
+                            }
+                        } catch (final NumberFormatException e) {
+                            
+                            throw new DBFException("Failed to parse Float: " + e.getMessage());
+                        }
+                        
+                        break;
+                    
+                    case 'N':
+                        
+                        try {
+                            
+                            byte t_numeric[] = new byte[this.header.fieldArray[i].getFieldLength()];
+                            this.dataInputStream.read(t_numeric);
+                            t_numeric = Utils.trimLeftSpaces(t_numeric);
+                            
+                            if (t_numeric.length > 0 && !Utils.contains(t_numeric, (byte) '?')) {
+                                
+                                recordObjects[i] = new Double(new String(t_numeric));
+                            } else {
+                                
+                                recordObjects[i] = null;
+                            }
+                        } catch (final NumberFormatException e) {
+                            
+                            throw new DBFException("Failed to parse Number: " + e.getMessage());
+                        }
+                        
+                        break;
+                    
+                    case 'L':
+                        
+                        final byte t_logical = this.dataInputStream.readByte();
+                        if (t_logical == 'Y' || t_logical == 't' || t_logical == 'T'
+                                || t_logical == 't') {
+                            
+                            recordObjects[i] = Boolean.TRUE;
+                        } else {
+                            
+                            recordObjects[i] = Boolean.FALSE;
+                        }
+                        break;
+                    
+                    case 'M':
+                        // TODO Later
+                        recordObjects[i] = new String("null");
+                        break;
+                    
+                    default:
+                        recordObjects[i] = new String("null");
+                }
+            }
+        } catch (final EOFException e) {
+            
+            return null;
+        } catch (final IOException e) {
+            
+            throw new DBFException(e.getMessage());
+        }
+        
+        return recordObjects;
+    }
+}

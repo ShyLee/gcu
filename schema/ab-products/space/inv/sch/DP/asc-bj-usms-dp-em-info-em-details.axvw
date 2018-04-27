@@ -1,0 +1,123 @@
+<view version="2.0">
+
+    <layout id="main">
+        <noorth id="emphoto" autoScroll="true" initialSize="100%" />
+        <center/>
+    </layout>
+
+    <dataSource id="ds_ab-sp-loc-em_grid_em_details">
+        <table name="em" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+        <field table="em" name="sex"/>
+        <field table="em" name="em_number"/>
+        <field table="em" name="dv_id"/>
+        <field table="dv" name="name"/>
+        <field table="em" name="minzu"/>
+        <field table="em" name="dp_id"/>
+        <field table="dp" name="name"/>
+        <field table="em" name="zhengzhimianmao"/>
+        <field table="em" name="zhic_bz_id"/>
+        <field table="bl" name="site_id"/>
+        <field table="em" name="zaigangzhuangtai_id"/>
+        <field table="em" name="bl_id"/>
+        <field table="em" name="fl_id"/>
+        <field table="em" name="rm_id"/>
+        <field table="em" name="xueli"/>
+        <field table="em" name="em_std"/>
+        <field table="em" name="phone_home"/>
+        <field table="em" name="phone"/>
+        <field table="em" name="email"/>
+        <field table="em" name="date_work_begin"/>
+        <field table="em" name="address_emjt"/>
+        <field table="em" name="zhiw_id"/>
+        <field table="em" name="gangwei_id"/>
+        <field table="em" name="zhic_id"/>
+        <field table="em" name="biaozhunshenfen_id"/>
+        <field table="em" name="em_photo"/>   
+        <parameter name="blRes" dataType="verbatim" value=" 1=1 "/>
+        <restriction type="sql" sql="${parameters['blRes']}  "/>
+    </dataSource>
+
+	<panel type="form" id="empDetails" showOnLoad="true" labelsPosition="left" dataSource="ds_ab-sp-loc-em_grid_em_details" layoutRegion="emphoto" columns="2">
+       <field labelClass="labelFieldset" colspan="2">
+       		<title translatable="true"> Base Info</title>
+       </field>
+        <field table="em" name="em_id" hidden="true"/>
+        <field table="em" name="name"  readOnly="true"/>
+        <field table="em" name="sex"  readOnly="true"/>
+        <field table="em" name="zhic_id"  readOnly="true"/>
+        <field table="em" name="zhiw_id"  readOnly="true">
+            <title translatable="true">
+                em_zhiwufield
+            </title>
+        </field>
+        <field table="dv" name="name"  readOnly="true"/>
+        <field />
+        <field labelClass="labelFieldset" colspan="2">
+       		<title translatable="true"> Employee Detail</title>
+       </field>
+        <field table="em" name="em_id"  readOnly="true"/>
+        <field table="em" name="minzu"  readOnly="true"/>
+        <field table="dp" name="name"  readOnly="true"/>
+        <field table="em" name="zhengzhimianmao"  readOnly="true"/>
+
+        <field table="em" name="gangwei_id"  readOnly="true"/>
+        <field table="em" name="xueli"  readOnly="true"/>
+
+        <field table="em" name="biaozhunshenfen_id"  readOnly="true">
+            <title translatable="true">
+                em_biaozhunshenfenfield
+            </title>
+        </field>
+        <field table="em" name="zhic_bz_id"  readOnly="true">
+            <title translatable="true">
+                em_biaozhunzhichengfield
+            </title>
+        </field>
+
+        <field table="em" name="zaigangzhuangtai_id"  readOnly="true"/>
+        <field table="em" name="phone_home"  readOnly="true">
+            <title translatable="true">
+                em_gudingdianhuafield
+            </title>
+        </field>
+
+        <field table="em" name="phone"  readOnly="true">
+            <title translatable="true">
+                em_shoujifield
+            </title>
+        </field>
+        <field table="em" name="contingency_email"  readOnly="true">
+            <title translatable="true">
+                contingency_email
+            </title>
+        </field>    
+        <field table="em" name="date_work_begin"  readOnly="true">
+            <title translatable="true">
+                em_daoxiaogongzuoshijianfield
+            </title>
+        </field>
+        <field table="em" name="address_emjt" colspan="2"  readOnly="true">
+            <title translatable="true">
+                em_jiatingzhuzhifield
+            </title>
+        </field>
+       <field labelClass="labelFieldset" colspan="2">
+       		<title translatable="true"> Employee Photo</title>
+       </field>
+        <field table="em" name="em_id" hidden="true"  readOnly="true"/>
+        <field table="em" name="em_photo" hidden="true" displayField="image_field"  readOnly="true"/>
+        <field id="image_field" controlType="image" colspan="1" width="100" height="110"  readOnly="true">
+            <title>
+                Employee Photo Display
+            </title>
+        </field>
+    </panel>
+
+    <js file="asc-bj-usms-dp-em-info-em-details.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+</view>

@@ -1,0 +1,12 @@
+<view version="2.0">
+    <title translatable="true">Create Request</title>
+    
+    <tabs workflow="enforced" id="createRequestTabs" tabRefreshPolicy="refreshOnSelect">
+        <tab name="selectTab" selected="true" file="asc-bj-usms-eq-attach-add-request-select-tab.axvw">
+            <title translatable="true">Select Request Type</title>
+        </tab>
+        <tab name="requestTab" file="asc-bj-usms-eq-attach-add-request-info-tab.axvw" >
+            <title translatable="true">Request Info</title>
+        </tab>
+    </tabs>
+</view>

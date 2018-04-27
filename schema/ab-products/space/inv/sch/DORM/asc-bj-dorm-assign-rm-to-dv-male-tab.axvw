@@ -1,0 +1,301 @@
+<view version="2.0">
+    <layout id="main">
+        <west initialSize="22%" split="true"/>
+        <center/>
+    </layout>
+    
+    <layout id="nested_west" containingLayout="main" region="west">
+        <north id="treePositon" initialSize="40%" split="true"/>
+        <center id="assignPosition"/>
+    </layout>
+    
+    <layout id="nested_center" containingLayout="main" region="center">
+        <north  initialSize="80%" split="true"/>
+        <center id="assignmentsPosition"/>
+    </layout>
+    <layout id="nested_center_center" containingLayout="nested_center" region="north">
+        <west id="dwgPosition" initialSize="60%"/>
+        <center  id="legendPosition"/>
+    </layout>
+    <message name="confirmMessage" translatable="true">Switching floors will cause all changes to be lost.  Do you wish to continue?</message>
+    <message name="selectDv" translatable="true">Please select a dv</message>
+    
+    <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_tree_bl">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <parameter name="blId" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['blId']} AND bl.feormale in ('0','1') and EXISTS (SELECT 1 FROM rm left join rmcat on rmcat.rm_cat=rm.rm_cat WHERE rm.dwgname IS NOT NULL  AND rm.bl_id=bl.bl_id and rmcat.supercat!='VERT' and rmcat.rm_cat='301')"/>
+        <sortField table="bl" name="bl_id" ascending="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_tree_fl">
+       <sql dialect="generic">
+            SELECT
+            rm.bl_id ${sql.as} bl_id,
+            rm.fl_id ${sql.as} fl_id,
+            rm.dwgname ${sql.as} dwgname
+            FROM rm left join rmcat on rmcat.rm_cat=rm.rm_cat WHERE rm.dwgname IS NOT NULL  and rm.feormale in ('0','1') and rmcat.supercat!='VERT' GROUP BY rm.bl_id,rm.fl_id,rm.dwgname
+        </sql>
+        <table name="fl" role="main"/>
+        <field name="fl_id"/>
+        <field name="dwgname" hidden="true"/>
+        <sortField table="fl" name="fl_id" ascending="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmHighlight">
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type" hidden="true" />
+        <field table="dp" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" legendKey="true"/>
+        <field table="dp" name="dp_name"/>
+        <field table="dp" name="dp_id" hidden="true"/>
+        <field table="dv" name="hpattern_acad"/>
+        <field table="rmcat" name="occupiable"/>
+        <restriction type="sql" sql="rmcat.supercat!='VERT'"/>
+        <restriction type="sql" sql="rm.rm_cat='301'"/>
+    </dataSource>
+    
+     <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmLabel">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="dv_id" hidden="true"/>
+        <field table="rm" name="dp_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dp" name="dp_name" hidden="true"/>
+        <field table="rm" name="dwgname" hidden="true"/>
+        <field table="rm" name="stu_in_year" hidden="true"/>
+    </dataSource>
+    
+     <dataSource id="ds_ab-sp-asgn-em-to-rm_drawing_rmLabel1" type="DrawingControlLabels">
+        <title translatable="true">Category-Type</title>
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="cap_em" hidden="true"/>
+        <field table="rm" name="rm_cat" hidden="true"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rm" name="rm_type" hidden="true"/>
+        <field table="rmtype" name="rmtype_name"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_drawing_rmLabel2" type="DrawingControlLabels">
+        <title translatable="true">Standard</title>
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="count_em" dataType="integer">
+            <sql dialect="generic">
+			 ( SELECT COUNT(*) FROM em WHERE em.bl_id = rm.bl_id AND em.fl_id = rm.fl_id AND em.rm_id = rm.rm_id ) 
+            </sql>
+		</field>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="rm_std" hidden="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_drawing_rmLabel3" type="DrawingControlLabels">
+        <title translatable="true">Division-Department</title>
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" />
+        <field table="rm" name="stu_in_year"/>
+        <field table="rm" name="cap_em" />
+        <field table="rm" name="count_em" dataType="integer">
+            <sql dialect="generic">
+			  ( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ) 
+            </sql>
+		</field>
+		<field table="rm" name="stu_names" dataType="string">
+            <sql dialect="generic">
+			 ( SELECT LISTAGG(stu_name, ',') WITHIN GROUP(ORDER BY stu_name) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id group by rm.bl_id, rm.fl_id, rm.rm_id ) 
+            </sql>
+		</field>
+        <field table="rm" name="dp_id" hidden="true"/>
+        <field table="rm" name="rm_cat" hidden="true"/>
+        <field table="rmcat" name="rmcat_name"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_grid_rm">
+        <table name="rm" role="main"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-to-rm_legend" distinct="true">
+        <table name="rm" role="main"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_dp">
+        <table name="dp" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dp" name="dv_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="dp" name="dp_id"/>
+        <field table="dp" name="hpattern_acad"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-rm_occupiable" >
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em"/>
+        <field table="rmcat" name="occupiable"/>
+        <field table="rmcat" name="supercat"/>
+    </dataSource>
+    
+    <dataSource id="dv_assign_rm_info_ds">
+       <sql dialect="generic">
+		select a.count_stu ${sql.as} count_stu,
+		       b.count_assign ${sql.as} count_assign,
+		       a.count_stu - b.count_assign ${sql.as} count_unassign,
+		       c.count_rm ${sql.as} count_rm
+		  from (select count(*) count_stu
+		          from sc_student
+		         where dv_id = ${parameters['dvId']}
+		           and stu_in_year = ${parameters['stuInYear']}
+		           and stu_sex = '1'
+		           and status='1') a,
+		       (select nvl(sum(cap_em),0) ${sql.as} count_assign
+  					from rm
+		         where dv_id = ${parameters['dvId']}
+		           and stu_in_year = ${parameters['stuInYear']}
+		           and rm.rm_cat = '301'
+		           and rm.feormale='1') b,
+		       (select count(*) count_rm
+		          from rm
+		         where rm.rm_cat = '301'
+		           and dv_id = ${parameters['dvId']}
+		           and stu_in_year = ${parameters['stuInYear']}
+		           and rm.feormale='1') c
+        </sql>
+    	<table name="sc_student" role="main"/>
+        <field table="sc_student" name="count_stu" dataType="number" decimals="0">
+        	<title>Count Stu</title>
+        </field>
+        <field table="sc_student" name="count_assign" dataType="number" decimals="0">
+        	<title>Count Assign</title>
+        </field>
+        <field table="sc_student" name="count_unassign" dataType="number" decimals="0">
+        	<title>Count Unassign</title>
+        </field>
+        <field table="sc_student" name="count_rm" dataType="number" decimals="0">
+        	<title>Count Room</title>
+        </field>
+        <parameter name="dvId" dataType="text" value=""/>
+        <parameter name="stuInYear" dataType="text" value=""/>
+    </dataSource>
+    
+    <panel type="html" id="helpPanel" dataSource="none" layoutRegion="treePositon" showOnLoad="false"/>
+   
+    <panel type="tree" id="abSpAsgnDvDpToRm_blTree" dataSource="ds_ab-sp-asgn-dv-dp-to-rm_tree_bl" layoutRegion="treePositon">
+        <title translatable="true">Select Floor</title>
+        <event type="onClickNode">
+                <command type="callFunction" functionName="onBlTreeClick"/>
+        </event>
+        <panel type="tree" id="abSpAsgnDvDpToRm_flTree" dataSource="ds_ab-sp-asgn-dv-dp-to-rm_tree_fl">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="onFlTreeClick"/>
+            </event>
+        </panel>
+    </panel>
+    
+    <panel type="columnReport" id="dvInfoPanel" dataSource="dv_assign_rm_info_ds" layoutRegion="assignPosition" showOnLoad="false">
+    	<title></title>
+    </panel>
+    
+    <panel type="drawing" id="abSpAsgnDvDpToRm_drawingPanel" layoutRegion="dwgPosition" multiple="false" selectionMode="1" assignMode="2"
+     highlightDataSource="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmHighlight"
+     labelsDataSource="ds_ab-sp-asgn-em-to-rm_drawing_rmLabel3"
+     legendPanel="abSpAsgnRmcatToRm_legendGrid">
+        <title></title>
+        <action id="reverseAll">
+			<title translatable="true">Reverse All</title>
+		</action>
+        <action id="assignAll">
+			<title translatable="true">Assign All</title>
+		</action>
+     	<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpAsgnDvDpToRm_drawingPanel"/>
+		</action>
+<!-- 		<action id="showDwgView"> -->
+<!-- 			<title translatable="true">ShowDwg</title> -->
+<!-- 		</action> -->
+    </panel>
+    
+    <panel type="grid" controlType="reportGrid" id="abSpAsgnRmcatToRm_legendGrid" dataSource="ds_ab-sp-asgn-rmcat-to-rm_legend" layoutRegion="legendPosition" showOnLoad="false">
+        <title translatable="true">Legend</title>
+        <field table="legend" name="color" controlType="color"/>
+        <field table="legend" name="value" width="80%">
+            <title translatable="true">Value</title>
+        </field>
+    </panel>
+    
+    <panel type="grid" id="abSpAsgnDvDpToRm_dpAssignGrid" dataSource="ds_ab-sp-asgn-dv-dp-to-rm_grid_rm" layoutRegion="assignmentsPosition" showOnLoad="false" controlType="reportGrid" multipleSelectionEnabled="false">
+        <title translatable="true">Assignments</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="callFunction" functionName="saveAllChanges"/>
+        </action>
+<!--         <action id="return"> -->
+<!--             <title translatable="true">Return All</title> -->
+<!--             <command type="callFunction" functionName="returnAllRm"/> -->
+<!--         </action> -->
+        <action id="revert">
+            <title translatable="true">Revert All</title>
+            <command type="callFunction" functionName="resetAssignmentCtrls"/>
+        </action>
+<!--         <field id="remove" controlType="button" width="100"> -->
+<!--             <title translatable="true">remove</title> -->
+<!--         </field> -->
+        <field table="dv" name="dv_name">
+            <title translatable="true">Division</title>
+        </field>
+        <field table="composite" name="loc">
+            <title translatable="true">Location</title>
+        </field>
+        <field table="dp" name="dp_name" hidden="true">
+            <title translatable="true">Department</title>
+        </field>
+		<field table="rm" name="feormale">
+			<title>Feormale</title>
+		</field>
+		<field table="rm" name="cap_em">
+			<title>Capacity</title>
+		</field>
+		<field table="rm" name="dv_id" hidden="true"/>
+		<field table="rm" name="dp_id" hidden="true"/>
+		<field table="rm" name="bl_id" hidden="true"/>
+		<field table="rm" name="fl_id" hidden="true"/>
+		<field table="rm" name="rm_id" hidden="true"/>
+		<field table="rm" name="stu_in_year" hidden="true"/>
+    </panel>
+    <js file="asc-bj-dorm-assign-rm-to-dv-male-tab.js"/>
+    <js file="asc-bj-dorm-commons.js"/>
+</view>

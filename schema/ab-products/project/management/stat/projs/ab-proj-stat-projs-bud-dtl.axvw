@@ -1,0 +1,157 @@
+<view version="2.0" showLoadProgress="true">
+    <title>Capital Projects Budget vs Spend</title>
+    <js file="ab-proj-stat-projs-bud-dtl.js"/>
+    
+    <dataSource id="projStatProjsBudDtlDs0">        
+        <table name="project" role="main"/>
+        <sql dialect="generic">
+            SELECT project.project_id, project.project_name, 
+                project.date_start, project.date_end,
+                project.status, project.date_completed,
+                project.program_id, program.program_type,
+                project.project_type, project.cost_budget,
+                project.cost_paid, project.project_num,
+                project.contact_id, project.proj_mgr, project.dept_contact,
+                (CASE WHEN project.site_id IS NULL THEN bl.site_id ELSE project.site_id END) ${sql.as} site_id,
+                project.bl_id, ctry.geo_region_id, bl.ctry_id 
+                FROM project
+                LEFT OUTER JOIN program ON program.program_id = project.program_id
+                LEFT OUTER JOIN bl ON bl.bl_id = project.bl_id
+                LEFT OUTER JOIN site on site.site_id = project.site_id
+                LEFT OUTER JOIN ctry ON ctry.ctry_id = bl.ctry_id
+                WHERE ${parameters['projectsRestriction']}
+                AND ${parameters['projDateRestriction']}
+        </sql>
+        <field name="project_id" table="project"/>
+        <field name="project_name" table="project"/>
+        <field name="date_start" table="project"/>
+        <field name="date_end" table="project"/>
+        <field name="status" table="project"/>
+        <field name="date_completed" table="project"/>
+        <field name="program_id" table="project"/>
+        <field name="project_type" table="project"/>       
+        <field name="cost_budget" table="project" showTotals="true" decimals="0"/>
+        <field name="cost_paid" table="project" showTotals="true" decimals="0"/>
+        <field name="project_num" table="project"/>
+        <field name="contact_id" table="project"/>
+        <field name="proj_mgr" table="project"/>
+        <field name="dept_contact" table="project"/>
+        <field name="site_id" table="project"/>
+        <field name="bl_id" table="project"/>
+        <parameter name="projectsRestriction" dataType="verbatim" value=" 1=1 "/>
+        <parameter name="projDateRestriction" dataType="verbatim" value=" 1=1 "/>
+        <sortField name="project_id"/>
+    </dataSource> 
+    
+    <dataSource id="projStatProjsBudDtlDs1">
+        <table name="invoice" role="main"/>
+        <sql dialect="generic">
+            SELECT invoice.invoice_id, invoice.status, invoice.amount_tot_invoice,
+                invoice.amount_closed, invoice.currency_invoice, invoice.vn_id,
+                invoice.project_id, invoice.work_pkg_id, invoice.bl_id, 
+                invoice.date_sent, invoice.date_expected_rec,
+                invoice.contact_id_remit_to, invoice.contact_id_send_to, invoice.terms,
+                invoice.ac_id, invoice.qty_invoiced, invoice.qty_received, invoice.qty_accepted,
+                invoice.doc, invoice.description
+                FROM invoice 
+                LEFT OUTER JOIN project ON invoice.project_id = project.project_id
+                LEFT OUTER JOIN program ON program.program_id = project.program_id
+                LEFT OUTER JOIN bl ON bl.bl_id = project.bl_id
+                LEFT OUTER JOIN site on site.site_id = project.site_id
+                LEFT OUTER JOIN ctry ON ctry.ctry_id = bl.ctry_id
+                WHERE invoice.status IN ('ISSUED','CLOSED')
+                AND ${parameters['invoicesRestriction']}
+                AND ${parameters['invDateRestriction']}
+        </sql>
+        <field name="status" table="invoice"/>
+        <field name="invoice_id" table="invoice"/>
+        <field name="amount_tot_invoice" table="invoice" showTotals="true" decimals="0"/>
+        <field name="amount_closed" table="invoice" showTotals="true" decimals="0"/>
+        <field name="currency_invoice" table="invoice"/>
+        <field name="vn_id" table="invoice"/>
+        <field name="project_id" table="invoice"/>
+        <field name="work_pkg_id" table="invoice"/>
+        <field name="bl_id" table="invoice"/>
+        <field name="date_sent" table="invoice"/>
+        <field name="date_expected_rec" table="invoice"/>
+        <field name="contact_id_remit_to" table="invoice"/>
+        <field name="contact_id_send_to" table="invoice"/>
+        
+        <field name="terms" table="invoice" />
+        <field name="ac_id" table="invoice" />
+        <field name="qty_invoiced" table="invoice" />
+        <field name="qty_received" table="invoice" />
+        <field name="qty_accepted" table="invoice" />
+        <field name="doc" table="invoice" />
+        <field name="description" table="invoice" />
+        <parameter name="invoicesRestriction" dataType="verbatim" value=" 1=1 "/>
+        <parameter name="invDateRestriction" dataType="verbatim" value=" 1=1 "/>
+        <sortField name="invoice_id"/>
+    </dataSource> 
+    
+    <tabs id="projStatProjsBudDtlTabs" workflow="free">
+		    <tab name="projStatProjsBudDtl_tabProj" selected="true">
+		    <title>Projects</title>
+		    <panel id="projStatProjsBudDtl_projects" dataSource="projStatProjsBudDtlDs0" type="grid" showOnLoad="false">
+		        <title>Projects</title>
+		        <field name="project_id" table="project" controlType="link">
+		            <command type="openDialog" viewName="ab-proj-stat-projs-bud-dtl-proj.axvw"/>
+		        </field>
+		        <field name="program_id" table="project"/>
+		        <field name="project_type" table="project"/>
+		        <field name="cost_budget" table="project" showTotals="true" decimals="0"/>
+		        <field name="date_start" table="project"/>
+		        <field name="date_end" table="project"/>
+		        <field name="date_completed" table="project"/>
+		        <field name="status" table="project"/>
+		        <field name="site_id" table="project"/>
+		        <field name="bl_id" table="project"/>
+		        <field name="project_num" table="project"/>
+		        <field name="project_name" table="project"/>
+		    </panel>
+		    </tab>
+		    <tab name="projStatProjsBudDtl_tabInv">
+		    <title>Invoices</title>
+		    <panel id="projStatProjsBudDtl_invoices" dataSource="projStatProjsBudDtlDs1" type="grid" showOnLoad="false">
+		        <title>Invoices</title>
+		        <field name="invoice_id" table="invoice" controlType="link">
+		            <command type="openDialog" panelId="projStatProjsBudDtl_invoiceDetails"/>
+		        </field>    
+		        <field name="project_id" table="invoice"/>
+		        <field name="work_pkg_id" table="invoice"/>
+		        <field name="vn_id" table="invoice"/>
+		        <field name="amount_closed" table="invoice" showTotals="true" decimals="0"/>
+		        <field name="date_sent" table="invoice"/>
+		        <field name="status" table="invoice"/>
+		        <field name="amount_tot_invoice" table="invoice" showTotals="true" decimals="0"/>
+		        <field name="currency_invoice" table="invoice"/>
+		    </panel>
+		    </tab>
+    </tabs>
+    
+    <panel id="projStatProjsBudDtl_invoiceDetails" dataSource="projStatProjsBudDtlDs1" type="columnReport" columns="2" showOnLoad="false">
+        <title>Invoice Details</title> 
+        <field name="invoice_id" table="invoice"/>
+        <field name="status" table="invoice"/>
+        <field name="amount_tot_invoice" table="invoice" decimals="0"/>
+        <field name="project_id" table="invoice"/>
+        <field name="amount_closed" table="invoice" decimals="0"/>
+        <field name="work_pkg_id" table="invoice"/>
+        <field name="currency_invoice" table="invoice"/>
+        <field name="vn_id" table="invoice"/>
+        <field name="date_sent" table="invoice"/>
+        <field name="contact_id_send_to" table="invoice"/>
+        <field name="date_expected_rec" table="invoice"/>
+        <field name="contact_id_remit_to" table="invoice"/>
+        <field name="terms" table="invoice" />
+        <field name="ac_id" table="invoice" />
+        <field/><field/>
+        
+        <field name="qty_invoiced" table="invoice" />
+        <field name="doc" table="invoice" />
+        <field name="qty_received" table="invoice" />
+        <field name="description" table="invoice" rowspan="2"/>
+        <field name="qty_accepted" table="invoice" /> 
+    </panel>
+
+</view>

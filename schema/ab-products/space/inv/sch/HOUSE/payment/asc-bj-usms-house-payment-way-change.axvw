@@ -1,0 +1,231 @@
+<view version="2.0">
+    <title translatable="true">Change Payment</title>
+    <js file="asc-bj-usms-house-payment-way-change.js" />
+    <js file="asc-bj-usms-house-common.js"/>
+    
+    <layout type="borderLayout" id="mainLayout">
+        <north id="consoleRegion" initialSize="80" split="true" />
+        <center autoScroll="true" />
+    </layout>
+    <layout type="borderLayout" id="bodyLayout" containingLayout="mainLayout" region="center">
+        <west  initialSize="60%" split="true" />
+        <center id="right" autoScroll="true" />
+    </layout>
+    <layout type="borderLayout" id="bodyLayoutWest" containingLayout="bodyLayout" region="west">
+        <north id="gridRegion" initialSize="40%" split="true" />
+        <center id="changeLogRegion" autoScroll="true" />
+    </layout>
+	<dataSource id="sc_zzfcard_ds">
+        <table name="sc_zzfcard" role="main"/>
+        <table name="bl" role="standard"/>
+    <!--         申请信息 -->
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="date_register" />
+        <field table="sc_zzfcard" name="apply_reason" />
+        <field table="sc_zzfcard" name="apply_beizhu" />
+<!--         人员信息 -->
+        <field table="sc_zzfcard" name="card_type"/>
+        <field table="sc_zzfcard" name="is_em" />
+        <field table="sc_zzfcard" name="em_id" />
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" />
+        <field table="sc_zzfcard" name="sex"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="phone_home"/>
+        <field table="sc_zzfcard" name="email"/>
+        <field table="sc_zzfcard" name="dv_id"/>
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="date_work_begin"/>
+        <field table="sc_zzfcard" name="xueli" />
+        <field table="sc_zzfcard" name="zhiw_id" />
+        <field table="sc_zzfcard" name="zhic_id" />
+        <field table="sc_zzfcard" name="marriage_stat" />
+        <field table="sc_zzfcard" name="is_working_parents" />
+        <field table="sc_zzfcard" name="po_em_id" />
+        <field table="sc_zzfcard" name="po_name"/>
+        <field table="sc_zzfcard" name="po_identi_code" />
+        <field table="sc_zzfcard" name="po_dv_id"/>
+        <field table="sc_zzfcard" name="po_dv_name"/>
+        <field table="sc_zzfcard" name="curr_addr"/>
+<!--         房间信息 -->
+        <field table="sc_zzfcard" name="site_id" />
+        <field table="sc_zzfcard" name="pr_id" />
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="sc_zzfcard" name="unit_code"/>
+        <field table="sc_zzfcard" name="fl_id" />
+        <field table="sc_zzfcard" name="rm_id" />
+        <field table="sc_zzfcard" name="rm_cat"/>
+        <field table="sc_zzfcard" name="rmcat_name"/>
+        <field table="sc_zzfcard" name="rm_type"/>
+        <field table="sc_zzfcard" name="rmtype_name"/>
+        <field table="sc_zzfcard" name="is_left"/>
+        <field table="sc_zzfcard" name="is_low_high"/>
+        <field table="sc_zzfcard" name="huxing"/>
+        <field table="sc_zzfcard" name="chaoxiang"/>
+        <field table="sc_zzfcard" name="area"/>
+        <field table="sc_zzfcard" name="area_comn_rm"/>
+        <field table="sc_zzfcard" name="area_lease"/>
+        <field table="sc_zzfcard" name="eq_desc"/>
+        <field table="sc_zzfcard" name="weixiu_log"/>
+<!--         合同信息 -->
+        <field table="sc_zzfcard" name="lease_id"/>
+        <field table="sc_zzfcard" name="htqx"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="payment_to"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="is_day_first"/>
+        <field table="sc_zzfcard" name="rent_rate"/>
+        <field table="sc_zzfcard" name="cash_deposit"/>
+        <field table="sc_zzfcard" name="rent_type"/>
+        <field table="sc_zzfcard" name="rent_level"/>
+        <field table="sc_zzfcard" name="curr_rent_rate"/>
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="rent_pay_id"/>
+        <field table="sc_zzfcard" name="rent_pay_people"/>
+        <field table="sc_zzfcard" name="cash_clean"/>
+        <field table="sc_zzfcard" name="clean_people_id"/>
+        <field table="sc_zzfcard" name="clean_pay_people"/>
+        <field table="sc_zzfcard" name="sponsor"/>
+        <field table="sc_zzfcard" name="sponsor_name"/>
+        <field table="sc_zzfcard" name="sponsor_dv" />
+<!--     	入住登记信息 -->
+        <field table="sc_zzfcard" name="doc1"/>
+        <field table="sc_zzfcard" name="doc2"/>
+        <field table="sc_zzfcard" name="doc_lease" />
+        <field table="sc_zzfcard" name="rmsrc_situation"/>
+        <field table="sc_zzfcard" name="key_checkin"/>
+        <field table="sc_zzfcard" name="comment_checkin"/>
+<!--         后台必须信息 -->
+        <field table="sc_zzfcard" name="date_created" />
+        <field table="sc_zzfcard" name="date_payrent_last" />
+        <field table="sc_zzfcard" name="card_status" />
+        <field table="sc_zzfcard" name="payment_chg_id" />
+        <field table="sc_zzfcard" name="payment_change"/>
+<!--         缴费信息 -->
+        <field table="sc_zzfcard" name="all_payoff"/>
+        <field table="sc_zzfcard" name="actual_payoff"/>
+<!--         退房信息 -->
+        <field table="sc_zzfcard" name="eq_desc_chkout" />
+        <field table="sc_zzfcard" name="cause_checkout" />
+        <field table="sc_zzfcard" name="date_checkout_actual" />
+        <field table="sc_zzfcard" name="is_refund" />
+        <field table="sc_zzfcard" name="amount_months" />
+		<restriction type="sql" sql="sc_zzfcard.card_status='yrz' and sc_zzfcard.date_checkin is not null"/>
+    </dataSource>
+    
+    <dataSource id="sc_zzf_payment_ds">
+        <table name="sc_zzf_payment" role="main"/>
+        <field table="sc_zzf_payment" name="id" />
+        <field table="sc_zzf_payment" name="card_id" />
+        <field table="sc_zzf_payment" name="request_name" />
+        <field table="sc_zzf_payment" name="date_change" />
+        <field table="sc_zzf_payment" name="change_cause" />
+        <field table="sc_zzf_payment" name="new_payment" />
+        <field table="sc_zzf_payment" name="old_payment" />
+        <field table="sc_zzf_payment" name="rent_period_new" />
+        <field table="sc_zzf_payment" name="rent_period_old" />
+        <field table="sc_zzf_payment" name="handle_name" />
+        <field table="sc_zzf_payment" name="payment_notes"/>
+        <field table="sc_zzf_payment" name="date_payment_new"/>
+        <field table="sc_zzf_payment" name="date_payrent_last"/>
+        <field table="sc_zzf_payment" name="money_need"/>
+        <field table="sc_zzf_payment" name="date_pay"/>
+        <field table="sc_zzf_payment" name="doc1"/>
+        <field table="sc_zzf_payment" name="doc1"/>
+        <field table="sc_zzf_payment" name="doc2"/>
+        <sortfield table="sc_zzf_payment" name="id" ascending="false"/>
+     </dataSource>
+     
+     <panel id="consolePanel" type="console" dataSource="sc_zzfcard_ds" layoutRegion="consoleRegion" columns="3">
+        <title translatable="true">Filter</title>
+        <action>
+            <title translatable="true">Show</title>
+            <command type="showPanel" panelId="gridPanel"/>
+            <command type="showPanel" panelId="changeLogPanel" show="false"/>
+            <command type="showPanel" panelId="editPanel" show="false"/>
+        </action>
+        <action>
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="consolePanel"/>
+            <command type="showPanel" panelId="gridPanel"/>
+            <command type="showPanel" panelId="changeLogPanel" show="false"/>
+            <command type="showPanel" panelId="editPanel" show="false"/>
+        </action>
+        <field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="em_name" required="false"/>
+        <field table="sc_zzfcard" name="dv_name" />
+     </panel>
+     <panel type="grid" id="gridPanel" dataSource="sc_zzfcard_ds" layoutRegion="gridRegion">
+     	<title>Card List</title>
+		<field id="change" controlType="button">
+			<title>Change</title>
+		</field>
+     	<indexField table="sc_zzfcard" name="card_id"/>
+     	<field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="em_id"/>
+        <field table="sc_zzfcard" name="em_name"/>
+        <field table="sc_zzfcard" name="identi_code" hidden="true"/>
+        <field table="sc_zzfcard" name="dv_name"/>
+        <field table="sc_zzfcard" name="payment_to"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="rent_type"/>
+        <field table="sc_zzfcard" name="curr_rent_rate"/>
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+     </panel>
+     <panel type="grid" id="changeLogPanel" controlType="reportGrid" dataSource="sc_zzf_payment_ds" layoutRegion="changeLogRegion" showOnLoad="false">
+     	<title>Change Info</title>
+        <field table="sc_zzf_payment" name="id" hidden="true"/>
+        <field table="sc_zzf_payment" name="card_id" hidden="true"/>
+        <field table="sc_zzf_payment" name="request_name"/>
+        <field table="sc_zzf_payment" name="handle_name" hidden="true"/>
+        <field table="sc_zzf_payment" name="new_payment"/>
+        <field table="sc_zzf_payment" name="rent_period_new" />
+        <field table="sc_zzf_payment" name="old_payment"/>
+        <field table="sc_zzf_payment" name="rent_period_old" />
+        <field table="sc_zzf_payment" name="date_change"/>
+        <field table="sc_zzf_payment" name="payment_notes"/>
+        <field table="sc_zzf_payment" name="date_payment_new"/>
+        <field table="sc_zzf_payment" name="money_need"/>
+        <field table="sc_zzf_payment" name="date_pay"/>
+        <field table="sc_zzf_payment" name="change_cause"/>
+        <field table="sc_zzf_payment" name="doc1"/>
+        <field table="sc_zzf_payment" name="doc2"/>
+     </panel>
+     <panel type="form" id="editPanel" dataSource="sc_zzf_payment_ds" layoutRegion="right" showOnLoad="false" columns="2">
+     	<title>Edit Change Info</title>
+     	<action id="save">
+     		<title>save</title>
+     	</action>
+        <field table="sc_zzf_payment" name="id" hidden="true"/>
+        <field table="sc_zzf_payment" name="card_id" hidden="true"/>
+        <field table="sc_zzf_payment" name="request_name"  readOnly="true"/>
+        <field table="sc_zzf_payment" name="date_change" required="true"/>
+        <field table="sc_zzf_payment" name="handle_name"  readOnly="true" hidden="true"/>
+        <field table="sc_zzf_payment" name="old_payment" readOnly="true"/>
+        <field table="sc_zzf_payment" name="rent_period_old" readOnly="true"/>
+        <field table="sc_zzf_payment" name="new_payment" onchange="abChangePaymentController.changePaymentTo()"/>
+        <field table="sc_zzf_payment" name="rent_period_new" />
+        <field table="sc_zzf_payment" name="date_payment_new" required="true"/>
+        <field></field>
+        <field table="sc_zzf_payment" name="money_need" required="true"/>
+        <field></field>
+        <field table="sc_zzf_payment" name="date_pay" required="true"/>
+        <field></field>
+        <field table="sc_zzf_payment" name="payment_notes" readOnly="true"/>
+        <field table="sc_zzf_payment" name="date_payrent_last" readOnly="true" />
+        <field table="sc_zzf_payment" name="change_cause" required="true" colspan="2"/>
+     </panel>
+     
+      <panel type="form" id="editPanelDoc" dataSource="sc_zzf_payment_ds" layoutRegion="right" showOnLoad="false">
+     	<title>Fu jian Info</title>
+        <field table="sc_zzf_payment" name="id" hidden="true"/>
+        <field table="sc_zzf_payment" name="card_id" hidden="true"/>
+        <field table="sc_zzf_payment" name="doc1"/>
+        <field table="sc_zzf_payment" name="doc2"/>
+     </panel>
+</view>

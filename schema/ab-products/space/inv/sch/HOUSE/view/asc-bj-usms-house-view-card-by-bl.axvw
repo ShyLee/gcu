@@ -1,0 +1,306 @@
+<view version="2.0">
+    <title translatable="true">An jian zhu wu cha xun zhu zhai xiang qing</title>
+    <layout type="borderLayout" id="mainLayout">
+        <north id="top" initialSize="70" split="true"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout id="gridLayout" type="borderLayout" containingLayout="mainLayout"
+		region="center">
+		<west id="blGridLayout" initialSize="160"  split="true"   />
+		<center id="cardGridLayout"  />
+	</layout>
+	<layout id="formLayout" type="borderLayout" containingLayout="gridLayout"
+		region="center">
+		<north id="rmLayout" initialSize="25%"  split="true"   />
+		<center id="emLayout"  />
+		<south id="historyLayout"  initialSize="180"  split="true"   />
+	</layout>
+
+	<dataSource id="scZzfcardDs">
+        <table name="sc_zzfcard" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="bl" name="name"/>
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="sc_zzfcard" name="fl_id"/>
+        <field table="sc_zzfcard" name="em_id"/>
+        <field table="sc_zzfcard" name="em_name"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="identi_code"/>
+		<field table="sc_zzfcard" name="rm_id"/>
+		<field table="sc_zzfcard" name="dv_name"/>
+		<field table="sc_zzfcard" name="date_register"/>
+		<field table="sc_zzfcard" name="date_checkout_ought"/>
+		<field table="sc_zzfcard" name="date_checkout_actual"/>
+		<field table="sc_zzfcard" name="area_lease"/>
+		<field table="sc_zzfcard" name="curr_rent_rate"/>
+		<field table="sc_zzfcard" name="card_status"/>
+		<field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+        <field table="sc_zzfcard" name="curr_rent_rate"/>
+		<!-- <field name="month_rent"  dataType="number" decimals="0" >
+            <sql dialect="generic">sc_zzfcard.area_lease*sc_zzfcard.curr_rent_rate</sql>
+        </field> -->
+ 		<field name="price_lately" table="sc_zzfcard"/>
+ 		<field name="area_lease" table="sc_zzfcard"/>
+    </dataSource>
+   <dataSource id="blDs">
+        <table name="bl" role="main"/>
+        
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="site_id"/>
+        <field table="bl" name="name"/>
+        <field table="bl" name="site_id"/>
+       <restrictions> 
+       		<restriction type="sql"
+				sql="bl.bl_id in (select rm.bl_id from rm where rm.rm_type in
+				(SELECT rm.rm_type FROM rm,rmtype
+				WHERE
+				rm.rm_type=rmtype.rm_type and
+				rm.rm_cat=rmtype.rm_cat and
+				rmtype.rm_type
+				in
+				${parameters['rm_type']} ))" />
+		</restrictions>
+		<parameter name="rm_type" dataType="verbatim" value="('null')"/>
+		
+    </dataSource>
+ 	<panel id="queryCondition" type="console" dataSource="blDs" layoutRegion="top" columns="3">
+ 		<title>Cha xun tiao jian</title>
+ 		<action id="show">
+ 			<title>Show</title>
+ 		</action>
+ 		<action id="clear">
+			<title>Clear</title>
+			<command type="clearPanel" panelId="queryCondition" />
+		</action>
+ 		<field table="bl" name="site_id" >
+ 		</field>
+        <field table="bl" name="name" >
+         	<action>
+				<command type="selectValue" 
+					fieldNames="bl.name"
+					selectFieldNames="bl.name" 
+					visibleFieldNames="bl.bl_id,bl.name"
+					restriction = "bl.bl_id in (select bl_id from rm where rm_cat='303')"						
+					/>
+			</action>
+        </field>
+ 	</panel>
+ 	
+ 	<dataSource id="ds_ab-sp-def-loc-rm_tree_fl" distinct="true">
+        <table name="fl" role="main"/>
+        <table name="bl" role="standard"/>
+        
+        <field table="fl" name="bl_id" dataType="text"/>
+        <field table="fl" name="fl_id" dataType="text"/>
+        <field table="fl" name="name" dataType="text"/>
+        <sortField table="fl" name="fl_id" ascending="true"/>
+        
+        <field table="bl" name="name"/>
+        <restrictions> 
+       		<restriction type="sql"
+				sql="fl.fl_id in (select rm.fl_id from rm where rm.rm_type in
+				(SELECT rm.rm_type FROM rm,rmtype
+				WHERE
+				rm.rm_type=rmtype.rm_type and
+				rm.rm_cat=rmtype.rm_cat and
+				rmtype.rm_type
+				in
+				${parameters['rm_type']}))" />
+		</restrictions>
+		<parameter name="rm_type" dataType="verbatim" value="('null')"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_tree_rm">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="area_manual"/>
+        <field table="rm" name="ruzhu_status"/>
+        
+		<field table="bl" name="name"/>       
+        <sortField table="rm" name="rm_id" ascending="true"/>
+           <restrictions> 
+       		<restriction type="sql"
+				sql="rm.rm_type in
+				(SELECT rm.rm_type FROM rm,rmtype
+				WHERE
+				rm.rm_type=rmtype.rm_type and
+				rm.rm_cat=rmtype.rm_cat and
+				rmtype.rm_type
+				in
+				${parameters['rm_type']})" />
+		</restrictions>
+		<parameter name="rm_type" dataType="verbatim" value="('null')"/>
+    </dataSource>
+    
+ 	<panel type="tree" id="blTree" dataSource="blDs"  layoutRegion="blGridLayout" showOnLoad="false">
+ 		<title>Jian zhu wu lie biao</title>
+ 		<field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" />
+        <field table="bl" name="site_id"  hidden="true"/>
+        
+        <panel type="tree" id="fl_tree" dataSource="ds_ab-sp-def-loc-rm_tree_fl">
+        	<field table="fl" name="bl_id" dataType="text" hidden="true"/>
+            <field table="fl" name="fl_id"/>
+            <field table="bl" name="name" hidden="true"/>
+        </panel>
+        <panel type="tree" id="rm_tree" dataSource="ds_ab-sp-def-loc-rm_tree_rm">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="ascBjUsmsHouseQryRm.showRecord()"/>
+            </event>
+            <field table="rm" name="bl_id" hidden="true"/>
+            <field table="rm" name="fl_id" hidden="true"/>
+            <field table="rm" name="rm_id"/>
+            
+	        <field table="rm" name="name"/>
+	        <field table="rm" name="area_manual" hidden="true"/>
+	        <field table="rm" name="ruzhu_status"  hidden="true"/>
+			<field table="bl" name="name"  hidden="true"/>
+        </panel>
+ 	</panel>
+ 	
+ 	  <dataSource id="ds_ab-sp-def-loc-rm_rm">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <field table="bl" name="name"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_use"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_lease"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="chaoxiang"/>
+        <field table="rm" name="rm_photo"/>
+        <field table="rm" name="address"/>
+        <field table="rm" name="eq_desc"/>
+        <field table="rm" name="huxing"/>
+        <field table="rm" name="ruzhu_status" readOnly="true"/>
+        <field table="rm" name="unit_code"/>
+        <field table="rm" name="weixiu_log"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="count_house_all"/>
+        <field table="rm" name="count_house_kz"/>
+        <field table="rm" name="count_house_yz"/>
+        
+        <field table="rm" name="is_left"/>
+        <field table="rm" name="is_low_high"/>
+    </dataSource>
+    
+ 	<panel type="columnReport" id="abScZzfRmDetailInfoPanel" showOnLoad="false"  columns="4" dataSource="ds_ab-sp-def-loc-rm_rm" layoutRegion="rmLayout">
+        <title translatable="true">Fang Jian Xin Xi</title>
+        <field table="bl" name="name"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="unit_code"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="huxing"/>
+        <field table="rm" name="chaoxiang" />
+        <field table="rm" name="rm_cat" hidden="true"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rm" name="rm_type" hidden="true"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="is_left" />
+        <field table="rm" name="is_low_high"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="area_lease"/>
+        <field table="rm" name="count_house_all"/>
+        <field table="rm" name="count_house_yz"/>
+        <field table="rm" name="count_house_kz"/>
+        <field table="rm" name="address"/>
+        <field table="rm" name="eq_desc"/>
+        <field table="rm" name="weixiu_log"/>
+    </panel>
+    
+    <panel type="grid" id="abScZzfEmDetailInfoPanel" showOnLoad="false"  dataSource="scZzfcardDs" layoutRegion="emLayout" controlType="reportGrid">
+        <title translatable="true">Cheng zu ren Xin Xi</title>
+        <field table="sc_zzfcard" name="em_id"/>
+        <field table="sc_zzfcard" name="em_name"/>
+        <field table="sc_zzfcard" name="identi_code"/>
+		<field table="sc_zzfcard" name="phone"/>
+		<field table="sc_zzfcard" name="dv_name"/>
+		<field table="sc_zzfcard" name="date_checkin"/>
+		<field table="sc_zzfcard" name="date_checkout_ought" />
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+		<field table="sc_zzfcard" name="date_checkout_actual"/>
+		<field table="sc_zzfcard" name="curr_rent_rate"/>
+ 		<field table="sc_zzfcard" name="area_lease" />
+		<!-- <field  name="month_rent">
+			<title>Yue zu jin</title>
+		</field> -->
+    </panel>
+  
+	<dataSource id="scZzfcardHistoryDs">
+        <sql dialect="generic">
+    	    (SELECT 
+    	    sc_zzfcard.card_id ${sql.as} card_id,
+    	    sc_zzfcard.bl_id ${sql.as} bl_id,
+    	    sc_zzfcard.fl_id ${sql.as} fl_id,
+    	    sc_zzfcard.rm_id ${sql.as} rm_id,
+    	    sc_zzfcard.card_status ${sql.as} card_status,
+    	    sc_zzfcard.em_id ${sql.as} em_id,
+    	    sc_zzfcard.em_name ${sql.as} em_name,
+    	    sc_zzfcard.identi_code ${sql.as} identi_code,
+    	    sc_zzfcard.date_checkin ${sql.as} date_checkin,
+    	    sc_zzfcard.date_checkout_ought ${sql.as} date_checkout_ought,
+    	    sc_zzfcard.date_checkout_actual ${sql.as} date_checkout_actual,
+    	    sc_zzfcard.curr_rent_rate ${sql.as} curr_rent_rate,
+    	    sc_zzfcard.date_payrent_last ${sql.as} date_payrent_last,
+    	    sc_zzfcard.desposit_payoff ${sql.as} desposit_payoff,
+    	    sum_actual_payoff ${sql.as} sum_actual_payoff
+            FROM sc_zzfcard join (
+	           		select sc_zzfrent_details.card_id,sum(sc_zzfrent_details.actual_payoff) as sum_actual_payoff 
+	           		from sc_zzfrent_details
+	           		group by(sc_zzfrent_details.card_id)
+	           )  sc_zzfrent_details1
+            on sc_zzfcard.card_id=sc_zzfrent_details1.card_id(+)
+            )
+        </sql>
+        <table name="sc_zzfcard" role="main"/>
+		
+		<field table="sc_zzfcard" name="card_status"  dataType="text"/>
+		<field table="sc_zzfcard" name="bl_id"  dataType="text"/>
+		<field table="sc_zzfcard" name="fl_id"  dataType="text"/>
+		<field table="sc_zzfcard" name="rm_id"  dataType="text"/>
+        <field table="sc_zzfcard" name="card_id"   dataType="text" />
+        <field table="sc_zzfcard" name="em_id"  dataType="text"/>
+        <field table="sc_zzfcard" name="em_name"  dataType="text"/>
+        <field table="sc_zzfcard" name="identi_code"  dataType="text"/>
+		<field table="sc_zzfcard" name="date_checkin"  dataType="text"/>
+		<field table="sc_zzfcard" name="date_checkout_ought"  dataType="text"/>
+		<field table="sc_zzfcard" name="date_checkout_actual"  dataType="text"/>
+		<field table="sc_zzfcard" name="curr_rent_rate"  dataType="text"/>
+		<field table="sc_zzfcard" name="date_payrent_last"  dataType="text"/>
+		<field table="sc_zzfcard" name="desposit_payoff" dataType="number"/>
+		<field table="sc_zzfcard" name="sum_actual_payoff" dataType="number"/>
+    </dataSource>
+	
+ 	<panel type="grid" id="abScZzfRmUseHistoryGrid" controlType="reportGrid" dataSource="scZzfcardHistoryDs" layoutRegion="historyLayout" showOnLoad="false">
+        <title translatable="true">Ru Zhu Ji Lu</title>
+        <field table="sc_zzfcard" name="em_id"/>
+        <field table="sc_zzfcard" name="em_name"/>
+        <field table="sc_zzfcard" name="identi_code"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+		<field table="sc_zzfcard" name="date_checkout_ought"/>
+		<field table="sc_zzfcard" name="date_checkout_actual"/>
+		<field table="sc_zzfcard" name="date_payrent_last"/>
+		<field table="sc_zzfcard" name="curr_rent_rate"/>
+		<field table="sc_zzfcard" name="desposit_payoff"/>
+    </panel>
+ 	
+ 	<js file="asc-bj-usms-house-view-card-by-bl.js" />
+ 	<js file="asc-bj-usms-house-constant.js"/>
+</view>

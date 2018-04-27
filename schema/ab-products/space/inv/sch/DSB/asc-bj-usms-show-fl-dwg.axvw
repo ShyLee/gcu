@@ -1,0 +1,53 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+        <center id="dwgPosition" />
+    </layout>
+    <message name="drawingPanelTitle" translatable="true">Highlight Rooms by Division</message>
+    <message name="drawingPanelTitle1" translatable="true">Highlight Rooms for Division : {0}</message>
+   
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight" type="DrawingControlHighlight">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="dv_id" legendKey="true"/>
+        <field table="dv" name="hpattern_acad"/>
+        <parameter name="dvRes" dataType="verbatim" value=""/>
+        <restriction type="sql" sql="(rm.rm_cat IS NULL OR EXISTS (SELECT 1 FROM rmcat WHERE 
+         rmcat.used_in_calcs IN('all_totals', 'dp_comn_ocup_totals')
+         AND rmcat.rm_cat= rm.rm_cat))
+        ${parameters['dvRes']}"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel">
+        <table name="rm" role="main"/>
+	<table name="dv" role="standard"/>
+        <field name="bl_id" hidden="true"/>
+        <field name="fl_id" hidden="true"/>
+        <field name="rm_id"/>
+        <field name="name"/>
+        <field name="area"/>
+	<field table="dv" name="dv_name"/>
+    </dataSource>
+    
+    <panel type="drawing" id="abSpHlRmByDp_DrawingPanel" layoutRegion="dwgPosition"
+     highlightDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight"
+     labelsDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel">
+     	<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpHlRmByDp_DrawingPanel"/>
+		</action>
+		<action id="close">
+			<title translatable="true">Close</title>
+			<command type="closeDialog"/>
+		</action>
+        <title></title>
+
+    </panel>
+	
+    <js file="asc-bj-usms-show-fl-dwg.js"/>
+</view>

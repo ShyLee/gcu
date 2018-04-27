@@ -1,0 +1,12 @@
+<template-context>
+    <translatable-strings
+            logoutView = "login.axvw"
+            tabNames = "EXPRESS HOME; APPLICATIONS"
+            breadcrumbControlTitle = "Tasks"
+            searchBoxInitialText = "Find a form or report"
+            signOutTitle = "Sign Out"
+            helpTitle = "Help"
+            bannerTitle = "ARCHIBUS"
+            windowTitle = "Express Navigation"
+    />
+</template-context>

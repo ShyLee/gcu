@@ -1,0 +1,311 @@
+<view version="2.0">
+    <message name="drawingPanelTitle1" translatable="true">Highlight Room for Employee</message>
+	<message name="noImage" translatable="true">No Image</message>
+    
+    <layout id="main">
+        <west initialSize="26%" split="true" />
+        <center/>
+    </layout>
+	
+	<layout id="main_west" containingLayout="main" region="west">
+        <north id="consoleEm" initialSize="130" split="true" />
+        <center id="emTree"/>
+    </layout>
+    
+	<layout id="main_center" containingLayout="main" region="center">
+        <west  initialSize="28%" split="true" />
+        <center />
+    </layout>
+	
+	<layout id="main_center_west" containingLayout="main_center" region="west">
+        <north  initialSize="25%" split="true"/>
+        <center id="emDetailsPosition"/>
+    </layout>
+	<layout id="main_center_west_north" containingLayout="main_center_west" region="north">
+        <west  id="emBaseInfoPosition" initialSize="14%"/>
+        <center id="emphoto" autoScroll="true"/>
+    </layout>
+	 <layout id="nested_center_center_center" containingLayout="main_center" region="center">
+        <center id="dwgPosition"/>
+        <south id="rmEmPosition" initialSize="15%" split="true"/>
+    </layout>
+	
+	
+    <title translatable="true">Locate Employee</title>
+    
+    <dataSource id="ds_ab-sp-loc-em_drawing_rmHighlight">
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+		<field table="rm" name="dv_id" hidden="true"/>
+        <field table="rm" name="rm_id" legendKey="true"/>
+		<parameter name="emId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="dvId" dataType="verbatim" value="IS NOT NULL"/>
+		<restriction type="sql" sql=" EXISTS( SELECT 1 FROM em  WHERE  em.rm_id=rm.rm_id and em.bl_id=rm.bl_id and em.fl_id=rm.fl_id and em.em_id ${parameters['emId']} and (rm.dv_id ${parameters['dvId']} or rm.dv_id is null))  "/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-loc-em_drawing_rmLabel" type="DrawingControlLabels">
+        <table name="rm" role="main"/>
+		<table name="dv" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-loc-em_grid_em">
+        <table name="em" role="main"/>
+        <table name="rm" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="dv" role="standard"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="em" name="dp_id"/>
+		<field table="dp" name="dp_name"/>
+        <field table="em" name="name"/>
+		<field table="em" name="zhic_id"/>
+		<field table="em" name="area_rm"/>
+		<field table="rm" name="name"/>
+		<field table="rm" name="rm_cat"/>
+		<field table="rm" name="rm_type"/>
+		<field table="rm" name="area"/>
+		<field table="rm" name="count_em"/>
+		<field table="rm" name="dv_id"/>
+		<field table="rm" name="dp_id"/>
+		<field table="em" name="bl_id"/>
+		<field table="em" name="fl_id"/>
+		<field table="em" name="rm_id"/>
+		<field table="rm" name="dwgname"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-loc-em_grid_em_details" > 
+		<table name="em" role="main"/>
+		<table name="bl" role="standard"/>
+		<table name="dv" role="standard"/>
+		<table name="dp" role="standard"/>
+		<field table="em" name="em_id"/>
+		<field table="em" name="name"/>
+		<field table="em" name="sex" />
+		<field table="em" name="em_number"/>
+		<field table="em" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="em" name="minzu"/>
+		<field table="dp" name="dp_name" />
+		<field table="em" name="zhengzhimianmao"/>
+		<field table="em" name="zhic_bz_id" />
+		<field table="bl" name="site_id" />
+		<field table="em" name="zaigangzhuangtai_id"/>
+		<field table="em" name="bl_id" />
+		<field table="em" name="fl_id" />
+		<field table="em" name="rm_id" />
+		<field table="em" name="xueli" />
+		<field table="em" name="em_std" />
+		<field table="em" name="phone_home" />
+		<field table="em" name="phone"/>
+		<field table="em" name="email"/>
+		<field table="em" name="date_work_begin"/>
+		<field table="em" name="address_emjt" />
+		<field table="em" name="zhiw_id"  />
+		<field table="em" name="gangwei_id"  />
+		<field table="em" name="zhic_id"  />
+		<field table="em" name="biaozhunshenfen_id"  />
+		
+    </dataSource>
+    
+	<dataSource id="em_DS">
+        <table name="em" role="main"/>
+        <field table="em" name="em_id"/>
+		<field table="em" name="image_file"/>
+		<field table="em" name="name"/>
+		<field table="em" name="dv_id"/>
+		<field table="em" name="dp_id"/>
+		<field table="em" name="zhic_id"/>
+    </dataSource>
+    
+	 <panel id="consolePanel" type="console" dataSource="em_DS" layoutRegion="consoleEm">
+        <title translatable="true">search restriction</title>
+        <action id="refresh">
+            <title translatable="true">Refresh</title>
+        </action>	
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel"   panelId="consolePanel"/>
+        </action> 
+        <field table="em" name="name"/>
+        <field table="em" name="dv_id"/>
+        <field table="em" name="dp_id"/>
+    </panel>
+    
+    <panel type="grid" id="locateEmployee_employees"  dataSource="ds_ab-sp-loc-em_grid_em" layoutRegion="emTree" >
+        <title translatable="true">Employees List</title>
+        <action id="editEmp">
+            <title translatable="true">Edit JiaoZhiGong</title>
+            <command type="openDialog" viewName="asc-bj-usms-data-def-em.axvw"/>
+        </action>
+        		
+        <sortField table="em" name="dv_id" ascending="true"/>
+        <indexField table="em" name="em_id"/>
+		<field name="em_id" table="em"  hidden="true"/>
+		<field name="bl_id" table="em"  hidden="true"/>
+		<field name="fl_id" table="em"  hidden="true"/>
+		<field name="rm_id" table="em"  hidden="true"/>
+		<field name="name" table="em"  controlType="link">
+          <command type="callFunction" functionName="showRmOfEm(this)"/>
+        </field>
+		<field name="dv_name" table="dv"  controlType="link">
+          <command type="callFunction" functionName="showRmOfEm(this)"/>
+        </field>
+		<field name="dp_name" table="dp"  controlType="link">
+          <command type="callFunction" functionName="showRmOfEm(this)"/>
+        </field>
+		<field name="zhic_id" table="em"  controlType="link">
+          <command type="callFunction" functionName="showRmOfEm(this)"/>
+        </field>
+		
+		<field name="dv_id" table="em"  hidden="true"/>
+    </panel>
+    
+	
+    <panel type="drawing" id="locateEmployee_cadPanel" layoutRegion="dwgPosition"
+     highlightDataSource="ds_ab-sp-loc-em_drawing_rmHighlight"
+     labelsDataSource="ds_ab-sp-loc-em_drawing_rmLabel"
+	 showOnLoad="false"
+     >
+        <title translatable="true">gaoliangyuangongsuozaifangjian</title>
+    </panel>
+	
+     <panel type="form" id="emphoto" labelsPosition="top"  dataSource="em_DS" layoutRegion="emphoto" showOnLoad="false">
+   		<title translatable="true">Employee Photo</title>
+		<field table="em" name="em_id" hidden="true"/>
+		<field table="em" name="image_file" hidden="true"  />		 
+		<field>
+			<title>Employee Photo Display</title>
+			<html>
+				<img alt="Employee Photo" id="em_photo" width="100"
+					height="110" style="display:none;" />
+			</html>
+		</field>
+    </panel>
+	<panel type="columnReport" id="empBaseInfo" columns="1" dataSource="ds_ab-sp-loc-em_grid_em_details" layoutRegion="emBaseInfoPosition" showOnLoad="false">
+		<title translatable="true">Base Info</title>
+		<field table="em" name="em_id"  hidden="true"/>
+		<!--row 1-->
+		<field table="em" name="name"/>
+		<field table="em" name="sex"/>
+        <field table="em" name="zhic_id"/>
+		<field table="em" name="zhiw_id"  >
+			<title translatable="true">em_zhiwufield</title>
+		</field>
+		<field table="dv" name="dv_name"/>
+<!-- 		<field table="em" name="dv_id"  /> -->
+	</panel>	
+    <panel type="columnReport" id="empDetails" columns="1" dataSource="ds_ab-sp-loc-em_grid_em_details" layoutRegion="emDetailsPosition" showOnLoad="false">
+        <title translatable="true">Employees Details</title>
+		<!--row 1-->
+		<field table="em" name="em_id" />
+        <field table="em" name="minzu"  />
+		
+		<!--row 2-->
+		<field table="dv" name="dv_name" />
+<!-- 		<field table="em" name="dp_id" /> -->
+		<field table="em" name="zhengzhimianmao"  />
+		
+		<!--row 3-->
+		<field table="em" name="gangwei_id"  />
+		<field table="em" name="xueli" />
+		
+		<!--row 4-->
+		<field table="em" name="biaozhunshenfen_id"   >
+			<title translatable="true">em_biaozhunshenfenfield</title>
+		</field>
+		<field table="em" name="zhic_bz_id"  >
+			<title translatable="true">em_biaozhunzhichengfield</title>
+		</field>
+		
+		<!--row 5-->
+		<field table="em" name="zaigangzhuangtai_id"  /> 
+		 <field table="em" name="phone_home"  >
+			<title translatable="true">em_gudingdianhuafield</title>
+		</field>
+		
+		<!--row 6-->
+		<field table="em" name="phone"   >
+			<title translatable="true">em_shoujifield</title>
+		</field>
+		<field table="em" name="email"   />
+		
+		<!--row 7-->
+		<field table="em" name="date_work_begin"  >
+			<title translatable="true">em_daoxiaogongzuoshijianfield</title>
+		</field>
+		<field/>
+		
+		<!--row 8-->
+		<field table="em" name="address_emjt"   colspan="2"  >
+			<title translatable="true">em_jiatingzhuzhifield</title>
+		</field>
+    </panel>
+    
+    <dataSource id="ds_ab-sp-loc-em_grid_em_rep">
+        <table name="em" role="main"/>
+		<table name="rm" role="standard"/>
+		
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+        <field table="em" name="bl_id"/>
+        <field table="em" name="fl_id"/>
+        <field table="em" name="rm_id"/>
+        <field table="rm" name="rm_use"/>
+        <field table="rm" name="rmuse_name" dataType="text">
+        	 <sql dialect="generic">
+        	 	(select rmuse_name from rmuse where rmuse.rm_use = rm.rm_use)
+        	 </sql>
+        </field>
+        <field table="rm" name="rm_cat" dataType="text"/>
+        <field table="rm" name="rmcat_name" dataType="text">
+        	<sql dialect="generic">
+        	 	(select rmcat_name from rmcat where rmcat.rm_cat = rm.rm_cat)
+        	 </sql>
+		</field>	 
+        <field table="rm" name="rm_type" dataType="text"/>
+        <field table="rm" name="rmtype_name" dataType="text">
+        	<sql dialect="generic">
+        	 	(select rmtype_name from rmtype where rmtype.rm_type = rm.rm_type and rmtype.rm_cat=rm.rm_cat)
+        	 </sql>
+		</field>
+        <field table="rm" name="name"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="count_em"/>
+        <field table="em" name="area_rm"/>
+        <restriction type="sql" sql="em.em_id=${parameters['emId']}"/>
+        <parameter name="emId" dataType="text" value=""/>
+    </dataSource>
+	
+     <panel type="columnReport" id="emRmInfoPanel"   columns="4" dataSource="ds_ab-sp-loc-em_grid_em_rep" layoutRegion="rmEmPosition" showOnLoad="false">
+		<field table="rm" name="rmuse_name" dataType="text">
+        	<title>rmuse_name</title>
+        </field>
+        <field table="rm" name="rm_cat" hidden="true"/>
+        <field table="rm" name="rmcat_name" dataType="text">
+        	<title>rmcat_name</title>
+        </field>
+        <field table="rm" name="rm_type" hidden="true"/>
+        <field table="rm" name="rmtype_name" dataType="text">
+        	<title>rmtype_name</title>
+        </field>
+        
+        <field table="rm" name="name">
+        	<title>rm_name</title>
+        </field>
+        <field table="rm" name="area"/>
+        <field table="rm" name="count_em"/>
+        <field table="em" name="area_rm"/>
+	</panel>
+		
+    <js file="asc-bj-usms-dash-dv-em-info.js"/>
+	<js file="asc-bj-usms-def-common.js"/>
+</view>

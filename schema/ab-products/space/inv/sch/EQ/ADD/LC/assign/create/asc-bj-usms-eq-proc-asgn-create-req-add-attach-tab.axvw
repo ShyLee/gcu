@@ -1,0 +1,201 @@
+<view version="2.0">
+    
+    <js file="asc-bj-usms-eq-proc-asgn-create-req-add-attach-tab.js"/>
+	<js file="asc-bj-usms-proc-common.js"/>
+    
+    <dataSource id="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabFormDS">
+        <table name="activity_log" role="main"/>
+        
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="time_required" table="activity_log"/>
+        <field name="dp_id" table="activity_log"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="doc1" table="activity_log"/>
+        <field name="doc2" table="activity_log"/>
+        <field name="rm_cat" table="activity_log"/>
+        <field name="rm_type" table="activity_log"/>
+		<field name="rm_name_after" table="activity_log"/>
+        <field name="area" table="activity_log"/>
+        <field name="count_rm" table="activity_log"/>
+        <field name="rm_user" table="activity_log"/>
+        <field name="project_gp_id" table="activity_log"/>
+        <field name="date_used_from" table="activity_log"/>
+        <field name="date_used_to" table="activity_log"/>
+        <field name="bl_id" table="activity_log"/>
+        <field name="add_eq_id" table="activity_log"  />
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabForm1" dataSource="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabFormDS" showOnLoad="false">
+        
+        <title translatable="true">Requestor</title>
+        
+        <action id="createNew">
+            <title translatable="true">Create New Request</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabController.onCreateNew()"/>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="false" readOnly="true">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="dv_id" table="activity_log" readOnly="true">
+           <title translatable="true">ShengQingDanWei</title>
+        </field>
+        <field id="activity_log.requestor_name">
+			<title translatable="true">ShenQingRen</title>
+        </field>
+        <field table="activity_log" name="requestor" readOnly="true" hidden="true"/>
+		<field table="activity_log" name="phone_requestor" readOnly="true"/>
+        <field name="date_required" table="activity_log" readOnly="true"/>
+        <field name="date_used_to" table="activity_log" readOnly="true" hidden="true"/>
+        <field name="add_eq_id" table="activity_log"  readOnly="true"/>
+    </panel>
+    
+     
+    <dataSource id="ascBjUsmsProcAsgnCreateReqAddEqAttachmentsTabDS">
+        <table name="add_eq" role="main"/>
+        <field table="add_eq" name="add_eq_id" />
+        <field table="add_eq" name="budget_item_id" />
+        <field table="add_eq" name="budget_id" />
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="count"/>
+        <field table="add_eq" name="price"/>
+        <field table="add_eq" name="total_price"/>
+    </dataSource>
+    
+  <panel type="grid" id="ascBjUsmsProcAsgnCreateReqAttachmentsAddEqGrid" showOnLoad="false" dataSource="ascBjUsmsProcAsgnCreateReqAddEqAttachmentsTabDS" >
+        <title translatable="true">Add equipment</title>
+        <field table="add_eq" name="add_eq_id" hidden="true"/>
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="count"/>
+        <field table="add_eq" name="price"/>
+        <field table="add_eq" name="total_price"/>
+  </panel>
+  
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabForm2" dataSource="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabFormDS" showOnLoad="false">
+        
+        <title translatable="true">Requestor</title>
+        
+        <action id="createNew">
+            <title translatable="true">Create New Request</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabController.onCreateNew()"/>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="false" readOnly="true">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="rm_cat" table="activity_log" hidden="true" readOnly="true"/>
+        <field name="rm_type" table="activity_log" readOnly="true"/>
+        <field table="activity_log" name="requestor" hidden="true" readOnly="true"/>
+		<field id="activity_log.requestor_name">
+			<title translatable="true">ShenQingRen</title>
+        </field>
+        <field table="activity_log" name="phone_requestor" readOnly="true"/>
+        <field name="dv_id" table="activity_log" readOnly="true"/>
+        <field name="date_required" table="activity_log" readOnly="true"/>
+        <field name="area" table="activity_log" readOnly="true"/>
+        <field name="count_rm" table="activity_log" readOnly="true"/>
+        <field name="rm_user" table="activity_log" readOnly="true" hidden="true"/>
+		<field id="activity_log.rmUser_name">
+			<title translatable="true">ShiYongRen</title>
+        </field>
+        <field name="project_gp_id" table="activity_log" readOnly="true"/>
+        <field id="activity_log.zhiwu">
+            <title translatable="true">User ZhiWu</title>
+        </field>
+        <field id="activity_log.projectxz_id">
+            <title translatable="true">Project XingZhi</title>
+        </field>
+        <field id="activity_log.zhicheng">
+            <title translatable="true">User ZhiCeng</title>
+        </field>
+        <field id="activity_log.project_manager">
+            <title translatable="true">Project Leader</title>
+        </field>
+        <field name="bl_id" table="activity_log" readOnly="true"/>
+        <field name="date_used_from" table="activity_log" readOnly="true"/>
+        <field name="rm_name_after" table="activity_log" readOnly="true"/>
+        <field name="date_used_to" table="activity_log" readOnly="true"/>
+    </panel>
+    
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabDestricptionForm" dataSource="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabFormDS" showOnLoad="false">
+        
+        <title translatable="true">Description</title>
+        <field name="activity_log_id" table="activity_log" hidden="true"/>
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log" readOnly="true">
+            <title translatable="true">Request Type</title>
+            <action>
+                <title>...</title>
+                <command type="callFunction" functionName="selectSubRequestType"/>
+            </action>
+        </field>
+        <field/>
+        <field table="activity_log" name="description"
+         colspan="4" required="true" style="width: 100%; height: 80px;"
+         showSelectValueAction="false" readOnly="true"/>
+        
+        <field name="priority" table="activity_log" hidden="true"/>
+    </panel>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabAttachmentForm" dataSource="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabFormDS" showOnLoad="false">
+        
+        <title translatable="true">Attachment</title>
+        
+        <field name="activity_log_id" table="activity_log" hidden="true"/>
+        <field name="doc1" table="activity_log"/>
+        <field name="doc2" table="activity_log"/>
+    </panel>
+    
+    <dataSource id="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabHistoryPanelDS">
+        <table name="helpdesk_step_log" role="main"/>
+        <table name="afm_wf_steps" role="standard"/>
+		<table name="em" role="standard"/>
+		
+        <field name="step_log_id" table="helpdesk_step_log"/>
+        <field name="user_name" table="helpdesk_step_log"/>
+        <field name="em_id" table="helpdesk_step_log"/>
+		<field name="name" table="em"/>
+        <field name="vn_id" table="helpdesk_step_log"/>
+        <field name="date_response" table="helpdesk_step_log"/>
+        <field name="time_response" table="helpdesk_step_log"/>
+        <field name="step" table="afm_wf_steps"/>
+        <field name="status" table="afm_wf_steps"/>
+        <field name="step_status_result" table="helpdesk_step_log"/>
+        <field name="comments" table="helpdesk_step_log"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabHistoryPanel" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnCreateReqAddAttachmentsTabHistoryPanelDS" showOnLoad="false">
+        <title translatable="true">History</title>
+        
+        <field name="step_log_id" table="helpdesk_step_log" hidden="true"/>
+        <field name="user_name" table="helpdesk_step_log" hidden="true"/>
+        <field name="name" table="em" hidden="true"/>
+        <field name="vn_id" table="helpdesk_step_log" hidden="true">
+            <title translatable="true">Step Responded By</title>
+        </field>
+        <field name="date_response" table="helpdesk_step_log">
+            <title translatable="true">On</title>
+        </field>
+        <field name="time_response" table="helpdesk_step_log" hidden="true"/>
+        <field name="step" table="afm_wf_steps">
+            <title translatable="true">Workflow Step</title>
+        </field>
+        <field name="status" table="afm_wf_steps">
+            <title translatable="true">Status</title>
+        </field>
+        <field name="step_status_result" table="helpdesk_step_log">
+            <title translatable="true">Step Status After</title>
+        </field>
+        <field name="comments" table="helpdesk_step_log">
+            <title translatable="true">Comments</title>
+        </field>
+    </panel>
+</view>

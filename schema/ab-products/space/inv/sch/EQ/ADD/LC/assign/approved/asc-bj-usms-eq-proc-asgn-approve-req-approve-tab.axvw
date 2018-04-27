@@ -1,0 +1,663 @@
+<view version="2.0">
+    
+	<layout type="borderLayout" id="mainLayout">
+        <north id="peopleRegion" initialSize="100" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterLayout" containingLayout="mainLayout" region="center">
+        <north id="basicRegion" initialSize="250" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterLayout1" containingLayout="mainCenterLayout" region="center">
+        <north id="eqListRegion" initialSize="250" split="true"/>
+        <center id="stepRegion"/>
+    </layout>
+    <js file="asc-bj-usms-eq-proc-asgn-approve-req-approve-tab.js"/>
+    <js file="asc-bj-usms-proc-common.js"/>
+	<js file="ab-form.js" />
+    <dataSource id="ascEqAssignStatusChangeDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="add_eq_id"/>
+        <field table="eq" name="is_assign"/>
+    </dataSource>
+    <dataSource id="ascEqAssignSubjectFundsDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="add_eq_id"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="date_in_service"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="is_label"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabFormDS">
+        <table name="activity_log" role="main"/>                    
+        <table name="add_eq" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="time_required" table="activity_log"/>
+        <field name="dp_id" table="activity_log"/>
+        <field name="dp_name" table="dp"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="dv_name" table="dv"/>
+        <field name="rm_cat" table="activity_log"/>
+        <field name="rm_type" table="activity_log"/>
+		<field name="rm_name_after" table="activity_log"/>
+        <field name="area" table="activity_log"/>
+        <field name="count_rm" table="activity_log"/>
+        <field name="rm_user" table="activity_log"/>
+        <field name="project_gp_id" table="activity_log"/>
+        <field name="date_used_from" table="activity_log"/>
+        <field name="date_used_to" table="activity_log"/>
+        <field name="bl_id" table="activity_log"/>
+        <field name="doc1" table="activity_log"/>
+        <field name="doc2" table="activity_log"/>
+<!--         <field name="budget_id" table="activity_log"/> -->
+        <field name="add_eq_id" table="activity_log"/>
+        <field name="add_eq_id" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <field  table="activity_log" name="comments"/>
+    </dataSource>
+        
+     <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabAddFormDS">
+        <table name="add_eq" role="main"/>
+        
+        <field name="add_eq_id" table="add_eq"/>
+        <field name="is_budget" table="add_eq"/>
+        <field name="budget_item_id" table="add_eq"/>
+        <field name="budget_id" table="add_eq"/>
+        <field name="subject_funds" table="add_eq"/>
+		
+        <field name="source" table="add_eq"/>
+        <field name="buy_type" table="add_eq"/>
+        <field name="type" table="add_eq"/>
+        <field name="type_use" table="add_eq"/>
+        <field name="units" table="add_eq"/>
+        <field name="ctry_name" table="add_eq"/>
+        <field name="danju_id" table="add_eq"/>
+        
+        <field name="eq_name" table="add_eq"/>
+        <field name="csi_id" table="add_eq"/>
+        <field name="brand" table="add_eq"/>
+        <field name="eq_std" table="add_eq"/>
+        <field name="eq_type" table="add_eq"/>
+        <field name="price" table="add_eq"/>
+        <field name="count" table="add_eq"/>
+        <field name="date_purchased" table="add_eq"/>
+        <field name="date_manufactured" table="add_eq"/>
+        <field name="supplier_agreement_id" table="add_eq"/>
+        <field name="date_acceptance" table="add_eq"/>
+        <field name="date_in_service" table="add_eq"/>
+        <field name="contract_id" table="add_eq"/>
+        <field name="doc_approved" table="add_eq" />
+        <field name="doc_check" table="add_eq" />
+        <field name="doc_contract" table="add_eq" /> 
+        <field name="status" table="add_eq"/>  
+        <field name="vn_id" table="add_eq"/>  
+        <field table="add_eq" name="sci_resh_id"/> 
+        <field table="add_eq" name="eq_warehouse"/> 
+        <field table="add_eq" name="total_price"/> 
+        <field table="add_eq" name="is_up"/> 
+        <field table="add_eq" name="is_label"/> 
+    </dataSource>
+    <panel type="form" columns="3" id="ascBjUsmsProcAsgnApproveReqApproveTabForm1" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabFormDS" showOnLoad="false" layoutRegion="peopleRegion">
+        <title translatable="true">Requestor</title>
+        <action id="back">
+            <title translatable="true">Back</title>
+			<command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onBack()"/>
+        </action>
+        
+        <action id="approve">
+            <title translatable="true">ShenPi</title>
+			<command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onShowApproveWindow()"/>
+        </action>
+        <action id="ToDvAssign">
+            <title translatable="true">To Dv Assign</title>
+            <command type="callFunction" functionName="toDvAssignEqFunction"/>
+        </action>
+        <field name="activity_log_id" table="activity_log" hidden="false" readOnly="true">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log" readOnly="true"/>
+        <field name="dv_id" table="activity_log" hidden="true"/>
+        <field name="dv_name" table="dv" readOnly="true">
+           <title translatable="true">ShengQingDanWei</title>
+        </field>
+        <field name="dp_name" table="dp"/>
+        <field id="activity_log.requestor_name">
+			<title translatable="true">ShenQingRen</title>
+        </field>
+        <field table="activity_log" name="requestor" readOnly="true" hidden="true"/>
+		<field table="activity_log" name="phone_requestor" readOnly="true"/>
+        <field name="date_required" table="activity_log" readOnly="true"/>
+        <field name="add_eq_id" table="activity_log"  readOnly="true"/>
+        <field name="status" table="activity_log" hidden="true"/>
+    </panel>
+    <panel type="form" columns="3" id="BaoZengDetialformPanel" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabAddFormDS" showOnLoad="false" layoutRegion="basicRegion">
+        
+        <title translatable="true">Equipmennt Add Information</title>
+        <action id="btnSave">
+            <title translatable="true">Save Change</title>
+            <!-- <command type="saveForm"/> -->
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onSaveAddEqDetail()"/> 
+        </action>
+        <action id="showBudget">
+            <title translatable="true">Show Budget Details</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onShowBudgetDetailsWindow()"/>
+        </action>
+        <!-- <action id="eqAddList">
+            <title translatable="true">Equipment Add List</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onShowEqAddListWindow()"/>
+        </action> -->
+        
+        <field name="add_eq_id" table="add_eq" readOnly="true"/>
+        <field name="budget_id" table="add_eq" readOnly="true"/>
+        <field name="budget_item_id" table="add_eq" readOnly="true"/>        
+        <field name="status" table="add_eq" readOnly="true"/>  
+        <field name="is_budget" table="add_eq" readOnly="true" hidden="true"/>
+        
+        <field name="subject_funds" table="add_eq" hidden="true"/>
+
+        <field name="source" table="add_eq" />
+        <field name="buy_type" table="add_eq" readOnly="false"/>
+        <field name="type" table="add_eq" />
+        
+        <field name="eq_name" table="add_eq" />
+        <!-- <field name="csi_id" table="add_eq" /> -->
+        <field table="add_eq" name="csi_id" showSelectValueAction="false">
+            <action id="btnSelect">
+                <title translatable="true">...</title>
+                <command type="openDialog" viewName="asc-bj-usms-eq-add-request-dialog.axvw"  applyParentRestriction="false"/> 
+            </action>
+        </field>
+        <field name="brand" table="add_eq" />
+        <field name="eq_std" table="add_eq" />
+        <field name="eq_type" table="add_eq"/>
+        <field table="add_eq" name="vn_id">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="callFunction" functionName="showSelectVnPanel"/>
+            </action>
+        </field>        
+        <field name="type_use" table="add_eq" readOnly="false"/>
+        <field name="units" table="add_eq" readOnly="false"/>
+        <field name="ctry_name" table="add_eq" readOnly="true"/>
+        <field name="price" table="add_eq" readOnly="false" onchange="ascBjUsmsProcAsgnApproveReqApproveTabController.editTotalPrice()"/>
+        <field name="count" table="add_eq" readOnly="true"/>
+        <field name="total_price" table="add_eq" readOnly="true"/>
+        <field name="date_purchased" table="add_eq" readOnly="false"/>
+        <!-- <field name="date_acceptance" table="add_eq" readOnly="false"/> -->
+        <field name="date_in_service" table="add_eq" readOnly="false"/>
+        <field name="supplier_agreement_id" table="add_eq" readOnly="false"/>
+        <field name="danju_id" table="add_eq" readOnly="false"/>
+        <field table="add_eq" name="sci_resh_id" readOnly="false"/> 
+        <field name="doc_approved" table="add_eq" readOnly="false"/>
+        <field name="doc_check" table="add_eq" readOnly="false"/>
+        <field name="doc_contract" table="add_eq"  readOnly="false"/>  
+        <field table="add_eq" name="eq_warehouse" required="true"/>
+        <field table="add_eq" name="is_label" required="true"/>
+        <field table="add_eq" name="is_up" required="true"/>
+    </panel>
+<!--     budget -->
+ 	<dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabBudgetItemDs">
+        <table name="eq_budget_item" role="main"/>
+        <field table="eq_budget_item" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_item_id"/>
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget_item" name="budget_item_name"/>
+        <field table="eq_budget_item" name="csi_id"/>
+        <field table="eq_budget_item" name="eq_name"/>
+        <field table="eq_budget_item" name="brand"/>
+        <field table="eq_budget_item" name="eq_std"/>
+        <field table="eq_budget_item" name="use"/>
+        <field table="eq_budget_item" name="count"/>
+        <field table="eq_budget_item" name="price"/>
+        <field table="eq_budget_item" name="total_cost"/>
+        <field table="eq_budget_item" name="units"/>
+        <field table="eq_budget_item" name="comments"/> 
+<!--         <field table="eq_budget_item" name="important_level"/> -->
+        <field table="eq_budget_item" name="capital_source"/>
+        <field table="eq_budget_item" name="date_buy_old_eq"/>
+        <field table="eq_budget_item" name="actual_price"/>
+        <field table="eq_budget_item" name="actual_total"/>
+        <field table="eq_budget_item" name="type"/>
+        <field table="eq_budget_item" name="teach_num"/>
+        <field table="eq_budget_item" name="admin_num"/>
+        <field table="eq_budget_item" name="dv_capital"/>
+        <field table="eq_budget_item" name="other_capital"/>
+        <field table="eq_budget_item" name="sch_capital"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnApproveReqApproveTabBudgetItemGrid" showOnLoad="false" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabBudgetItemDs" hidden="true" >
+        <title translatable="true">Budget Details</title>
+       
+        <field name="budget_id" table="eq_budget" hidden="true"/>
+        <field name="budget_item_id" table="eq_budget_item" />
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget_item" name="budget_item_name"/>
+       
+        <field name="total_cost" table="eq_budget_item" />
+     </panel>
+     
+	<!-- 商家DataSource -->
+	<dataSource id="detailsFrameDS">
+		<table name="vn" role="main" />
+		<field name="vn_id" table="vn" />
+		<field name="phone" table="vn" />
+		<field name="company" table="vn" />
+		<field name="fax" table="vn" />
+		<field name="description" table="vn" />
+		<field name="email" table="vn" />
+		<field name="vendor_type" table="vn" />
+		<field name="contact" table="vn" />
+		<field name="address1" table="vn" />
+		<field name="title" table="vn" />
+		<field name="address2" table="vn" />
+		<field name="alt_contact" table="vn" />
+		<field name="city" table="vn" />
+		<field name="alt_title" table="vn" />
+		<field name="state" table="vn" />
+		<field name="alt_fax" table="vn" />
+		<field name="country" table="vn" />
+		<field name="alt_phone" table="vn" />
+		<field name="postal_code" table="vn" />
+	</dataSource>
+    <panel type="grid" id="vnselectPanel" dataSource="detailsFrameDS" showOnLoad="false">
+        <title translatable="true">Select Vn</title>
+        <action id="addNewVn">
+            <title translatable="true">AddNewVn</title>
+            <command type="openDialog" panelId="detailsPanel" newRecord="true"/>
+        </action>
+        <field name="vn_id" table="vn" controlType="link">
+            <command type="callFunction" functionName="selectVnAsValue"/>
+        </field>
+        <field name="company" table="vn" controlType="link">
+            <command type="callFunction" functionName="selectVnAsValue"/>
+        </field>
+    </panel>
+    <panel type="form" id="detailsPanel" showOnLoad="false" columns="2" dataSource="detailsFrameDS">
+        <title translatable="true">Vendors</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="callFunction" functionName="afterSaveVn"/>
+        </action>
+        
+        <field name="vn_id" table="vn"/>
+        <field name="phone" table="vn"/>
+        <field name="company" table="vn"/>
+        <field name="fax" table="vn"/>
+        <field name="description" table="vn"/>
+        <field name="email" table="vn"/>
+        <field name="vendor_type" table="vn"/>
+        <field name="contact" table="vn"/>
+        <field name="address1" table="vn"/>
+        <field name="title" table="vn"/>
+        <field name="address2" table="vn"/>
+        <field name="alt_contact" table="vn"/>
+        <field name="city" table="vn"/>
+        <field name="alt_title" table="vn"/>
+        <field name="state" table="vn"/>
+        <field name="alt_fax" table="vn"/>
+        <field name="country" table="vn"/>
+        <field name="alt_phone" table="vn"/>
+        <field name="postal_code" table="vn"/>
+    </panel>
+    
+     <!-- 设备报增SN和领用人列表 DataSource -->
+    <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabEqListDS">
+        <table name="eq" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="bl" role="standard"/>
+        <table name="csi" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="num_eq"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="total_price" />
+        <field table="eq" name="attachments_num" />
+        <field table="eq" name="attachments_price" />
+        <field table="eq" name="date_in_service" />
+        <field table="eq" name="date_purchased" />
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="is_up"/>
+        <field table="eq" name="is_label"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="add_comment"/>
+        
+        <field table="eq" name="eq_id_old"/>    
+        <field table="eq" name="repair_log"/>
+        <field table="eq" name="doc2"/>
+        <field table="eq" name="warranty_id"/>
+        <field table="eq" name="is_assign"/>
+        <field table="eq" name="servcont_id"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="handling_em"/>
+        <field table="eq" name="sci_resh_id"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="approved"/>
+        <field table="eq" name="comments"/>
+        <field table="eq" name="approved_fiance"/>
+        <field table="eq" name="eq_photo"/>
+        <field table="eq" name="image_file"/>
+        <field table="eq" name="add_eq_id"/>
+        
+        <sortField table="eq" name="eq_id" ascending="false"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnApproveReqApproveTabEqListGrid" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabEqListDS"  showOnLoad="false" layoutRegion="eqListRegion">
+        <title translatable="true">Eq Bao Zeng SN List</title>
+        <action id="returnDvAssign">
+            <title translatable="true">ReturnDvAssign</title>
+        </action>
+        <action id="btnXls">
+            <title translatable="true">XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="ascBjUsmsProcAsgnApproveReqApproveTabEqListGrid"/>
+        </action>
+        <field controlType="button" id="viewAttach" width="120">
+        	<title>view Attach</title>
+        </field>
+         <indexField table="eq" name="eq_id" />
+        <field table="eq" name="is_assign"/>
+        <field table="eq" name="eq_id" controlType="link">
+            <command type="callFunction" functionName="showEqDetail"/>
+        </field>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="num_eq"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="total_price" />
+        <field table="eq" name="attachments_num" />
+        <field table="eq" name="attachments_price" />
+        <field table="eq" name="date_in_service" />
+        <field table="eq" name="date_purchased" />
+        <field table="eq" name="em_id" hidden="true"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="subject_funds" hidden="true"/>
+        <field table="eq" name="ctry_id" hidden="true"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="is_up"/>
+        <field table="eq" name="is_label"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="add_comment"/>
+        
+        <field table="eq" name="eq_id" hidden="true"/>
+        <indexField table="eq" name="eq_id"/>
+    </panel>
+     <panel type="form" id="ascBjEqDetailPanel" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabEqListDS" showOnLoad="false" columns="3" >
+        <title translatable="true">ShowDetailEq</title>
+        <action id="btnSave">
+            <title translatable="true">Save</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.savePanelAndRefresh()"/>
+        </action>
+        <field table="eq" name="eq_id" readOnly="true"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq" name="buy_type" readOnly="true"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="price" readOnly="true"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="dv_id" readOnly="true"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="bl_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="eq.dv_id,eq.bl_id" 
+                 selectFieldNames="rm.dv_id,rm.bl_id"
+                 visibleFieldNames="rm.bl_id,rm.dv_id" 
+                 showIndex="true">
+                </command>
+            </action>
+        </field>
+        <field table="eq" name="fl_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="eq.dv_id,eq.bl_id,eq.fl_id" 
+                 selectFieldNames="rm.dv_id,rm.bl_id,rm.fl_id"
+                 visibleFieldNames="rm.fl_id,rm.bl_id" 
+                 showIndex="true">
+                </command>
+            </action>
+        </field>
+        <field table="eq" name="rm_id">
+        <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="eq.dv_id,eq.bl_id,eq.fl_id,eq.rm_id" 
+                 selectFieldNames="rm.dv_id,rm.bl_id,rm.fl_id,rm.rm_id"
+                 visibleFieldNames="rm.bl_id,rm.fl_id,rm.rm_id,rm.dv_id" 
+                 showIndex="true">
+                </command>
+            </action>
+        </field>
+
+        <field table="eq" name="em_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="eq.dv_id,eq.em_id,eq.em_name" 
+                 selectFieldNames="em.dv_id,em.em_id,em.name"
+                 visibleFieldNames="em.dv_id,em.em_id,em.name" 
+                 showIndex="true">
+                </command>
+            </action>
+        </field>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="comments" colspan="2"/>
+     </panel>
+     
+     <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabApproveFormDS">
+        <table name="activity_log" role="main"/>
+        <table name="activity_log_step_waiting" role="standard"/>
+        
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="approved_by"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log_step_waiting" name="comments"/>
+        <field table="activity_log_step_waiting" name="step_code"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>
+        <field table="activity_log_step_waiting" name="user_name"/>
+        <field table="activity_log_step_waiting" name="em_id"/>
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnApproveReqApproveTabApproveForm" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabApproveFormDS" hidden="true" showOnLoad="false">
+        <title translatable="true">Approve Infomation</title>
+        
+        <action id="approve">
+            <title translatable="true">QueRen</title>
+        </action>
+       <action id="reject">
+            <title translatable="true">Reject</title>
+        </action>
+        
+        <field colspan="2">
+            <title translatable="true">Comments</title>
+           
+            <html>
+                <span id="activity_log_step_waiting.comments.required_star" style="font-size: 10px; font-family: Verdana,Geneva,Arial,Helvetica,sans-serif; color: red;" name="activity_log_step_waiting.comments.required_star">*</span>
+                <textarea id="comments" cols="65" rows="5" maxlength="1000" minlength="1" onchange="afm_form_values_changed=true;"
+                 onfocus="window.temp=this.value;" name="comments"></textarea>
+            </html>
+        </field>
+        
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log" name="activity_type" hidden="true"/>
+        <field table="activity_log_step_waiting" name="step_code" hidden="true"/>
+        <field table="activity_log_step_waiting" name="activity_log_id" hidden="true"/>
+        <field table="activity_log" name="activity_log_id" hidden="true"/>
+        <field table="activity_log_step_waiting" name="step_log_id" hidden="true"/>
+        <field table="activity_log_step_waiting" name="user_name" hidden="true"/>
+        
+        <field table="activity_log_step_waiting" name="comments" hidden="true"/>
+        
+        <field table="activity_log" name="approved_by" hidden="true">
+            <title translatable="true">Forward To</title>
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.approved_by" selectFieldNames="em.em_id"
+                 visibleFieldNames="em.em_id,em.name,em.dv_id" showIndex="true"
+                 restriction="em.em_id in
+                        (select e.em_id from em e, afm_users a where a.user_name = e.em_id AND a.role_name = '${user.role}')">
+               
+                    <title translatable="true">Forward To</title>
+                </command>
+            </action>
+        </field>
+    </panel>
+    <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabHistoryPanelDS">
+        <table name="helpdesk_step_log" role="main"/>
+		<table name="em" role="standard"/>
+		
+        <table name="afm_wf_steps" role="standard"/>
+        <field name="step_log_id" table="helpdesk_step_log"/>
+        <field name="user_name" table="helpdesk_step_log"/>
+        <field name="em_id" table="helpdesk_step_log"/>
+		<field name="name" table="em"/>
+        <field name="vn_id" table="helpdesk_step_log"/>
+        <field name="date_response" table="helpdesk_step_log"/>
+        <field name="time_response" table="helpdesk_step_log"/>
+        <field name="step" table="afm_wf_steps"/>
+        <field name="status" table="afm_wf_steps"/>
+        <field name="step_status_result" table="helpdesk_step_log"/>
+        <field name="comments" table="helpdesk_step_log"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnApproveReqApproveTabHistoryPanel" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabHistoryPanelDS" showOnLoad="false" layoutRegion="stepRegion">
+        <title translatable="true">History</title>
+        
+        <field name="step_log_id" table="helpdesk_step_log" hidden="true"/>
+        <field name="user_name" table="helpdesk_step_log" hidden="true"/>
+        <field name="name" table="em" hidden="true"/>
+        <field name="vn_id" table="helpdesk_step_log">
+            <title translatable="true">Step Responded By</title>
+        </field>
+        <field name="date_response" table="helpdesk_step_log">
+            <title translatable="true">On</title>
+        </field>
+        <field name="time_response" table="helpdesk_step_log" hidden="true"/>
+        <field name="step" table="afm_wf_steps">
+            <title translatable="true">Workflow Step</title>
+        </field>
+        <field name="status" table="afm_wf_steps">
+            <title translatable="true">Status</title>
+        </field>
+        <field name="step_status_result" table="helpdesk_step_log">
+            <title translatable="true">Step Status After</title>
+        </field>
+        <field name="comments" table="helpdesk_step_log">
+            <title translatable="true">Comments</title>
+        </field>
+    </panel>
+    
+    <dataSource id="eq_attach_ds">
+        <table name="eq_attach" role="main"/>
+        <field table="eq_attach" name="eq_attach_id" />
+        <field table="eq_attach" name="eq_id"/>
+        <field table="eq_attach" name="eq_attach_name"/>
+        <field table="eq_attach" name="eq_type"/>
+        <field table="eq_attach" name="price"/>
+        <field table="eq_attach" name="price_old"/>
+        <field table="eq_attach" name="units"/>
+        <field table="eq_attach" name="source"/>
+        <field table="eq_attach" name="ctry_name"/>
+        <field table="eq_attach" name="ctry_id"/>
+        <field table="eq_attach" name="dv_id"/>
+        <field table="eq_attach" name="dp_id"/>
+        <field table="eq_attach" name="date_manufactured"/>
+        <field table="eq_attach" name="date_purchased"/>
+        <field table="eq_attach" name="type_use"/>
+        <field table="eq_attach" name="csi_id"/>
+        <field table="eq_attach" name="bl_id"/>
+        <field table="eq_attach" name="fl_id"/>
+        <field table="eq_attach" name="buy_type"/>
+        <field table="eq_attach" name="rm_id"/>
+        <field table="eq_attach" name="em_id"/>
+        <field table="eq_attach" name="em_name"/>
+        <field table="eq_attach" name="num_serial"/>
+        <field table="eq_attach" name="subject_funds"/>
+        <field table="eq_attach" name="handling_em"/>
+        <field table="eq_attach" name="handling_em_name"/>
+        <field table="eq_attach" name="sci_resh_id"/>
+        <field table="eq_attach" name="danju_id"/>
+        <field table="eq_attach" name="comments"/>
+        <field table="eq_attach" name="sch_status"/>
+        <field table="eq_attach" name="eq_photo"/>
+        <field table="eq_attach" name="add_eq_id"/>
+        <field table="eq_attach" name="is_assign"/>
+        <field table="eq_attach" name="vn_id"/>
+        <field table="eq_attach" name="brand"/> 
+        <field table="eq_attach" name="eq_warehouse"/>  
+        <field table="eq_attach" name="is_up"/>  
+    </dataSource>
+</view>

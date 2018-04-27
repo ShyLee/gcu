@@ -1,0 +1,63 @@
+<view version="2.0">
+	<js file="schema/ab-core/controls/progress/ab-progress.js" />
+	<js file="asc-bj-dorm-stu-award-import.js" />
+
+	<title translatable="true">Import Student Disp</title>
+	   <tabs id="importFileTabs" workflow="enforced" tabRefreshPolicy="never">
+	   <tab name="importTypeTabs_selection" useFrame="false" selected="true">
+			<title translatable="true">Import Type</title>
+			<panel type="html" id="selectionTypePanel">	
+				<action id="typeImport">
+					<title translatable="true">Next Step</title>
+				</action>
+				<html>
+					<table id="selectionTypeTable" class="panel">
+						<tr> <td colspan="2"></td></tr>
+						<tr id="in2" >
+							<td align="center">
+								<b translatable="true">light</b>
+								<input type="radio" value="lightOnline" name="light" checked="true"></input>
+							</td>
+							<td align="center">
+								<b translatable="true">other</b>
+								<input type="radio" value="otherType" name="light"></input>
+							</td>
+							</tr>
+					</table>
+				</html>
+			</panel>
+		</tab>
+		<tab name="importFileTabs_selection" useFrame="false">
+			<title translatable="true">File to Import</title>
+			<panel type="html" id="selectionPanel">
+				<action id="last">
+					<title translatable="true">Last Step</title>
+				</action>
+				<action id="import">
+					<title translatable="true">Begin Import</title>
+				</action>
+				<html>
+					<table id="selectionTable" class="panel">
+						<tr> <td colspan="2"></td></tr>
+						<tr id="in1">
+							<td align="right">
+								<b translatable="true">Import File</b>
+							</td>
+							<td>
+								<input type="file" id="inLocalFileBrow" name="filename" size="60"></input>
+							</td>
+						</tr>
+					</table>
+				</html>
+			</panel>
+		</tab>
+		<tab name="importFileTabs_progress" useFrame="false">
+			<title translatable="true">Import Progress</title>
+			<panel type="html" id="reportProgressPanel">
+				<action id="startOver">
+					<title translatable="true">Start Over</title>
+				</action>
+			</panel>
+		</tab>
+	</tabs>
+</view>

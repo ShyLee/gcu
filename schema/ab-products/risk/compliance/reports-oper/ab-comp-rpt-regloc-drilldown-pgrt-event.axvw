@@ -1,0 +1,131 @@
+<view version="2.0">
+	
+    <title translatable="true">Hazard Assessments Summary - Country</title>
+    
+    <report orientation="landscape"/>
+    <dataSource id="abCompEventActivityLogDs">
+        <table name="activity_log" role="main"/>
+        <table name="regrequirement" role="standard"/>
+        <table name="regloc" role="standard"/>
+        <table name="regprogram" role="standard"/>
+        <table name="regulation" role="standard"/>
+        <table name="compliance_locations" role="standard"/>
+        
+        <field table="regulation" name="regulation"/>
+        <field table="regprogram" name="reg_program"/>
+        <field table="regrequirement" name="reg_requirement"/>
+        
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="site_id"/>
+        <field table="activity_log" name="pr_id"/>
+        <field table="activity_log" name="bl_id"/>
+        <field table="activity_log" name="fl_id"/>
+        <field table="activity_log" name="rm_id"/>
+        <field table="activity_log" name="vn_id"/>
+        <field table="activity_log" name="hcm_labeled"/>
+        <field table="activity_log" name="contact_id"/>
+        <field table="activity_log" name="eq_id"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="date_scheduled" />
+        <field table="activity_log" name="date_scheduled_end"/>
+        <field table="activity_log" name="date_started" />
+        <field table="activity_log" name="date_completed" />
+        <field table="activity_log" name="date_required" />
+        <field table="activity_log" name="status"/>
+        <field table="activity_log" name="action_title"/>
+        <field table="activity_log" name="hcm_loc_notes"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="manager" />
+        <!-- <field table="activity_log" name="description"/> -->
+        
+        <field table="regloc" name="location_id" />
+        <field table="compliance_locations" name="ctry_id" />
+        <field table="compliance_locations" name="regn_id" />
+        <field table="compliance_locations" name="state_id" />
+        <field table="compliance_locations" name="city_id" />
+        <field table="compliance_locations" name="county_id" />
+        <field table="compliance_locations" name="eq_std" />
+        <field table="compliance_locations" name="eq_id"/>
+        <field table="regloc" name="resp_person" />
+        <field table="compliance_locations" name="em_id" />
+        <field table="compliance_locations" name="pr_id" />
+        <field table="compliance_locations" name="site_id" />
+        <field table="compliance_locations" name="bl_id" />
+        <field table="compliance_locations" name="fl_id" />
+        <field table="compliance_locations" name="lat" />
+        <field table="compliance_locations" name="rm_id" />
+        <field table="compliance_locations" name="lon" />
+        
+        <field table="regrequirement" name="reg_requirement"/>
+        <field table="regrequirement" name="reg_requirement"/>
+        <field table="regrequirement" name="regreq_cat"/>
+        <field table="regrequirement" name="regreq_type"/>
+        <field table="regrequirement" name="comp_level"/>
+        <field table="regrequirement" name="reg_program"/>
+        <field table="regrequirement" name="regulation"/>
+        <field table="regrequirement" name="status"/>
+        <field table="activity_log" name="location_id"/>
+        <field table="activity_log" name="reg_requirement"/>
+        <field table="regrequirement" name="priority"/>
+                         
+        <restriction type="sql" sql="  activity_log.location_id is not null and activity_log.activity_type='COMPLIANCE - EVENT' 
+                 and ${sql.daysBeforeCurrentDate('activity_log.date_scheduled')}  >-365
+                    and  activity_log.date_scheduled >= ${sql.currentDate}  
+                         and activity_log.status not in('COMPLETED','COMPLETED-V', 'CLOSED', 'CANCELLED') "/>
+        
+    </dataSource>
+    
+    <panel id="abCbRptDrilldown_panelState" dataSource="abCompEventActivityLogDs" type="paginatedReport" format="table" role="data">
+        <title translatable="true">Compliance Events</title>
+     
+      
+        <field table="regulation" name="regulation" hidden="true"/>
+        <field table="regprogram" name="reg_program" hidden="true"/>
+        <field table="regrequirement" name="reg_requirement" hidden="true"/>
+        
+        <field table="activity_log" name="activity_log_id" >
+            <title>Event ID</title>
+        </field>
+        <field table="activity_log" name="status">
+            <title>Event Status</title>
+        </field>
+        <field table="activity_log" name="action_title">
+            <title>Event Title</title>
+        </field>
+        <field table="activity_log" name="date_required">
+            <title>Date Completion Required</title>
+        </field>
+        <field table="activity_log" name="date_scheduled">
+            <title>Date Scheduled Start</title>
+        </field>
+        <field table="activity_log" name="date_started" />
+        <field table="activity_log" name="date_completed" />
+        
+        <field table="regloc" name="resp_person" />
+        
+        <field table="regrequirement" name="reg_requirement"/>
+        <field table="regrequirement" name="regreq_type"/>
+        <field table="regrequirement" name="priority"/>
+        
+        <field table="regrequirement" name="reg_program"/>
+        <field table="regrequirement" name="regulation"/>
+        
+        <field table="activity_log" name="contact_id"/>
+        <field table="activity_log" name="vn_id"/>
+        <field table="activity_log" name="hcm_labeled">
+            <title>Do Not Reschedule?</title>
+        </field>
+        <field table="activity_log" name="site_id" />
+        <field table="activity_log" name="pr_id"/>
+        <field table="activity_log" name="bl_id"/>
+        <field table="activity_log" name="fl_id"/>
+        <field table="activity_log" name="rm_id"/>
+        <field table="compliance_locations" name="eq_std" />
+        <field table="compliance_locations" name="em_id" />
+        <field table="compliance_locations" name="eq_id"/>
+        <field table="compliance_locations" name="county_id" />
+        <field table="compliance_locations" name="city_id" />
+        <field table="compliance_locations" name="state_id" />
+        <field table="compliance_locations" name="ctry_id" />
+    </panel>
+</view>

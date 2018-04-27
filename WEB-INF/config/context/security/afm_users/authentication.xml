@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<!-- ======================== AUTHENTICATION ======================= -->
+	<bean id="authenticationManager"
+		class="org.springframework.security.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="daoAuthenticationProvider" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="daoAuthenticationProvider"
+		class="org.springframework.aop.framework.ProxyFactoryBean"
+		p:proxyInterfaces="org.springframework.security.providers.AuthenticationProvider">
+		<property name="target">
+			<bean
+				class="org.springframework.security.providers.dao.DaoAuthenticationProvider"
+				p:userDetailsService-ref="userAccountDao"
+				p:saltSource-ref="saltSource"
+				p:passwordEncoder-ref="passwordEncoder">
+			</bean>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>authenticationInterceptor</value>
+			</list>
+		</property>
+	</bean>
+</beans>

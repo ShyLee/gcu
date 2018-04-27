@@ -1,0 +1,32 @@
+<view version="2.0">
+    <js file="asc-bj-usms-select-fixed-rpt-format-zzf.js"/>
+    
+    <panel type="html" id="rplmBuildingForm" columns="2">
+        <title>XuanZeShuChuGeShi</title>
+        <action id="generate">
+            <title>ShengCheng</title>
+        </action>
+        <html>
+            <div class="bd">
+                <table width="100%" border="0">
+                    <tr/>
+                    <tr>
+                        <td/>
+                        <td>
+                            <input id="locked" type="radio" name="lock" value="1" />
+                            <span id="lockedLabel" class="legendTitle">pdf</span>
+                        </td>
+                        <td>
+                            <input id="unlocked" type="radio" name="lock" value="0" />
+                            <span id="unlockedLabel" class="legendTitle">xls</span>
+                        </td>
+						<td>
+                            <input id="unlocked" type="radio" name="lock" value="2" checked="1"/>
+                            <span id="unlockedLabel" class="legendTitle">Docx</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </html>
+    </panel>
+</view>

@@ -1,0 +1,53 @@
+<view version="2.0">
+    <title translatable="true">Edit Process Task Details</title>
+    
+    <dataSource id="abViewdefEditformDrilldown_ds_1">
+    	<table name="afm_ptasks" role="main"/>
+       	<field table="afm_ptasks" name="activity_id"/>
+		<field table="afm_ptasks" name="process_id"/>
+		<field table="afm_ptasks" name="task_id"/>
+		<field table="afm_ptasks" name="display_order"/>
+		<field table="afm_ptasks" name="task_type"/>
+		<field table="afm_ptasks" name="task_file"/>
+		<field table="afm_ptasks" name="task_action"/>
+		<field table="afm_ptasks" name="is_hotlist"/>
+		<field table="afm_ptasks" name="icon_large"/>
+		<field table="afm_ptasks" name="icon_small"/>
+		<field table="afm_ptasks" name="security_group"/>
+		<field table="afm_ptasks" name="help_link"/>
+		<field table="afm_ptasks" name="internal_use1"/>
+    </dataSource>
+    
+    <panel type="form" id="editPanel" dataSource="abViewdefEditformDrilldown_ds_1" showOnLoad="true" columns="2">
+        <title translatable="true">Process Task</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="showPanel" panelId="detailsPanel" applyParentRestriction="false"/>
+            <command type="closeDialog"/>
+        </action>
+        <action id="delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="detailsPanel" applyParentRestriction="false"/>
+            <command type="closeDialog"/>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="closeDialog"/>
+        </action>
+       	<field table="afm_ptasks" name="activity_id" readOnly="true"/>
+		<field table="afm_ptasks" name="process_id" readOnly="true"/>
+		<field table="afm_ptasks" name="task_id"/>
+		<field table="afm_ptasks" name="display_order"/>
+		<field table="afm_ptasks" name="task_type"/>
+		<field table="afm_ptasks" name="task_file"/>
+		<field table="afm_ptasks" name="task_action"/>
+		<field table="afm_ptasks" name="is_hotlist"/>
+		<field table="afm_ptasks" name="icon_large"/>
+		<field table="afm_ptasks" name="icon_small"/>
+		<field table="afm_ptasks" name="security_group"/>
+		<field table="afm_ptasks" name="help_link"/>
+		<field table="afm_ptasks" name="internal_use1"/>
+    </panel>
+</view>

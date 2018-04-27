@@ -1,0 +1,173 @@
+<view version="2.0">
+    
+    <js file="asc-bj-usms-eq-proc-asgn-create-req-basic-input-tab.js"/>
+    <js file="asc-bj-usms-proc-common.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+    <js file="asc-bj-usms-constant.js"/>
+    
+    
+    <message name="noUser" translatable="true">Please select a division or room user or project group</message>
+    <dataSource id="ascBjUsmsProcAddEqDs">
+        <table name="add_eq" role="main"/>
+        <field table="add_eq" name="add_eq_id"/>
+        <field table="add_eq" name="status"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS">
+        <table name="activity_log" role="main"/>
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="add_eq_id" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="time_required" table="activity_log"/>
+        <field name="dp_id" table="activity_log"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="rm_cat" table="activity_log"/>
+        <field name="rm_type" table="activity_log"/>
+        <field name="area" table="activity_log"/>
+        <field name="count_rm" table="activity_log"/>
+        <field name="rm_user" table="activity_log"/>
+        <field name="rm_name_after" table="activity_log"/>
+        <field name="project_gp_id" table="activity_log"/>
+        <field name="date_used_from" table="activity_log"/>
+        <field name="date_used_to" table="activity_log"/>
+        <field name="bl_id" table="activity_log"/>
+        <field name="comments" table="activity_log"/>
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnCreateReqBasicInputTabForm1" showOnLoad="false" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS" newRecord="true">
+        
+        <title translatable="true">Requestor</title>
+        
+        <action id="back">
+            <title translatable="true">Back</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnCreateReqBasicInputTabController.onBack()"/>
+        </action>
+        
+        <action id="submit">
+            <title translatable="true">Submit</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnCreateReqBasicInputTabController.onSubmit()"/>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="false" readOnly="true">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field table="activity_log" name="requestor"  value="${user.name}"  readOnly="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.requestor"
+                 selectFieldNames="em.em_id"
+                 visibleFieldNames="em.em_id,em.name,em.sex,em.dv_id"></command>
+            </action>
+        </field>
+        <field table="activity_log" name="phone_requestor" showSelectValueAction="false" value="${user.employee.phone}"/>
+        <field name="dv_id" table="activity_log" value="${user.employee.organization.divisionId}"  readOnly="true">
+            <title translatable="true">ShengQingDanWei</title>
+        </field>
+        <field name="date_required" table="activity_log" hidden="true"/>
+     
+        <field name="add_eq_id" table="activity_log" required="true">
+             <!-- <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="callFunction" functionName="selectAddEqId()" />
+            </action> -->
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.add_eq_id"
+                 selectFieldNames="add_eq.add_eq_id"
+                 visibleFieldNames="add_eq.add_eq_id,add_eq.eq_name,add_eq.count,add_eq.price,add_eq.date_purchased"
+                 restriction="dv_id='${user.employee.organization.divisionId}' and (add_eq.status='0' or add_eq.status='3')"
+                 actionListener="afterSelectAddEqId"></command>
+            </action>
+        </field>
+        
+        <field/>
+    </panel>
+        
+     <dataSource id="ascBjUsmsProcAsgnCreateReqBasicInputTabFormAddEqDs">
+        <table name="add_eq" role="main"/>
+        <field table="add_eq" name="add_eq_id" />
+        <field table="add_eq" name="budget_item_id" />
+        <field table="add_eq" name="budget_id" />
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="count"/>
+        <field table="add_eq" name="price"/>
+        <field table="add_eq" name="total_price"/>
+    </dataSource>
+    
+   <panel type="grid" id="addEqGrid" showOnLoad="false" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormAddEqDs" >
+        <title translatable="true">Add equipment</title>
+        <field table="add_eq" name="add_eq_id" hidden="true"/>
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="count"/>
+        <field table="add_eq" name="price"/>
+        <field table="add_eq" name="total_price"/>
+    </panel>
+    
+    <panel type="form" columns="1" id="ascBjUsmsProcAsgnCreateReqBasicInputTabDestricptionForm" formLabelWidth="25" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS" newRecord="true">
+        
+        <title translatable="true">Description</title>
+        
+        <field name="activity_type" table="activity_log" hidden="true"/>
+      
+        <field name="prob_type" table="activity_log" readOnly="true" required="true">
+            <title translatable="true">Request Type</title>
+        </field>
+        
+        <field table="activity_log" name="description"
+         colspan="4"  style="width: 100%; height: 80px;"
+         showSelectValueAction="false">
+            <title translatable="true">BeiZhu</title>
+         </field>
+        <!-- 
+        <field id="instruction">
+            <html>
+                <span translatable="true" style="margin-left:4px">instruction</span>
+                <br/>
+            </html>
+        </field>
+        
+        <field table="activity_log" name="comments" colspan="4" required="true" style="width: 100%; height: 80px;"
+         showSelectValueAction="false">
+            <title translatable="true">Requirement</title>
+        </field>
+         -->
+    </panel>
+    
+   
+   <dataSource id="ascBjUsmsProcAsgnCreateReqBasicInputTabFormBudgetItemDs">
+        <table name="eq_budget_item" role="main"/>
+        <table name="eq_budget" role="standard"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_item_id"/>
+        <field table="eq_budget_item" name="eq_name"/>
+        <field table="eq_budget_item" name="count"/>
+        <field table="eq_budget_item" name="price"/>
+        <field table="eq_budget_item" name="total_cost"/>
+    </dataSource>
+    
+  <panel type="grid" id="budgetItemPanel" showOnLoad="false" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormBudgetItemDs" >
+        <sortField name="budget_id" table="eq_budget" ascending="true"/>
+        <title translatable="true">Select Budget Item</title>
+       
+        <action id="refresh">
+          <title translatable="true">Refresh</title>
+          <command type="showPanel" panelId="budgetItemPanel"/>
+        </action>
+        <field name="budget_id" table="eq_budget" hidden="true"/>
+        <field name="budget_item_id" table="eq_budget_item" />
+        <field name="eq_name" table="eq_budget_item" />
+        <field name="count" table="eq_budget_item" />
+        <field name="price" table="eq_budget_item" />
+        <field name="total_cost" table="eq_budget_item" />
+  </panel>
+ 
+</view>

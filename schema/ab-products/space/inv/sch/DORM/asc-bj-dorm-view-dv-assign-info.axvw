@@ -1,0 +1,53 @@
+<view version="2.0">
+<title>Assign Room To DV</title>
+	<layout type="borderLayout" id="mainLayout">
+        <north id="consoleRegion" autoScroll="true" split="true" initialSize="80"/>
+        <center id="tabsRegion"/>
+    </layout>
+    <dataSource id="bl_stu_ds">
+       <sql dialect="generic">
+           select rm.bl_id  ${sql.as} bl_id,bl.name  ${sql.as} bl_name,rm.fl_id  ${sql.as} fl_id, rm.rm_id  ${sql.as} rm_id,
+           a.stu_in_year  ${sql.as} stu_in_year,a.stu_no  ${sql.as} stu_no,a.stu_name  ${sql.as} stu_name, a.dv_name  ${sql.as} dv_name
+		     from (select sc_student.bl_id,
+		                  sc_student.fl_id,
+		                  sc_student.rm_id,
+		                  sc_student.dv_id,
+		                  dv.dv_name,
+		                  sc_student.stu_no,
+		                  sc_student.stu_name,
+		                  sc_student.stu_in_year
+		             from sc_student, dv
+		            where sc_student.dv_id = dv.dv_id
+		              and sc_student.bl_id is not null) a,
+		          rm,bl
+		    where rm.bl_id = a.bl_id(+)
+		      and rm.fl_id = a.fl_id(+)
+		      and rm.rm_id = a.rm_id(+)
+		      and rm.bl_id=bl.bl_id
+		      and rm.rm_cat = '301'
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id" dataType="text"/>
+        <field table="rm" name="bl_name" dataType="text"/>
+        <field table="rm" name="fl_id" dataType="text"/>
+        <field table="rm" name="rm_id" dataType="text"/>
+        <field table="rm" name="stu_in_year" dataType="text"/>
+        <field table="rm" name="stu_no" dataType="text"/>
+        <field table="rm" name="stu_name" dataType="text"/>
+        <field table="rm" name="dv_name" dataType="text"/>
+        <sortField table="rm" name="bl_id" ascending="true"/>
+        <sortField table="rm" name="fl_id" ascending="true"/>
+        <sortField table="rm" name="rm_id" ascending="true"/>
+    </dataSource>
+    <panel type="grid" id="blStuPanel" dataSource="bl_stu_ds" layoutRegion="tabsRegion" showOnLoad="true">
+    	<title>Bl Stu Info</title>
+        <field table="rm" name="bl_id" dataType="text"/>
+        <field table="rm" name="bl_name" dataType="text"/>
+        <field table="rm" name="fl_id" dataType="text"/>
+        <field table="rm" name="rm_id" dataType="text"/>
+        <field table="rm" name="stu_in_year" dataType="text"/>
+        <field table="rm" name="stu_no" dataType="text"/>
+        <field table="rm" name="stu_name" dataType="text"/>
+        <field table="rm" name="dv_name" dataType="text"/>
+    </panel>
+</view>

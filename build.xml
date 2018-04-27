@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<project name="ARCHIBUS Applications" default="war" basedir=".">
+
+	<target name="init" description="Initialize build environment">
+		<!-- Default: all applications-->
+		<property name="jars-ab-products" value="jars-all" />
+
+        <property file="${basedir}/build.properties" />
+
+		<property name="application" value="archibus" />
+		<property name="application.version" value="18.1" />
+		<property name="application.description" value="ARCHIBUS Web Central" />
+
+		<property name="toolsdir" value="${basedir}/../../tools" />
+		<property name="ant" value="${toolsdir}/ant" />
+		<property name="jdk" value="${toolsdir}/jdk" />
+        <property name="node" value="${toolsdir}/node" />
+
+		<property name="build" value="${basedir}/build" />
+		<property name="dist" value="${basedir}/dist" />
+		<property name="javadocs" value="${basedir}/docs/api" />
+		<property name="lib" value="${basedir}/WEB-INF/lib" />
+		<property name="help" value="${basedir}/help" />
+		<property name="installer" value="${basedir}/installer" />
+		<property name="projects" value="${basedir}/projects" />
+		<property name="schema" value="${basedir}/schema" />
+		<property name="src" value="${basedir}/src/main" />
+		<property name="config.src" value="${basedir}/WEB-INF/config" />
+		<property name="test.src" value="${basedir}/src/test" />
+		<property name="logs" value="${basedir}/WEB-INF/log" />
+		<property name="web" value="${basedir}" />
+		<property name="ab-core" value="${schema}/ab-core" />
+		<property name="ab-products" value="${schema}/ab-products" />
+		<property name="ab-system" value="${schema}/ab-system" />
+		<property name="adn-products" value="${schema}/adn-products" />
+		<property name="metainf" value="${basedir}/src/META-INF" />
+
+		<property name="jar-file" value="${dist}/${application}.jar" />
+		<property name="war-file" value="${dist}/${application}.war" />
+        <property name="ear-file" value="${dist}/${application}.ear" />
+        <property name="war.expanded" value="${dist}/${application}" />
+		<property name="ear.expanded" value="${dist}" />
+		<property name="license-file" value="ai-licenses.bin" />
+
+		<property name="build.compiler" value="modern" />
+	</target>
+
+	<target name="clean" depends="init" description="Clean build folders">
+		<delete dir="${build}/classes" />
+		<delete dir="${dist}" />
+		<ant dir="${ab-products}" target="clean-all" inheritAll="false" />
+	</target>
+
+	<target name="prepare" depends="init" description="Prepare build folders">
+		<mkdir dir="${build}" />
+		<mkdir dir="${build}\classes" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="jars" depends="prepare" description="Create JAR files to hold all compiled classes - for core and all applications">
+		<ant dir="${ab-core}" target="jar-all" inheritAll="false" />
+		<ant dir="${ab-products}" target="${jars-ab-products}" inheritAll="false" />
+	</target>
+
+    <target name="coreCSS" depends="init" description="Create core CSS files for all color schemes from LESS files">
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-core-slate.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-core-slate.css" />
+        </exec>
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-core-impact.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-core-impact.css" />
+        </exec>
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-core-vibrant.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-core-vibrant.css" />
+        </exec>
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-core-slate-small.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-core-slate-small.css" />
+        </exec>
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-view-default.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-view-default.css" />
+        </exec>
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-view-console.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-view-console.css" />
+        </exec>
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-view-form.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-view-form.css" />
+        </exec>
+        <exec executable="${node}\lessc.cmd" failonerror="true" failifexecutionfails="true">
+            <arg value="-x" />
+            <arg value="${ab-core}/less/ab-view-dashboard.less" />
+            <arg value=">" />
+            <arg value="${ab-core}/css/ab-view-dashboard.css" />
+        </exec>
+    </target>
+    
+	<target name="war-expanded" depends="jars" description="Create expanded web application for deployment">
+		<copy todir="${war.expanded}" preservelastmodified="true">
+			<fileset dir="${web}">
+				<include name="*.htm" />
+				<include name="*.html" />
+				<include name="*.jsp" />
+				<include name="*.jspf" />
+				<include name="releaseNotes.txt" />
+				<exclude name="/src/" />
+				<include name="docs/eclipse/.classpath" />
+				<include name="docs/eclipse/.project" />
+                <include name="docs/eclipse/*.launch" />
+				<include name="docs/eclipse/config/**" />
+				<include name="help/**" />
+				<include name="installer/**" />
+				<include name="projects/**" />
+				<include name=".settings/**" />
+				<exclude name="/schema-compiled/" />
+			</fileset>
+		</copy>
+		<copy todir="${war.expanded}" preservelastmodified="true">
+			<fileset dir="${web}/docs/eclipse">
+				<include name=".project" />
+				<include name=".classpath" />
+                <include name="*.launch" />
+			</fileset>
+		</copy>
+		<copy todir="${war.expanded}/WEB-INF/lib" preservelastmodified="true">
+			<fileset dir="${dist}" includes="*.jar" />
+		</copy>
+		<copy todir="${war.expanded}/WEB-INF" preservelastmodified="true">
+			<fileset dir="${web}/WEB-INF">
+				<exclude name="/classes/" />
+				<exclude name="/log/" />
+				<exclude name="**/servlet-api.jar" />
+				<exclude name="**/jsp-api.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${war.expanded}/schema" preservelastmodified="true">
+			<fileset dir="${schema}">
+				<include name="**" />
+				<exclude name="/per-site/" />
+				<exclude name="**/build/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="war" depends="war-expanded" description="Create WAR file for deployment">
+		<mkdir dir="${war.expanded}/META-INF" />
+        <manifest file="${war.expanded}/META-INF/MANIFEST.MF" />
+		<zip destfile="${war-file}">
+			<fileset dir="${war.expanded}" />
+        </zip>
+	</target>
+	
+    <target name="ear" depends="war-expanded" description="Create EAR file for enterprise deployment">
+        <mkdir dir="${ear.expanded}/META-INF" />
+        <copy todir="${ear.expanded}/META-INF" preservelastmodified="true">
+            <fileset dir="${web}/META-INF" includes="*.xml" />
+        </copy>
+        <zip destfile="${ear-file}">
+            <fileset dir="${ear.expanded}">
+                <exclude name="*.jar" />
+                <exclude name="*.war" />
+                <exclude name="*.ear" />
+            </fileset>
+        </zip>
+    </target>
+
+	<target name="deploy-jetty" depends="jars" 
+		    description="Copy compiled jar files from the dist folder to the WEB-INF\lib folder">
+        <copy todir="${web}/WEB-INF/lib" preservelastmodified="true">
+            <fileset dir="${dist}" includes="*.jar" />
+        </copy>
+	</target>
+</project>

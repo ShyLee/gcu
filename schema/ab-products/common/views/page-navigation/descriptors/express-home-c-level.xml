@@ -1,0 +1,11 @@
+<navigation-page>
+	<row height="two-thirds">
+        <bucket
+                title="Space Process"
+                tooltip="Develop and manage your space and occupancy data."
+                type="process"
+                activity_id="AbSpaceRoomInventoryBAR"
+                process_id="Department Manager"
+                />
+	</row>
+</navigation-page>

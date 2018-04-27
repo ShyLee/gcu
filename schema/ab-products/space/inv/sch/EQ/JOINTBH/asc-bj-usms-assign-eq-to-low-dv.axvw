@@ -1,0 +1,162 @@
+<view version="2.0">
+    <title translatable="true">Assign Eq To Lower Dv</title>
+    <js file="asc-bj-usms-assign-eq-to-low-dv.js"/>
+    <layout type="borderLayout" id="mainCenterLayout" >
+        <west initialSize="50%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_commnets"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_id"/>
+        <field table="eq" name="dl_id"/>
+        <field table="eq" name="servcont_id"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="date_in_storage"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="attachments_num"/>
+        <field table="eq" name="attachments_price"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="handling_em_name"/>
+        <field table="eq" name="sci_resh_id"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="approved"/>
+        <field table="eq" name="comments"/>
+        <field table="eq" name="approved_fiance"/>
+        <field table="eq" name="date_fin_approved"/>
+<!--         <field table="eq" name="approved_by_fin"/> -->
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="is_assign"/>
+        <field table="eq" name="number2"/>
+        <field table="eq" name="option1"/>
+        <field table="eq" name="option2"/>
+    </dataSource>
+    <dataSource id="ascBjUnAssignedEqDs">
+        <sql dialect="generic">
+                select add_eq_id,eq_id,eq_name,dv_id,dp_id,dl_id,sch_status,price,eq_type,eq_std,type_use,servcont_id,em_id,em_name,num_serial from 
+                (
+                    (select add_eq_id,eq_id,eq_name,dv_id,dp_id,dl_id,sch_status,price,eq_type,eq_std,type_use,servcont_id,em_id,em_name,num_serial from eq where dv_id is not null and dp_id is null and dl_id is null and exists(select dp_id from dp_top where dp_top.dv_id=eq.dv_id)  )
+                    union
+                    (select add_eq_id,eq_id,eq_name,dv_id,dp_id,dl_id,sch_status,price,eq_type,eq_std,type_use,servcont_id,em_id,em_name,num_serial from eq where dv_id is not null and dp_id is not null and dl_id is null and exists(select dl_id from dp_level where dp_level.dv_id=eq.dv_id and dp_level.dp_id=eq.dp_id))
+                  ) eq
+                    where 
+                  ( eq.sch_status!='5' and eq.sch_status!='6' and  eq.sch_status!='7' and  eq.sch_status!='C' and eq.sch_status!='D') and eq.add_eq_id is null or add_eq_id in (select add_eq_id from add_eq where add_eq.status='4')
+                  order by 
+                  eq.dv_id,eq.eq_id asc
+        </sql>
+        <table name="eq" role="main"/>
+        <field name="add_eq_id" dataType="text"/>
+        <field name="eq_id" dataType="text"/>
+        <field name="eq_name" dataType="text"/>
+        <field name="dv_id" dataType="text"/>
+        <field name="dp_id" dataType="text"/>
+        <field name="dl_id" dataType="text"/>
+        <field name="sch_status" dataType="text"/>
+        <field name="price" dataType="text"/>
+        <field name="eq_type" dataType="text"/>
+        <field name="eq_std" dataType="text"/>
+        <field name="type_use" dataType="text"/>
+        <field name="servcont_id" dataType="text"/>
+        <field name="em_id" dataType="text"/>
+        <field name="em_name" dataType="text"/>
+        <field name="num_serial" dataType="text"/>
+    </dataSource>
+    <panel type="grid" id="UnAssignedEqListPanel" dataSource="ascBjUnAssignedEqDs" layout="mainCenterLayout"  region="west">
+        <title translatable="true">UnAssignedToLowerDvEqList</title>
+        <action id="btnExportXls">
+            <title translatable="true">XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="UnAssignedEqListPanel"/>
+        </action>
+        <field controlType="button" id="btnAssign">
+            <title translatable="true">Assign</title>
+            <command type="callFunction" functionName="controller.toAssignEqToDv()"/>
+        </field>
+        
+        <field name="eq_id" dataType="text" controlType="link">
+            <command type="callFunction" functionName="controller.displayEqDetail()"/>
+        </field>
+        <field name="eq_name" dataType="text" controlType="link">
+            <command type="callFunction" functionName="controller.displayEqDetail()"/>
+        </field>
+        <field name="dv_id" dataType="text" controlType="link">
+            <command type="callFunction" functionName="controller.displayEqDetail()"/>
+        </field>
+        <field name="dp_id" dataType="text" controlType="link">
+            <command type="callFunction" functionName="controller.displayEqDetail()"/>
+        </field>
+        <field name="dl_id" dataType="text"/>
+        <field name="sch_status" dataType="text"/>
+        <field name="price" dataType="text"/>
+        <field name="eq_type" dataType="text"/>
+        <field name="eq_std" dataType="text"/>
+        <field name="type_use" dataType="text"/>
+        <field name="servcont_id" dataType="text"/>
+        <field name="em_id" dataType="text"/>
+        <field name="em_name" dataType="text"/>
+        <field name="num_serial" dataType="text"/>
+        <field name="add_eq_id" dataType="text"/>
+    </panel>
+    
+    <panel type="columnReport" id="UnAssignedEqDetailPanel" dataSource="ascBjUsmsEqDs"  layout="mainCenterLayout"  region="center" columns="3" showOnLoad="false">
+        <title translatable="true">UnAssignedToLowerDvEqDetial</title>
+    </panel>
+    
+    <panel type="form" id="ToAssignEqToDvPanel" dataSource="ascBjUsmsEqDs" showOnLoad="false">
+         <instructions translatable="true">Please Assign Eq To Lower Dv</instructions>
+        <title translatable="true">ToAssignEqToDvPanel</title>
+        <action id="btnSave">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="btnCancel">
+            <title translatable="true">Cancel</title>
+        </action>
+        <field table="eq" name="eq_id" readOnly="true"/>
+        <field table="eq" name="eq_name" readOnly="true"/>
+        <field table="eq" name="dv_id" readOnly="true"/>
+        <field table="eq" name="dp_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.dp_id,eq.dv_id"
+                    selectFieldNames="dp_top.dp_id,dp_top.dv_id" 
+                    visibleFieldNames="dp_top.dp_id,dp_top.dv_id" 
+                    filterFieldNames="eq.dv_id"
+                    actionListener="afterSelectDpId"
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="eq" name="dl_id">
+                <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.dl_id,eq.dp_id,eq.dv_id"
+                    selectFieldNames="dp_level.dl_id,dp_level.dp_id,dp_level.dv_id" 
+                    visibleFieldNames="dp_level.dl_id,dp_level.dp_id,dp_level.dv_id" 
+                    filterFieldNames="eq.dv_id,eq.dp_id"
+                    actionListener="afterSelectDlId"
+                    showIndex="false"/>
+            </action>
+        </field>
+        
+        <field table="eq" name="dp_commnets" readOnly="true"/>
+    </panel>
+</view>

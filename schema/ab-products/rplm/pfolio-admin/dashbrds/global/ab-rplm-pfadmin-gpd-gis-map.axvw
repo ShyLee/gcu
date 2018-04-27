@@ -1,0 +1,54 @@
+<view version="2.0">
+    <css file="ab-rplm-pfadmin-dashboard.css"/>
+    <js file="ab-flash-controls-common.js"/>
+    <js file="ab-arcgis-flash-map.js"/>
+    <js file="ab-rplm-pfadmin-gpd-gis-map.js"/>
+    
+    <dataSource id="abRplmPfadminGpdGis_ds">
+        <table name="bl" role="main"/>
+        <field name="bl_id" table="bl"/>
+        <field name="address1" table="bl"/>
+        <field name="address2" table="bl"/>
+        <field name="city_id" table="bl"/>
+        <field name="state_id" table="bl"/>
+        <field name="ctry_id" table="bl"/>
+        <field name="use1" table="bl"/>
+        <field name="lat" table="bl"/>
+        <field name="lon" table="bl"/>
+        <parameter name="filterRestriction" dataType="verbatim" value="1 = 1"/>
+        <restriction type="sql" sql="${parameters['filterRestriction']}"/>
+    </dataSource>
+
+
+    <tabs id="abRplmPfadminGpdGisTabs">
+        <tab name="abRplmPfadminGpdGisTabs_map" selected="true" useFrame="false">
+            <title>ArcGIS Map</title>
+            <panel type="html" id="mapPanel" dataSource="abRplmPfadminGpdGis_ds">
+                <title translatable="true">Show Buildings on ArcGIS Map</title>
+                <action id="layersMenu">
+                    <title translatable="true">Switch Layers</title>
+                </action>
+                <html>
+                    <div id="map" style="width:98%; height:350px; border:1px solid #000;"> </div>
+                </html>
+            </panel>
+        </tab>
+        <tab name="abRplmPfadminGpdGisTabs_report" >
+            <title>Report</title>
+            <panel type="grid" id="abRplmPfadminGpdGis_report" dataSource="abRplmPfadminGpdGis_ds" showOnLoad="false">
+                <title>Buildings</title>
+                <field id="detail" controlType="button">
+                    <title translatable="true">Details</title>
+                </field>
+                <field name="bl_id" table="bl"/>
+                <field name="use1" table="bl"/>
+                <field name="address1" table="bl"/>
+                <field name="address2" table="bl"/>
+                <field name="city_id" table="bl"/>
+                <field name="state_id" table="bl"/>
+                <field name="ctry_id" table="bl"/>
+            </panel>
+        </tab>
+    </tabs>
+
+</view>

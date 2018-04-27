@@ -1,0 +1,29 @@
+<view version="2.0">
+    <dataSource id="eqBugetComAddDialogDs">
+		<table name="add_eq" role="main"/>
+		<table name="dv" role="standard"/>
+		<table name="dp" role="standard"/>
+		<field table="add_eq" name="add_eq_id"/>
+		<field table="add_eq" name="budget_id" hidden="true"/>
+		<field table="add_eq" name="budget_item_id" hidden="true"/>
+		<field table="add_eq" name="eq_name"/>
+		<field table="add_eq" name="brand"/>
+		<field table="add_eq" name="eq_type"/>
+		<field table="add_eq" name="eq_std"/>
+		<field table="add_eq" name="count"/>
+		<field table="add_eq" name="price"/>
+		<field table="add_eq" name="total_price"/>
+		<field table="add_eq" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name" />
+		<field table="add_eq" name="dp_id" hidden="true"/>
+		<field table="dp" name="dp_name"/>
+		<field table="add_eq" name="buy_type"/>
+		<field table="add_eq" name="source"/>
+		<field table="add_eq" name="subject_funds"/>
+		<field table="add_eq" name="type_use"/>
+    </dataSource>
+    
+    <panel id="eqBugetComAddDialogFormPanel" type="grid" dataSource="eqBugetComAddDialogDs" columns="2">
+        <title translatable="true">Detail Of Add_eq Information</title>
+    </panel>
+</view>

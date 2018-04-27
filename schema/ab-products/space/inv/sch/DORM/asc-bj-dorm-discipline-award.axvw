@@ -1,0 +1,464 @@
+<view version="2.0">
+	<css>
+		.leftForm{float:left}
+	</css>
+	<title translatable="true">Student Award</title>
+	<layout type="borderLayout" id="mainLayout">
+		<north id="filterPosition" initialSize="80" split="true" />
+		<west id="westPosition" initialSize="25%" split="true" />
+		<center />
+	</layout>
+	<layout id="westLayout" type="borderLayout" containingLayout="mainLayout"
+		region="west">
+		<north id="treePosition" initialSize="30%" split="true" />
+		<center />
+	</layout>
+    <dataSource id="bl_ds">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <sortField name="bl_id" table="bl" ascending="true"/>
+        <parameter name="blName" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="1=1 AND EXISTS (SELECT 1 FROM rm left join rmcat on rmcat.rm_cat=rm.rm_cat 
+									WHERE rm.dwgname IS NOT NULL  AND rm.bl_id=bl.bl_id and rmcat.supercat!='VERT' and rmcat.rm_cat='301')
+									and ${parameters['blName']}"/>
+    </dataSource>
+    
+    <dataSource id="fl_ds">
+        <table name="fl" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="fl" name="bl_id" hidden="true"/>
+        <field table="fl" name="fl_id"/>
+        <sortField table="fl" name="fl_id" ascending="true"/>
+    </dataSource>
+    
+    <dataSource id="rm_ds">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" hidden="true"/>
+        <field table="rm" name="stu_in_year" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <sortField table="rm" name="rm_id" ascending="true"/>
+    </dataSource>
+    
+	<dataSource id="sc_stu_disp_log_ds">
+		<table name="sc_stu_disp_log" role="main" />
+		<field table="sc_stu_disp_log" name="id" />
+		<field table="sc_stu_disp_log" name="stu_no" />
+		<field table="sc_stu_disp_log" name="stu_name" />
+		<field table="sc_stu_disp_log" name="stu_sex" />
+		<field table="sc_stu_disp_log" name="dv_id" />
+		<field table="sc_stu_disp_log" name="pro_id" />
+		<field table="sc_stu_disp_log" name="stu_in_year" />
+		<field table="sc_stu_disp_log" name="mark" />
+		<field table="sc_stu_disp_log" name="disp_main" />
+		<field table="sc_stu_disp_log" name="disp_detail" />
+		<field table="sc_stu_disp_log" name="date_disp"/>
+		<field table="sc_stu_disp_log" name="comments"/>
+		<field table="sc_stu_disp_log" name="bl_id"/>
+		<field table="sc_stu_disp_log" name="fl_id"/>
+		<field table="sc_stu_disp_log" name="rm_id"/>
+	</dataSource>
+	<dataSource id="stu_disp_DS">
+		<table name="sc_stu_disp_log" role="main" />
+		<table name="dv" role="standard" />
+		<field table="dv" name="dv_name" />
+	    <table name="bl" role="standard" />
+		<field table="bl" name="name" />
+		<table name="sc_stu_profession" role="standard" />
+		<field table="sc_stu_profession" name="pro_name" />
+		<field table="sc_stu_disp_log" name="id" />
+		<field table="sc_stu_disp_log" name="stu_no" />
+		<field table="sc_stu_disp_log" name="stu_name" />
+		<field table="sc_stu_disp_log" name="stu_sex" />
+		<field table="sc_stu_disp_log" name="dv_id" />
+		<field table="sc_stu_disp_log" name="pro_id" />
+		<field table="sc_stu_disp_log" name="stu_in_year" />
+		<field table="sc_stu_disp_log" name="mark" />
+		<field table="sc_stu_disp_log" name="disp_main" />
+		<field table="sc_stu_disp_log" name="disp_detail" />
+		<field table="sc_stu_disp_log" name="date_disp"/>
+		<field table="sc_stu_disp_log" name="comments"/>
+		<field table="sc_stu_disp_log" name="bl_id"/>
+		<field table="sc_stu_disp_log" name="fl_id"/>
+		<field table="sc_stu_disp_log" name="rm_id"/>
+		<restriction type="sql" sql=" mark=1"/>
+	</dataSource>
+	
+	<dataSource id="stu_award_DS">
+		<table name="sc_stu_disp_log" role="main" />
+		<table name="dv" role="standard" />
+		<field table="dv" name="name" />
+		<table name="bl" role="standard" />
+		<field table="bl" name="name" />
+		<table name="sc_stu_profession" role="standard" />
+		<field table="sc_stu_profession" name="pro_name" />
+		<field table="sc_stu_disp_log" name="id" />
+		<field table="sc_stu_disp_log" name="stu_no" />
+		<field table="sc_stu_disp_log" name="stu_name" />
+		<field table="sc_stu_disp_log" name="stu_sex" />
+		<field table="sc_stu_disp_log" name="dv_id" />
+		<field table="sc_stu_disp_log" name="pro_id" />
+		<field table="sc_stu_disp_log" name="stu_in_year" />
+		<field table="sc_stu_disp_log" name="mark" />
+		<field table="sc_stu_disp_log" name="disp_main" />
+		<field table="sc_stu_disp_log" name="disp_detail" />
+		<field table="sc_stu_disp_log" name="date_disp"/>
+		<field table="sc_stu_disp_log" name="comments" />
+	    <field table="sc_stu_disp_log" name="bl_id"/>
+		<field table="sc_stu_disp_log" name="fl_id"/>
+		<field table="sc_stu_disp_log" name="rm_id"/>
+		<restriction type="sql" sql=" mark=2"/>
+	</dataSource>
+	
+	<dataSource id="stu_sch_DS">
+		<table name="sc_school" role="main" />
+		<field table="sc_school" name="sch_id" />
+		<field table="sc_school" name="sch_name" />
+	</dataSource>
+	<dataSource id="stu_dv_DS">
+		<table name="dv" role="main" />
+		<field table="dv" name="dv_id" />
+		<field table="dv" name="dv_name" />
+	</dataSource>
+	<dataSource id="sc_stu_DS">
+		<table name="sc_student" role="main" />
+		<table name="dv" role="standard"/>
+		<table name="sc_stu_profession" role="standard"/>
+		<table name="bl" role="standard" />
+		<field table="bl" name="name" />
+		<field table="sc_student" name="stu_no"/>
+		<field table="sc_student" name="stu_name"/>
+		<field table="sc_student" name="pro_id"/>
+		<field table="sc_stu_profession" name="pro_name"/>
+		<field table="sc_student" name="dv_id"/>
+		<field table="dv" name="dv_name" />
+		<field table="sc_student" name="stu_sex"/>
+		<field table="sc_student" name="stu_in_year"/>
+		<field table="sc_student" name="bl_id"/>
+		<field table="sc_student" name="fl_id"/>
+		<field table="sc_student" name="rm_id"/>
+		<restriction type="sql" sql=" sc_student.bl_id is not null"/>
+	</dataSource>
+	
+	<panel type="console" id="stuDispConsole" dataSource="sc_stu_DS" layoutRegion="filterPosition" columns="3">
+		<title translatable="true">Filter</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel" panelId="stuDispConsole" />
+		</action>
+		<action id="importDisp">
+			<title>Import</title>
+			<command type="callFunction" functionName="checkoutAwardController.stuDispImport()"/>
+		</action>
+		<action id="downLoad">
+			<title>DownLoad</title>
+			<command type="callFunction" functionName="checkoutAwardController.stuDispDownload()"/>
+		</action>
+		<action id="lightDownLoad">
+			<title>LightDownLoad</title>
+			<command type="callFunction" functionName="checkoutAwardController.lightDispDownload()"/>
+		</action>
+		<field table="sc_student" name="stu_no">
+			<action>
+				<title>...</title>
+				<tooltip>Select Value</tooltip>
+				<command type="selectValue" fieldNames="sc_student.stu_no,sc_student.stu_name"
+					selectFieldNames="sc_student.stu_no,sc_student.stu_name"
+					visibleFieldNames="sc_student.stu_no,sc_student.stu_name"
+					showIndex="false" />
+			</action>
+		</field>
+		<field table="sc_student" name="stu_name" />
+		<field table="sc_student" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name">
+			<title>Dv Name</title>
+			<action>
+				<title>...</title>
+				<tooltip>Select Value</tooltip>
+				<command type="selectValue" 
+					fieldNames="sc_student.dv_id,dv.dv_name"
+					selectFieldNames="dv.dv_id,dv.dv_name" 
+					visibleFieldNames="dv.dv_id,dv.dv_name"
+					restriction="dv.bu_id='02'"
+					showIndex="false" />
+			</action>
+		</field>
+	</panel>
+	
+    <panel type="tree" id="stuSchTreePanel" dataSource="bl_ds" layout="westLayout" region="north">
+		<title translatable="true">Select Room</title>
+			<event type="onClickNode">
+				<command type="callFunction" functionName="checkoutAwardController.onBlTreeClick()" />
+			</event>
+		<panel type="tree" id="flTreePanel" dataSource="fl_ds">
+			<event type="onClickNode">
+				<command type="callFunction" functionName="checkoutAwardController.onFlTreeClick()" />
+			</event>
+        </panel>
+		<panel type="tree" id="rmTreePanel" dataSource="rm_ds">
+			<event type="onClickNode">
+				<command type="callFunction" functionName="checkoutAwardController.onRmTreeClick()" />
+			</event>
+        </panel>
+	</panel>
+	
+	<tabs id="stuDispInfoTabs" workflow="free" layout="mainLayout" region="center" tabRefreshPolicy="refreshOnSelect">
+		<tab name="studentDisp" selected="true">
+			<title translatable="true">Discipline</title>
+			
+			<panel type="form" id="stuDispFormPanel" dataSource="stu_disp_DS" columns="2" labelsPosition="left">
+				<title translatable="true">Student Discipline Info</title>
+		
+				<action id="save">
+					<title translatable="true">Save</title>
+					<command type="callFunction" functionName="checkoutAwardController.saveNewData()" />
+				</action>
+				<action id="cancel">
+					<title>Cancel</title>
+					<command type="callFunction" functionName="checkoutAwardController.refreshForm()"/>
+				</action>
+				
+				<field table="sc_stu_disp_log" name="stu_no" readOnly="true">
+					<action>
+						<title>...</title>
+						<tooltip>Select Value</tooltip>
+						<command type="selectValue"
+							fieldNames="sc_stu_disp_log.stu_no,sc_stu_disp_log.stu_name,sc_stu_disp_log.stu_sex,sc_stu_disp_log.stu_in_year,sc_stu_disp_log.dv_id,dv.dv_name,sc_stu_disp_log.pro_id,sc_stu_profession.pro_name"
+							selectFieldNames="sc_student.stu_no,sc_student.stu_name,sc_student.stu_sex,sc_student.stu_in_year,sc_student.dv_id,dv.dv_name,sc_student.pro_id,sc_stu_profession.pro_name"
+							visibleFieldNames="sc_student.stu_no,sc_student.stu_name"
+							showIndex="false" />
+					</action>
+				</field>
+				<field table="sc_stu_disp_log" name="stu_name" readOnly="true" />
+				<field table="sc_stu_disp_log" name="stu_sex" readOnly="true" />
+				<field table="sc_stu_disp_log" name="stu_in_year" readOnly="true" />
+				<field table="sc_stu_disp_log" name="bl_id"  hidden="true"/>
+				<field table="bl" name="name" readOnly="true">
+					<title>Bl Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="fl_id" readOnly="true"/>
+				<field table="sc_stu_disp_log" name="rm_id" readOnly="true"/>
+				<field table="sc_stu_disp_log" name="dv_id" hidden="true" />
+				<field table="dv" name="dv_name" >
+					<title>Dv Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="pro_id" hidden="true" />
+				<field table="sc_stu_profession" name="pro_name" />
+				<field table="sc_stu_disp_log" name="mark" readOnly="true"/>
+				<field table="sc_stu_disp_log" name="disp_main" alias="sc_stu_disp_log.disp_main_value" required="true">
+					<action>
+						<command type="selectValue"
+							fieldNames="sc_stu_disp_log.disp_main,sc_stu_disp_log.disp_main_value"
+							selectFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name"
+							visibleFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name"
+							restriction="mark='1'"
+							showIndex="false" />
+					</action>
+				</field>
+				<field table="sc_stu_disp_log" name="disp_main" hidden="true">
+				</field>
+				<field table="sc_stu_disp_log" name="disp_detail" required="true">
+					<action>
+						<command type="selectValue"
+							fieldNames="sc_stu_disp_log.disp_main,sc_stu_disp_log.disp_main_value,sc_stu_disp_log.disp_detail"
+							selectFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name,sc_stu_disp_detail.disp_detail"
+							visibleFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name,sc_stu_disp_detail.disp_detail"
+							restriction="mark='1'"
+							filterFieldNames="sc_stu_disp_log.disp_main"
+							showIndex="false" />
+					</action>
+				</field>
+			   <field table="sc_stu_disp_log" name="date_disp" required="true"/>
+			   <field></field>
+			   <field table="sc_stu_disp_log" name="comments" colspan="2" />
+			</panel>
+			<panel type="grid" id="stuDispGridPanel" dataSource="stu_disp_DS" showOnLoad="false" multipleSelectionEnabled="true">
+				<title translatable="true">Student Discipline List</title>
+				<action id="delete">
+					<title translatable="true">Delete</title>
+				</action>
+				<action id="exportDisp">
+					<title>Export</title>
+					<command type="exportPanel" outputType="xls" panelId="stuDispGridPanel" />
+				</action>
+				<sortField table="sc_stu_disp_log" name="id" ascending="false"/>
+				<field table="sc_stu_disp_log" name="id" hidden="true"/>
+				<field table="sc_stu_disp_log" name="stu_in_year" />
+				<field table="sc_stu_disp_log" name="bl_id"  hidden="true"/>
+				<field table="bl" name="name">
+					<title>Bl Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="fl_id"/>
+				<field table="sc_stu_disp_log" name="rm_id"/>
+				<field table="sc_stu_disp_log" name="stu_no" />
+				<field table="sc_stu_disp_log" name="stu_name" />
+				<field table="sc_stu_disp_log" name="stu_sex" />
+				<field table="sc_stu_disp_log" name="dv_id" hidden="true"/>
+				<field table="dv" name="dv_name">
+					<title>Dv Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="pro_id" hidden="true" />
+				<field table="sc_stu_profession" name="pro_name"/>
+				<field table="sc_stu_disp_log" name="mark" />
+				<field table="sc_stu_disp_log" name="disp_main" hidden="true"/>
+				<field table="sc_stu_disp_log" name="disp_detail" />
+				<field table="sc_stu_disp_log" name="date_disp"/>
+				<field table="sc_stu_disp_log" name="comments" />
+			</panel>
+		</tab>
+		<tab name="studentAward" >
+			<title translatable="true">Awards</title>
+			<panel type="form" id="stuAwardFormPanel" dataSource="stu_award_DS" columns="2" labelsPosition="left" >
+				<title translatable="true">Student Awards Info</title>
+		
+				<action id="save">
+					<title translatable="true">Save</title>
+					<command type="callFunction" functionName="checkoutAwardController.saveNewData()" />
+ 				</action>
+				<action id="cancel">
+					<title>Cancel</title>
+					<command type="callFunction" functionName="checkoutAwardController.refreshForm()"/>
+				</action>
+				
+				<field table="sc_stu_disp_log" name="stu_no" readOnly="true">
+					<action>
+						<title>...</title>
+						<tooltip>Select Value</tooltip>
+						<command type="selectValue"
+							fieldNames="sc_stu_disp_log.stu_no,sc_stu_disp_log.stu_name,sc_stu_disp_log.stu_sex,sc_stu_disp_log.stu_in_year,sc_stu_disp_log.dv_id,dv.dv_name,sc_stu_disp_log.pro_id,sc_stu_profession.pro_name"
+							selectFieldNames="sc_student.stu_no,sc_student.stu_name,sc_student.stu_sex,sc_student.stu_in_year,sc_student.dv_id,dv.dv_name,sc_student.pro_id,sc_stu_profession.pro_name"
+							visibleFieldNames="sc_student.stu_no,sc_student.stu_name"
+							showIndex="false" />
+					</action>
+				</field>
+				<field table="sc_stu_disp_log" name="stu_name" readOnly="true" />
+				<field table="sc_stu_disp_log" name="stu_sex" readOnly="true" />
+				<field table="sc_stu_disp_log" name="stu_in_year" readOnly="true" />
+				<field table="sc_stu_disp_log" name="bl_id"  hidden="true"/>
+				<field table="bl" name="name" readOnly="true">
+					<title>Bl Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="fl_id" readOnly="true"/>
+				<field table="sc_stu_disp_log" name="rm_id" readOnly="true"/>
+				<field table="sc_stu_disp_log" name="dv_id" hidden="true" />
+				<field table="dv" name="dv_name">
+					<title>Dv Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="pro_id" hidden="true" />
+				<field table="sc_stu_profession" name="pro_name" />
+				<field table="sc_stu_disp_log" name="mark" readOnly="true"/>
+				<field table="sc_stu_disp_log" name="disp_main" alias="sc_stu_disp_log.disp_main_value" required="true">
+					<title translatable="true">Award Main</title>
+					<action>
+						<command type="selectValue"
+							fieldNames="sc_stu_disp_log.disp_main,sc_stu_disp_log.disp_main_value"
+							selectFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name"
+							visibleFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name"
+							restriction="mark='2'"
+							showIndex="false" />
+					</action>
+				</field>
+				<field table="sc_stu_disp_log" name="disp_main" hidden="true">
+				</field>
+				<field table="sc_stu_disp_log" name="disp_detail" required="true">
+					<title translatable="true">Award Detail</title>
+					<action>
+						<command type="selectValue"
+							fieldNames="sc_stu_disp_log.disp_main,sc_stu_disp_log.disp_main_value,sc_stu_disp_log.disp_detail"
+							selectFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name,sc_stu_disp_detail.disp_detail"
+							visibleFieldNames="sc_stu_disp_main.disp_main,sc_stu_disp_main.disp_name,sc_stu_disp_detail.disp_detail"
+							restriction="mark='2'"
+							filterFieldNames="sc_stu_disp_log.disp_main"
+							showIndex="false" />
+					</action>
+				</field>
+				<field table="sc_stu_disp_log" name="date_disp" required="true">
+					<title translatable="true">Award Date</title>
+				</field>
+				<field></field>
+				<field table="sc_stu_disp_log" name="comments" colspan="2" />
+			</panel>
+					
+			<panel type="grid" id="stuAwardGridPanel" dataSource="stu_award_DS" showOnLoad="false"  multipleSelectionEnabled="true" >
+				<title translatable="true">Student Awards List</title>
+				<action id="delete">
+					<title translatable="true">Delete</title>
+				</action>
+				<action id="exportAward">
+					<title>Export</title>
+					<command type="exportPanel" outputType="xls" panelId="stuAwardGridPanel" />
+				</action>
+				<sortField table="sc_stu_disp_log" name="id" ascending="false"/>
+				<field table="sc_stu_disp_log" name="id" hidden="true"/>
+				<field table="sc_stu_disp_log" name="stu_in_year" />
+				<field table="sc_stu_disp_log" name="bl_id"  hidden="true"/>
+				<field table="bl" name="name">
+					<title>Bl Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="fl_id"/>
+				<field table="sc_stu_disp_log" name="rm_id"/>
+				<field table="sc_stu_disp_log" name="stu_no"/>
+				<field table="sc_stu_disp_log" name="stu_name" />
+				<field table="sc_stu_disp_log" name="stu_sex" />
+				<field table="sc_stu_disp_log" name="dv_id" hidden="true"/>
+				<field table="dv" name="dv_name" >
+					<title>Dv Name</title>
+				</field>
+				<field table="sc_stu_disp_log" name="pro_id" hidden="true" />
+				<field table="sc_stu_profession" name="pro_name"/>
+				<field table="sc_stu_disp_log" name="mark" />
+				<field table="sc_stu_disp_log" name="disp_main" hidden="true">
+					<title translatable="true">Award Main</title>
+				</field>
+				<field table="sc_stu_disp_log" name="disp_detail">
+					<title translatable="true">Award Detail</title>
+				</field>
+				<field table="sc_stu_disp_log" name="date_disp">
+					<title translatable="true">Award Date</title>
+				</field>
+				<field table="sc_stu_disp_log" name="comments" />
+			</panel>
+			
+		</tab>
+	</tabs>
+	
+	<panel type="grid" id="stuGridPanel" dataSource="sc_stu_DS" layout="westLayout" region="center">
+		<title>Student List</title>
+		<sortField table="sc_student" name="stu_no" />
+		<indexField table="sc_student" name="stu_no"/>
+		<field table="sc_student" name="stu_in_year" controlType="link">
+			<command type="callFunction" functionName="checkoutAwardController.showStudentInfo()" />
+		</field>
+		<field name="stu_no" table="sc_student" controlType="link">
+			<command type="callFunction" functionName="checkoutAwardController.showStudentInfo()" />
+		</field>
+		<field  name="stu_name" table="sc_student" controlType="link">
+			<command type="callFunction" functionName="checkoutAwardController.showStudentInfo()" />
+		</field>
+		<field table="dv" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name"  controlType="link">
+			<title>Dv Name</title>
+			<command type="callFunction" functionName="checkoutAwardController.showStudentInfo()" />
+		</field>
+		<field table="sc_stu_profession" name="pro_id" hidden="true"/>
+		<field table="sc_stu_profession" name="pro_name"  controlType="link">
+			<command type="callFunction" functionName="checkoutAwardController.showStudentInfo()" />
+		</field>
+		<field table="sc_student" name="stu_sex" hidden="true"/>
+		<field table="sc_student" name="stu_in_year" hidden="true"/>
+	    <field table="sc_student" name="bl_id" hidden="true"/>
+	    <field table="bl" name="name" hidden="true"/>
+		<field table="sc_student" name="fl_id" hidden="true"/>
+		<field table="sc_student" name="rm_id" hidden="true"/>
+	</panel>
+	<js file="asc-bj-dorm-discipline-award.js" />
+</view>

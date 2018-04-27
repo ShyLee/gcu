@@ -1,0 +1,245 @@
+<view version="2.0" type="dashboard">
+	
+    <layout id="main">
+        <north id="rptPosition" initialSize="53%" split="true"/>
+        <center />
+    </layout>
+	<layout id="nested_center" containingLayout="main" region="center">
+        <west id="overChtPosition" initialSize="50%" />
+        <center id="vacantChtPosition"/>
+    </layout>
+    <title translatable="true">Jiao Xue Dan Wei Dinge Mian Ji Yu Shi Yong Mian Ji Tong Ji Fen Xi Tu Biao</title>
+	
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_asc-bj-usms-dinge-actual-stat-teach_grid_dv" type="grouping">
+		<table name="rm" role="main" />
+		<table name="dv" role="standard" />
+		
+		<field table="dv" name="dv_id" groupBy="true"/>
+		<field table="dv" name="area_conference" groupBy="true" hidden="true"/>
+		<field table="dv" name="area_rm_gonggong" groupBy="true" hidden="true"/>
+		<field table="dv" name="area_student_paper_rm" groupBy="true" hidden="true"/>
+		<field table="dv" name="area_project_rm" groupBy="true" hidden="true"/>
+		
+		<field table="dv" name="total_dinge_area" dataType="number" decimals="2">
+			<title translatable="true">Dinge Zong Mian Ji</title>
+			<sql dialect="generic">
+				CASE WHEN (SELECT SUM(de.area) FROM em,sc_dinge_jibie de WHERE em.dingejibie_id = de.dingejibie_id and em.dv_id=dv.dv_id) IS NULL
+   THEN (dv.area_conference+dv.area_rm_gonggong+dv.area_student_paper_rm+dv.area_project_rm) 
+   ELSE (dv.area_conference+dv.area_rm_gonggong+dv.area_student_paper_rm+dv.area_project_rm+(SELECT SUM(de.area) FROM em,sc_dinge_jibie de WHERE em.dingejibie_id = de.dingejibie_id and em.dv_id=dv.dv_id))  END
+        	</sql>
+        </field>
+		
+		<field table="dv" name="total_actual_area" dataType="number" decimals="2">
+			<title translatable="true">Shi Ji Shi Yong Mian Ji</title>
+			<sql dialect="generic">
+ 				SUM(rm.area)
+        	</sql>
+        </field>
+		
+		<field table="dv" name="office_area" dataType="number" decimals="2">
+			<title translatable="true">Office</title>
+			<sql dialect="generic">
+ 				(SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['officeRes']})
+        	</sql>
+        </field>
+		<field table="dv" name="meeting_area" dataType="number" decimals="2">
+			<title translatable="true">Meeting</title>
+			<sql dialect="generic">
+ 				(SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['meetingRes']})
+        	</sql>
+        </field>
+		<field table="dv" name="commonOffice_area" dataType="number" decimals="2">
+			<title translatable="true">Common Office</title>
+			<sql dialect="generic">
+ 				(SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['commonOfficeRes']})
+        	</sql>
+        </field>
+		<field table="dv" name="manaAssist_area" dataType="number" decimals="2">
+			<title translatable="true">Xing Zheng Fu Zhu Yong Fang</title>
+			<sql dialect="generic">
+ 				(SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['adminAssistRes']})
+        	</sql>
+        </field>
+		<field table="dv" name="teachOffice_area" dataType="number" decimals="2">
+			<title translatable="true">Teacher Office</title>
+			<sql dialect="generic">
+ 				(SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachOfficeRes']})
+        	</sql>
+        </field>
+		<field table="dv" name="projectZxYf_area" dataType="number" decimals="2">
+			<title translatable="true">Ke Yan Zhuan Xiang Yong fang</title>
+			<sql dialect="generic">
+ 				(SELECT SUM(rm.area) FROM rm,sc_project sp WHERE rm.project_id=sp.project_id and sp.is_dingegl='yes' and rm.dv_id = dv.dv_id and rm.rm_type=${parameters['projectZXYFRes']})
+        	</sql>
+        </field>
+		<field table="dv" name="teachAssist_area" dataType="number" decimals="2">
+			<title translatable="true">Jiao Xue Fuzhu Yong fang</title>
+			<sql dialect="generic">
+ 				(SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachFUYFRes']})
+        	</sql>
+        </field>
+		<field table="dv" name="over_area" dataType="number" size="6"  decimals="2">
+			<title translatable="true">Chao e Mian Ji</title>
+		</field>
+		<field table="dv" name="over_rate" dataType="number" size="6"  decimals="2" >
+			<title translatable="true">Chao e Bi Li</title>
+		</field>
+		
+		<restriction type="sql" sql="rm.dv_id IS NOT NULL and dv.bu_id in (select bu_id from bu where bu_class=${parameters['buClassRes']})"/>
+		
+		<parameter name="officeRes" dataType="text" value=""/>
+		<parameter name="meetingRes" dataType="text" value=""/>
+		<parameter name="commonOfficeRes" dataType="text" value=""/>
+		<parameter name="adminAssistRes" dataType="text" value=""/>
+		<parameter name="teachOfficeRes" dataType="text" value=""/>
+		<parameter name="projectZXYFRes" dataType="text" value=""/>
+		<parameter name="teachFUYFRes" dataType="text" value=""/>
+		<parameter name="buClassRes" dataType="text" value=""/>
+	</dataSource>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsDingeActualStatTeach_dvSumGrid" dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_grid_dv"  layoutRegion="rptPosition">
+    	<title translatable="true">XuexiaoSuoyouJiaoxueKeYanDanwei</title>
+		<sortField name="dv_id" table="dv" ascending="true" />
+    </panel>
+	
+	<!-- cross table report-->
+	<!--panel id="ascBjUsmsDingeActualStatTeachCrossPanel" type="crossTable" dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_cross_dv" showOnLoad="true"  layoutRegion="crossPosition">
+	</panel-->
+	
+    <dataSource id="ds_asc-bj-usms-dinge-actual-stat-teach_cht_over" type="grouping">
+    	<sql dialect="generic">
+    		SELECT dv1.dv_id ${sql.as} dv_id, 
+			   (dv1.total_actual_area - dv1.total_dinge_area) ${sql.as} over_area
+			FROM(
+    	SELECT dv.dv_id  ${sql.as} dv_id,
+		    dv.area_conference,
+		     dv.area_rm_gonggong,
+			 dv.area_student_paper_rm,
+			 dv.area_project_rm,
+ 				CASE WHEN (SELECT SUM(de.area) FROM em,sc_dinge_jibie de WHERE em.dingejibie_id = de.dingejibie_id and em.dv_id=dv.dv_id) IS NULL
+   THEN (dv.area_conference+dv.area_rm_gonggong+dv.area_student_paper_rm+dv.area_project_rm) 
+   ELSE (dv.area_conference+dv.area_rm_gonggong+dv.area_student_paper_rm+dv.area_project_rm+(SELECT SUM(de.area) FROM em,sc_dinge_jibie de WHERE em.dingejibie_id = de.dingejibie_id and em.dv_id=dv.dv_id))  END ${sql.as} total_dinge_area,
+ 				((CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['officeRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['officeRes']}) END)
+				+(CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['meetingRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['meetingRes']}) END)
+				+ (CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['commonOfficeRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['commonOfficeRes']}) END)
+				+(CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['adminAssistRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['adminAssistRes']}) END)
+				+(CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachOfficeRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachOfficeRes']}) END) 
+				+ (CASE WHEN (SELECT SUM(rm.area) FROM rm,sc_project sp WHERE rm.project_id=sp.project_id and sp.is_dingegl='yes' and rm.dv_id = dv.dv_id and rm.rm_type=${parameters['projectZXYFRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm ,sc_project sp WHERE rm.project_id=sp.project_id and sp.is_dingegl='yes' and rm.dv_id = dv.dv_id and rm.rm_type=${parameters['projectZXYFRes']}) END) 
+				+ (CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachFUYFRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachFUYFRes']}) END))   ${sql.as} total_actual_area
+        FROM rm, dv WHERE rm.dv_id=dv.dv_id (+) 
+        AND (rm.dv_id IS NOT NULL and dv.bu_id in (select bu_id from bu where bu_class=${parameters['buClassRes']})) 
+        GROUP BY dv.dv_id,dv.area_conference, dv.area_rm_gonggong, dv.area_student_paper_rm, dv.area_project_rm
+		) dv1
+		WHERE (dv1.total_actual_area-dv1.total_dinge_area) &gt; 0 
+		ORDER BY (dv1.total_actual_area-dv1.total_dinge_area) DESC
+		</sql>
+        <table name="dv" role="main"/>
+        <field name="dv_id" dataType="text" groupBy="true"/>
+        <field name="over_area" dataType="number"  decimals="2" groupBy="true"/>
+		
+		<restriction type="sql" sql=" rownum &lt;= 5 "/>
+		
+		<parameter name="officeRes" dataType="text" value=""/>
+		<parameter name="meetingRes" dataType="text" value=""/>
+		<parameter name="commonOfficeRes" dataType="text" value=""/>
+		<parameter name="adminAssistRes" dataType="text" value=""/>
+		<parameter name="teachOfficeRes" dataType="text" value=""/>
+		<parameter name="projectZXYFRes" dataType="text" value=""/>
+		<parameter name="teachFUYFRes" dataType="text" value=""/>
+		<parameter name="buClassRes" dataType="text" value=""/>
+    </dataSource>
+	
+    <panel 	id="ascBjUsmsDingeActualStatTeach_Over5" 
+    		type="chart" 
+    		controlType="columnChart" 
+    		dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_cht_over" 
+			showLegendOnLoad="true"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillColor="0xff0000"
+    		fillType="solid"
+			layoutRegion="overChtPosition">
+    		
+        <title translatable="true">Actual Greater than Dinge Top 5</title>
+        <sortField name="over_area" table="dv"/>
+        <groupingAxis table="dv" field="dv_id" dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_cht_over"  showLabel="true" labelRotation="45">
+            <title translatable="true">Divisions</title>
+        </groupingAxis>
+        <dataAxis table="dv" field="over_area"  dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_cht_over" showLabel="true">
+            <title translatable="true">Over Area</title>
+        </dataAxis>
+    </panel>
+	
+	<dataSource id="ds_asc-bj-usms-dinge-actual-stat-teach_cht_vacant" type="grouping">
+        <sql dialect="generic">
+        	SELECT dv1.dv_id ${sql.as} dv_id, 
+			   (dv1.total_actual_area - dv1.total_dinge_area) ${sql.as} quee_area
+			FROM(
+    	SELECT dv.dv_id  ${sql.as} dv_id,
+		     dv.area_conference,
+		     dv.area_rm_gonggong,
+			 dv.area_student_paper_rm,
+			 dv.area_project_rm,
+ 				CASE WHEN (SELECT SUM(de.area) FROM em,sc_dinge_jibie de WHERE em.dingejibie_id = de.dingejibie_id and em.dv_id=dv.dv_id) IS NULL
+   THEN (dv.area_conference+dv.area_rm_gonggong+dv.area_student_paper_rm+dv.area_project_rm) 
+   ELSE (dv.area_conference+dv.area_rm_gonggong+dv.area_student_paper_rm+dv.area_project_rm+(SELECT SUM(de.area) FROM em,sc_dinge_jibie de WHERE em.dingejibie_id = de.dingejibie_id and em.dv_id=dv.dv_id))  END ${sql.as} total_dinge_area,
+ 				((CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['officeRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['officeRes']}) END)
+				+(CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['meetingRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['meetingRes']}) END)
+				+ (CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['commonOfficeRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['commonOfficeRes']}) END)
+				+(CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['adminAssistRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['adminAssistRes']}) END)
+				+(CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachOfficeRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachOfficeRes']}) END) 
+				+ (CASE WHEN (SELECT SUM(rm.area) FROM rm, sc_project sp WHERE rm.project_id=sp.project_id and sp.is_dingegl='yes' and rm.dv_id = dv.dv_id and rm.rm_type=${parameters['projectZXYFRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm ,sc_project sp WHERE rm.project_id=sp.project_id and sp.is_dingegl='yes' and rm.dv_id = dv.dv_id and rm.rm_type=${parameters['projectZXYFRes']}) END) 
+				+ (CASE WHEN (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachFUYFRes']}) IS NULL THEN 0 ELSE (SELECT SUM(rm.area) FROM rm WHERE rm.dv_id = dv.dv_id and rm.rm_type=${parameters['teachFUYFRes']}) END))  ${sql.as} total_actual_area
+        FROM rm, dv WHERE rm.dv_id=dv.dv_id (+) 
+        AND (rm.dv_id IS NOT NULL and dv.bu_id in (select bu_id from bu where bu_class=${parameters['buClassRes']})) 
+        GROUP BY dv.dv_id,dv.area_conference, dv.area_rm_gonggong, dv.area_student_paper_rm, dv.area_project_rm
+		) dv1
+		WHERE (dv1.total_actual_area-dv1.total_dinge_area) &lt; 0 
+		ORDER BY (dv1.total_actual_area-dv1.total_dinge_area)
+		</sql>
+        <table name="dv" role="main"/>
+        <field name="dv_id" dataType="text" groupBy="true"/>
+        <field name="quee_area" dataType="number"  decimals="2" groupBy="true"/>
+		
+		<restriction type="sql" sql=" rownum &lt;= 5"/>
+		
+		<parameter name="officeRes" dataType="text" value=""/>
+		<parameter name="meetingRes" dataType="text" value=""/>
+		<parameter name="commonOfficeRes" dataType="text" value=""/>
+		<parameter name="adminAssistRes" dataType="text" value=""/>
+		<parameter name="teachOfficeRes" dataType="text" value=""/>
+		<parameter name="projectZXYFRes" dataType="text" value=""/>
+		<parameter name="teachFUYFRes" dataType="text" value=""/>
+		<parameter name="buClassRes" dataType="text" value=""/>
+    </dataSource>
+	
+    <panel 	id="ascBjUsmsDingeActualStatTeach_vacant5" 
+    		type="chart" 
+    		controlType="columnChart" 
+    		dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_cht_vacant" 
+			showLegendOnLoad="true"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillColor="0x4f77d8"
+    		fillType="solid"
+			layoutRegion="vacantChtPosition">
+    	<sortField name="quee_area" table="dv"/>
+        <title translatable="true">Dinge Greater than Actual Top 5</title>
+        <groupingAxis table="dv" field="dv_id" dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_cht_vacant"  showLabel="true" labelRotation="45">
+            <title translatable="true">Divisions</title>
+        </groupingAxis>
+        <dataAxis table="dv" field="quee_area" dataSource="ds_asc-bj-usms-dinge-actual-stat-teach_cht_vacant"  showLabel="true">
+            <title translatable="true">Vacant Area</title>
+        </dataAxis>
+    </panel>
+	
+	
+    <js file="asc-bj-usms-dash-rm-area-stat-by-dp.js"/>
+	<js file="asc-bj-usms-constant.js"/>
+</view>

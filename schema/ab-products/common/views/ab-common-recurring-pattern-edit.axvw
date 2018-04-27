@@ -1,0 +1,212 @@
+
+<view version="2.0">
+    
+	<js file="ab-common-recurring-pattern-edit.js"/>
+	
+	<message name="note1" translatable="true">Note: Scheduling limit for your selection is 5 years in the future.</message>
+	<message name="note2" translatable="true">Note: Scheduling limit for your selection is 10 years in the future.</message>
+	
+    <panel id="editRecurringRule" type="console" columns="10" dataSource="none">
+        <field colspan="10">
+            <html>
+              <fieldset>
+                <legend translatable="true">Define Recurrence Pattern</legend>
+                <div id="recurringField">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="radio" name="type_option" id="none" value="none" onclick="onSelectRecurringType()"></input>
+                                <span translatable="true">None</span>
+                            </td>
+                            <td align="right">
+                                <span id="control_note" style="font-style: italic"></span>
+                            </td>
+                        </tr>                  
+                        <tr>
+                            <td width="90px">
+                                <div>
+                                    <input type="radio" name="type_option" id="once" value="once" onclick="onSelectRecurringType()"></input>
+                                    <span translatable="true">Once</span>
+                                </div>
+                                <div>
+                                    <input type="radio" name="type_option" id="day" value="day" onclick="onSelectRecurringType()"></input>
+                                    <span translatable="true">Daily</span>
+                                </div>   
+                                <div>
+                                    <input type="radio" name="type_option" id="week" value="week" onclick="onSelectRecurringType()"></input>
+                                    <span translatable="true">Weekly</span>
+                                </div>
+                                <div>
+                                    <input type="radio" name="type_option" id="month" value="month" onclick="onSelectRecurringType()"></input>
+                                    <span translatable="true">Monthly</span>
+                                </div>  
+                                 <div>
+                                    <input type="radio" name="type_option" id="year" value="year" onclick="onSelectRecurringType()"></input>
+                                    <span translatable="true">Yearly</span>
+                                </div>                                                                
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div id="div_once">
+                                    <span translatable="true">Occurs Once on Start Date</span>
+                                </div>
+                                <div id="div_day">
+                                    <span translatable="true">Every:</span>
+                                    <input type="text" id="day_value1" size="3"/>
+                                    <span translatable="true" style="margin-left:4px">days</span>                                
+                                </div>
+                                 <div id="div_week">
+                                    <span translatable="true">Every:</span>
+                                    <input type="text" id="week_value2" size="3"/>
+                                    <span translatable="true" style="margin-left:4px">weeks</span>
+                                    <div>
+                                        <span translatable="true">On:</span>
+                                        <div>
+                                          <table>
+                                             <tr>
+                                                 <td>
+                                                    <input type="checkbox" id="weekly_0">
+                                                        <span translatable="true">Monday</span>
+                                                     </input>
+                                                 </td>
+                                                 <td>
+                                                     <input type="checkbox" id="weekly_1">
+                                                         <span translatable="true">Tuesday</span>
+                                                     </input>
+                                                 </td>
+                                                 <td>
+                                                      <input type="checkbox" id="weekly_2">
+                                                          <span translatable="true">Wednesday</span>
+                                                       </input>
+                                                 </td>
+                                                 <td></td>
+                                             </tr>
+                                               
+                                             <tr>
+                                                 <td>
+                                                    <input type="checkbox" id="weekly_3">
+                                                        <span translatable="true">Thursday</span>
+                                                    </input>                                             
+                                                 </td>
+                                                 <td>
+                                                    <input type="checkbox" id="weekly_4">
+                                                        <span translatable="true">Friday</span>
+                                                    </input>                                             
+                                                 </td>
+                                                 <td>
+                                                    <input type="checkbox" id="weekly_5">
+                                                        <span translatable="true">Saturday</span>
+                                                    </input>                                            
+                                                 </td>
+                                                 <td>
+                                                    <input type="checkbox" id="weekly_6">
+                                                        <span translatable="true">Sunday</span>
+                                                    </input>                                                
+                                                 </td>
+                                             </tr> 
+                                           </table>
+                                           </div>
+                                        </div>
+                                </div>  
+                                <div id="div_month">
+                                      <table>
+                                         <tr>
+                                             <td>
+                                               <span translatable="true">Every:</span>
+                                             </td>
+                                             <td>
+                                               <input type="text" id="month_value3" size="3"/>
+                                             </td>
+                                             <td>
+                                               <span translatable="true" style="margin-left:4px">months</span>
+                                             </td>
+                                             <td></td>
+                                         </tr>
+                                           
+                                         <tr>
+                                             <td>
+                                               <span translatable="true">On:</span>
+                                             </td>
+                                             <td>
+                                                <input type="checkbox" name="month_type" id="month_type_1" value="1"></input>
+                                                <span translatable="true">Day</span>                                               
+                                             </td>
+                                             <td>
+                                                <input type="text" id="month_type1_value1" size="3"/>
+                                             </td>
+                                             <td>
+                                                <span translatable="true">of month</span> 
+                                             </td>
+                                         </tr> 
+                                         <tr>
+                                             <td>
+                                             </td>
+                                             <td>
+                                               <input type="checkbox" name="month_type" id="month_type_2" value="2"></input>                                     
+                                               <span translatable="true">The</span> 
+                                             </td>
+                                             <td>
+                                                <select name="month_type2_value1" id="month_type2_value1">
+                                                <option translatable="true" value="1st">1st</option>
+                                                <option translatable="true" value="2nd">2nd</option>
+                                                <option translatable="true" value="3rd">3rd</option>
+                                                <option translatable="true" value="4th">4th</option>
+                                                <option translatable="true" value="last">last</option>                                       
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                <select name="month_type2_value2" id="month_type2_value2">
+                                                <option translatable="true" value="mon">Monday</option>
+                                                <option translatable="true" value="tue">Tuesday</option>
+                                                <option translatable="true" value="wed">Wednesday</option>
+                                                <option translatable="true" value="thu">Thursday</option>
+                                                <option translatable="true" value="fri">Friday</option>  
+                                                <option translatable="true" value="sat">Saturday</option>  
+                                                <option translatable="true" value="sun">Sunday</option>  
+                                                <option translatable="true" value="day">day</option>  
+                                                <option translatable="true" value="weekday">weekday</option>
+                                                <option translatable="true" value="weekendday">weekendday</option>                                       
+                                               </select>
+                                               
+                                               <span translatable="true">of month</span>   
+                                             </td>
+                                         </tr>  
+                                       </table>
+                                </div>  
+                                 <div id="div_year">
+                                    <span translatable="true">Every:</span>
+                                    <input type="text" id="year_value3" size="3"/>
+                                    <span translatable="true" style="margin-left:4px">years on</span>
+                                    <select name="year_value2" id="year_value2">
+                                        <option value=""></option>
+                                        <option translatable="true" value="jan">January</option>
+                                        <option translatable="true" value="feb">February</option>
+                                        <option translatable="true" value="mar">March</option>
+                                        <option translatable="true" value="apr">April</option>
+                                        <option translatable="true" value="may">May</option>  
+                                        <option translatable="true" value="jun">June</option>
+                                        <option translatable="true" value="jul">July</option>
+                                        <option translatable="true" value="aug">August</option>
+                                        <option translatable="true" value="sep">September</option>
+                                        <option translatable="true" value="oct">October</option>  
+                                        <option translatable="true" value="nov">November</option>
+                                        <option translatable="true" value="dec">December</option>
+                                     </select>
+                                     <input type="text" id="year_value1" size="3"/>
+                                </div>                                  
+                            </td>
+                        </tr>                
+                        
+                        <tr>
+                            <td colspan="2" align="left">
+                                <span translatable="true">End After:</span>
+                                <input type="text" id="total" size="3"/>
+                                <span translatable="true" style="margin-left:4px">Occurrences</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+              </fieldset>
+            </html>
+        </field>
+    </panel>
+</view>

@@ -1,0 +1,56 @@
+<view version="2.0">
+	<js file="asc-bj-usms-data-bl-wizard-ownership-tab4.js"/>
+	 
+	
+	<dataSource id="tsBl">
+		<table name="bl" role="main"/>
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="date_fazheng"/>
+		<field table="bl" name="ownership_code"/>
+		<field table="bl" name="ownship_shape"/>
+		<field table="bl" name="fcz_in_number"/>
+		<field table="bl" name="land_code"/>
+		<field table="bl" name="land_photo"/>
+		<field table="bl" name="parcelland_address"/>
+		
+	</dataSource>
+	
+	<panel type="form" id="tsBlForm" dataSource="tsBl" columns="2">
+		
+		<title translatable="true">OwnerShip Information</title>
+		<action id="return">
+			<title translatable="true">Return</title>
+			<command type="callFunction" functionName="rplmBuildingBuildOwnerShipController.returnToIndex()"/>
+		</action>
+		<action id="clear">
+			<title translatable="true">Cancel</title>
+			<command type="showPanel" panelId="tsBlForm" applyParentRestriction="true"/>
+		</action>
+		<action id="save">
+			<title translatable="true">Save</title>
+			<command type="saveForm"/>
+			<!-- <command type="callFunction" functionName="rplmBuildingBuildOwnerShipController.openNextTab()"/> -->
+		</action>
+		<field table="bl" name="bl_id" readOnly="true" hidden="false"/>
+		<field table="bl" name="ownship_shape"/>
+		<field table="bl" name="ownership_code"/>
+		<field table="bl" name="date_fazheng"/>
+		<field table="bl" name="fcz_in_number"/>
+		<field table="bl" name="land_code">
+			<action>
+                <title translatable="true">...</title>
+                <command type="selectValue"
+                    fieldNames="bl.land_code , bl.parcelland_address" 
+                    selectFieldNames="bl.land_code , bl.parcelland_address"
+                    visibleFieldNames="bl.land_code , bl.parcelland_address"
+                     >
+                  
+                </command>
+            </action>
+		</field>	
+		<field table="bl" name="land_photo"/>
+		<field/>
+		
+	</panel>	
+	
+</view>

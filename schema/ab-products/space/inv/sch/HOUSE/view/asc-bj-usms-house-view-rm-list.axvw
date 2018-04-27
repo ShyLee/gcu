@@ -1,0 +1,87 @@
+<view version="2.0">
+	<title translatable="true">House Rm List</title>
+	<js file="asc-bj-usms-house-view-rm-list.js"/>
+	<js file="asc-bj-usms-house-constant.js"/>
+	 <dataSource id="roomDS">
+     	<table name="rm" role="main"/>
+     	<table name="bl" role="standard"/>
+     	<table name="rmuse" role="standard"/>
+     	<table name="rmcat" role="standard"/>
+     	<table name="rmtype" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+    	<field table="bl" name="site_id"/>
+        <field table="bl" name="pr_id"/>
+		<field table="rm" name="notes"/>
+    	<field table="rm" name="dv_manage"/>
+        <field table="bl" name="name"/>
+        <field table="rm" name="unit_code" />
+        <field table="rm" name="location" />
+        <field table="rm" name="construction_type"/>
+        <field table="rm" name="is_left" />
+        <field table="rm" name="is_low_high"/>
+        <field table="rm" name="rm_use"/>
+        <field table="rmuse" name="rmuse_name"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rm" name="rm_type" />
+        <field table="rmtype" name="rmtype_name" />
+        <field table="rm" name="huxing" />
+        <field table="rm" name="chaoxiang"/>
+        <field table="rm" name="area_comn_rm" showTotals="true"/>
+        <field table="rm" name="area" showTotals="true"/>
+        <field table="rm" name="area_lease" showTotals="true"/>
+		<field table="rm" name="count_house_all" showTotals="true"/>
+		<field table="rm" name="count_house_yz" showTotals="true"/>
+		<field table="rm" name="count_house_kz" showTotals="true"/>
+		<field table="rm" name="weixiu_log"/>
+    	<field table="rm" name="eq_desc"/>
+    	<field table="rm" name="address"/>
+    	<restriction type="sql" sql="${parameters['isKZF']}"/>
+	    <parameter name="isKZF" dataType="verbatim" value="1=1"/>
+    </dataSource>
+
+	 <panel type="grid" id="bizHouseRmGrid" dataSource="roomDS" showOnLoad="false">
+	 	<title translatable="true"></title>
+        <action id="isKZF">
+            <title translatable="true">Kong Zhi Fang</title>
+        </action>
+        <action id="isWMF">
+            <title translatable="true">Wei Man Fang</title>
+        </action>
+        <action id="all">
+            <title translatable="true">All Room</title>
+        </action>
+        <action id="export:XLS">
+	      <title>XLS</title>
+	      <command type="exportPanel" outputType="xls" panelId="bizHouseRmGrid"/>
+	    </action>
+    	<indexField table="rm" name="bl_id"/>
+<!--     	建筑物名称、楼层、房间号、单元号、房间面积、建筑面积、计价面积、户型、朝向、租户数、设计户数、是否顶层、有否电梯 -->
+    	<field table="rm" name="bl_id" hidden="true"/>
+    	<field table="bl" name="name"/>
+    	<field table="rm" name="fl_id"/>
+    	<field table="rm" name="rm_id"/>
+    	<field table="rm" name="unit_code" />
+    	<field table="rm" name="area" showTotals="true"/>
+    	<field table="rm" name="area_comn_rm" showTotals="true"/>
+    	<field table="rm" name="area_lease" showTotals="true"/>
+    	<field table="rm" name="huxing"/>
+    	<field table="rm" name="chaoxiang"/>
+    	
+		<field table="rm" name="count_house_all" showTotals="true"/>
+		<field table="rm" name="count_house_yz" showTotals="true"/>
+		<field table="rm" name="count_house_kz" showTotals="true"/>
+		
+        <field table="rm" name="is_low_high"/>
+        <field table="rm" name="is_left"/>
+		<field table="rmuse" name="rmuse_name"/>
+		<field table="rmcat" name="rmcat_name"/>
+		<field table="rmtype" name="rmtype_name" />
+    	<field table="rm" name="weixiu_log"/>
+    	<field table="rm" name="eq_desc"/>
+    	<field table="rm" name="address"/>
+    </panel>
+	
+</view>

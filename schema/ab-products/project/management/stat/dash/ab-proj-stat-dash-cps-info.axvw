@@ -1,0 +1,18 @@
+<view version="2.0">
+
+    <panel id="projStatDashCpsInfo_info" type="html" dataSource="none" showOnLoad="true">
+        <html><h1 style="font-size:14px">Commitment Progress Status Report</h1>
+        <p style="font-size:11px">Review project progress by Work Package.  Select 'Add' to add an Invoice or Change Order.  Select individual Work Packages to edit.  <br/></p>
+        <ul style="font-size:11px">
+            <li><b>Contract: </b>Work Package Contract Cost.  Derived from the Amount - Contract field.  </li>
+            <li><b>Revised Contract: </b>Contract Cost plus approved change orders.   </li>
+            <li><b>% Invoiced: </b>Percent of the Revised Contract Cost which has been invoiced.  </li>
+            <li><b>% Complete (by Cost): </b>Average of the '% Complete' values for all action items weighted by estimated cost.  </li>
+        </ul></html>
+    </panel>  
+</view>
+    
+ 
+ 
+ 
+ 

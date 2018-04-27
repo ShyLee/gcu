@@ -1,0 +1,432 @@
+<view version="2.0">
+	<title translatable="true">Dv Eq List</title>
+	<layout id="mainCenter"  >
+        <north  id="consolRegion" initialSize="80" split="true"/>
+        <center  />
+    </layout>
+    <layout type="borderLayout" id="centerCenterLayout" containingLayout="mainCenter" region="center">
+        <west id="dvGrid" autoScroll="true" split="true" initialSize="45%"/>
+        <center id="eqGrid"  autoScroll="true"  />
+    </layout>
+	<!--audit_status 0;未提交;1;已提交;2;审核已通过;3;审核未通过;4;处理完成;5;已公示 -->
+    <!--  data_type 0;设备退还;1;设备报减;2;资产追加;3;附件退还;4;附件报减 -->
+    <dataSource id="ascBjUsmsEqReturnSch">
+        <table name="return_dispose" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="return_dispose" name="rtr_dip_id"/>
+        <field table="return_dispose" name="approved_by"/>
+        <field table="return_dispose" name="cz_price"/>
+        <field table="return_dispose" name="data_type"/>
+        <field table="return_dispose" name="date_approved"/>
+        <field table="return_dispose" name="date_request"/>
+        <sortField table="return_dispose" name="rtr_dip_name" ascending="false"/>
+        <restriction type="sql" sql="audit_status ='4' and data_type in ('1','4')"/>
+    </dataSource>
+    <panel type="console" columns="2" id="requestConsole" dataSource="ascBjUsmsEqReturnSch" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+        </action>
+        <field table="return_dispose" name="date_request" alias="return_dispose.datePurchasedFrom">
+            <title translatable="true">Date From</title>
+        </field>
+        <field table="return_dispose" name="date_request" alias="return_dispose.datePurchasedTo">
+            <title translatable="true">Date To</title>
+        </field>
+    </panel>
+	<dataSource id="eq_dv_DS">
+		<sql dialect="generic">
+			select a.dv_id,
+			       a.dv_name,
+			       nvl(a.eq_count,0) eq_count,
+			       nvl(a.price_sum,0) price_sum,
+			       nvl(b.eq_attach_count,0) eq_attach_count,
+			       nvl(b.attach_price_sum,0) attach_price_sum
+			  from (SELECT eq.dv_id,
+			               dv.dv_name,
+			               nvl(count(eq.eq_id),0) AS eq_count,
+			               nvl(sum(eq.total_price),0) AS price_sum
+			          FROM eq
+			          LEFT OUTER JOIN dv ON eq.dv_id = dv.dv_id
+			         WHERE (eq.dv_id || eq.dp_id not in
+			               (select dv_id || dp_id from dp where eq_own = '1'))
+			               and eq.eq_id in (SELECT eq_id FROM eq_change WHERE rtr_dip_id IN (SELECT rtr_dip_id FROM return_dispose WHERE audit_status ='4' AND data_type  in ('1') AND ${parameters['requestDate']}))
+			         GROUP BY eq.dv_id,  dv.dv_name) a,
+			       (SELECT eq_attach.dv_id,
+			               dv.dv_name,
+			               nvl(count(eq_attach.eq_attach_id),0) AS eq_attach_count,
+			               nvl(sum(eq_attach.price),0) AS attach_price_sum
+			          FROM eq_attach, eq
+			          LEFT OUTER JOIN dv ON eq.dv_id = dv.dv_id
+			          LEFT OUTER JOIN dp ON eq.dv_id = dp.dv_id
+			                            AND eq.dp_id = dp.dp_id
+			         WHERE (eq.dv_id || eq.dp_id not in
+			               (select dv_id || dp_id from dp where eq_own = '1'))
+			           and eq.eq_id = eq_attach.eq_id and eq_attach.sch_status = '6'
+			           and eq.eq_id in (SELECT eq_id FROM eq_change WHERE rtr_dip_id IN (SELECT rtr_dip_id FROM return_dispose WHERE audit_status ='4' AND data_type  in ('1') AND ${parameters['requestDate']}))
+			         GROUP BY eq_attach.dv_id, dv.dv_name
+			         ORDER BY eq_attach.dv_id NULLS FIRST,
+			                  dv.dv_name      NULLS FIRST ) b
+			  where a.dv_id = b.dv_id(+) order by a.dv_id
+		</sql>
+		<table name ="eq" role="main"/>
+				<field name="dv_id" dataType="text"/>
+				<field name="dv_name" dataType="text">
+					<title>Dv Name</title>
+				</field>
+				<field name="eq_count" dataType="number" decimals="0" showTotals="true">
+					<title>Eq Count</title>
+				</field>
+				<field name="price_sum" dataType="number" decimals="2" showTotals="true">
+					<title>Eq Price</title>
+				</field>
+				<field name="eq_attach_count" dataType="number" decimals="0" showTotals="true">
+					<title>Eq Attach Count</title>
+				</field>
+				<field name="attach_price_sum" dataType="number" decimals="2" showTotals="true">
+					<title>Eq Attach Price</title>
+				</field>
+				<parameter name="requestDate" dataType="verbatim" value="1=1"/>
+		</dataSource>
+	
+	<dataSource id="eq_dv_own_DS">
+		<sql dialect="generic">
+			select a.dv_id,
+			       a.dp_id,
+			       a.dv_name,
+			       a.dp_name,
+				   nvl(a.eq_count,0) eq_count,
+			       nvl(a.price_sum,0) price_sum,
+			       nvl(b.eq_attach_count,0) eq_attach_count,
+			       nvl(b.attach_price_sum,0) attach_price_sum
+			  from (SELECT eq.dv_id,
+			               eq.dp_id,
+			               dv.dv_name,
+			               dp.dp_name,
+			               count(eq.eq_id) AS eq_count,
+			               sum(eq.total_price) AS price_sum
+			          FROM eq
+			          LEFT OUTER JOIN dv ON eq.dv_id = dv.dv_id
+			          LEFT OUTER JOIN dp ON eq.dv_id = dp.dv_id
+			                            AND eq.dp_id = dp.dp_id
+			         WHERE ((eq.dv_id || eq.dp_id in
+			               (select dv_id || dp_id from dp where eq_own = '1'))) 
+							and eq.eq_id in (SELECT eq_id FROM eq_change WHERE rtr_dip_id IN (SELECT rtr_dip_id FROM return_dispose WHERE audit_status ='4' AND data_type  in ('1') AND ${parameters['requestDate']}))
+			         GROUP BY eq.dv_id, eq.dp_id, dv.dv_name, dp.dp_name) a,
+			       (SELECT eq_attach.dv_id,
+			               eq_attach.dp_id,
+			               dv.dv_name,
+			               dp.dp_name,
+			               count(eq_attach.eq_attach_id) AS eq_attach_count,
+			               sum(eq_attach.price) AS attach_price_sum
+			          FROM eq_attach, eq
+			          LEFT OUTER JOIN dv ON eq.dv_id = dv.dv_id
+			          LEFT OUTER JOIN dp ON eq.dv_id = dp.dv_id
+			                            AND eq.dp_id = dp.dp_id
+			         WHERE ((eq.dv_id || eq.dp_id in
+			               (select dv_id || dp_id from dp where eq_own = '1')))
+			           and eq.eq_id = eq_attach.eq_id and eq_attach.sch_status='6'
+			           and eq.eq_id in (SELECT eq_id FROM eq_change WHERE rtr_dip_id IN (SELECT rtr_dip_id FROM return_dispose WHERE audit_status ='4' AND data_type  in ('1') AND ${parameters['requestDate']}))
+			         GROUP BY eq_attach.dv_id, eq_attach.dp_id, dv.dv_name, dp.dp_name
+			         ORDER BY eq_attach.dv_id NULLS FIRST,
+			                  eq_attach.dp_id NULLS FIRST,
+			                  dv.dv_name      NULLS FIRST,
+			                  dp.dp_name      NULLS FIRST) b
+			  where a.dv_id = b.dv_id(+) and a.dp_id=b.dp_id(+)
+			  order by a.dv_id,a.dp_id
+		</sql>
+		<table name ="eq_attach" role="main"/>
+		<field name="dv_id" dataType="text"/>
+		<field name="dp_id" dataType="text"/>
+		<field name="dv_name" dataType="text">
+			<title>Dv Name</title>
+		</field>
+		<field name="dp_name" dataType="text">
+			<title>Dp Name</title>
+		</field>
+		<field name="eq_count" dataType="number" decimals="0" showTotals="true">
+			<title>Eq Count</title>
+		</field>
+		<field name="price_sum" dataType="number" decimals="2" showTotals="true">
+			<title>Eq Price</title>
+		</field>
+		<field name="eq_attach_count" dataType="number" decimals="0" showTotals="true">
+			<title>Eq Attach Count</title>
+		</field>
+		<field name="attach_price_sum" dataType="number" decimals="2" showTotals="true">
+			<title>Eq Attach Price</title>
+		</field>
+		<parameter name="requestDate" dataType="verbatim" value="1=1"/>
+	</dataSource>
+	
+	<dataSource id="eq_DS">
+		<table name ="eq" role="main"/>
+        <table name="eq" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="bl" role="standard"/>
+        <table name="csi" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="num_eq" showTotals="true"/>
+        <field table="eq" name="units" />
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="total_price" showTotals="true"/>
+        <field table="eq" name="attachments_num" showTotals="true"/>
+        <field table="eq" name="attachments_price" showTotals="true"/>
+        <field table="eq" name="date_in_service" />
+        <field table="eq" name="date_purchased" />
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="is_up"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="add_comment"/>
+		<sortField table="eq" name="eq_id" ascending="true"/>
+		<parameter name="dvAndDpEq" dataType="verbatim" value="1=1"/>
+		<parameter name="requestDate" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql=" ${parameters['dvAndDpEq']} and eq.eq_id in (SELECT eq_id FROM eq_change WHERE rtr_dip_id IN (SELECT rtr_dip_id FROM return_dispose WHERE audit_status ='4' AND data_type  in ('1') AND ${parameters['requestDate']}))"/>
+	</dataSource>
+	<dataSource id="eq_attach_ds">
+        <table name="eq_attach" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="bl" role="standard"/>
+        <table name="csi" role="standard"/>
+        <field table="eq_attach" name="eq_id"/>
+        <field table="eq_attach" name="eq_attach_id" />
+        <field table="eq_attach" name="eq_attach_name"/>
+        <field table="eq_attach" name="brand"/> 
+        <field table="eq_attach" name="eq_std"/>
+        <field table="eq_attach" name="eq_type"/>
+        <field table="eq_attach" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq_attach" name="eq_warehouse"/>
+        <field table="eq_attach" name="num_eq" showTotals="true"/>
+        <field table="eq_attach" name="units"/>
+        <field table="eq_attach" name="price" showTotals="true"/>
+        <field table="eq_attach" name="price_old" showTotals="true"/>
+        <field table="eq_attach" name="date_manufactured"/>
+        <field table="eq_attach" name="date_purchased"/>
+        <field table="eq_attach" name="em_id"/>
+        <field table="eq_attach" name="em_name"/>
+        <field table="eq_attach" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="eq_attach" name="fl_id"/>
+        <field table="eq_attach" name="rm_id"/>
+        <field table="eq_attach" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_attach" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_attach" name="type_use"/>
+        <field table="eq_attach" name="buy_type"/>
+        <field table="eq_attach" name="source"/>
+        <field table="eq_attach" name="subject_funds"/>
+        <field table="eq_attach" name="ctry_id"/>
+        <field table="eq_attach" name="ctry_name"/>
+        <field table="eq_attach" name="num_serial"/>
+        <field table="eq_attach" name="vn_id"/>
+        <field table="eq_attach" name="is_up"/>
+        <field table="eq_attach" name="sch_status"/>
+        <field table="eq_attach" name="type"/>
+        <field table="eq_attach" name="add_comment"/>
+        <sortField table="eq_attach" name="eq_attach_id" ascending="true"/>  
+        <parameter name="requestDate" dataType="verbatim" value="1=1"/>
+        <parameter name="dvAndDpEqAttach" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="eq_attach.sch_status='6' and ${parameters['dvAndDpEqAttach']} and eq_attach.eq_id in (SELECT eq_id FROM eq_change WHERE rtr_dip_id IN (SELECT rtr_dip_id FROM return_dispose WHERE audit_status ='4' AND data_type  in ('1') AND ${parameters['requestDate']}))"/>
+    </dataSource>
+	<tabs workflow="free" id="eqAndAttachTabs" tabRefreshPolicy="never" layoutRegion="dvGrid">
+		<tab name="eqTab" selected="true">
+			<title translatable="true">Dv List</title>
+			<panel type="grid" id="dvPanel" dataSource="eq_dv_DS" multipleSelectionEnabled="true">
+				<title></title>
+<!-- 				<action id="showMulEq"> -->
+<!-- 					<title>ShowMulEq</title> -->
+<!-- 				</action> -->
+				<action id="exportXLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="dvPanel"/>
+				</action>
+				<field name="dv_id" dataType="text" hidden="true" />
+				<field name="dv_name" dataType="text" controlType="link">
+					<title>Dv Name</title>
+					<command type="callFunction" functionName="controller.clickDvName()"/>
+				</field>
+				<field name="eq_count" dataType="number" decimals="0" showTotals="true">
+					<title>Eq Count</title>
+				</field>
+				<field name="price_sum" dataType="number" decimals="2" showTotals="true">
+					<title>Eq Price</title>
+				</field>
+				<field name="eq_attach_count" dataType="number" decimals="0" showTotals="true">
+					<title>Eq Attach Count</title>
+				</field>
+				<field name="attach_price_sum" dataType="number" decimals="2" showTotals="true">
+					<title>Eq Attach Price</title>
+				</field>
+			</panel>
+		</tab>
+		<tab name="eqOwnTab">
+			<title translatable="true">Dv Own List</title>
+			<panel type="grid" id="dvOwnPanel" dataSource="eq_dv_own_DS" multipleSelectionEnabled="true">
+				<title></title>
+<!-- 				<action id="showMulEqAttach"> -->
+<!-- 					<title>ShowMulEqAttach</title> -->
+<!-- 				</action> -->
+				<action id="exportXLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="dvOwnPanel"/>
+				</action>
+				<field name="dv_id" dataType="text" hidden="true"/>
+				<field name="dp_id" dataType="text" hidden="true"/>
+				<field name="dp_name" dataType="text" controlType="link">
+					<title>Dp Name</title>
+					<command type="callFunction" functionName="controller.clickAttachDvName()"/>
+				</field>
+				<field name="eq_count" dataType="number" decimals="0" showTotals="true">
+					<title>Eq Count</title>
+				</field>
+				<field name="price_sum" dataType="number" decimals="2" showTotals="true">
+					<title>Eq Price</title>
+				</field>
+				<field name="eq_attach_count" dataType="number" decimals="0" showTotals="true">
+					<title>Eq Attach Count</title>
+				</field>
+				<field name="attach_price_sum" dataType="number" decimals="2" showTotals="true">
+					<title>Eq Attach Price</title>
+				</field>
+				<field name="dv_name" dataType="text">
+					<title>Dv Name</title>
+				</field>
+			</panel>
+		</tab>
+	</tabs>
+	<tabs workflow="free" id="viewEqTabs" tabRefreshPolicy="never" layoutRegion="eqGrid" >
+      <tab name="eqViewTab" selected="true">
+			<title translatable="true">Eq List</title>
+			<panel type="grid" id="eqPanel" dataSource="eq_DS" showOnLoad = "false">
+				<action id="exportXLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="eqPanel"/>
+				</action>
+<!-- 				<field controlType="button" id="viewAttach" width="120"> -->
+<!-- 		        	<title>view Attach</title> -->
+<!-- 		        </field> -->
+				<field table="eq" name="eq_id"/>	
+				<field table="eq" name="eq_name"/>
+		        <field table="eq" name="brand"/>
+		        <field table="eq" name="eq_std"/>
+		        <field table="eq" name="eq_type"/>
+		        <field table="eq" name="csi_id" hidden="true"/>
+		        <field table="csi" name="description"/>
+		        <field table="eq" name="eq_warehouse"/>
+		        <field table="eq" name="num_eq" showTotals="true"/>
+		        <field table="eq" name="units"/>
+		        <field table="eq" name="price" showTotals="true"/>
+		        <field table="eq" name="total_price" showTotals="true"/>
+		        <field table="eq" name="attachments_num" showTotals="true"/>
+		        <field table="eq" name="attachments_price" showTotals="true"/>
+		        <field table="eq" name="date_in_service" />
+		        <field table="eq" name="date_purchased" />
+		        <field table="eq" name="em_id" hidden="true"/>
+		        <field table="eq" name="em_name"/>
+		        <field table="eq" name="bl_id" hidden="true"/>
+		        <field table="bl" name="name"/>
+		        <field table="eq" name="fl_id"/>
+		        <field table="eq" name="rm_id"/>
+		        <field table="dv" name="dv_name"/>
+		        <field table="dp" name="dp_name"/>
+		        <field table="eq" name="type_use"/>
+		        <field table="eq" name="buy_type"/>
+		        <field table="eq" name="source"/>
+		        <field table="eq" name="subject_funds"/>
+		        <field table="eq" name="ctry_id" hidden="true"/>
+		        <field table="eq" name="ctry_name"/>
+		        <field table="eq" name="num_serial"/>
+		        <field table="eq" name="vn_id"/>
+		        <field table="eq" name="is_up"/>
+		        <field table="eq" name="sch_status"/>
+		        <field table="eq" name="add_comment"/>
+		        
+		        <field table="eq" name="eq_id" hidden="true"/>
+		        <indexField table="eq" name="eq_id"/>
+			</panel>
+       </tab>
+       <tab name="attachViewTab" >
+       		<title translatable="true">Eq Attach List</title>
+			<panel type="grid" id="eqAttachPanel" dataSource="eq_attach_ds" showOnLoad="false">
+				<action id="btnExport">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="eqAttachPanel" />
+				</action>
+				<field table="eq_attach" name="eq_id" />
+				<field table="eq_attach" name="eq_attach_id" />
+				<field table="eq_attach" name="eq_attach_name" />
+				<field table="eq_attach" name="brand" />
+				<field table="eq_attach" name="eq_std" />
+				<field table="eq_attach" name="eq_type" />
+				<field table="eq_attach" name="csi_id" hidden="true" />
+				<field table="csi" name="description" />
+				<field table="eq_attach" name="eq_warehouse" />
+				<field table="eq_attach" name="num_eq" showTotals="true"/>
+				<field table="eq_attach" name="units" />
+				<field table="eq_attach" name="price" showTotals="true"/>
+				<field table="eq_attach" name="price_old" showTotals="true"/>
+				<field table="eq_attach" name="date_manufactured" />
+				<field table="eq_attach" name="date_purchased" />
+				<field table="eq_attach" name="em_id" hidden="true" />
+				<field table="eq_attach" name="em_name" />
+				<field table="eq_attach" name="bl_id" hidden="true" />
+				<field table="bl" name="name" />
+				<field table="eq_attach" name="fl_id" />
+				<field table="eq_attach" name="rm_id" />
+				<field table="eq_attach" name="dv_id" hidden="true" />
+				<field table="dv" name="dv_name" />
+				<field table="eq_attach" name="dp_id" hidden="true" />
+				<field table="dp" name="dp_name" />
+				<field table="eq_attach" name="type_use" />
+				<field table="eq_attach" name="buy_type" />
+				<field table="eq_attach" name="source" />
+				<field table="eq_attach" name="subject_funds" />
+				<field table="eq_attach" name="ctry_id" hidden="true" />
+				<field table="eq_attach" name="ctry_name" />
+				<field table="eq_attach" name="num_serial" />
+				<field table="eq_attach" name="vn_id" />
+				<field table="eq_attach" name="is_up" />
+				<field table="eq_attach" name="sch_status" />
+				<field table="eq_attach" name="type" />
+				<field table="eq_attach" name="add_comment" />
+				
+				<field table="eq_attach" name="eq_attach_id" hidden="true"/>
+				<indexField table="eq_attach" name="eq_attach_id" />
+			</panel>
+       </tab>
+    </tabs>
+	<js file="asc-bj-usms-eq-report-dispose-summary.js"/>
+</view>

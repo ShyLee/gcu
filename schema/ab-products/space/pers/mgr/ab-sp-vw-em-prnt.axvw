@@ -1,0 +1,36 @@
+<view version="2.0">
+    <designInfo type="paginated" pattern="ab-viewdef-paginated" isAlterable="true"/>
+    <title translatable="true">Employees Report</title>
+    <report orientation="landscape"/>
+    
+    <dataSource id="ds_ab-sp-vw-em_prnt_report_em">
+        <table name="em" role="main"/>
+        <field table="em" name="honorific"/>
+        <field table="em" name="em_std"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="em_number"/>
+        <field table="em" name="phone"/>
+        <field table="em" name="email"/>
+        <field table="em" name="bl_id"/>
+        <field table="em" name="fl_id"/>
+        <field table="em" name="rm_id"/>
+        <field table="em" name="dv_id"/>
+        <field table="em" name="dp_id"/>
+        <field table="em" name="image_file"/>
+    </dataSource>
+    
+    <panel id="emReport" type="paginatedReport" format="table" role="data" dataSource="ds_ab-sp-vw-em_prnt_report_em">
+        <title translatable="true">All Employees</title>
+        <field table="em" name="honorific"/>
+        <field table="em" name="em_std"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="em_number"/>
+        <field table="em" name="phone"/>
+        <field table="em" name="email"/>
+        <field table="em" name="bl_id"/>
+        <field table="em" name="fl_id"/>
+        <field table="em" name="rm_id"/>
+        <field table="em" name="dv_id"/>
+        <field table="em" name="dp_id"/>
+    </panel>
+</view>

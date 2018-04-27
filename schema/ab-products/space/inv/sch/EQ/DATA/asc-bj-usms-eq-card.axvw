@@ -1,0 +1,79 @@
+<view version="2.0">
+	<title translatable="true">Eq Info View</title>
+
+    <layout id="photoLayout" >
+        <center id="infoPanelL" />
+        <east id="photoL" initialSize="20%" split="false"/>
+    </layout>
+	
+	<dataSource id="eq_DS">
+		<table name="eq" role="main"/>
+		<table name="dv" role="standard"/>
+		<field table="eq" name="eq_id"/>	
+		<field table="eq" name="eq_name"/>
+		<field table="eq" name="csi_id"/>
+		<field table="eq" name="eq_type"/>
+		<field table="eq" name="price"/>
+<!-- 		<field table="eq" name="eq_std"/> -->
+		<field table="eq" name="date_purchased"/>
+		<field table="eq" name="vn_id"/>
+		<field table="eq" name="danju_id"/>
+		<field table="eq" name="date_manufactured"/>
+		<field table="eq" name="num_serial"/>		
+		<field table="eq" name="type_use"/>
+		<field table="eq" name="sci_resh_id"/>
+		<field table="eq" name="subject_funds"/>
+		<field table="eq" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="eq" name="sch_status"/>
+		<field table="eq" name="source"/>
+		<field table="eq" name="em_id"/>
+		<field table="eq" name="em_name"/>		
+		<field table="eq" name="buy_type"/>
+		<field table="eq" name="bl_id"/>
+		<field table="eq" name="fl_id"/>
+		<field table="eq" name="rm_id"/>		
+		<field table="eq" name="ctry_name"/>
+		<field table="eq" name="doc2"/>
+		<field table="eq" name="eq_photo"/>
+		<field table="eq" name="warranty_id" hidden="true"/>
+	</dataSource>
+		
+	<panel type ="ColumnReport" id="formPanel" dataSource="eq_DS" columns="3" layoutRegion="infoPanelL" showOnLoad="false">
+		<title translatable="true">Eq Info</title>
+		<field table="eq" name="eq_id"/>	
+		<field table="eq" name="eq_name"/>
+		<field table="eq" name="csi_id"/>
+		<field table="eq" name="eq_type"/>
+		<field table="eq" name="price"/>
+<!-- 		<field table="eq" name="eq_std"/> -->
+		<field table="eq" name="date_purchased"/>
+		<field table="eq" name="buy_type"/>
+		<field table="eq" name="vn_id"/>
+		<field table="eq" name="danju_id"/>
+		<field table="eq" name="date_manufactured"/>
+		<field table="eq" name="num_serial"/>
+		<field table="eq" name="ctry_name"/>
+		<field table="eq" name="sch_status"/>		
+		<field table="eq" name="type_use"/>		
+		<field table="eq" name="source"/>		
+		<field table="eq" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name"/>
+		<field table="eq" name="em_id"/>
+		<field table="eq" name="em_name"/>		
+		<field table="eq" name="bl_id"/>
+		<field table="eq" name="fl_id"/>
+		<field table="eq" name="rm_id"/>
+		<field table="eq" name="sci_resh_id"/>
+		<field table="eq" name="subject_funds"/>				
+	</panel>
+	<panel type="form" id = "imagePanel" dataSource="eq_DS" layoutRegion="photoL" labelsPosition="top">
+		<title translatable="true">Eq Photo</title>
+		<field table="eq" name="eq_id" hidden ="true"/>
+		<field table="eq" name="eq_photo" displayField="image_field" hidden ="true"/>
+		<field id="image_field" controlType="image" width="150px">
+			<title translatable="true">Photo</title>
+		</field>
+	</panel>	
+	<js file="asc-bj-usms-eq-card.js"/>
+</view>

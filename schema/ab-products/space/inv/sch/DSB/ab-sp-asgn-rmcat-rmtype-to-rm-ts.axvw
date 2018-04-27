@@ -1,0 +1,213 @@
+<view version="2.0">
+    <layout id="main">
+        <north id="filterPosition" initialSize="13%" split="true"/>
+        <west initialSize="30%" split="true"/>
+        <center/>
+    </layout>
+    
+    <layout id="nested_west" containingLayout="main" region="west">
+        <north id="treePositon" initialSize="40%" split="true"/>
+        <center id="assignPosition"/>
+    </layout>
+    
+    <layout id="nested_center" containingLayout="main" region="center">
+        <center />
+        <south id="assignmentsPosition" initialSize="20%" split="true"/>
+    </layout>
+	
+	<layout id="nested_north" containingLayout="nested_center" region="center">
+        <center id="dwgPosition"/>
+        <east id="legendPosition" initialSize="15%" split="true"/>
+    </layout>
+    
+    <title translatable="true">Assign Categories and Types to Rooms</title>
+    <message name="selectFloor" translatable="true">Please select a floor</message>
+    <message name="selectType" translatable="true">Please select a room Type</message>
+    <message name="selectRm" translatable="true">Please select a room to assign to : {0}</message>
+    <message name="noFloorSelected" translatable="true">Please select a floor first</message>
+    <message name="confirmMessage" translatable="true">Switching floors will cause all changes to be lost, do you wish to continue?</message>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_console_rm">
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="rm_cat"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_bl">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+		<restriction type="sql" sql="EXISTS (SELECT 1 FROM rm WHERE rm.dwgname IS NOT NULL AND rm.bl_id=bl.bl_id)"/>
+        <sortField table="bl" name="bl_id" ascending="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_fl" type="grouping">
+    	<table name="rm" role="main"/>
+        <field table="rm" name="bl_id"/>
+    	<field table="rm" name="fl_id" groupBy="true"/>
+    	<field table="rm" name="dwgname" groupBy="true" hidden="true"/>
+		<restriction type="sql" sql="rm.dwgname IS NOT NULL"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_rmcat">
+        <table name="rmcat" role="main"/>
+        <table name="rmuse" role="standard"/>
+        <field table="rmcat" name="rm_use" hidden="true"/>
+        <field table="rmuse" name="rmuse_name" hidden="true"/>
+		<field table="rmcat" name="rm_cat" hidden="true"/>
+		<field table="rmcat" name="rmcat_name"/>
+        <sortField table="rmcat" name="rmcat_name" ascending="true"/>
+		<parameter name="buparam" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="exists (SELECT 1 FROM rmtype WHERE rmtype.rm_cat = rmcat.rm_cat and ${parameters['buparam']} )"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_rmtype">
+        <table name="rmtype" role="main"/>
+        <field name="rm_type"/>
+        <field name="rmtype_name"/>
+        <field name="hpattern_acad"/>
+        <sortField table="rmtype" name="rm_type" ascending="true"/>
+		<parameter name="buparam" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['buparam']}"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_drawing_rmHighlight">
+        <table name="rm" role="main"/>
+        <table name="rmtype" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rmtype" name="rm_cat" hidden="true"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rm_type" hidden="true"/>
+        <field table="rmtype" name="rmtype_name" legendKey="true"/>
+        <field table="rmtype" name="hpattern_acad"/>
+        <field table="rm" name="dwgname"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_drawing_rmLabel">
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="name" hidden="true"/>
+        <field table="rm" name="rm_use" hidden="true"/>
+        <field table="rm" name="rm_cat" hidden="true"/>
+        <field table="rm" name="rm_type" hidden="true"/>
+        <field table="rm" name="area"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="dwgname"/>
+    </dataSource>
+    
+	<dataSource id="ds_ab-sp-asgn-rmcat-to-rm_legend" distinct="true">
+        <table name="rm" role="main"/>
+    </dataSource>
+	
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_grid_rm">
+        <table name="rm" role="main"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-rmcat-rmtype-to-rm_rmtype">
+        <table name="rmtype" role="main"/>
+        <field name="rm_cat"/>
+        <field name="rm_type"/>
+        <field name="hpattern_acad"/>
+    </dataSource>
+    
+    <panel type="console" id="abSpAsgnRmcatRmTypeToRm_filterConsole" columns="2" dataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_console_rm" layoutRegion="filterPosition">
+        <title translatable="true">Filter</title>
+        <action id="showTree">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="abSpAsgnRmcatRmTypeToRm_filterConsole"/>
+        </action>
+    </panel>
+    
+    <panel type="tree" id="abSpAsgnRmcatRmTypeToRm_blTree" dataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_bl" layoutRegion="treePositon">
+        <title translatable="true">Select Floor</title>
+        <panel type="tree" id="abSpAsgnRmcatRmTypeToRm_flTree" dataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_fl">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="onFlTreeClick"/>
+            </event>
+			<field table="rm" name="fl_id"/>
+    		<field table="rm" name="dwgname"  hidden="true"/>
+        </panel>
+    </panel>
+    
+    <panel type="tree" id="abSpAsgnRmcatRmTypeToRm_rmcatTree" dataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_rmcat" showOnLoad="false" layoutRegion="assignPosition">
+        <title translatable="true">Select Category and Type</title>
+        <panel type="tree" id="abSpAsgnRmcatRmTypeToRm_rmtypeTree" dataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_tree_rmtype">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="onRmTypeTreeClick"/>
+            </event>
+        </panel>
+		<field name="rm_cat"/>
+    </panel>
+    
+    <panel type="drawing" id="abSpAsgnRmcatRmTypeToRm_drawingPanel" layoutRegion="dwgPosition" multiple="false" selectionMode="1" assignMode="2"
+     highlightDataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_drawing_rmHighlight"
+     labelsDataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_drawing_rmLabel"
+	 legendPanel="abSpAsgnRmcatToRm_legendGrid">
+     	<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpAsgnRmcatRmTypeToRm_drawingPanel"/>
+		</action>
+		<action id="showDwgView">
+			<title translatable="true">ShowDwg</title>
+		</action>
+        <title></title>
+    </panel>
+    
+	<panel type="grid" controlType="reportGrid" id="abSpAsgnRmcatToRm_legendGrid" dataSource="ds_ab-sp-asgn-rmcat-to-rm_legend" layoutRegion="legendPosition" showOnLoad="false">
+        <title translatable="true">Legend</title>
+        <field table="legend" name="color" controlType="color"/>
+        <field table="legend" name="value" width="80%">
+            <title translatable="true">Value</title>
+        </field>
+    </panel>
+	
+    <panel type="grid" id="abSpAsgnRmcatRmTypeToRm_rmtypeAssignGrid" dataSource="ds_ab-sp-asgn-rmcat-rmtype-to-rm_grid_rm" layoutRegion="assignmentsPosition" showOnLoad="false">
+        <title translatable="true">Assignments</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="callFunction" functionName="saveAllChanges"/>
+        </action>
+        <action id="revert">
+            <title translatable="true">Revert All</title>
+            <command type="callFunction" functionName="resetAssignmentCtrls"/>
+        </action>
+        <field table="composite" name="loc">
+            <title translatable="true">Location</title>
+        </field>
+		<field table="rm" name="rm_use" hidden="true">
+            <title translatable="true">Room Use</title>
+        </field>
+		<field table="rm" name="option1">
+            <title translatable="true">Current Room Category</title>
+        </field>
+        <field table="rm" name="option2">
+            <title translatable="true">Current Room Type</title>
+        </field>
+		<field table="rm" name="cat_name">
+            <title translatable="true">Assigned Room Category</title>
+        </field>
+        <field table="rm" name="type_name">
+            <title translatable="true">Assigned Room Type</title>
+        </field>
+		<field table="rm" name="rm_cat" hidden="true"/>
+		<field table="rm" name="rm_type" hidden="true"/>
+    </panel>
+    
+    <js file="ab-sp-asgn-rmcat-rmtype-to-rm-ts.js"/>
+	<js file="asc-bj-usms-def-common.js"/>
+	<js file="asc-bj-usms-constant.js"/>
+    <js file="ab-sp-common.js"/>
+</view>

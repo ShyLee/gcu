@@ -1,0 +1,34 @@
+<view version="2.0" docType="html4/strict">
+  <js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+  <js file="ab-arcgis-map.js"/>
+  <css file="ab-arcgis-map.css"/>
+  <css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css" />
+	<js file="ab-ehs-rpt-incidents-map-loc-tabs-map.js"/>
+    
+	<style type="text/css">
+		.x-layer[style]{width: auto !important;}
+	</style>
+
+    <dataSource id="abEhsRptIncidentsMapLocTabsMap_dsBuilding" type="grouping">
+        <table name="ehs_incidents" role="main"/>
+        <table name="bl" role="standard"/>
+        
+        <field table="bl" name="site_id" groupBy="true"/>
+        <field table="bl" name="bl_id" groupBy="true"/>
+        <field table="bl" name="name" groupBy="true"/>
+        <field table="bl" name="lat" groupBy="true"/>
+        <field table="bl" name="lon" groupBy="true"/>
+        <field name="vf_incidents_num" dataType="number" size="6" decimals="0">
+            <title translatable="true">Number of Incidents</title>
+            <sql dialect="generic">COUNT(DISTINCT ehs_incidents.parent_incident_id)</sql>
+        </field>
+        <sortField name="vf_incidents_num"/>
+    </dataSource>
+
+	<panel type="html" id="mapPanel" dataSource="abEhsRptIncidentsMapLocTabsMap_dsBuilding">
+		<html>
+			<div id="map">
+			</div>
+		</html>
+	</panel>
+</view>

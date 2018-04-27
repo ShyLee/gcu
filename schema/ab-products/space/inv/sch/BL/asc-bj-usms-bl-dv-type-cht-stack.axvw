@@ -1,0 +1,260 @@
+<view version="2.0">
+    <designInfo type="summary" pattern="ab-viewdef-summary-chart" isAlterable="false"/>
+    
+	
+    <title translatable="true">Show Division Stack Plan</title>
+	
+	<message name="dvStackTitle" translatable="true">Show Division Stack Plan</message>
+	<message name="rmcatStackTitle" translatable="true">Show Room Category Stack Plan</message>
+	<message name="treeTitle" translatable="true">Xiao Qu : {0}</message>
+	<message name="dvStackPanelTitle" translatable="true">Show Division Stack Plan : {0}</message>
+	<message name="rmcatStackPanelTitle" translatable="true">Show Room Category Stack Plan : {0}</message>
+	<message name="serv" translatable="true">Gong Yong She Shi</message>
+	
+    <layout type="borderLayout" id="mainLayout">
+        <west id="treePosition" initialSize="16%" split="true"/>
+        <center  autoScroll="true"/>
+    </layout>
+	<layout id="nested_center" containingLayout="mainLayout" region="center">
+      <north id="htmlPosition" initialSize="45"/>
+      <center id="chartPosition" />
+      <south id="crossPosition" initialSize="30%" split="true"/>
+    </layout>
+    
+    <!-- dataSource for site tree -->
+    <dataSource id="abScDvStack_tree_siteDS">
+        <table name="site" role="main"/>
+        <field table="site" name="site_id"/>
+        <field table="site" name="name"/>
+		<restriction type="sql" sql="EXISTS(SELECT 1 FROM bl where bl.site_id=site.site_id)"/>
+    </dataSource>
+	
+	<!-- dataSource for building tree -->
+    <dataSource id="abScDvStack_tree_blDS">
+        <table name="bl" role="main"/>
+        <field table="bl" name="site_id"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="name"/>
+    </dataSource>
+	
+	
+    <dataSource id="abScDvStack_check_rmDS">
+        <table name="rm" role="main"/>
+		<field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+		<field table="rm" name="dwgname"/>
+		<parameter name="blId" dataType="text" value=""/>
+		<restriction type="sql" sql="dwgname is not null and bl_id=${parameters['blId']}"/>
+    </dataSource>
+    
+	<!-- site tree panel-->
+	<panel type="tree" id="abScDvStackSite_tree" dataSource="abScDvStack_tree_siteDS" layoutRegion="treePosition">
+        <title translatable="true">Xiao Qu</title>
+
+        <panel type="tree" id="abScDvStackBl_tree" dataSource="abScDvStack_tree_blDS">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="onClickBlNode"/>
+            </event>
+            <field table="bl" name="bl_id"  hidden="true"/>
+            <field table="bl" name="name"/>
+        </panel>
+    </panel>
+	
+	<panel id="actionListPanel" type="html" layoutRegion="htmlPosition">
+        <html>
+            <hr/>
+            <div id="actionList" style="margin-left:auto;margin-right:auto;text-align:center;/">
+                <input type="button" id="btnStackByDv" onclick="onStackByDv()" value="" style="width:250px;height:30px;background: -16px #C3DAF9;font-weight: bold; font-size: 12px;" class="perRowButton"/>
+                <input type="button" id="btnStackByRmcat" onclick="onStackByRmcat()" value="" style="width:250px;height:30px;background: -16px #C3DAF9;font-weight: bold; font-size: 12px;" class="perRowButton"/>
+            </div>
+        </html>
+    </panel>
+	
+    <dataSource id="ds_ab-sp-show-dp-stack_chart_fl"  type="grouping">
+        <table name="fl" role="main"/>
+        <field table="fl" name="bl_fl" dataType="string" groupBy="true">
+            <sql dialect="generic">RTRIM(bl_id)${sql.concat}'-'${sql.concat}RTRIM(fl_id)</sql>
+        </field>
+		
+        <restriction type="sql" sql=" EXISTS (SELECT 1 FROM rm
+ 										 WHERE  rm.bl_id = fl.bl_id AND rm.fl_id = fl.fl_id and fl.bl_id =${parameters['blIdRes']} 
+ 								 )"/> 
+        <sortField name="bl_fl" table="fl" ascending="true"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-show-dp-stack_chart_rm_union_gp" type="grouping">
+        <sql dialect="generic">
+            SELECT
+				CASE WHEN(rm.dv_id IS NULL) THEN '' ELSE rm.dv_id END ${sql.as} dv_id,
+				CASE WHEN(rm.bl_id IS NULL) THEN '' ELSE rm.bl_id END ${sql.as} bl_id,
+	            CASE WHEN(rm.fl_id IS NULL) THEN '' ELSE rm.fl_id END ${sql.as} fl_id,
+	            rm.area  ${sql.as} area,
+	            rm.rm_id ${sql.as} rm_id
+            FROM rm  
+        
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="dv_id" dataType="string" groupBy="true">
+            <sql dialect="generic">RTRIM(rm.dv_id)</sql>
+        </field>
+        <field table="rm" name="bl_fl" dataType="string" groupBy="true">
+            <sql dialect="generic">RTRIM(rm.bl_id)${sql.concat}'-'${sql.concat}RTRIM(rm.fl_id)</sql>
+        </field>
+        <field name="sum_area" formula="sum" baseField="rm.area" dataType="number" decimals="2"/>
+	
+		<parameter name="summaryValueForThisGroup" dataType="text" value=""/>
+        <restriction type="sql" sql="rm.dv_id IS NOT NULL AND RTRIM(rm.bl_id)${sql.concat}'-'${sql.concat}RTRIM(rm.fl_id) = ${parameters['summaryValueForThisGroup']}"/>
+		
+        <sortField name="dv_id" table="rm" ascending="true"/>
+    </dataSource>
+    
+	<dataSource id="ds_ab-sp-show-rmcat-stack_chart_rm" type="grouping">
+        <sql dialect="generic">
+            SELECT
+				CASE WHEN(rm.rm_cat IS NULL) THEN '' ELSE rm.rm_cat END ${sql.as} rm_cat,
+				CASE WHEN(rm.bl_id IS NULL) THEN '' ELSE rm.bl_id END ${sql.as} bl_id,
+	            CASE WHEN(rm.fl_id IS NULL) THEN '' ELSE rm.fl_id END ${sql.as} fl_id,
+	            rm.area  ${sql.as} area,
+	            rm.rm_id ${sql.as} rm_id
+            FROM rm
+        
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="rm_cat" dataType="string" groupBy="true">
+            <sql dialect="generic">RTRIM(rm.rm_cat)</sql>
+        </field>
+        <field table="rm" name="bl_fl" dataType="string" groupBy="true">
+            <sql dialect="generic">RTRIM(rm.bl_id)${sql.concat}'-'${sql.concat}RTRIM(rm.fl_id)</sql>
+        </field>
+        <field name="sum_area" formula="sum" baseField="rm.area" dataType="number" decimals="2"/>
+	
+		<parameter name="summaryValueForThisGroup" dataType="text" value=""/>
+        <restriction type="sql" sql="rm.rm_cat IS NOT NULL and RTRIM(rm.bl_id)${sql.concat}'-'${sql.concat}RTRIM(rm.fl_id) = ${parameters['summaryValueForThisGroup']}"/>
+		
+        <sortField name="rm_cat" table="rm" ascending="true"/>
+    </dataSource>
+    
+	
+    <panel id="abSpShowRmcatStack_Chart"
+     type="chart"
+     controlType="stackedBarChart"
+     dataSource="ds_ab-sp-show-rmcat-stack_chart_rm"
+     layoutRegion="chartPosition"
+     showLegendOnLoad="true"
+     showLegendAsPopUp="false"
+     legendLocation="right"
+     showDataTips="true"
+     backgroundColor="0xc6e2ff"
+     fillType="linearGradient"
+     percentGradientChange="0.5"
+     percentTransparency="1.0"
+	 showOnLoad="false">
+     	<title translatable="true">Jian Zhu Wu</title>
+		<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpShowRmcatStack_Chart"/>
+		</action>
+		<event type="onClickItem">
+            <command type="callFunction" functionName="showFlRmLayoutByRmcat(this)"/>
+        </event>
+        <groupingAxis dataSource="ds_ab-sp-show-dp-stack_chart_fl" table="fl" field="bl_fl">
+            <title translatable="true">Floor</title>
+        </groupingAxis>
+        <secondaryGroupingAxis dataSource="ds_ab-sp-show-rmcat-stack_chart_rm" table="rm" field="rm_cat"></secondaryGroupingAxis>
+        <dataAxis dataSource="ds_ab-sp-show-rmcat-stack_chart_rm" table="rm" field="sum_area" displayAxis="true" labelPosition="inside">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+    
+	
+	
+    <panel id="abSpShowDpStack_dpChart"
+     type="chart"
+     controlType="stackedBarChart"
+     dataSource="ds_ab-sp-show-dp-stack_chart_rm_union_gp"
+     layoutRegion="chartPosition"
+     showLegendOnLoad="true"
+     showLegendAsPopUp="false"
+     legendLocation="right"
+     showDataTips="true"
+     backgroundColor="0xc6e2ff"
+     fillType="linearGradient"
+     percentGradientChange="0.5"
+     percentTransparency="1.0"
+	 showOnLoad="false">
+     	<title translatable="true">Jian Zhu Wu</title>
+		<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpShowDpStack_dpChart"/>
+		</action>
+		<event type="onClickItem">
+            <command type="callFunction" functionName="showFlRmLayoutByDp(this)"/>
+        </event>
+        <groupingAxis dataSource="ds_ab-sp-show-dp-stack_chart_fl" table="fl" field="bl_fl">
+            <title translatable="true">Floor</title>
+        </groupingAxis>
+        <secondaryGroupingAxis dataSource="ds_ab-sp-show-dp-stack_chart_rm_union_gp" table="rm" field="dv_id"></secondaryGroupingAxis>
+        <dataAxis dataSource="ds_ab-sp-show-dp-stack_chart_rm_union_gp" table="rm" field="sum_area" displayAxis="true" labelPosition="inside">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+    
+	<!-- datasource for cross table report ,addition grouping by none -->
+    <dataSource id="ds_ab-sc-show-dv-stack-by-bl_cross_rm" type="grouping">
+		<table name="rm" role="main" />
+		<table name="dv" role="standard" />
+		
+		<field table="rm" name="fl_id" groupBy="true"/>
+		<field table="dv" name="dv_name"  groupBy="true">
+			<title translatable="true">Division1</title>
+		</field>
+		
+		<field name="total_area" formula="SUM" dataType="number" 
+			baseField="rm.area" decimals="2">
+			<title translatable="true">Usable Area1</title>
+		</field>
+		<sortField name="fl_id" table="rm" ascending="true" />
+		<sortField name="dv_id" table="rm" ascending="true" />
+		
+		<restriction type="sql" sql="rm.dv_id IS NOT NULL AND rm.bl_id=${parameters['blIdRes']}"/>
+		<parameter name="blIdRes" dataType="verbatim" value="1=1"/>
+	</dataSource>
+	
+    <!-- cross table report-->
+	<panel id="abScShowDvStackCrossPanel" type="crossTable" dataSource="ds_ab-sc-show-dv-stack-by-bl_cross_rm" showOnLoad="false"  layoutRegion="crossPosition">
+		
+	</panel>
+    
+	<!-- datasource for cross table report ,addition grouping by none -->
+    <dataSource id="ds_ab-sc-show-rmcat-stack-by-bl_cross_rm" type="grouping">
+		<table name="rm" role="main" />
+		<table name="rmcat" role="standard" />
+		
+		<field table="rm" name="fl_id" groupBy="true"/>
+		<field table="rmcat" name="rmcat_name" groupBy="true">
+			<title translatable="true">Room Category1</title>
+		</field>	
+		
+		<field name="total_area" formula="SUM" dataType="number" 
+			baseField="rm.area" decimals="2">
+			<title translatable="true">Usable Area1</title>
+		</field>
+		
+		<sortField name="fl_id" table="rm" ascending="true" />
+		<sortField name="rm_cat" table="rm" ascending="true" />
+		
+		<restriction type="sql" sql="rm.rm_cat IS NOT NULL and rm.bl_id=${parameters['blIdRes']}"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+	</dataSource>
+	
+	<!-- cross table report-->
+	<panel id="abScShowRmcatStackCrossPanel" type="crossTable" dataSource="ds_ab-sc-show-rmcat-stack-by-bl_cross_rm" showOnLoad="false"  layoutRegion="crossPosition">
+		
+	</panel>
+	
+    <js file="asc-bj-usms-bl-dv-type-cht-stack.js"/>
+</view>

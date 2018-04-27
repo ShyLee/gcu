@@ -1,0 +1,24 @@
+<view version="2.0">
+	<js file="asc-bj-usms-data-bl-wizard-type-tab1-dialog.js"/>
+	<message name="error_nobldgselected" translatable="true">You must select one building</message>
+	<dataSource id="dsBuildingList">
+		<table name="bl" role="main"/>
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="name"/>
+		<restriction type="sql" sql=" ${parameters['restricByLease']}"/>
+		<restriction type="sql" sql="bl.acc_type!='yxz'"/>
+		<parameter name="restricByLease" dataType="verbatim" value="1=1"/>
+	</dataSource>
+	<panel type="grid" id="gridBuildingList" multipleSelectionEnabled="true" showOnLoad="false" dataSource="dsBuildingList">
+		<title translatable="false"></title>
+	    <action id="save" imageName="/schema/ab-core/graphics/yes.gif">
+	        <title translatable="true">Select</title>
+	    </action>
+	    <action id="cancel" imageName="/schema/ab-core/graphics/no.gif">
+	        <title translatable="true">Cancel</title>
+	    </action>
+		<field table="bl" name="bl_id"/>
+	 	<field table="bl" name="name"/> 
+	 	<indexField table="bl" name="bl_id"/> 
+	</panel>
+</view>

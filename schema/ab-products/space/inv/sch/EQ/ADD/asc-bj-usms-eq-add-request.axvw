@@ -1,0 +1,411 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-common-getprimarykey.js"/>
+    <js file="asc-bj-usms-lc-constant.js"/>
+    <js file="asc-bj-usms-eq-add-request.js"/>
+    <js file="asc-bj-usms-eq-comments.js"/>
+    <title translatable="true">Define Equipment Bao Zeng</title>
+    <layout type="borderLayout" id="leftLayout" >
+        <west initialSize="300" autoScroll="false" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="leftNorthLayout" containingLayout="leftLayout" region="west">
+        <north initialSize="35%" autoScroll="true" split="true"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout type="borderLayout" id="leftcenterLayout" containingLayout="leftLayout" region="center">
+        <north initialSize="35%" autoScroll="true" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEmDs">
+        <table name="em" role="main"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsCsiDs">
+        <table name="csi" role="main"/>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+    </dataSource>
+    <!-- 商家DataSource -->
+  <dataSource id="detailsFrameDS">
+    <table name="vn" role="main"/>
+    <field name="vn_id" table="vn"/>
+    <field name="phone" table="vn"/>
+    <field name="company" table="vn"/>
+    <field name="fax" table="vn"/>
+    <field name="description" table="vn"/>
+    <field name="email" table="vn"/>
+    <field name="vendor_type" table="vn"/>
+    <field name="contact" table="vn"/>
+    <field name="address1" table="vn"/>
+    <field name="title" table="vn"/>
+    <field name="address2" table="vn"/>
+    <field name="alt_contact" table="vn"/>
+    <field name="city" table="vn"/>
+    <field name="alt_title" table="vn"/>
+    <field name="state" table="vn"/>
+    <field name="alt_fax" table="vn"/>
+    <field name="country" table="vn"/>
+    <field name="alt_phone" table="vn"/>
+    <field name="postal_code" table="vn"/>
+  </dataSource>
+    <!-- 报增单DataSource -->
+    <dataSource id="ascBjUsmsEqAddDefDs">
+        <table name="add_eq" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="add_eq" name="add_eq_id" />
+        <field table="add_eq" name="type"/>
+        <field table="add_eq" name="budget_item_id" />
+        <field table="add_eq" name="budget_id" />
+        <field table="add_eq" name="csi_id" />
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="brand"/>
+        <field table="add_eq" name="vn_id"/>
+        <field table="add_eq" name="eq_std"/>
+        <field table="add_eq" name="eq_type"/>
+        <field table="add_eq" name="type_use"/>
+        <field table="add_eq" name="is_budget"/>
+        <field table="add_eq" name="source"/>
+        <field table="add_eq" name="count"/>
+        <field table="add_eq" name="status"/>
+        <field table="add_eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="add_eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="add_eq" name="price" showTotals="true"/>
+        <field table="add_eq" name="total_price" showTotals="true"/>
+        <field table="add_eq" name="units"/>
+        <field table="add_eq" name="date_purchased"/>
+        <field table="add_eq" name="supplier_agreement_id"/>
+        <field table="add_eq" name="date_manufactured"/>
+        <field table="add_eq" name="date_acceptance" />
+        <field table="add_eq" name="date_in_service" />
+        <field table="add_eq" name="warranty_id" />
+        <field table="add_eq" name="buy_type" />
+        <field table="add_eq" name="policy_id"/>
+        <field table="add_eq" name="ctry_name" readOnly="true"/>
+        <field table="add_eq" name="ctry_id" readOnly="true"/>
+        <field table="add_eq" name="contract_id" readOnly="true"/>
+        <field table="add_eq" name="comments"/>
+        <field table="add_eq" name="doc_approved"/>
+        <field table="add_eq" name="doc_check"/>
+        <field table="add_eq" name="doc_contract"/>
+        <field table="add_eq" name="danju_id"/>
+        <field table="add_eq" name="subject_funds"/>
+        <field table="add_eq" name="handing_em"/>
+        <field table="add_eq" name="handing_em_name"/>  
+        <field table="add_eq" name="sci_resh_id"/>  
+    </dataSource>
+    <!-- 筛选 -->
+    <dataSource id="budgetItemAndBudgetDs">
+        <table name="eq_budget" role="main"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="fiscal_year"/>
+    </dataSource>
+
+    <!-- 预算DataSource -->
+    <dataSource id="ascBjUsmsEqBudgetDs">
+        <table name="eq_budget" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget" name="cost_budget_cap"/>
+        <field table="eq_budget" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_budget" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="fiscal_year"/>
+         <field name="type" table="eq_budget"/> 
+        <parameter name="para_year" dataType="verbatim" value=""/> 
+        <restriction type="sql" sql="eq_budget.status!='0' and eq_budget.status !='3' and fiscal_year='${parameters['para_year']}'"/>
+    </dataSource>
+    <!-- 显示本部门预算 -->
+    <panel type="grid" id="budgetPanel" dataSource="ascBjUsmsEqBudgetDs" layout="leftNorthLayout" region="north">
+        <title translatable="true">Budget List of own Department</title>
+        
+        <field table="eq_budget" name="budget_id" controlType="link">
+            <command type="showPanel" panelId="budgetItemPanel"/>
+            <command type="showPanel" panelId="EqBaoZengPanel" show="false"/>
+            <command type="showPanel" panelId="BaoZengDetialformPanel" show="false"/>
+            <command type="callFunction" functionName="controller.saveBudgetType()"/>
+        </field>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="cost_budget_cap"/>
+        <field name="type" table="eq_budget"/> 
+        <field table="eq_budget" name="fiscal_year"/> 
+        <field table="eq_budget" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dp" name="dp_name"/>
+    </panel>
+    <!-- 预算项DataSource -->
+    <dataSource id="ascBjUsmsEqBudgetItemDs">
+        <table name="eq_budget_item" role="main"/>
+        <table name="eq_budget" role="standart"/>
+        <field table="eq_budget_item" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_item_id"/>
+        <field table="eq_budget_item" name="budget_item_name"/>
+        <field table="eq_budget_item" name="csi_id"/>
+        <field table="eq_budget_item" name="eq_name"/>
+        <field table="eq_budget_item" name="brand"/>
+        <field table="eq_budget_item" name="eq_std"/>
+        <field table="eq_budget_item" name="use"/>
+        <field table="eq_budget_item" name="count"/>
+        <field table="eq_budget_item" name="price"/>
+        <field table="eq_budget_item" name="total_cost"/>
+        <field table="eq_budget_item" name="cost_budget_exp" dataType="number" decimals="2">
+            <sql dialect="generic">(select NVL(sum(total_price),0) from add_eq where budget_item_id=eq_budget_item.budget_item_id )</sql>
+        </field>
+        <field table="eq_budget" name="cost_budget_jieyu" dataType="number" decimals="2"> 
+            <sql dialect="generic">NVL(eq_budget_item.total_cost-(select sum(total_price) from add_eq where budget_item_id=eq_budget_item.budget_item_id ),0.00)</sql>
+        </field>
+        <field table="eq_budget_item" name="units"/>
+        <field table="eq_budget_item" name="comments"/>
+        <field table="eq_budget_item" name="capital_source"/>
+        <field table="eq_budget_item" name="date_buy_old_eq"/>
+        <field table="eq_budget_item" name="actual_price"/>
+        <field table="eq_budget_item" name="actual_total"/>
+        <field table="eq_budget_item" name="type"/>
+        <field table="eq_budget_item" name="teach_num"/>
+        <field table="eq_budget_item" name="admin_num"/>
+        <field table="eq_budget_item" name="dv_capital"/>
+        <field table="eq_budget_item" name="other_capital"/>
+        <field table="eq_budget_item" name="sch_capital"/>
+        <field table="eq_budget_item" name="dv_id"/>
+        <field table="eq_budget_item" name="dp_id"/>
+    </dataSource>
+    <!-- 计算总价和报增总量的DataSource -->
+    <dataSource id="caculaCountDs" type="grouping">
+        <table name="add_eq" role="main"/>
+        <field table="add_eq" name="add_eq_id" hidden="true"/>
+        <field table="add_eq" name="budget_item_id" groupBy="true"/>
+        <field name="tot_count" formula="sum" baseField="add_eq.count" dataType="number" decimals="0"/>
+        <field name="tot_cost" formula="sum" baseField="add_eq.total_price" dataType="number" decimals="2"/>
+    </dataSource>
+    <dataSource id="caculaItemCountDs" type="grouping">
+        <table name="add_eq" role="main"/>
+        <field table="add_eq" name="add_eq_id" hidden="true"/>
+        <field table="add_eq" name="budget_item_id" groupBy="true"/>
+        <field name="addEqcount" formula="sum" baseField="add_eq.total_price" dataType="number" decimals="2"/>
+    </dataSource>
+    <!-- 显示预算项 -->
+    <panel type="grid" id="budgetItemPanel" dataSource="ascBjUsmsEqBudgetItemDs" layout="leftNorthLayout" region="center" showOnLoad="false">
+        <title translatable="true">Budget Item List</title>
+        
+        <field id="btnAddEq" controlType="button" width="60">
+            <title translatable="true">AddEq</title>
+            <command type="showPanel" panelId="BaoZengDetialformPanel" newRecord="true"/>
+            <command type="callFunction" functionName="transRecordValue"/>
+        </field>
+        <field table="eq_budget_item" name="budget_item_id" controlType="link">
+            <command type="callFunction" functionName="addControllNum"/>
+            <command type="showPanel" panelId="EqBaoZengPanel"/>
+            <command type="showPanel" panelId="BaoZengDetialformPanel" show="false"/>
+        </field>
+        <field table="eq_budget_item" name="budget_id" hidden="true"/>
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget_item" name="budget_item_name"/>
+        <field table="eq_budget_item" name="total_cost"/>
+        <field table="eq_budget_item" name="cost_budget_exp" dataType="number" decimals="2">
+             <title translatable="true">Budget Item Cost</title>
+        </field>
+        <field table="eq_budget" name="cost_budget_jieyu" dataType="number" decimals="2">
+             <title translatable="true" >Budget Item Balance</title>
+        </field>
+    </panel>
+    <!-- 报增单列表 -->
+    <panel type="grid" id="EqBaoZengPanel" dataSource="ascBjUsmsEqAddDefDs" layout="leftcenterLayout" region="north" showOnLoad="false">
+        <title translatable="true">Eq Bao Zeng List</title>
+        <field table="add_eq" name="add_eq_id" controlType="link">
+             <command type="callFunction" functionName="showPanelMethod"/>
+        </field>
+        <field table="add_eq" name="type" />
+        <field table="add_eq" name="budget_item_id" hidden="true"/>
+        <field table="add_eq" name="budget_id" hidden="true"/>
+        <field table="add_eq" name="csi_id" hidden="true"/>
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="count"/>
+        <field table="add_eq" name="price" showTotals="true"/>
+        <field table="add_eq" name="total_price" showTotals="true"/>
+        <field table="add_eq" name="buy_type"/>
+        <field table="add_eq" name="brand"/>
+        <field table="add_eq" name="ctry_name"/>
+        <field table="add_eq" name="status"/>
+    </panel>
+    <!-- 报增单详细 -->
+    <panel type="form" id="BaoZengDetialformPanel" dataSource="ascBjUsmsEqAddDefDs" layout="leftcenterLayout" showOnLoad="false" region="center" columns="3">
+        <title translatable="true">Equipment Increase Detail</title>
+        <action id="btnRequest" enabled="${!panel.newRecord}">
+            <title translatable="true">Submit</title>
+            <command type="callFunction" functionName="controller.submitAddRequest()"/>
+        </action>
+        <action id="formPanelSave">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="callFunction" functionName="afterSaveReocrd"/>
+        </action>
+        <action id="formPanelDelete" enabled="${!panel.newRecord}">
+            <title translatable="true">Delete</title>
+        </action>
+        <action id="formPanelClear">
+            <title translatable="true">Clear</title>
+            <command type="showPanel" panelId="BaoZengDetialformPanel" show="false"/>
+        </action>
+        <field table="add_eq" name="add_eq_id" readOnly="true"/>
+        <field table="add_eq" name="budget_id" readOnly="true" hidden="true">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" 
+                    fieldNames="add_eq.budget_id"
+                    selectFieldNames="eq_budget.budget_id" 
+                    visibleFieldNames="eq_budget.budget_id" 
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="add_eq" name="budget_item_id" readOnly="true"  hidden="true">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" fieldNames="add_eq.budget_id,add_eq.budget_item_id"
+                    selectFieldNames="eq_budget_item.budget_id,eq_budget_item.budget_item_id" 
+                    visibleFieldNames="eq_budget_item.budget_id,eq_budget_item.budget_item_id,eq_budget_item.eq_name" 
+                    filterFieldNames="add_eq.budget_id"
+                    showIndex="false" actionListener="afterSelectItemId"/>
+            </action>
+        </field>
+       <!--  <field table="add_eq" name="csi_id" readOnly="false" required="false"/> -->
+       <field table="add_eq" name="csi_id" showSelectValueAction="false">
+            <action id="btnSelect">
+                <title translatable="true">...</title>
+                <command type="openDialog" viewName="asc-bj-usms-eq-add-request-dialog.axvw"  applyParentRestriction="false"/> 
+            </action>
+        </field>
+        <field table="add_eq" name="eq_name" readOnly="false"/>
+        <field table="add_eq" name="brand" required="true"/>
+        <field table="add_eq" name="vn_id" required="true">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="callFunction" functionName="showSelectVnPanel"/>
+            </action>
+        </field>
+        <field table="add_eq" name="eq_std"/>
+        <field table="add_eq" name="eq_type"/>
+        <field table="add_eq" name="type" required="true" value="0" readOnly="true"/>
+        <field table="add_eq" name="supplier_agreement_id"/>
+        <field table="add_eq" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="add_eq" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name" readOnly="false" required="false">
+        	<action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" 
+                    fieldNames="add_eq.dv_id,dv.dv_name,add_eq.dp_id,dp.dp_name"
+                    selectFieldNames="dp.dv_id,dv.dv_name,dp.dp_id,dp.dp_name" 
+                    visibleFieldNames="dp.dv_id,dv.dv_name,dp.dp_id,dp.dp_name"
+                    showIndex="false"/>
+            </action> 
+        </field>
+        <field table="add_eq" name="type_use" required="true"/>
+        <field table="add_eq" name="units" required="true"/>
+        <field table="add_eq" name="handing_em" readOnly="true"/>
+        <field table="add_eq" name="handing_em_name" readOnly="true"/>
+        <field table="add_eq" name="count" onblur="getCount()" required="true"/>
+        <field table="add_eq" name="price"  onblur="getCount()" required="true"/>
+        <field table="add_eq" name="total_price"/>
+        <field table="add_eq" name="buy_type" required="true"/>
+        <field table="add_eq" name="date_purchased" required="true"/> 
+        <!-- <field table="add_eq" name="date_acceptance" required="true"/> -->
+        <field table="add_eq" name="date_in_service" required="true"/>
+        <field table="add_eq" name="ctry_id" required="true">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" fieldNames="add_eq.ctry_id,add_eq.ctry_name"
+                    selectFieldNames="ctry.ctry_id,ctry.name" 
+                    visibleFieldNames="ctry.ctry_id,ctry.name" 
+                    showIndex="true"/>
+            </action>
+        </field>
+        <field table="add_eq" name="ctry_name" readOnly="true"/>        
+        <!-- <field table="add_eq" name="date_manufactured"/> -->
+        <field table="add_eq" name="danju_id"/>
+        <field table="add_eq" name="subject_funds" hidden="true"/> 
+        <field table="add_eq" name="source"/>
+        <field table="add_eq" name="sci_resh_id" /> 
+        <field table="add_eq" name="doc_approved"/>
+        <field table="add_eq" name="doc_check"/>
+        <field table="add_eq" name="doc_contract"/>       
+        <field table="add_eq" name="is_budget" readOnly="true"/>
+        <field table="add_eq" name="comments" colspan="2" rowspan="2"/>
+        
+    </panel>
+    <!-- 设备SN DataSource -->
+    <dataSource id="ascBjUsmsEqSnDs">
+        <table name="add_eq_list" role="main"/>
+        <table name="em" role="standart"/>
+        <field table="add_eq_list" name="add_eq_list_id" required="true"/>
+        <field table="add_eq_list" name="add_eq_id" readOnly="true"/>
+        <field table="add_eq_list" name="num_serial"/>
+        <field table="add_eq_list" name="em_id"/>
+        <field table="add_eq_list" name="em_id"/>
+        <field table="add_eq_list" name="em_name"/>
+        <field table="add_eq_list" name="bl_id"/>
+        <field table="add_eq_list" name="fl_id"/>
+        <field table="add_eq_list" name="rm_id"/>
+        <field table="add_eq_list" name="subject_funds" required="true"/>
+        <field table="add_eq_list" name="comments"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqSnGroupDs" type="grouping">
+        <table name="add_eq_list" role="main"/>
+        <field table="add_eq_list" name="add_eq_id" groupBy="true"/>
+        <field name="countNum" formula="sum" baseField="add_eq_list.total_price" dataType="number" decimals="2"/>
+    </dataSource>
+    <panel type="grid" id="vnselectPanel" dataSource="detailsFrameDS" showOnLoad="false">
+        <title translatable="true">Select Vn</title>
+        <action id="addNewVn">
+            <title translatable="true">AddNewVn</title>
+            <command type="openDialog" panelId="detailsPanel" newRecord="true"/>
+        </action>
+        <field name="vn_id" table="vn" controlType="link">
+            <command type="callFunction" functionName="selectVnAsValue"/>
+        </field>
+        <field name="company" table="vn" controlType="link">
+            <command type="callFunction" functionName="selectVnAsValue"/>
+        </field>
+    </panel>
+    <panel type="form" id="detailsPanel" showOnLoad="false" columns="2" dataSource="detailsFrameDS">
+        <title translatable="true">Vendors</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="callFunction" functionName="afterSaveVn"/>
+        </action>
+        
+        <field name="vn_id" table="vn"/>
+        <field name="phone" table="vn"/>
+        <field name="company" table="vn"/>
+        <field name="fax" table="vn"/>
+        <field name="description" table="vn"/>
+        <field name="email" table="vn"/>
+        <field name="vendor_type" table="vn"/>
+        <field name="contact" table="vn"/>
+        <field name="address1" table="vn"/>
+        <field name="title" table="vn"/>
+        <field name="address2" table="vn"/>
+        <field name="alt_contact" table="vn"/>
+        <field name="city" table="vn"/>
+        <field name="alt_title" table="vn"/>
+        <field name="state" table="vn"/>
+        <field name="alt_fax" table="vn"/>
+        <field name="country" table="vn"/>
+        <field name="alt_phone" table="vn"/>
+        <field name="postal_code" table="vn"/>
+    </panel>
+</view>

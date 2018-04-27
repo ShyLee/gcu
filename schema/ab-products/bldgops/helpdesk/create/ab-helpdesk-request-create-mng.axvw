@@ -1,0 +1,32 @@
+<view version="2.0">
+    
+    <preferences>
+        <viewTitleBar show="true"/>
+    </preferences>
+    
+    <title translatable="true">Manage Un-submitted Service Requests</title>
+
+    <tabs id="helpDeskRequestTabs" workflow="enforced">
+        <tab name="catalog" file="ab-helpdesk-request-manage.axvw" selected="true">
+            <title translatable="true">Manage Un-submitted Service Requests</title>
+        </tab>   
+
+        <tab name="basic" file="ab-helpdesk-request-basic.axvw">
+            <title translatable="true">Basic Information</title>
+        </tab>
+        
+        <tab name="quest" file="ab-helpdesk-request-quest.axvw">
+            <title translatable="true">Detailed Information</title>
+        </tab>          
+        
+        <tab name="docs" file="ab-helpdesk-request-docs.axvw">
+            <title translatable="true">Documents</title>
+        </tab>
+        
+        <tab name="result" file="ab-helpdesk-request-result.axvw">
+            <title translatable="true">Overview</title>
+        </tab>
+    </tabs>
+    
+    <js file="ab-helpdesk-request-create-mng.js" />
+</view>

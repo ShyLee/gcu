@@ -1,0 +1,93 @@
+@import 'mobileclient/theme';
+
+@import 'sencha-touch/default/all';
+
+@import 'mobileclient/shared';
+
+// You may remove any of the following modules that you
+// do not use in order to create a smaller css file.
+@include sencha-panel;
+@include sencha-buttons;
+@include sencha-sheet;
+@include sencha-picker;
+@include sencha-tabs;
+@include sencha-toolbar;
+@include sencha-toolbar-forms;
+//@include sencha-indexbar;
+@include sencha-list;
+@include sencha-layout;
+//@include sencha-carousel;
+@include sencha-form;
+@include sencha-msgbox;
+@include sencha-loading-spinner;
+
+@include sencha-button-ui('iron', #7f7f7f, 'glossy');
+@include sencha-button-ui('base', #0080FF, 'glossy');
+@include sencha-list-paging;
+
+.space-profile {
+  display:-webkit-box;
+  -webkit-box-orient: horizontal;
+  font-size: 0.9em;
+  padding: 4px 0px 0px 0px;
+
+  .space-profile-label {
+    width:50%;
+  }
+}
+
+$list-padding: .7em;
+
+.spacebook-list {
+  .x-dataview-inner {
+    padding: $list-padding;
+  }
+
+  //spacebook list item styling
+  .spacebook-list-item {
+    padding: $list-padding/2;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-bottom-width: 0;
+
+    //add rounded corners to the last item
+    &:last-child {
+      border-bottom-width: 1px;
+      @include border-bottom-radius($list-padding/2);
+    }
+  }
+
+  //add rounded corners to the first item
+  .x-mask + .photo-list-item {
+    @include border-top-radius($list-padding/2);
+  }
+
+  .spacebook-list-item .x-img {
+    background: #eee;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    @include border-radius($list-padding/2);
+
+    width: 80px;
+    height: 80px;
+  }
+
+  .spacebook-list-item .x-detail {
+    padding: 0 1.5em;
+
+    h3 {
+      font-size: 0.8em;
+      color: gray;
+    }
+  }
+
+  .spacebook-list-item .x-detail-button {
+    width: 100px;
+  }
+  
+  .x-item-selected {
+    background-color: #66b3ff;
+  }
+}

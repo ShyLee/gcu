@@ -1,0 +1,43 @@
+
+<view version="2.0">
+	
+	<js file="asc-bj-usms-proc-def-req-type-request-para-tab.js"/>
+	
+    <message name="editConflict" translatable="true">A rule with these request parameters already exists. The selected rule will not be changed.</message>
+    <message name="copyConflict" translatable="true">A rule with these request parameters already exists. The selected rule will not be copied.</message>
+    <message name="addEditConflict" translatable="true">The SLA rule for these parameters already exists, do you want to edit this rule?</message>
+    <message name="requestTypeRequired" translatable="true">A request type is required for an SLA rule</message>
+    <message name="selectTitle" translatable="true">-select-</message>
+    <message name="requestType" translatable="true">Service Desk Request Type</message>
+    <message name="buidingCode" translatable="true">Building Code</message>
+    
+    <dataSource id="ds_ab-pm-sla-req-para_form_sla_req">
+        <table name="helpdesk_sla_request" role="main"/>
+        <field name="activity_type" table="helpdesk_sla_request"/>
+        <field name="ordering_seq" table="helpdesk_sla_request"/>
+        <field name="prob_type" table="helpdesk_sla_request"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-pm-sla-req-para_sla_res">
+        <table name="helpdesk_sla_response" role="main"/>
+        <field name="activity_type" table="helpdesk_sla_response"/>
+        <field name="ordering_seq" table="helpdesk_sla_response"/>
+        <field name="priority" table="helpdesk_sla_response"/>
+    </dataSource>
+    
+    <panel id="request" type="form" columns="2" dataSource="ds_ab-pm-sla-req-para_form_sla_req">
+        <title translatable="true">Select Request Parameters for this SLA:</title>
+        <action>
+            <title translatable="true">Next &gt;&gt;</title>
+            <command type="callFunction" functionName="onReqParaNext"/>
+        </action>
+        <field name="activity_type" table="helpdesk_sla_request">
+            <action>
+                <title>...</title>
+                <command type="callFunction" functionName="selectActivityType"/>
+            </action>
+        </field>
+        <field name="ordering_seq" table="helpdesk_sla_request" hidden="true"/>
+        <field name="prob_type" table="helpdesk_sla_request" required="true"/>
+    </panel>
+</view>

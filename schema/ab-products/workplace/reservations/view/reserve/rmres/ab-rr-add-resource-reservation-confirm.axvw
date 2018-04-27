@@ -1,0 +1,162 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <message translatable="true" name="selectRoomAndTimeError">You must select a Room and a time period to validate this step</message>
+    <message translatable="true" name="fillMandatoryFieldsError">Please fill in all mandatory fields in the form</message>
+    <message translatable="true" name="msgBackExit">Are you sure that you want to cancel the process?</message>
+    <message translatable="true" name="selectDvCode">Please select the Division Code first</message>
+    <message translatable="true" name="errorTabs">This view can only be used as a part of the Room Reservations</message>
+    <message translatable="true" name="allView">View all dates</message>
+    <message translatable="true" name="titleResource">Resource Code</message>
+    <message translatable="true" name="titleFrom">Time Start</message>
+    <message translatable="true" name="titleUntil">Time End</message>
+    <message translatable="true" name="titleResQuantity">Requested Quantity</message>
+    <message translatable="true" name="titleStatus">Status of Resource</message>
+    <message translatable="true" name="msgGoBack">Warning, all resolved conflicts will be lost, Are you sure that you want to go back?</message>
+    <message translatable="true" name="warning_message">Some required fields have not been entered, please enter or select values for them.</message>
+    
+    <dataSource id="ds_ab-rr-ad-resource-reservation-confirm_reserve_rs">
+        <table name="reserve_rs" role="main"/>
+        <table name="reserve" role="standard"/>
+        <table name="bl" role="standard"/>
+        
+        <field table="bl" name="ctry_id"/>
+        <field table="bl" name="site_id"/>
+        <field table="reserve_rs" name="date_start"/>
+        <field table="reserve_rs" name="time_start"/>
+        <field table="reserve_rs" name="time_end"/>
+        
+        <field table="reserve_rs" name="bl_id"/>
+        <field table="reserve_rs" name="fl_id"/>
+        <field table="reserve_rs" name="rm_id"/>
+        <field table="reserve" name="user_created_by"/>
+        <field table="reserve" name="user_requested_by"/>
+        <field table="reserve" name="user_requested_for"/>
+        <field table="reserve" name="phone"/>
+        <field table="reserve" name="email"/>
+        <field table="reserve" name="dv_id"/>
+        <field table="reserve" name="dp_id"/>
+        <field table="reserve" name="reservation_name"/>
+        <field table="reserve" name="comments"/>
+        <field table="reserve_rs" name="rsres_id"/>
+        <restriction type="sql" sql="rsres_id IS NULL"/>
+    </dataSource>
+	
+    <panel id="resourcesReservationsPanel" type="form" columns="3" dataSource="ds_ab-rr-ad-resource-reservation-confirm_reserve_rs">
+        <title translatable="true">Resources Reservations</title>
+        
+        <field table="bl" name="ctry_id" readOnly="true" required="false"/>
+        <field table="reserve_rs" name="date_start" required="false"/>
+        <field table="bl" name="site_id" readOnly="true" required="false"/>
+        <field table="reserve_rs" name="time_start" required="false"/>
+        <field table="reserve_rs" name="time_end" required="false"/>
+        <field />
+    </panel>
+    
+    <panel id="panelViewAll" type="form" columns="4" tabOrder="column" dataSource="ds_ab-rr-ad-resource-reservation-confirm_reserve_rs">
+        <field table="bl" name="site_id" readOnly="true" required="false" hidden="true"/>
+        <field colspan="4">
+            <html>
+                <input type="button" id="btnAllView" onclick="onViewAllRecurring()" value="" class="perRowButton"/>
+            </html>
+        </field>
+    </panel>
+    
+    <panel id="confirmResReservationsPanel" type="form" columns="3" dataSource="ds_ab-rr-ad-resource-reservation-confirm_reserve_rs">
+        <title translatable="true">Confirm Resources Reservations</title>
+        <action id="change">
+            <title translatable="true">Change Resource/Date</title>
+        </action>
+        <action id="finish" cssClass="borderButton">
+            <title translatable="true">Confirm and Finish</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+        </action>
+        
+        <field table="reserve" name="user_created_by" readOnly="false" required="true"/>
+        <field table="reserve" name="phone" readOnly="false" required="false" showSelectValueAction="true"/>
+        <field table="reserve" name="dv_id" readOnly="false" required="false">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.dv_id"
+                 selectFieldNames="dv.dv_id"
+                 visibleFieldNames="dv.dv_id">
+                 <title>Division Code</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="user_requested_by" readOnly="false" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.user_requested_by,reserve.user_requested_for,reserve.dv_id,reserve.dp_id,reserve.phone,reserve.email"
+                 selectFieldNames="em.em_id,em.em_id,em.dv_id,em.dp_id,em.phone,em.email"
+                 visibleFieldNames="em.em_id,em.dv_id,em.dp_id,em.phone,em.email">
+                 <title>Requested By</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="email" readOnly="false" required="false" showSelectValueAction="true"/>
+        <field table="reserve" name="dp_id" readOnly="false" required="false">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.dv_id,reserve.dp_id"
+                 selectFieldNames="dp.dv_id,dp.dp_id"
+                 visibleFieldNames="dp.dp_id,dp.dv_id">
+                 <title>Department Code</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="user_requested_for" readOnly="false" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.user_requested_for,reserve.dv_id,reserve.dp_id,reserve.phone,reserve.email"
+                 selectFieldNames="em.em_id,em.dv_id,em.dp_id,em.phone,em.email"
+                 visibleFieldNames="em.em_id,em.dv_id,em.dp_id,em.phone,em.email">
+                 <title>Requested For</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="reservation_name" readOnly="false" required="true" showSelectValueAction="true"/>
+        <field/>
+        <field table="reserve" name="comments" readOnly="false" required="false" colspan="3"/>
+        <field table="reserve_rs" name="bl_id" required="true"/>
+        <field table="reserve_rs" name="fl_id" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve_rs.bl_id,reserve_rs.fl_id"
+                 selectFieldNames="fl.bl_id,fl.fl_id"
+                 visibleFieldNames="fl.bl_id,fl.fl_id">
+                 <title>Floor Code</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve_rs" name="rm_id" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve_rs.bl_id,reserve_rs.fl_id,reserve_rs.rm_id"
+                 selectFieldNames="rm.bl_id,rm.fl_id,rm.rm_id"
+                 visibleFieldNames="rm.bl_id,rm.fl_id,rm.rm_id">
+                 <title>Room Code</title>
+                </command>
+            </action>
+        </field>
+    </panel>
+    <panel id="resourcesDetailPanel" type="html">
+        <title translatable="true">Resources Reservations Details</title>
+        <html>
+            <div id="resourcesDetail" style="position:relative;top:0px;visibility: show;"/>
+        </html>
+    </panel>
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-add-resource-reservation-confirm.js"/>
+</view>

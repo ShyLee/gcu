@@ -1,0 +1,39 @@
+
+<view version="2.0">
+	
+	<js file="asc-bj-usms-proc-def-req-type-select-tab.js"/>
+	
+    <message name="confirmDelete" translatable="true">Are you sure you want to delete these rules?</message>
+    <message name="noSLAtoCopy" translatable="true">Select a SLA to copy</message>
+    <message name="select1SLAtoCopy" translatable="true">Select only 1 SLA to copy</message>
+    <message name="selectTitle" translatable="true">-select-</message>
+    <message name="requestType" translatable="true">Service Desk Request Type</message>
+    
+    <dataSource id="ds_ab-pm-sla-cr-sel_grid_sla_request">
+        <table name="helpdesk_sla_request" role="main"/>
+        <field name="ordering_seq" table="helpdesk_sla_request"/>
+        <field name="activity_type" table="helpdesk_sla_request"/>
+        <field name="prob_type" table="helpdesk_sla_request"/>
+    </dataSource>
+    
+    <panel type="grid" id="rule_report" controlType="reportGrid" multipleSelectionEnabled="true" showOnLoad="false" dataSource="ds_ab-pm-sla-cr-sel_grid_sla_request">
+        <title></title>
+        <sortField name="activity_type" table="helpdesk_sla_request" ascending="false"/>
+        <sortField name="prob_type" table="helpdesk_sla_request" ascending="false"/>
+        <action>
+            <title translatable="true">Add SLA</title>
+            <command type="selectTabPage" tabPageName="request" newRecord="true"/>
+        </action>
+        <action>
+            <title translatable="true">Delete Selected</title>
+            <command type="callFunction" functionName="deleteRule"/>
+        </action>
+        <field controlType="button">
+            <command type="selectTabPage" tabPageName="request"/>
+            <title translatable="true">Edit</title>
+        </field>
+        <field name="ordering_seq" table="helpdesk_sla_request" hidden="true"/>
+        <field name="activity_type" table="helpdesk_sla_request"/>
+        <field name="prob_type" table="helpdesk_sla_request"/>
+    </panel>
+</view>

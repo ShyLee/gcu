@@ -1,0 +1,121 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+        <west initialSize="50%" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterLayout" containingLayout="mainLayout" region="west">
+        <north initialSize="50%" id="northLeft" split="true"/>
+        <center id="centerLeft" />
+    </layout>
+    <layout type="borderLayout" id="mainCenterWestLayout" containingLayout="borderLayout" region="center">
+        <north initialSize="50%" id="northRight" split="true"/>
+        <center id="centerRight"/>
+    </layout>
+
+	<title>Eq Budget Add</title>
+	<js file="ab-asc-usms-eq-budget-add-to.js"/>
+
+	<dataSource id="eqBudgetAddDs">
+		<table name="eq_budget_add" role="main"/>
+		<table name="eq_budget_item" role="standard"/>
+		<field table="eq_budget_add" name="id"/>
+		<field table="eq_budget_add" name="budget_item_id"/>
+		<field table="eq_budget_item" name="total_cost"/>
+		<field table="eq_budget_item" name="budget_item_name"/>
+		<field table="eq_budget_add" name="budget_total_cost"/>
+		<field table="eq_budget_add" name="budget_add_cost"/>
+		<field table="eq_budget_add" name="date_budget_add"/>
+		<field table="eq_budget_add" name="comments"/>
+		<sortField table="eq_budget_add" name="id"/>
+	</dataSource>
+	
+	
+	<dataSource id="eqBudgetDs">
+		<table name="eq_budget" role="main"/>
+		<table name="dv" role="standard"/>
+		<table name="dp" role="standard"/>
+		<field table="eq_budget" name="budget_id"/>
+		<field table="eq_budget" name="cost_budget_cap"/>
+		<field table="eq_budget" name="dp_id"/>
+		<field table="dp" name="dp_name"/>
+		<field table="eq_budget" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="eq_budget" name="fiscal_year"/>
+		<sortField table="eq_budget" name="budget_id"/>
+	</dataSource>
+
+
+	<dataSource id="eqBudgetItemDs">
+		<table name="eq_budget_item" role="main"/>
+		<field table="eq_budget_item" name="budget_item_id"/>
+		<field table="eq_budget_item" name="budget_id"/>
+		<field table="eq_budget_item" name="budget_id_old"/>
+		<field table="eq_budget_item" name="budget_item_name"/>
+		<field table="eq_budget_item" name="total_cost"/>
+		<field table="eq_budget_item" name="type"/>
+		<sortField table="eq_budget_item" name="budget_item_id"/>
+	</dataSource>
+
+
+	<panel id="budgetGrid" type="grid" dataSource="eqBudgetDs" layoutRegion="northLeft">
+		<title>Budget List</title>
+		<field table="eq_budget" name="budget_id" id="budget_id" controlType="link">
+		</field>
+		<field table="eq_budget" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name">
+		</field>
+		<field table="eq_budget" name="dp_id" hidden="true"/>
+		<field table="dp" name="dp_name">
+		</field>
+		<field table="eq_budget" name="cost_budget_cap">
+		</field>
+		<field table="eq_budget" name="fiscal_year">
+		</field>
+		<indexField table="eq_budget" name="budget_id"/>
+	</panel>
+	
+	<panel id="budgetItemGrid" type="grid" dataSource="eqBudgetItemDs" layoutRegion="centerLeft">
+		<title></title>
+		<field table="eq_budget_item" name="budget_item_id" controlType="link" id="budget_item_id"/>
+		<field table="eq_budget_item" name="budget_id" hidden="true"/>
+		<field table="eq_budget_item" name="budget_id_old"/>
+		<field table="eq_budget_item" name="budget_item_name"/>
+		<field table="eq_budget_item" name="total_cost"/>
+		<field table="eq_budget_item" name="type"/>
+		<indexField table="eq_budget_item" name="budget_id"/>
+		<indexField table="eq_budget_item" name="budget_item_id"/>
+	</panel>
+	
+	<panel id="budgetAddForm" type="form" columns="2" dataSource="eqBudgetAddDs" layoutRegion="northRight" showOnLoad="false" newRecord="true">
+		<title></title>
+		<action id="save">
+			<title>Save</title>
+		</action>
+		<field table="eq_budget_add" name="id" hidden="true"/>
+		<field table="eq_budget_add" name="budget_item_id" readOnly="true "/>
+		<field/>
+		<field table="eq_budget_item" name="budget_item_name"/>
+		<field/>
+		<field table="eq_budget_add" name="budget_total_cost" readOnly="true"/>
+		<field/>
+		<field table="eq_budget_add" name="budget_add_cost" onchange="controller.onChangeTotalCost()"/>
+		<field/>
+		<field table="eq_budget_add" name="date_budget_add"/>
+		<field/>
+		<field table="eq_budget_add" name="comments"/>
+	</panel>
+
+	<panel id="budgetAddGrid" type="grid" dataSource="eqBudgetAddDs" layoutRegion="centerRight" showOnLoad="false">
+		<title></title>
+		<field table="eq_budget_add" name="id" hidden="true"/>
+		<field table="eq_budget_add" name="budget_item_id" readOnly="true"/>
+		<field table="eq_budget_item" name="budget_item_name"/>
+		<field table="eq_budget_item" name="total_cost"/>
+		<field table="eq_budget_add" name="budget_add_cost"/>
+		<field table="eq_budget_add" name="date_budget_add"/>
+		<field table="eq_budget_add" name="comments"/>
+		<indexField table="eq_budget_add" name="id"/>
+	</panel>
+
+
+</view>

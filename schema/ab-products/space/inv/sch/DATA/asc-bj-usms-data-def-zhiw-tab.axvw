@@ -1,0 +1,92 @@
+<view version="2.0">
+	<message name="Post" translatable="true">Post</message>
+	<message name="Postion" translatable="true">Postion</message>
+    <message name="PostLevel" translatable="true">PostLevel</message>
+	<message name="formSaved" translatable="true">Form saved successfully.</message>
+	<message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+	<message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+	<message name="selectTreeNode" translatable="true">Please select Division.</message>
+	
+    <layout id="main">
+        <west id="selectedPosition" initialSize="300" split="true"/>
+        <center id="centerPosition"/>
+    </layout>
+    
+    <dataSource id="abScDefPostLevelDs">
+        <table name="sc_gangweijibie" role="main"/>
+        <field table="sc_gangweijibie" name="gangweijibie_id"/>
+        <field table="sc_gangweijibie" name="gangweijibie_name"/>
+        <field table="sc_gangweijibie" name="area_dinge"/>
+		<field table="sc_gangweijibie" name="description"/>
+    </dataSource>
+	
+	<dataSource id="abScDefPostionDs">
+        <table name="sc_zhiwu" role="main"/>
+        <field table="sc_zhiwu" name="zhiw_id"/>
+        <field table="sc_zhiwu" name="zhiw_name"/>
+        <field table="sc_zhiwu" name="description"/> 
+		<field table="sc_zhiwu" name="gangweijibie_id"/>
+    </dataSource>
+    
+    <panel type="tree" id="abScDefPostTree" dataSource="abScDefPostLevelDs" layoutRegion="selectedPosition">
+        <title translatable="true">Select Post Level,Postion</title>
+		<action id="addNew">
+            <title translatable="true">Add New</title>
+        </action>
+        <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="postDetailTabs" tabPageName="postLevelTab"/>
+                <command type="showPanel" panelId="abScDefPostLevelForm"/>
+                <command type="callFunction" functionName="onTreeviewClick"/>
+        </event>
+		
+		<panel type="tree" id="abScDefPostionTree" dataSource="abScDefPostionDs">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="postDetailTabs" tabPageName="postionTab"/>
+                <command type="showPanel" panelId="abScDefPostionForm"/>
+                <command type="callFunction" functionName="onTreeviewClick"/>
+            </event>
+			<field table="sc_zhiwu" name="zhiw_id"/>
+			<field table="sc_zhiwu" name="zhiw_name"/>
+        </panel>
+		<field table="sc_gangweijibie" name="gangweijibie_id"/>
+		<field table="sc_gangweijibie" name="gangweijibie_name"/>
+        <field table="sc_gangweijibie" name="area_dinge"/>
+    </panel>
+	
+	<tabs id="postDetailTabs" workflow="enforced" cssClass="wizard" layout="centerPosition" region="center">
+        <tab name="postLevelTab" selected="false">
+            <title translatable="true">Post Level</title>
+            <panel type="form" id="abScDefPostLevelForm" showOnLoad="false" dataSource="abScDefPostLevelDs" columns="1">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+				<field table="sc_gangweijibie" name="gangweijibie_id"/>
+				<field table="sc_gangweijibie" name="gangweijibie_name"/>
+				<field table="sc_gangweijibie" name="area_dinge"/>
+				<field table="sc_gangweijibie" name="description"/>
+            </panel>
+        </tab>
+		
+		<tab name="postionTab" selected="false">
+            <title translatable="true">Postion</title>
+            <panel type="form" id="abScDefPostionForm" showOnLoad="false" dataSource="abScDefPostionDs" columns="1">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+				<field table="sc_zhiwu" name="gangweijibie_id" readOnly="true"/>
+				<field table="sc_zhiwu" name="zhiw_id"/>
+				<field table="sc_zhiwu" name="zhiw_name"/>
+		        <field table="sc_zhiwu" name="description"/> 
+				
+            </panel>
+        </tab>
+    </tabs>
+    <js file="asc-bj-usms-data-def-zhiw-tab.js"/>  
+	<js file="asc-bj-usms-def-common.js"/>
+</view>

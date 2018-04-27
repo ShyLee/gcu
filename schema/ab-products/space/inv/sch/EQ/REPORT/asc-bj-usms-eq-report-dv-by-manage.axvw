@@ -1,0 +1,92 @@
+<view version="2.0">
+	<title translatable="true">dveqmanage</title>	
+	<dataSource id="eq_DS" type="grouping">
+		<table name="eq" role="main"/>
+		<table name="dv" role="standard"/>
+		<field table="dv" name="dv_name" groupBy="true"/>
+		<field name="price_l" dataType="text" groupBy="true">
+			<title>price level</title>
+			<sql dialect="generic">case 
+      			when price &gt;= 400000 then '${parameters['gt400k']}'
+      			when price &lt; 400000 and  price &gt;= 200000 then '${parameters['gt200k']}'
+      			when price &lt; 200000 and  price &gt;= 100000 then '${parameters['gt100k']}'
+      			when price &lt; 100000 and  price &gt;= 10000 then '${parameters['gt10k']}'
+      			when price &lt; 10000 and  price &gt;= 800 then '${parameters['gt800']}'
+      			when price &lt; 800 and  price &gt;= 500 then '${parameters['gt500']}'
+      			else '${parameters['lt500']}'  end</sql>
+		</field>
+		<field table="eq" name="eq_count" formula="count" baseField="eq.eq_id" dataType="number" decimals="2">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="eq_sum" formula="sum" baseField="eq.price" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<parameter name="gt400k" dataType="verbatim" value="gt400k"/>
+		<parameter name="gt200k" dataType="verbatim" value="gt200k"/>
+		<parameter name="gt100k" dataType="verbatim" value="gt100k"/>
+		<parameter name="gt10k" dataType="verbatim" value="gt10k"/>
+		<parameter name="gt800" dataType="verbatim" value="gt800"/>
+		<parameter name="gt500" dataType="verbatim" value="gt500"/>
+		<parameter name="lt500" dataType="verbatim" value="lt500"/>
+		<restriction type="sql" sql="eq.sch_status='1' and  eq.dv_id||eq.dp_id not in (select dv_id||dp_id from dp where eq_own='1')"/>
+	</dataSource>
+	
+	<dataSource id="eqOwn_DS" type="grouping">
+		<table name="eq" role="main"/>
+		<table name="dp" role="standard"/>
+		<field table="dp" name="dp_name" groupBy="true"/>
+		<field name="price_l" dataType="text" groupBy="true">
+			<title>price level</title>
+			<sql dialect="generic">case 
+      			when price &gt;= 400000 then '${parameters['gt400k']}'
+      			when price &lt; 400000 and  price &gt;= 200000 then '${parameters['gt200k']}'
+      			when price &lt; 200000 and  price &gt;= 100000 then '${parameters['gt100k']}'
+      			when price &lt; 100000 and  price &gt;= 10000 then '${parameters['gt10k']}'
+      			when price &lt; 10000 and  price &gt;= 800 then '${parameters['gt800']}'
+      			when price &lt; 800 and  price &gt;= 500 then '${parameters['gt500']}'
+      			else '${parameters['lt500']}'  end</sql>
+		</field>
+		<field table="eq" name="eq_count" formula="count" baseField="eq.eq_id" dataType="number" decimals="2">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="eq_sum" formula="sum" baseField="eq.price" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<parameter name="gt400k" dataType="verbatim" value="gt400k"/>
+		<parameter name="gt200k" dataType="verbatim" value="gt200k"/>
+		<parameter name="gt100k" dataType="verbatim" value="gt100k"/>
+		<parameter name="gt10k" dataType="verbatim" value="gt10k"/>
+		<parameter name="gt800" dataType="verbatim" value="gt800"/>
+		<parameter name="gt500" dataType="verbatim" value="gt500"/>
+		<parameter name="lt500" dataType="verbatim" value="lt500"/>
+		<restriction type="sql" sql="eq.sch_status='1' and  eq.dv_id||eq.dp_id in (select dv_id||dp_id from dp where eq_own='1')"/>
+	</dataSource>
+	<tabs workflow="free" id="eqTabs" tabRefreshPolicy="never">
+		<tab name="eqTab" selected="true">
+			<title>Eq</title>
+			<panel type="crossTable" id="tablePanel" dataSource="eq_DS">
+				<action id="exportXLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="tablePanel"/>
+				</action>
+<!-- 				<action id="report"> -->
+<!-- 					<title>Report</title> -->
+<!-- 				</action> -->
+			</panel>
+		</tab>
+		<tab name="eqOwnTab" >
+			<title>Eq Own</title>
+			<panel type="crossTable" id="eqOwnTablePanel" dataSource="eqOwn_DS">
+				<action id="exportXLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="eqOwnTablePanel"/>
+				</action>
+<!-- 				<action id="report"> -->
+<!-- 					<title>Report</title> -->
+<!-- 				</action> -->
+			</panel>
+		</tab>
+	</tabs>
+	<js file="asc-bj-usms-eq-report-dv-by-manage.js"/>
+</view>
+

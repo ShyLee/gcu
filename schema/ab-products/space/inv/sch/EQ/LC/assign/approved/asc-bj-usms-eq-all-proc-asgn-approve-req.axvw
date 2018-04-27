@@ -1,0 +1,22 @@
+<view version="2.0">
+    <title translatable="true">Approve Request</title>
+    
+    <tabs workflow="enforced" id="createRequestTabs" tabRefreshPolicy="never">
+        
+        <tab name="selectRequestTab" selected="true" file="asc-bj-usms-eq-all-proc-asgn-approve-req-select-tab.axvw">
+            <title translatable="true">Select Request</title>
+        </tab>
+        
+        <tab name="addEqApproveRequestTab" file="asc-bj-usms-eq-proc-asgn-approve-req-approve-tab.axvw">
+            <title translatable="true">AddEq Approve</title>
+        </tab>
+        <!-- 
+        <tab name="eqCheckApproveRequestTab" file="asc-bj-usms-eq-proc-check-approve-req-approve-tab.axvw">
+            <title translatable="true">EqCheck Approve</title>
+        </tab>
+         -->
+        <tab name="eqDisposeApproveRequestTab" file="asc-bj-usms-eq-dispose-proc-asgn-approve-req-approve-tab.axvw">
+            <title translatable="true">EqDispose Approve</title>
+        </tab>
+    </tabs>
+</view>

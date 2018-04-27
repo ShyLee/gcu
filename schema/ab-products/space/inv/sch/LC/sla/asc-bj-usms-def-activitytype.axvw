@@ -1,0 +1,56 @@
+<view version="2.0">
+  
+  <layout file="2panels.axvw" />
+  <title>Define Action Types</title>
+  <message name="invalidPrefix">Invalid Action Type prefix</message>
+  <js file="asc-bj-usms-def-activitytype.js"/>
+  
+  <dataSource id="activitytypeEditDs">
+		<table name="activitytype" role="main"/>
+    <field name="activity_type" table="activitytype"/>
+    <field name="description" table="activitytype"/>
+    <field name="instructions" table="activitytype"/>
+    <field name="prob_type" table="activitytype"/>
+    <field name="group_name" table="activitytype"/>
+    <restriction type="parsed">
+      <clause op="LIKE" value="SD -%" name="activity_type" table="activitytype"/>
+    </restriction>
+  </dataSource>
+
+  <panel id="activitytypeEditGrid" type="grid" dataSource="activitytypeEditDs" region="west">
+    <title>Action Types</title>
+    <action id="addNew">
+      <title>Add New</title>
+    	<command type="showPanel" panelId="activitytypeEditForm" newRecord="true"/>
+    </action>
+    <sortField name="activity_type" table="activitytype" ascending="true"/>
+    <field name="activity_type" table="activitytype" controlType="link">
+      <command type="showPanel" panelId="activitytypeEditForm"/>
+    </field>
+  </panel>
+
+  <panel id="activitytypeEditForm" type="form" columns="1" dataSource="activitytypeEditDs" region="center" showOnLoad="false">
+    <title translatable="true">Action Type</title>
+    <action id="save">
+    	<title>Save</title>
+    	<command type="saveForm"/>
+         <command type="showPanel" panelId="activitytypeEditGrid" applyParentRestriction="false"/>
+    </action>
+    <action id="delete" enabled="${!panel.newRecord}">
+    	<title>Delete</title>
+    	<command type="deleteRecord"/>
+    	<command type="showPanel" panelId="activitytypeEditForm" show="false"/>
+    	<command type="showPanel" panelId="activitytypeEditGrid" applyParentRestriction="false"/>
+    </action>
+    <action id="cancel">
+    	<title>Cancel</title>
+    	<command type="showPanel" panelId="activitytypeEditForm" show="false"/>
+    </action>
+<!--     <field name="activity_type" table="activitytype" required="true" readOnly="${!panel.newRecord}"/> -->
+    <field name="activity_type" table="activitytype" required="true" />
+		<field name="prob_type" table="activitytype" required="true" />
+		<field name="description" table="activitytype" />
+		<field name="instructions" table="activitytype" value="USMS"/>
+		<field name="group_name" table="activitytype" value="%" hidden="false"/>
+  </panel>
+</view>

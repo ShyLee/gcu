@@ -1,0 +1,31 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <message translatable="true" name="errNotFound">User form loaded but miniconsole not found</message>
+    <message translatable="true" name="DateStart">Date Start</message>
+    <message translatable="true" name="Resource">Resource Code</message>
+    <message translatable="true" name="Quantity">Requested Quantity</message>
+    <message translatable="true" name="TimeStart">Time Start</message>
+    <message translatable="true" name="TimeEnd">Time End</message>
+    
+    <panel type="html" id="rs_report">
+        <title translatable="true">View All Dates</title>
+        
+        <action id="close">
+            <title translatable="true">Close</title>
+			<command type="closeDialog"/>
+        </action>
+        
+       <html>
+            <!-- The grid will be created inside this div element -->
+            <div id="rs_report_grid"/>
+        </html>
+    </panel>
+    
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-resource-viewallrecurring.js"/>
+    
+</view>

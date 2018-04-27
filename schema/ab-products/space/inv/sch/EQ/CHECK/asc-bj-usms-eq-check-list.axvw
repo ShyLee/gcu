@@ -1,0 +1,187 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-check-list.js"/>
+    <title translatable="true">Eq Check of Dv</title>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="70" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="nextLayout" containingLayout="mainLayout" region="center">
+        <west initialSize="50%" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterCenter" containingLayout="nextLayout" region="center">
+        <north initialSize="40%"  split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqCheckResDs">
+        <table name="eq_check_res" role="main"/>
+        <field table="eq_check_res" name="id"/>
+        <field table="eq_check_res" name="check_main_id"/>
+        <field table="eq_check_res" name="flds_name"/>
+        <field table="eq_check_res" name="flds_res"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckMainDs">
+        <table name="eq_check_main" role="main"/>
+        <field table="eq_check_main" name="check_main_id"/>
+        <field table="eq_check_main" name="check_date_start"/>
+        <field table="eq_check_main" name="check_date_end"/>
+        <field table="eq_check_main" name="pub_person"/>
+        <field table="eq_check_main" name="is_done"/>
+        <sortField table="eq_check_main" name="check_main_id" ascending="false"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckReportDs">
+        <table name="eq_check_report" role="main"/>
+        <field table="eq_check_report" name="audit_date"/>
+        <field table="eq_check_report" name="audit_option"/>
+        <field table="eq_check_report" name="audit_person"/>
+        <field table="eq_check_report" name="audit_status"/>
+<!--         <field table="eq_check_report" name="check_report_id"/> -->
+        <field table="eq_check_report" name="check_sum"/>
+        <field table="eq_check_report" name="check_main_id"/>
+        <field table="eq_check_report" name="check_date"/>
+        <field table="eq_check_report" name="check_person"/>
+        <field table="eq_check_report" name="dv_id"/>
+        <field table="eq_check_report" name="dvleader_option"/>
+        <field table="eq_check_report" name="storeman_option"/> 
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckDs">
+        <table name="eq_check" role="main"/>
+        <field table="eq_check" name="check_id"/>
+<!--         <field table="eq_check" name="check_report_id"/> -->
+        <field table="eq_check" name="check_main_id"/>
+        <field table="eq_check" name="eq_id"/>
+        <field table="eq_check" name="price"/>
+        <field table="eq_check" name="dv_id"/>
+        <field table="eq_check" name="loss_option"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <table name="csi" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <!--  <parameter name="field_res" dataType="text" value=""/>-->
+        <restriction type="sql" sql="dv_id='${user.employee.organization.divisionId}' and sch_status='1'"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsLossEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="num_serial"/>
+        <restriction type="sql" sql="dv_id='${user.employee.organization.divisionId}'"/>
+    </dataSource>
+    
+    <panel type="form" id="formPanel" dataSource="ascBjUsmsEqCheckReportDs" layout="mainLayout" region="north" columns="3">
+        <title translatable="true">Eq Check</title>
+        <action id="btnDoPK">
+            <!-- 完成盘亏 -->
+            <title translatable="true">DonePK</title>
+        </action>
+        <field table="eq_check_report" name="check_date" required="true"/>
+        <field table="eq_check_report" name="dv_id" readOnly="true"/>
+        <field table="eq_check_report" name="check_person" required="true">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" fieldNames="eq_check_report.check_person"
+                    selectFieldNames="em.em_id" 
+                    visibleFieldNames="em.em_id,em.name" 
+                    showIndex="false" />
+            </action>
+        </field>
+    </panel>
+    <panel type="grid" id="eqListPanel" dataSource="ascBjUsmsEqDs" layout="nextLayout" region="west">
+        <title translatable="true">Eq List</title>
+        <action id="btnPrintQD">
+            <title translatable="true">BeSureLoss</title>
+            <command type="callFunction" functionName="toAddLossEq"/>
+        </action>
+        <action id="btnExport">
+            <title>Export</title>
+            <command type="exportPanel" outputType="docx" panelId="eqListPanel"/>
+        </action>
+        <field id="chooseResult">
+            <title translatable="true">Result</title>
+        </field>
+        <field id="btnCheck" controlType="button">
+            <title translatable="true">DoLoss</title>
+            <command type="callFunction" functionName="showTypePanel"/>
+        </field>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_name"/>
+        
+    </panel>
+    <panel type="grid" id="lossEqList" dataSource="ascBjUsmsLossEqDs" showOnLoad="false" layout="mainCenterCenter" region="north">
+        <title translatable="true">Loss Eq List</title>
+        <field id="btnAddReason" controlType="button">
+            <title translatable="true">AddReson</title>
+        </field>
+        <field id="txtReson">
+            <title translatable="true">Pk Reson</title>
+        </field>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="date_purchased"/>
+    </panel>
+    <panel type="form" id="dvAuditOption" dataSource="ascBjUsmsEqCheckReportDs" showOnLoad="false" layout="mainCenterCenter" region="center" columns="3">
+        <title translatable="true">Audit Option</title>
+        <field id="pKSum" colspan="3">
+            <title translatable="true">PanKuiZongE</title>
+            <html>
+                <input type="text" id="pkSumTxt" value="" readonly="true"/>
+            </html> 
+        </field>
+        <field table="eq_check_report" name="storeman_option" colspan="3" required="true"/>
+        <field table="eq_check_report" name="dvleader_option" colspan="3" required="true"/>
+    </panel>
+    <panel type="form" id="AddReasonPanel"  dataSource="none" columns="2">
+        <field id="result" colspan="2" hidden="true">
+            <html>
+                <input type="text" id="resultTxt"/>
+            </html>
+        </field>
+        <field id="txtReson" colspan="2">
+            <title translatable="true">paiKuiReson</title>
+            <html>
+                <input type="radio" id="lossRadio1" name="lossRadio" value="0" onclick="choose(this.value)"><span translatable="true">Loss</span></input>
+                <input type="radio" id="lossRadio2" name="lossRadio" value="1" onclick="choose(this.value)"><span translatable="true">JuanZeng</span></input>
+                <input type="radio" id="lossRadio3" name="lossRadio" value="2" onclick="choose(this.value)"><span translatable="true">ChuShou</span></input>
+                <input type="radio" id="lossRadio4" name="lossRadio" value="3" onclick="choose(this.value)"><span translatable="true">BaoFei</span></input>
+                <input type="radio" id="lossRadio5" name="lossRadio" value="4" onclick="choose(this.value)"><span translatable="true">BuShouXu</span></input>
+            </html>
+        </field>
+        <field id="btnOk" colspan="2">
+            <html> 
+                <input type="button" id="btnAdd" onclick="chooseReson()"/>
+            </html>
+        </field>            
+    </panel>
+</view>

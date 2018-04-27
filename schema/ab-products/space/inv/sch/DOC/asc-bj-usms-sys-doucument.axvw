@@ -1,0 +1,80 @@
+<view version="2.0">
+	<title>Document Manage</title>
+	<css file="font-awesome.min.css" />
+	<css file="buttons.css" />
+    <panel id="reportPanel" type="html" showOnLoad="true">
+        <title translatable="true">System Document</title>
+        <html>
+        	<table width="90%" align="left" style="border:1px solid #c8c8c8">
+        		<tr height="30" id="test1"  hidden="true">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">dvManage</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+						<input id="1" type="button" value="download" onClick="controller.downLoad1()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+					</td>
+        		</tr>
+        		<tr height="30"  id="test2"  hidden="true">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">dvAdmin</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="2" type="button" value="download" onClick="controller.downLoad2()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30"  id="test3"  hidden="true">
+					<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">eqManage</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="3" type="button" value="download" onClick="controller.downLoad3()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30"  id="test4"  hidden="true">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">eqAdmin</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="4" type="button" value="download" onClick="controller.downLoad4()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30" id="test5"  hidden="true">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">dormManage</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="5" type="button" value="download" onClick="controller.downLoad5()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30" id="test6"  hidden="true">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">dormAdmin</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="6" type="button" value="download" onClick="controller.downLoad6()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30" id="test11"  hidden="true">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">labAdmin</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="11" type="button" value="download" onClick="controller.downLoad11()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		
+        		<tr height="30" id="test7">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">commonProblem</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="7" type="button" value="download" onClick="controller.downLoad7()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30" id="test8">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">IE</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="8" type="button" value="download" onClick="controller.downLoad8()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30" id="test9">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Firefox</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="9" type="button" value="download" onClick="controller.downLoad9()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        		<tr height="30" id="test10">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">flash</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left">
+        				<input id="10" type="button" value="download" onClick="controller.downLoad10()" style="text-align:left;width:400" class="button glow button-rounded button-flat-primary"/>
+        			</td>
+        		</tr>
+        	</table>
+        </html>
+     </panel>
+     <js file="asc-bj-usms-sys-doucument.js" />
+</view>

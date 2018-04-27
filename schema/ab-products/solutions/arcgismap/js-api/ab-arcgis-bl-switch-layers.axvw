@@ -1,0 +1,38 @@
+<!-- map with mouse click event handler -->
+
+<view version="2.0" docType="html4/strict">
+  <title>Example: Map with Basemap Selector</title>
+  <js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+  <js file="ab-arcgis-bl-switch-layers.js"/>
+  <js file="ab-arcgis-map.js"/>
+  <css file="ab-arcgis-map.css"/>
+  <css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css" />
+
+  <dataSource id="bl_ds">
+    <table name="bl" role="main"/>
+    <field name="bl_id" table="bl"/>
+    <field name="address1" table="bl"/>
+    <field name="city_id" table="bl"/>
+    <field name="state_id" table="bl"/>
+    <field name="ctry_id" table="bl"/>
+    <field name="lat" table="bl"/>
+    <field name="lon" table="bl"/>
+  </dataSource>
+
+  <panel type="html" id="mapPanel">
+    <title translatable="true">Map with Layers</title>
+	<action id="basemapLayerMenu" type="menu" imageName="/schema/ab-core/graphics/icons/view/ab-arcgis-basemap-16.png">
+      <title translatable="true">Basemaps</title>
+    </action>    
+	<action id="referenceLayerMenu" type="menu" imageName="/schema/ab-core/graphics/icons/view/ab-arcgis-layers-16.png">
+      <title translatable="true">Layers</title>
+    </action>
+	<action id="showLegend" imageName="/schema/ab-core/graphics/icons/view/ab-arcgis-legend-16.png">
+      <title translatable="true">Legend</title>
+    </action>
+    <html>    
+      	<div id="map" style="100%;"> </div>
+    </html>
+  </panel>
+  
+</view>

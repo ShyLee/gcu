@@ -1,0 +1,268 @@
+<view version="2.0">
+    <message name="zhouzhuangfangfangzu" translatable="true">zhouzhuangfangfangzu</message>
+    <message name="jiaogongzhufangbutie" translatable="true">jiaogongzhufangbutie</message>
+    <message name="zhouzhuangfangdaoqitixing" translatable="true">zhouzhuangfangdaoqitixing</message>
+    <message name="currentMonthReport" translatable="true">currentMonthReport</message>
+    <message name="chaxunkongzhifang" translatable="true">chaxunkongzhifang</message>
+    <layout id="main">
+        <north  initialSize="120" split="true"/>
+        <center />
+    </layout>
+	<layout id="nested_north" containingLayout="main" region="north">
+		<west id="crossTablePosition" initialSize="70%" split="true"/>
+        <east id="zzfwholePosition" initialSize="0%" split="false"/>
+        <center id="zzfRentBtPosition"/>
+    </layout>
+	<layout id="nested_center" containingLayout="main" region="center">
+        <north  initialSize="35%" split="true"/>
+        <center id="zzfRmPosition"/>
+    </layout>
+	<layout id="nested_center_north" containingLayout="nested_center" region="north">
+        <north id="zzfBlConsolePosition" initialSize="60" />
+        <center id="zzfBlPosition"/>
+    </layout>
+	
+    <title>XueXiao ZhouZhuanFang QingKuang</title>
+	
+    <dataSource id="ds_asc-bj-usms-zzf-rpt-loc-sum1">
+        <table name="bl" role="main"/>
+        <field name="bl_id"/>
+        <field name="location"/>
+        <field name="address1"/>
+        <field name="comments"/>
+        <field name="construction_type"/>
+        <field name="sumarea_manual"  dataType="number" size="6" decimals="2">
+            <title translatable="true">sumarea_manual</title>
+            <sql dialect="generic">
+               ( select sum(rm.area_manual) from rm where rm.bl_id=bl.bl_id )
+            </sql>
+        </field>
+        <field name="rmcount"  dataType="number" size="6" decimals="0">
+            <title translatable="true">rmCount</title>
+            <sql dialect="generic">
+               ( select count(rm.rm_id) from rm where  rm.bl_id=bl.bl_id )
+            </sql>
+        </field>
+        <restriction type="sql" sql="EXISTS(SELECT 1 FROM rm WHERE rm.bl_id=bl.bl_id AND rm.rm_type=${parameters['rmtype']})  "/>
+        <parameter name="rmtype" dataType="text" value=""/>
+    </dataSource>
+
+    <dataSource id="ascBjUsmsDashZzzWholeStatCrossTable_ds" type="grouping">
+		<table name="rm" role="main"/>
+		<table name="bl" role="standard"/>
+		
+		
+		<field table="bl" name="location" groupBy="true"/>
+	    <field table="rm" name="huxing" dataType="text" groupBy="true"/>
+	   
+        <field name="rm_count_summary" formula="count" baseField="rm.rm_id" dataType="number" decimals="0">
+            <title translatable="true">room count</title>
+        </field>
+        <field table="bl" name="bl_count_summary" formula="count" baseField="bl.bl_id"  dataType="number" decimals="0">
+            <title translatable="true">Buliding Count</title>
+             <sql dialect="generic">  
+              count(distinct bl.bl_id) 
+            </sql>
+        </field> 
+      	   <field name="area_rm_summary" formula="sum" baseField="rm.area_manual" dataType="number" decimals="2">
+            <title translatable="true">Room Area</title>
+        </field> 
+        <restriction type="sql" sql="rm.bl_id=bl.bl_id and rm.rm_type=${parameters['rmTypeRes']} "/>
+		<parameter name="rmTypeRes" dataType="text" value=""/>
+	</dataSource>
+
+    <dataSource id="crossTable_ds">
+    	<table name="rm" role="main"/>
+    </dataSource>
+    
+    <panel type="grid" id="crossTalbeGrid" controlType="reportGrid" dataSource="crossTable_ds"
+    	layoutRegion="crossTablePosition" showOnLoad="false">
+    	<title translatable="true">Depreciation Summary Table</title>
+    	<field table="rm" name="row_title" >
+    	</field>
+    	<field table="rm" name="rm_sum" >
+    	</field>
+    	<field table="rm" name="rm_sum_in" >
+    	</field>
+    	<field table="rm" name="rm_sum_out" >
+    	</field>
+    	<field table="rm" name="rm_1" >
+    	</field>
+		<field table="rm" name="rm_2" >
+    	</field>
+    	<field table="rm" name="rm_3" >
+    	</field>
+    	<field table="rm" name="rm_4" >
+    	</field>
+
+    </panel>
+
+
+    <panel type="crossTable" id="ascBjUsmsDashZzzWholeStatCrossTablePanle" dataSource="ascBjUsmsDashZzzWholeStatCrossTable_ds" layoutRegion="zzfwholePosition">
+    	 <title translatable="true">Depreciation Summary Table</title>
+         
+    </panel>
+
+
+  <panel type="html" id="buttonLinkPanel" layoutRegion="zzfRentBtPosition">
+  
+	<html>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr >
+				<td  align="right" >
+					<input type="button" style="width:120px;height:30px;background: -16px #C3DAF9;font-weight: bold; font-size: 12px;" id="zhouzhuangfangfangzu" onclick="zhouzhuangfangfangzu()"
+						value="" class="perRowButton" />
+					
+						
+				</td>
+				<td  align="right" style="border:0;">
+					  <div id="timeline-5" style="height:50px;"> </div>
+				</td>
+				
+				<td  align="right" style="border:0;">
+					<input type="button" style="width:120px;height:30px;background: -16px #C3DAF9;font-weight: bold; font-size: 12px;" id="teacherRmSubsidy" onclick="teacherRmSubsidy()"
+						value="" class="perRowButton" />
+				</td>
+				<td  align="right" style="border:0;">
+					  <div id="timeline-5" style="height:50px;"> </div>
+			    </td>
+				
+			</tr>
+			
+			<tr >
+				<td  align="right" style="border:0;">
+					<input type="button" style="width:120px;height:30px;background: -16px #C3DAF9;font-weight: bold; font-size: 12px;" id="rmDueReminders" onclick="rmDueReminders()"
+						value="" class="perRowButton" />
+						
+				</td>
+				<td  align="right" style="border:0;">
+					  <div id="timeline-5" style="height:50px;"> </div>
+				</td>
+				
+				<td  align="right" style="border:0;">
+					<input type="button" style="width:120px;height:30px;background: -16px #C3DAF9;font-weight: bold; font-size: 12px;" id="currentMonthReport" onclick="currentMonthReport()"
+						value="" class="perRowButton" />
+				</td>
+				<td  align="right" style="border:0;">
+					  <div id="timeline-5" style="height:50px;"> </div>
+				</td>
+			</tr>
+			
+			
+		</table>
+	</html>
+    </panel>
+
+    <dataSource id="consoleDs">
+		<table name="rm" role="main" />
+        <table name="bl" role="standard"/>
+        
+		<field table="bl" name="bl_id" />
+		<field table="bl" name="location" />
+	</dataSource>
+
+    <panel type="console" columns="4" dataSource="consoleDs" id="requestPanel" layoutRegion="zzfBlConsolePosition">
+		<title translatable="true">Filter</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+		</action>
+		<action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearForm"/>
+        </action>
+        <field table="bl" name="bl_id" />
+		<field table="bl" name="location" />
+        <field colspan="1">
+            <html>
+                <input type="button" id="chaxunkongzhifang" onclick="viewAllEmptyRm()" value="" />
+            </html>
+        </field>
+	</panel>
+
+    <panel type="grid" id="ascBjUsmsDashZzzWholeStatBlListPanel" dataSource="ds_asc-bj-usms-zzf-rpt-loc-sum1" layoutRegion="zzfBlPosition">
+        <title translatable="true">School Building zzf</title>
+
+        <field id="fangchanxixin" controlType="button">
+                <title translatable="true">chakanfangchanxixin</title>
+        </field>
+        <field name="bl_id" controlType="link">
+            <title translatable="true">Building</title>
+            <command type="callFunction" functionName="onClickZZFBl(this)"/>
+        </field>
+        <field name="location">
+        <title translatable="true">location</title>
+        </field>
+        <field name="construction_type"/>
+        <field name="sumarea_manual">
+        <title translatable="true">SumArea</title>
+        </field>
+        <field name="rmcount"> 
+        <title translatable="true">rmCount</title>
+        </field>      
+        <field name="comments">
+        <title translatable="true">bei zhu</title>
+        </field>
+         <field name="address1">
+        <title translatable="true">address</title>
+        </field>
+    </panel>
+
+    <!-- Data source and hidden report panel to display selected room details in a dialog -->
+    <dataSource id="ds_asc-bj-usms-dash-zzf-whole-stat_rm">
+    	<sql dialect="generic">
+    		select rm.bl_id as bl_id, rm.fl_id as fl_id, rm.ruzhu_status as ruzhu_status, rm.unit_code as unit_code, rm.rm_id as rm_id, rm.huxing as huxing, rm.chaoxiang as chaoxiang, rm.area_manual as area_manual, rm.area_yangtai as area_yangtai, 
+			   sc_zzfcard.em_name as em_name,sc_zzfcard.em_id as em_id,sc_zzfcard.card_id as card_id
+            from rm , sc_zzfcard where  sc_zzfcard.card_status='1' and rm.rm_type=${parameters['rmtype']} and rm.bl_id = sc_zzfcard.bl_id and rm.fl_id = sc_zzfcard.fl_id and rm.rm_id = sc_zzfcard.rm_id 
+   			UNION ALL
+         	select 
+               rm.bl_id as bl_id, rm.fl_id as fl_id, rm.ruzhu_status as ruzhu_status, rm.unit_code as unit_code, rm.rm_id as rm_id, rm.huxing as huxing,rm.chaoxiang as chaoxiang, rm.area_manual as area_manual, rm.area_yangtai as area_yangtai, 
+               null as em_name,null as em_id,null as card_id 
+			 from rm where rm.rm_type=${parameters['rmtype']} and not exists(select 1 from sc_zzfcard where rm.bl_id = sc_zzfcard.bl_id and rm.fl_id = sc_zzfcard.fl_id and rm.rm_id = sc_zzfcard.rm_id  )
+            </sql>
+    	<table name="rm" role="main"/>
+        <field table="rm" name="bl_id" dataType="string"/>
+        <field table="rm" name="fl_id" dataType="string"/>
+        <field table="rm" name="ruzhu_status" dataType="string"/>
+        <field table="rm" name="unit_code"  dataType="string"/>
+        <field table="rm" name="rm_id" dataType="string"/>
+        <field table="rm" name="huxing" dataType="string"/>       
+        <field table="rm" name="chaoxiang" dataType="string"/>
+        <field table="rm" name="area_manual" dataType="number" size="6" decimals="2">
+        	<title translatable="true">fang jian mian ji</title>
+		</field>>
+        <field table="rm" name="area_yangtai" dataType="number" size="6" decimals="2"/>
+        <field table="rm" name="em_name"  dataType="string">
+            <title translatable="true">zhu hu name</title>
+        </field>
+		<field table="rm" name="em_id"  dataType="string"/>
+		<field table="rm" name="card_id"  dataType="string"/>
+        <parameter name="rmtype" dataType="text" value=""/>
+    </dataSource>
+
+    <panel type="grid" id="ascBjUsmsDashZzzWholeStatRmListPanel" showOnLoad="false" dataSource="ds_asc-bj-usms-dash-zzf-whole-stat_rm" layoutRegion="zzfRmPosition">
+       <title translatable="true">zzf List</title>
+	   <sortField table="rm" name="bl_id" ascending="true" />
+	   <sortField table="rm" name="fl_id" ascending="true" />
+	   <sortField table="rm" name="rm_id" ascending="true" />
+	   <field table="rm" name="bl_id" dataType="string"/>
+       <field table="rm" name="fl_id" dataType="string"/>
+	   <field table="rm" name="rm_id" dataType="string" id="viewHouseInfo" controlType="link"/>
+       <field table="rm" name="ruzhu_status" dataType="string"/>
+       <field table="rm" name="unit_code"  dataType="string"/>
+       <field table="rm" name="huxing" dataType="string"/>       
+       <field table="rm" name="chaoxiang" dataType="string"/>
+       <field table="rm" name="area_manual" dataType="number" size="6" decimals="2">
+        	<title translatable="true">fang jian mian ji</title>
+	   </field>
+       <field table="rm" name="area_yangtai" dataType="number" size="6" decimals="2"/>
+       <field table="rm" name="em_name" dataType="string"  controlType="link">
+       		<title translatable="true">zhu hu name</title>
+       	  	<command type="callFunction" functionName="onClickZhuhuName(this)"/>
+        </field>	
+	   <field table="rm" name="em_id"  dataType="string" hidden="true"/>
+	   <field table="rm" name="card_id"  dataType="string" hidden="true"/>
+    </panel>
+	
+    <js file="asc-bj-usms-dash-zzf-whole-stat.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+</view>

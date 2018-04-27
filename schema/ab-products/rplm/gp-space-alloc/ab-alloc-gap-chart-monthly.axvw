@@ -1,0 +1,101 @@
+<view version="2.0">    
+	<js file="ab-alloc-chart-monthly.js"/>
+	<js file="ab-alloc-common.js"/>
+
+    <title translatable="true">Space Gap Analysis Chart</title>
+
+	<message name="siteTitle" translatable="true">Site:</message>
+	<message name="blTitle" translatable="true">Building:</message>
+	<message name="portfolioScenarioTitle" translatable="true">Scenario:</message>
+	<message name="fromDateTitle" translatable="true">From Date:</message>
+	<message name="toDateTitle" translatable="true">To Date:</message>
+	<message name="error_portfolio_scenario_id" translatable="true">Please set the Portfolio Scenario.</message>
+	<message name="error_from_date" translatable="true">Please set the From Date.</message>
+	<message name="error_to_date" translatable="true">Please set the To Date.</message>
+
+	<dataSource id="consoleDs">
+		<table name="gp" role="main"/>
+		<table name="bl" role="standard"/>
+		<field table="gp" name="date_start"/>
+		<field table="gp" name="date_end"/>
+		<field table="gp" name="portfolio_scenario_id"/>
+		<field table="gp" name="bl_id"/>
+		<field table="bl" name="site_id"/>
+	</dataSource>
+
+	<panel type="console" columns="5" id="allocGroupConsole" dataSource="consoleDs">
+		<action id="filter">
+			<title translatable="true">Show</title>
+			<tooltip translatable="true">Refreshes the chart with the latest console parameters.  The chart applies to all buildings and it compares the sum of the Available Floor Area (Usable Area or Manual Area) with the sum of the Projected Group Areas over the period selected in the console.</tooltip>
+		</action>
+		<field table="bl" name="site_id"/>
+		<field table="gp" name="bl_id"/>
+		<field table="gp" name="portfolio_scenario_id"/>
+		<field name="date_start">
+			<title translatable="true">From Date</title>
+		</field>
+		<field name="date_end">
+			<title translatable="true">To Date</title>
+		</field>
+	</panel>
+
+    <dataSource id="ds_chartGroupingAxis" type="grouping" >
+	    <table name="afm_cal_dates"/>        
+
+        <field name="month" groupBy="true" dataType="text" baseField="afm_cal_dates.cal_date">
+            <title translatable="true">Month</title> 
+            <sql dialect="generic">${sql.yearMonthOf('cal_date')}</sql> 
+        </field>
+
+		<parameter name="monthStart" dataType="text" value=""/>
+        <parameter name="monthEnd" dataType="text" value=""/>
+		<parameter name="portfolio_scenario_id" dataType="text" value=""/>
+
+		<restriction type="sql" 
+             sql="${sql.yearMonthOf('cal_date')} &gt;= ${parameters['monthStart']} AND ${sql.yearMonthOf('cal_date')} &lt;= ${parameters['monthEnd']}" /> 
+        <sortField table="afm_cal_dates" name="cal_date" ascending="true"/>
+	</dataSource>
+
+  	<dataSource id="ds_dataAxis" type="grouping">	
+		<table name="gp" role="main"/>
+        <field table="gp" name="date_start"/>
+        <field table="gp" name="date_end"/>
+		<field name="area" dataType="number" size="8" decimals="0" numericFormat="area"> 
+         	<title translatable="true">Group Area</title>
+        	<sql dialect="generic">SUM( CASE WHEN gp.area = 0 THEN gp.area_manual ELSE gp.area END )</sql>
+    	</field>
+
+		<parameter name="blRest" dataType="verbatim" value="bl_id IS NOT NULL"/>
+		<parameter name="portfolio_scenario_id" dataType="text" value=""/>
+		<parameter name="summaryValueForThisGroup" dataType="text" value=""/> 	 	  
+
+		<restriction type="sql"  sql="portfolio_scenario_id = ${parameters['portfolio_scenario_id']} AND ${sql.yearMonthOf('gp.date_start')} &lt;= ${parameters['summaryValueForThisGroup']} AND ${sql.yearMonthOf('gp.date_end')} &gt;= ${parameters['summaryValueForThisGroup']} AND ${parameters['blRest']} "/>
+	</dataSource>
+	
+  	<dataSource id="ds_dataAxis1" type="grouping">	
+		<table name="fl" role="main"/>
+		<field name="fl_area" dataType="number" size="8" decimals="0" numericFormat="area"> 
+         	<title translatable="true">Total Floor Area</title>
+        	<sql dialect="generic">SUM( CASE WHEN fl.area_usable = 0 THEN fl.area_manual ELSE fl.area_usable END )</sql>
+    	</field>
+
+		<parameter name="blRest" dataType="verbatim" value="bl_id IS NOT NULL"/>
+        <parameter name="portfolio_scenario_id" dataType="text" value=""/>
+		<parameter name="summaryValueForThisGroup" dataType="text" value=""/> 	 	  
+
+		<restriction type="sql"  sql="RTRIM(fl.bl_id)${sql.concat}'-'${sql.concat}RTRIM(fl.fl_id) in (select RTRIM(bl_id)${sql.concat}'-'${sql.concat}RTRIM(fl_id) from gp WHERE portfolio_scenario_id = ${parameters['portfolio_scenario_id']} AND ${sql.yearMonthOf('gp.date_start')} &lt;= ${parameters['summaryValueForThisGroup']} AND ${sql.yearMonthOf('gp.date_end')} &gt;= ${parameters['summaryValueForThisGroup']} AND ${parameters['blRest']})"/>
+	</dataSource>   
+
+	<panel id="chart" type="chart" controlType="lineChart" dataSource="ds_dataAxis" legendLocation="left" showLegendAsPopUp="false">
+		<title translatable="true">Projected Group Area vs Available Floor Area</title>
+        <groupingAxis table="afm_cal_dates" field="month"  dataSource="ds_chartGroupingAxis">
+            <title translatable="true">Month</title> 
+        </groupingAxis>
+        <dataAxis dataSource="ds_dataAxis" table="gp" field="area">
+             <title translatable="true">Group Area</title>
+        </dataAxis>
+        <dataAxis dataSource="ds_dataAxis1" table="fl" field="fl_area">
+             <title translatable="true">Floor Area</title>
+        </dataAxis>
+    </panel>
+</view>

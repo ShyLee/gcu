@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="eqCapitalSourceReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="0086c6cd-8bc4-49f3-9493-b31cbee0e9bd">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<queryString>
+		<![CDATA[SELECT eq.dv_id,dv.dv_name,1 as id_count,
+       case
+         when subject_funds = '1' then
+          '教学'
+         when subject_funds = '2' then
+          '科研'
+         when subject_funds = '3' then
+          '基建'
+         when subject_funds in ('4', '5', '6') then
+          '自筹、捐款、贷款'
+         when subject_funds = 'D' then
+          '211经费'
+         when subject_funds = '9' then
+          '其他'
+         else
+          '未知'
+       end AS subject_funds_name,
+       eq.eq_id,
+      eq.price
+  FROM eq,dv
+where eq.dv_id=dv.dv_id order by dv.dv_id]]>
+	</queryString>
+	<field name="DV_ID" class="java.lang.String"/>
+	<field name="ID_COUNT" class="java.math.BigDecimal"/>
+	<field name="SUBJECT_FUNDS_NAME" class="java.lang.String"/>
+	<field name="EQ_ID" class="java.lang.String"/>
+	<field name="PRICE" class="java.math.BigDecimal"/>
+	<field name="DV_NAME" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="0" y="0" width="782" height="36" uuid="1752d8c8-c174-4908-8cc9-d312e5dc9ecc"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[各单位仪器设备经费来源统计]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="0" width="782" height="18" uuid="17116395-77ce-44e6-99da-4ab53484f190"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[各单位仪器设备经费来源统计]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="61" splitType="Stretch">
+			<crosstab>
+				<reportElement key="crosstab-1" x="0" y="0" width="782" height="60" uuid="d02628b0-0f72-4310-8ae5-7b119b3459c3"/>
+				<crosstabHeaderCell>
+					<cellContents mode="Transparent">
+						<box>
+							<pen lineWidth="0.75" lineStyle="Solid"/>
+							<topPen lineWidth="0.75" lineStyle="Solid"/>
+							<leftPen lineWidth="0.75" lineStyle="Solid"/>
+							<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+							<rightPen lineWidth="0.75" lineStyle="Solid"/>
+						</box>
+						<staticText>
+							<reportElement key="staticText-1" x="0" y="0" width="142" height="18" uuid="22381478-1da8-4a3d-aeb1-4f069f27e23e"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+							</textElement>
+							<text><![CDATA[单位名称]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="DV_NAME" width="142" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{DV_NAME}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Transparent">
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="0" width="142" height="36" uuid="b28c744a-1d74-452a-8b55-bf1901c805f9"/>
+								<box>
+									<pen lineWidth="0.75" lineStyle="Solid"/>
+									<topPen lineWidth="0.75" lineStyle="Solid"/>
+									<leftPen lineWidth="0.75" lineStyle="Solid"/>
+									<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+									<rightPen lineWidth="0.75" lineStyle="Solid"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{DV_NAME}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Transparent">
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="0" width="142" height="36" uuid="921f965c-1fd8-45fa-bdd9-357618c1df13"/>
+								<box>
+									<pen lineWidth="0.75" lineStyle="Solid"/>
+									<topPen lineWidth="0.75" lineStyle="Solid"/>
+									<leftPen lineWidth="0.75" lineStyle="Solid"/>
+									<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+									<rightPen lineWidth="0.75" lineStyle="Solid"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA["合计"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="SUBJECT_FUNDS_NAME" height="18" totalPosition="End" headerPosition="Center">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{SUBJECT_FUNDS_NAME}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="0" width="80" height="18" uuid="a5d99adf-fa48-409f-beaf-38dc2007b2e9"/>
+								<box>
+									<pen lineWidth="0.75" lineStyle="Solid"/>
+									<topPen lineWidth="0.75" lineStyle="Solid"/>
+									<leftPen lineWidth="0.75" lineStyle="Solid"/>
+									<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+									<rightPen lineWidth="0.75" lineStyle="Solid"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{SUBJECT_FUNDS_NAME}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Transparent">
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="0" width="80" height="18" uuid="d3d8ee66-c0a1-4b03-90c8-37340fd24b6e"/>
+								<box>
+									<pen lineWidth="0.75" lineStyle="Solid"/>
+									<topPen lineWidth="0.75" lineStyle="Solid"/>
+									<leftPen lineWidth="0.75" lineStyle="Solid"/>
+									<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+									<rightPen lineWidth="0.75" lineStyle="Solid"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA["合计"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="PRICE_Sum" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{PRICE}]]></measureExpression>
+				</measure>
+				<measure name="EQ_Count" class="java.math.BigDecimal" calculation="Count">
+					<measureExpression><![CDATA[$F{ID_COUNT}]]></measureExpression>
+				</measure>
+				<crosstabCell width="80" height="36">
+					<cellContents mode="Transparent">
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement key="textField" x="0" y="18" width="80" height="18" uuid="1d77d24d-a223-4b4a-a926-844b6548887f"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{PRICE_Sum}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##" isBlankWhenNull="true">
+							<reportElement key="textField" x="0" y="0" width="80" height="18" uuid="beb7f703-f032-48f8-aeb8-3e2c9c35cc26"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{EQ_Count}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="80" height="36" columnTotalGroup="SUBJECT_FUNDS_NAME">
+					<cellContents mode="Transparent">
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement key="textField" x="0" y="18" width="80" height="18" uuid="2ba43106-3d7b-498d-8320-4a33e0375454"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{PRICE_Sum}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##" isBlankWhenNull="true">
+							<reportElement key="textField-1" x="0" y="0" width="80" height="18" uuid="51ff605a-ea21-4a3d-ac51-0c3bf3032a81"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{EQ_Count}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="80" height="36" rowTotalGroup="DV_NAME">
+					<cellContents mode="Transparent">
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement key="textField" x="0" y="18" width="80" height="18" uuid="b7ced56a-3d1b-45a0-9582-153105ebe0db"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{PRICE_Sum}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##" isBlankWhenNull="true">
+							<reportElement key="textField-1" x="0" y="0" width="80" height="18" uuid="be87ff44-92af-4d85-915e-f9890f6e2d2a"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{EQ_Count}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="80" height="36" rowTotalGroup="DV_NAME" columnTotalGroup="SUBJECT_FUNDS_NAME">
+					<cellContents mode="Transparent">
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement key="textField" x="0" y="18" width="80" height="18" uuid="b0e874d1-fe33-49f9-a6c6-37f9b86633f1"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{PRICE_Sum}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##" isBlankWhenNull="true">
+							<reportElement key="textField" x="0" y="0" width="80" height="18" uuid="098f00b7-10a7-48a0-82c6-4b5296c81ca8"/>
+							<box>
+								<pen lineWidth="0.75" lineStyle="Solid"/>
+								<topPen lineWidth="0.75" lineStyle="Solid"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid"/>
+								<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{EQ_Count}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<whenNoDataCell>
+					<cellContents mode="Transparent"/>
+				</whenNoDataCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,681 @@
+ <view version="2.0">
+ 	<css>.prominentLabel {font-weight: bold; font-size: 15px important; text-align: right; white-space: normal;} </css>
+	
+    <message name="noImage" translatable="true">Image not exist</message>
+    <message name="site" translatable="true">Site</message>
+    <message name="building" translatable="true">Building</message>
+    <message name="floor" translatable="true">Floor</message>
+    <message name="room" translatable="true">Room</message>
+    <message name="errorSelectBuilding" translatable="true">Please select building.</message>
+    <message name="errorSelectFloor" translatable="true">Please select floor.</message>
+    <message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+    <message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+    <message name="formSaved" translatable="true">Form saved successfully.</message>
+    <message name="noSite" translatable="true">No Site</message>
+	<message name="okMessage" translatable="true">GengXinChengGong!</message>
+	<message name="rmRestri" translatable="true">rm rmcat</message>
+	
+    <layout type="borderLayout" id="mainLayout">
+        <north id="consolePanel" autoScroll="true" split="true" initialSize="80"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout type="borderLayout" id="centerLayout" containingLayout="mainLayout" region="center">
+        <west id="treePostion" autoScroll="true" split="true" initialSize="21%"/>
+        <center id="editPostion" autoScroll="true"/>
+    </layout>
+    
+    <title translatable="true">Define Dorm Rooms</title>
+    
+	<dataSource id="ds_asc-bj-usms-data-def-loc_console_bl">
+		<table name="bl" role="main"/>
+        <field table="bl" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+		<field table="bl" name="use1"/>
+        <field table="bl" name="bl_id"/>
+		<restriction type="sql" sql="bl_id in(select bl_id from rm where rm.rm_cat='301' )"/>
+    </dataSource>
+    
+    <panel type="console" columns="3" id="sbfFilterPanel" labelsPosition="top" dataSource="ds_asc-bj-usms-data-def-loc_console_bl" layoutRegion="consolePanel">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="sbfFilterPanel"/>
+        </action>
+        
+        <field table="bl" name="site_id"/>
+		<field table="bl" name="pr_id">
+            <action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" fieldNames="bl.pr_id,bl.site_id"
+					selectFieldNames="property.pr_id,property.site_id" 
+					visibleFieldNames="property.site_id,property.pr_id,property.name" 
+					filterFieldNames="bl.site_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>
+        <field table="bl" name="bl_id">
+        	<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="callFunction" functionName='onSelectBuliding' /> 
+	    	</action>
+		</field>
+		<field table="bl" name="use1" hidden="true"/>
+    </panel>
+	
+    <dataSource id="ds_ab-sp-def-loc-rm_tree_site">
+        <table name="site" role="main"/>
+        <field table="site" name="site_id"/>
+        <field table="site" name="name"/>
+        <sortField table="site" name="site_id" ascending="true"/>
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="siteId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+		<restriction type="sql" sql=" site.site_id ${parameters['siteId']} ${parameters['orand']} site_id in (SELECT site_id FROM property WHERE pr_id ${parameters['prId']} AND pr_id in (SELECT pr_id from bl where bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']}) )"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_form_site">
+        <table name="site" role="main"/>
+        <field table="site" name="name"/>
+        <field table="site" name="site_id"/>
+        <field table="site" name="city_id"/>
+        <field table="site" name="youbian"/>
+        <field table="site" name="address"/>   
+        <field table="site" name="notes"/>        
+        <field table="site" name="telephone"/>
+        <field table="site" name="guihuayongdi"/>
+        <field table="site" name="jianzhuyongdi"/>
+        <field table="site" name="count_student_plan"/>
+        <field table="site" name="count_student_actual"/>
+        <field table="site" name="count_teacher_actual"/>
+        <field table="site" name="count_teacher_plan"/>
+        <field table="site" name="no_bldgs"/>
+        <field table="site" name="area_land_occu"/>
+		<field table="site" name="isMainCampus"/>
+		<field table="site" name="site_image"/>
+    </dataSource>
+    
+	<dataSource id="ds_ab-sp-def-loc-rm_tree_pr">
+        <table name="property" role="main"/>
+        <field table="property" name="site_id"/>
+        <field table="property" name="pr_id"/>
+        <field table="property" name="name"/>
+		<field table="property" name="qty_no_bldgs_calc"/>
+        <sortField table="property" name="name" ascending="true"/>
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+		
+		<restriction type="sql" sql="property.pr_id ${parameters['prId']} ${parameters['orand']} pr_id in (SELECT pr_id from bl where bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']})"/>
+	</dataSource>	
+	
+	<dataSource id="ds_ab-sp-def-loc-rm_form_pr">
+		<table name="property" role="main"/>
+		<table name="site" role="standard"/>
+		<field table="site" name="name"/>
+		<field table="property" name="site_id"/>
+        <field table="property" name="name"/>
+        <field table="property" name="other_name"/>
+        <field table="property" name="pr_id"/>
+        <field table="property" name="qty_no_bldgs"/>
+        <field table="property" name="qty_no_bldgs_calc"/>
+        <field table="property" name="use1"/>
+	</dataSource>	
+			
+    <dataSource id="ds_ab-sp-def-loc-rm_tree_bl">
+        <table name="bl" role="main"/>
+        <field table="bl" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <sortField table="bl" name="bl_id" ascending="true"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<restriction type="sql" sql="bl.bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']} AND bl.acc_type != 'yxz' AND bl_id in(select bl_id from rm where rm.rm_cat='301' )"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_form_bl">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="date_building_end"/>
+        <field table="bl" name="name"/>
+		<field table="bl" name="asset_num"/>
+		<field table="bl" name="asset_name"/>
+		<field table="bl" name="atype_code"/>
+       	<field table="bl" name="atype_name"/>
+        <field table="bl" name="date_use"/>
+        <field table="bl" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+        <field table="bl" name="construction_type"/>
+        <field table="bl" name="address1"/>
+        <field table="bl" name="use1"/>
+        
+        <field table="bl" name="area_building_manual"/>
+		<field table="bl" name="area_jianzhu_yuan"/>
+        <field table="bl" name="building_cat"/>
+        <field table="bl" name="area_rm"/>
+		<field table="bl" name="dv_use"/>
+        <field table="bl" name="area_underground"/>
+        <field table="bl" name="area_gross_ext"/>
+		<field table="bl" name="area_bl_comn_gp"/>
+        <field table="bl" name="count_upground"/>
+        <field table="bl" name="count_underground"/>
+        <field table="bl" name="gongtanlv"/>
+        <field table="bl" name="quake_grade"/>
+        
+        <field table="bl" name="bl_situation"/>
+		<field table="bl" name="status"/>
+        
+        <field table="bl" name="date_last_daxiu"/>
+		<field table="bl" name="status"/>
+        <field table="bl" name="rm_laiyuan"/>
+        <field table="bl" name="years_plan_use"/>
+        <field table="bl" name="ownership_code"/>
+		
+		<field table="bl" name="acc_type"/>
+        
+        <field table="bl" name="value_original"/>
+        <field table="bl" name="value_net"/>
+        <field table="bl" name="em_count_designed"/>
+        <field table="bl" name="guanlixingshi"/>
+        <field table="bl" name="bljiaquanxishu"/>
+        
+        <field table="bl" name="bldg_photo"/>
+		<field table="bl" name="image_file"/>
+        
+        <field table="bl" name="pr_id"/>
+        <field table="bl" name="grp_uid"/>
+        <field table="bl" name="area_use_net"/>
+        <field table="bl" name="area_land_net"/>
+        <field table="bl" name="self_collected_funds"/>
+        <field table="bl" name="self_definded_class"/>
+        <field table="bl" name="card_no"/>
+        <field table="bl" name="contact_name"/>
+        <field table="bl" name="area_land"/>
+        <field table="bl" name="dwg_src"/>
+        <field table="bl" name="fund_src"/>
+        <field table="bl" name="origial_cad"/>
+		<field table="bl" name="date_dv_use"/>
+        <field table="bl" name="is_old_bl"/>
+        <field table="bl" name="comments"/>
+		<field table="bl" name="ownship_shape"/>
+		<field table="bl" name="build_company"/>
+		<field table="bl" name="srcid"/>
+	    <field table="bl" name="date_acquire"/>
+		<field table="bl" name="cgzzxs_id"/>
+		<field table="bl" name="quansxz"/>
+		<field table="bl" name="quanszh"/>
+		<field table="bl" name="land_photo"/>
+		<field table="bl" name="address1"/>
+		<field table="bl" name="building_type"/>
+		<field table="bl" name="area_upground"/>
+		<field table="bl" name="date_fazheng"/>
+		<field table="bl" name="mesure_unit"/>	
+		<field table="bl" name="guzhuwu_unit"/>
+		<field table="bl" name="height"/>
+		<field table="bl" name="status"/>
+		<field table="bl" name="area_ziyong"/>
+		<field table="bl" name="area_lend"/>
+		<field table="bl" name="area_rent"/>
+		<field table="bl" name="area_invest"/>
+		<field table="bl" name="area_danbao"/>
+		<field table="bl" name="area_other"/>
+		<field table="bl" name="value_type"/>
+		<field table="bl" name="value_net"/>
+		<field table="bl" name="value_original"/>
+		<field table="bl" name="value_book"/>
+		<field table="bl" name="value_ziyong"/>
+		<field table="bl" name="value_lend"/>
+		<field table="bl" name="value_rent"/>
+		<field table="bl" name="value_invest"/>
+		<field table="bl" name="value_danbao"/>
+		<field table="bl" name="value_other"/>
+		<field table="bl" name="land_code"/>
+		<field table="bl" name="feormale"/>
+		<restriction type="sql" sql="bl.acc_type !='yxz'"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_tree_fl">
+        <table name="fl" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="bl" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+        <field table="fl" name="bl_id"/>
+        <field table="fl" name="fl_id"/>
+        <field table="fl" name="name" />
+        <sortField table="fl" name="fl_id" ascending="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_form_fl">
+        <table name="fl" role="main"/>
+        <field table="fl" name="bl_id" readOnly="true"/>
+        <field table="fl" name="fl_id"/>
+        <field table="fl" name="name"/>
+        <field table="fl" name="overground"/>
+        <field table="fl" name="area_gross_ext"/>
+        <field table="fl" name="cost_sqft"/>
+        <field table="fl" name="area_rm"/>
+        <field table="fl" name="feormale"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_tree_rm">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="bl" name="site_id"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="name"/>
+        <sortField table="rm" name="rm_id" ascending="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_form_rm">
+        <table name="rm" role="main"/>
+        <table name="rmuse" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="rmuse" name="rm_use"/>
+        <field table="rmuse" name="rmuse_name"/>
+        <field table="rmcat" name="rm_cat"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="fl_id"/>
+		<field table="rm" name="name"/>
+		
+		<field table="rm" name="rm_use"/>
+		<field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="rm_bianma"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="cap_em"/>
+		<field table="rm" name="count_design"/>
+		<field table="rm" name="area"/>
+		<field table="rm" name="area_manual"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+		<field table="rm" name="dv_manage"/>
+        <field table="rm" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="rm" name="phone"/>
+		<field table="rm" name="rm_photo"/>  
+        <field table="rm" name="notes"/>
+        <field table="rm" name="feormale"/>
+        <field table="rm" name="stu_in_year"/>
+    </dataSource>
+	
+	<dataSource id="ds_ab-sp-def-loc-rm_form_rm_photo">
+        <table name="sc_rmphotodoc" role="main"/>
+        <field table="sc_rmphotodoc" name="blflrm"/>
+        <field table="sc_rmphotodoc" name="rm_photo"/>
+    </dataSource>
+    
+    <panel type="tree" id="site_tree" dataSource="ds_ab-sp-def-loc-rm_tree_site" layoutRegion="treePostion">
+        <title translatable="true">Select Sites, Buildings, Floors, or Rooms</title>
+<!--         <action id="addNew"> -->
+<!--             <title translatable="true">Add New</title> -->
+<!--         </action> -->
+        <event type="onClickNode">
+            <command type="callFunction" functionName="onClickSiteNode"/>
+        </event>
+		<panel type="tree" id="pr_tree" dataSource="ds_ab-sp-def-loc-rm_tree_pr" recordLimit="0">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="sbfDetailTabs" tabPageName="prTab"/>
+                <command type="callFunction" functionName="onClickTreeNode"/>
+            </event>
+            <field table="property" name="pr_id" dataType="text"/>
+            <field table="property" name="name" dataType="text"/>
+        </panel>
+        <panel type="tree" id="bl_tree" dataSource="ds_ab-sp-def-loc-rm_tree_bl" recordLimit="0">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="sbfDetailTabs" tabPageName="blTab"/>
+                <command type="callFunction" functionName="onClickTreeNode"/>
+            </event>
+            <field table="bl" name="bl_id" dataType="text"/>
+            <field table="bl" name="name" dataType="text"/>
+        </panel>
+        <panel type="tree" id="fl_tree" dataSource="ds_ab-sp-def-loc-rm_tree_fl">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="sbfDetailTabs" tabPageName="flTab"/>
+                <command type="callFunction" functionName="onClickTreeNode"/>
+            </event>
+            <field table="fl" name="fl_id" dataType="text"/>
+            <field table="fl" name="name" dataType="text"/>
+        </panel>
+        <panel type="tree" id="rm_tree" dataSource="ds_ab-sp-def-loc-rm_tree_rm" recordLimit="0">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="sbfDetailTabs" tabPageName="rmTab"/>
+                <command type="callFunction" functionName="onClickTreeNode"/>
+            </event>
+            <field table="rm" name="rm_id" dataType="text"/>
+            <field table="rm" name="name" dataType="text"/>
+        </panel>
+        <field table="site" name="site_id" dataType="text"/>
+        <field table="site" name="name" dataType="text"/>
+    </panel>
+    
+    <tabs id="sbfDetailTabs" workflow="enforced" cssClass="wizard" layoutRegion="editPostion">
+        <tab name="siteTab" selected="true">
+            <title translatable="true">Site</title>
+            <panel type="form" id="site_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_site" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete" enabled="${!panel.newRecord}">
+                    <title translatable="true">Delete</title>
+                </action>
+                <field table="site" name="site_id" readOnly="true"/>
+                <field table="site" name="name" readOnly="true"/>
+				
+                <field table="site" name="city_id" hidden="true"/>
+				<field table="site" name="address" readOnly="true"/>
+				<field table="site" name="area_land_occu" readOnly="true"/>
+				
+                <field table="site" name="youbian" readOnly="true"/>
+				<field table="site" name="isMainCampus" readOnly="true"/>
+                <field table="site" name="telephone" hidden="true"/>
+				
+                <field table="site" name="guihuayongdi" readOnly="true"/>
+                <field table="site" name="jianzhuyongdi" readOnly="true"/>
+                <field table="site" name="count_student_plan" readOnly="true"/>
+                <field table="site" name="count_student_actual" readOnly="true"/>
+				
+				<field table="site" name="count_teacher_plan" readOnly="true"/>
+                <field table="site" name="count_teacher_actual" readOnly="true"/>
+                <field table="site" name="no_bldgs" hidden="true"/>
+                
+				<field table="site" name="notes" rowspan="3" colspan="2" readOnly="true"/>
+				<field table="site" name="site_image" displayField="image_field" readOnly="true"/>
+				<field></field>
+				<field id="image_field" controlType="image" rowspan="13" width="400px" readOnly="true"/>
+            </panel>
+        </tab>
+		<tab name="prTab" selected="false">
+            <title translatable="true">PianQu</title>
+            <panel type="form" id="pr_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_pr" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete" enabled="${!panel.newRecord}">
+                    <title translatable="true">Delete</title>
+                </action>
+                <field table="property" name="site_id" readOnly="true"/>
+                <field table="site" name="name" readOnly="true"/>
+				<field table="property" name="pr_id" readOnly="true"/>
+				
+                <field table="property" name="name" readOnly="true"/>
+                <field table="property" name="other_name" readOnly="true"/>
+				
+                <field table="property" name="qty_no_bldgs_calc" hidden="true"/>
+                <field table="property" name="use1" hidden="true"/>
+            </panel>
+        </tab>
+        <tab name="blTab" selected="false">
+            <title translatable="true">Building</title>
+            <panel type="form" id="bl_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_bl" columns="2">
+                <!-- 批量修改房间类型名称 -->
+                <action id="plupdatermusenamebybl">
+                	<title translatable="true">Plupdatermusenamebybl</title>
+                </action>
+                <!-- 批量标准房间床位数 -->
+                <action id="plupdatebednumbersbybl">
+                	<title translatable="true">Plupdatebednumbersbybl</title>
+                </action>
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete" enabled="${!panel.newRecord}">
+                    <title translatable="true">Delete</title>
+                </action>
+<!-- 				<action id="enterRmcatArea"> -->
+<!--                     <title translatable="true">ShuRuFangWuLeiBieMianJi</title> -->
+<!--                 </action> -->
+<!--                 <action id="changeVal"> -->
+<!--                     <title translatable="true">changeVal</title> -->
+<!--                 </action> -->
+<!--                 <action id="changeArea"> -->
+<!--                     <title translatable="true">changeArea</title> -->
+<!--                 </action> -->
+               	<field labelClass="labelFieldset" colspan="2">
+		             <title>Basic Information</title>
+		 		</field>
+				<field table="bl" name="site_id" required="true" readOnly="true"/>
+				<field table="bl" name="pr_id" required="true" readOnly="true">
+                   <action>
+	        			<title>...</title>
+	        			<tooltip>Select Value</tooltip>
+	        			<command type="selectValue" fieldNames="bl.pr_id,bl.site_id"
+							selectFieldNames="property.pr_id,property.site_id" 
+							visibleFieldNames="property.site_id,property.pr_id,property.name" 
+							filterFieldNames="bl.site_id" 
+							showIndex="false"/>
+	    			</action>
+				</field>
+                <field table="bl" name="bl_id" readOnly="true"/>
+				<field table="bl" name="name" readOnly="true"/>
+				<field table="bl" name="asset_num" readOnly="true"/>
+				<field table="bl" name="asset_name" readOnly="true"/>
+				<field table="bl" name="atype_code" readOnly="true">
+					<action> 
+		 				<title>...</title> 
+		 				<tooltip>Select Value</tooltip> 
+		 				<command type="selectValue" 
+		 					fieldNames="bl.atype_code,bl.atype_name" 
+		 					selectFieldNames="sc_atyp.atype_code,sc_atyp.atype_name" 
+		 					visibleFieldNames="sc_atyp.atype_code,sc_atyp.atype_name"  /> 
+		 			</action> 
+		        </field>
+				<field table="bl" name="atype_name" readOnly="true"/>
+				<field table="bl" name="rm_laiyuan" readOnly="true"/>
+                <field table="bl" name="date_use" readOnly="true"/>
+				<field labelClass="labelFieldset" colspan="2">
+		           <title>Construct Information</title>
+		 		</field>
+		
+				<field table="bl" name="building_type" hidden="true"/>
+				<field table="bl" name="feormale" required="true" />
+				<field table="bl" name="construction_type" readOnly="true"/>
+				<field table="bl" name="count_upground" readOnly="true"/>
+                <field table="bl" name="count_underground" readOnly="true"/>
+				<field table="bl" name="build_company" readOnly="true"/>
+				<field table="bl" name="date_building_end" readOnly="true"/>
+				<field table="bl" name="gongtanlv" readOnly="true"/>
+				<field table="bl" name="quake_grade" readOnly="true"/>
+				<field table="bl" name="area_upground" readOnly="true"/>
+				<field table="bl" name="area_underground" readOnly="true"/>
+				
+				<field labelClass="labelFieldset" colspan="2">
+		            <title>QuanShu Information</title>
+		 		</field>
+			    <field table="bl" name="srcid" readOnly="true"/>
+				<field table="bl" name="date_acquire" readOnly="true"/>
+				<field table="bl" name="cgzzxs_id" readOnly="true"/>
+				<field table="bl" name="ownship_shape" readOnly="true"/>
+				<field table="bl" name="quansxz" readOnly="true"/>
+				<field table="bl" name="land_photo" readOnly="true"/>
+				<field table="bl" name="quanszh" readOnly="true"/>
+				<field table="bl" name="address1" readOnly="true"/>
+				<field table="bl" name="date_fazheng" readOnly="true"/>
+				<field table="bl" name="mesure_unit" readOnly="true"/>	
+				<field table="bl" name="guzhuwu_unit" readOnly="true"/>
+				<field table="bl" name="height" readOnly="true"/>	
+				
+				<field labelClass="labelFieldset" colspan="2">
+		           <title>Area Information</title>
+		 		</field>
+				<field table="bl" name="area_building_manual" required="true" readOnly="true"/>
+				<field table="bl" name="status" readOnly="true"/>
+				<field table="bl" name="area_jianzhu_yuan" readOnly="true"/>
+				<field table="bl" name="area_rm" readOnly="true"/>
+				<field table="bl" name="area_use_net" readOnly="true"/>
+				<field table="bl" name="area_land" readOnly="true"/>
+                <field table="bl" name="area_land_net" readOnly="true"/>
+				<field table="bl" name="area_bl_comn_gp" readOnly="true"/>
+				<field table="bl" name="area_ziyong" readOnly="true"/>
+				<field table="bl" name="area_lend" readOnly="true"/>
+				<field table="bl" name="area_rent" readOnly="true"/>
+				<field table="bl" name="area_invest" readOnly="true"/>
+				<field table="bl" name="area_danbao" readOnly="true"/>
+				<field table="bl" name="area_other" readOnly="true"/>
+            </panel>
+        </tab>
+        <tab name="flTab" selected="false">
+            <title translatable="true">Floor</title>
+            <panel type="form" id="fl_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_fl" columns="2">
+            	
+            	<action id="plupdatermusenamebyfloor">
+            		<title translatable="true">Plupdatermusenamebyfloor</title>
+            	</action>
+            	<action id="plupdatebyfloor">
+            		<title translatable="true">plupdatebyfloor</title>
+            	</action>
+            	
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete" enabled="${!panel.newRecord}">
+                    <title translatable="true">Delete</title>
+                </action>
+                <field table="fl" name="bl_id" readOnly="true"/>
+                <field table="fl" name="fl_id" readOnly="true"/>
+                <field table="fl" name="name" readOnly="true"/>
+                <field table="fl" name="overground" readOnly="true"/>
+                <field table="fl" name="feormale" required="true" />
+				<field table="fl" name="area_gross_ext" readOnly="true"/>
+                <field table="fl" name="cost_sqft" hidden="true"/>
+                <field table="fl" name="area_rm" readOnly="true"/>
+            </panel>
+        </tab>
+        <tab name="rmTab" selected="false">
+            <title translatable="true">Room</title>
+            <panel type="form" id="rm_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_rm" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete" enabled="${!panel.newRecord}">
+                    <title translatable="true">Delete</title>
+                </action>
+				
+                <field table="rm" name="bl_id" readOnly="true"/>
+                <field table="rm" name="fl_id" readOnly="true"/>
+				
+				<field table="rm" name="rm_id" readOnly="true"/>
+				<field table="rm" name="name" readOnly="true"/>
+				
+				<field table="rm" name="area" readOnly="true" hidden="true" />
+				<field table="rm" name="area_manual" readOnly="true"/>
+				<field table="rm" name="feormale" required="true"/>
+				<field table="rm" name="rm_use" hidden="true"/>
+				<!-- 这个是房间大类选择值,rmuse_name是房间大类名称字段 -->
+				<field table="rmuse" name="rmuse_name" readOnly="false">
+				<action>
+						<title>...</title>
+						<command type="selectValue"
+							fieldNames="rm.rm_use,rmuse.rmuse_name"
+							selectFieldNames="rmuse.rm_use,rmuse.rmuse_name"
+							visibleFieldNames="rmuse.rmuse_name"
+							showIndex="false"
+							restriction="rmuse.rm_use='30'">
+						</command>
+					</action>
+                </field>
+                <field table="rm" name="rm_cat" hidden="true"/>
+                <!-- 这个是房间类别名称选择值 rmcat_name是房间类别名称字段-->
+				<field table="rmcat" name="rmcat_name"  readOnly="false" required="true">
+                	<action>
+						<title>Room Category</title>
+						<command type="selectValue"
+							fieldNames="rm.rm_cat,rmcat.rmcat_name,rm.rm_use,rmuse.rmuse_name"
+							selectFieldNames="rmcat.rm_cat,rmcat.rmcat_name,rmcat.rm_use,rmuse.rmuse_name"
+							visibleFieldNames="rmcat.rm_cat,rmcat.rmcat_name,rmcat.rm_use,rmuse.rmuse_name"
+							restriction="rmcat.rm_cat='301'">
+						</command>
+					</action>
+                </field>
+                <field table="rm" name="rm_type" hidden="true"/>
+                <!-- 这个是房间类型名称选择值 rmtype_name是房间类型字段-->
+                <field table="rmtype" name="rmtype_name" readOnly="false" showSelectValueAction="true" required="true">
+					<action>
+						<title>Room Type</title>
+						<command type="selectValue"
+							fieldNames="rm.rm_type,rmtype.rmtype_name,rm.rm_cat,rmcat.rmcat_name"
+							selectFieldNames="rmtype.rm_type,rmtype.rmtype_name,rmcat.rm_cat,rmcat.rmcat_name"
+							visibleFieldNames="rmtype.rm_type,rmtype.rmtype_name,rmcat.rm_cat,rmcat.rmcat_name" 
+							restriction="rmtype.rm_cat='301'">
+						</command>
+					</action>
+                </field>
+                <field table="rm" name="stu_in_year"/>
+                <field table="rm" name="dv_id" hidden="true"/>
+				<field table="dv" name="dv_name" readOnly="false"  required="false" >
+					<action>
+						<title>...</title>
+						<tooltip>Select Value</tooltip>
+						<command type="selectValue"
+							fieldNames="rm.dv_id,dv.dv_name"
+							selectFieldNames="dv.dv_id,dv.dv_name"
+							visibleFieldNames="dv.dv_id,dv.dv_name">
+						</command>
+					</action>
+				</field>
+				<field table="rm" name="dv_manage" readOnly="false"/>
+				
+				<field table="rm" name="dp_id" hidden="true"/>
+				<field table="dp" name="dp_name"  readOnly="false" required="false" >
+					<action>
+						<title>...</title>
+						<tooltip>Select Value</tooltip>
+						<command type="selectValue"
+							fieldNames="rm.dp_id,dp.dp_name,rm.dv_id,dv.dv_name"
+							selectFieldNames="dp.dp_id,dp.dp_name,dv.dv_id,dv.dv_name"
+							visibleFieldNames="dp.dp_id,dp.dp_name,dv.dv_id,dv.dv_name"
+							filterFieldNames="rm.dv_id">
+						</command>
+					</action>
+				</field>
+				
+                <field table="rm" name="cap_em" required="true">
+                	<title translatable="true">Capacity</title>
+                </field> 	
+				
+				<field table="rm" name="count_design" hidden="true"/>
+                <field table="rm" name="count_em" readOnly="true" hidden="true"/>
+				
+                <field table="rm" name="phone" readOnly="true"/>
+                <field></field>
+				<field table="rm" name="rm_std" width="207" hidden="true" />
+                <field table="rm" name="notes" colspan="2"/> 
+            </panel>
+			<panel type="form" id="rmphoto" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_rm_photo" columns="2">
+				<field table="sc_rmphotodoc" name="blflrm" hidden="true"/> 
+				<field table="sc_rmphotodoc" name="rm_photo" displayField="image_field"/>  
+				<field></field>
+				<field id="image_field" controlType="image" rowspan="6" width="250px">
+				</field>
+			</panel>
+        </tab>
+    </tabs>
+	    <dataSource id="checkFutureRmpctDS">
+        <table name="rmpct" role="main"/>
+        <field table="rmpct" name="bl_id"/>
+        <field table="rmpct" name="fl_id"/>
+        <field table="rmpct" name="rm_id"/>
+        <field table="rmpct" name="primary_rm"/>
+        <restriction type="sql" sql="rmpct.primary_rm =1 and rmpct.date_start &gt; ${sql.currentDate}"/>
+    </dataSource>
+    <js file="asc-bj-dorm-loc.js"/>
+<!--     <js file="asc-bj-usms-def-common.js"/> -->
+</view>
+

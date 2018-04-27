@@ -1,0 +1,91 @@
+<view version="2.0">
+    <layout id="main" type="borderLayout">
+        <north id="consolePosition" initialSize="80" split="true"/>
+        <west id="gridPosition" initialSize="13%" split="true"/>
+        <center id="drawPosition"/>
+    </layout>
+    
+    <title translatable="true">zong di gao liang</title>
+    
+    <!-- datasource for rmcat report -->
+    <dataSource id="ds_parcelland_grid">
+        <table name="sc_parcelland" role="main"/>
+        <field table="sc_parcelland" name="land_code"/>
+        <field table="sc_parcelland" name="area_land"/>
+        <field table="sc_parcelland" name="parcelland_address"/>
+        <field table="sc_parcelland" name="hpattern_acad"/>
+        <field table="sc_parcelland" name="land_photo"/>
+        <field table="sc_parcelland" name="dwgname"/>
+		<field table="sc_parcelland" name="date_build"/>
+		<field table="sc_parcelland" name="dihao"/>
+    </dataSource>
+	
+    <dataSource id="ds_drawing_landHighlight" type="DrawingControlHighlight">
+        <table name="sc_parcelland" role="main"/>
+        <field table="sc_parcelland" name="land_code" legendKey="true"/>
+        <field table="sc_parcelland" name="parcelland_address"/>
+        <field table="sc_parcelland" name="hpattern_acad"/>
+		<parameter name="land_code" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="${parameters['land_code']}"/>     
+    </dataSource>
+    
+    <dataSource id="ds_drawing_landLabel">
+        <table name="sc_parcelland" role="main"/>
+        <field name="land_code"/>
+        <field name="parcelland_address"/>
+    </dataSource>
+	
+    <panel type="console" id="landconsole" columns="4" dataSource="ds_parcelland_grid" layoutRegion="consolePosition">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">show</title>
+            <command type="showPanel" panelId="landGrid"/>
+        </action>
+        <action id="clear">
+            <title translatable="true">clear</title>
+            <command type="clearPanel" panelId="landconsole"/>
+        </action>
+        <field table="sc_parcelland" name="date_build"  alias="sc_parcelland.date_build.from"  op="&gt;=">
+            <title translatable="true">Date build From</title>
+        </field>
+        <field table="sc_parcelland" name="date_build"  alias="sc_parcelland.date_build.to"  op="&lt;=">
+            <title translatable="true">Date build To</title>
+        </field>
+        <field table="sc_parcelland" name="land_code" required="false"/>
+        <field table="sc_parcelland" name="parcelland_address" required="false"/>
+    </panel>
+    
+    <panel type="grid" id="landGrid" dataSource="ds_parcelland_grid" layoutRegion="gridPosition">
+        <title translatable="true">land list</title>
+        <sortField name="land_code" table="sc_parcelland"
+         ascending="true"/>
+        <field table="sc_parcelland" name="land_code" id="land_code" controlType="link">
+            <!-- 			<command type="callFunction" functionName="showLandPhoto" /> -->
+        </field>
+        <field table="sc_parcelland" name="area_land" id="area_land" controlType="link">
+            <!-- 			<command type="callFunction" functionName="showLandPhoto" /> -->
+        </field>
+        <field table="sc_parcelland" name="parcelland_address" id="parcelland_address" controlType="link">
+            <!-- 			<command type="callFunction" functionName="showLandPhoto" /> -->
+        </field>
+        <field table="sc_parcelland" name="dwgname" hidden="true"></field>
+    </panel>
+	
+    <panel type="drawing" id="land_drawing_panel" layoutRegion="drawPosition" showOnLoad="false"
+     highlightDataSource="ds_drawing_landHighlight"
+     labelsDataSource="ds_drawing_landLabel" 
+     assetTypes="sc_parcelland"
+	 highlightType="restriction"
+     multiple="false">
+        <action id="exportDOCX">
+            <title translatable="true">DOC</title>
+            <tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+            <command type="exportPanel" outputType="docx" panelId="land_drawing_panel"/>
+        </action>
+        <title translatable="true">zongdixinxi</title> 
+    </panel>
+	
+	
+    <js file="asc-bj-usms-land-qry-hl-lands.js"/>
+    
+</view>

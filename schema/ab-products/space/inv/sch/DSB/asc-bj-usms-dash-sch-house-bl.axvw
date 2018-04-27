@@ -1,0 +1,373 @@
+<view version="2.0">
+	<message name="imagePanelTitle" translatable="true">
+		Jian Zhu Wu : {0}
+	</message>
+	<message name="blListPanelTitle" translatable="true">
+		[{0}] Jian Zhu Wu Lie Biao
+	</message>
+	<css>
+		.prominentLabel {font-weight: bold; font-size: 12px !important;
+		text-align: right; white-space: normal;}
+	</css>
+
+	<layout id="main">
+		<west initialSize="70%" split="true" />
+		<center autoScroll="true" />
+	</layout>
+
+	<layout id="main_west" containingLayout="main" region="west">
+		<north initialSize="60%" split="true" />
+		<center id="blList" />
+	</layout>
+
+	<layout id="main_center" containingLayout="main" region="center">
+		<north id="rptLink" initialSize="20%" split="true" />
+		<center id="schMap" />
+	</layout>
+
+	<layout id="main_west_north" containingLayout="main_west"
+		region="north">
+		<west initialSize="25%" split="true" />
+		<center />
+	</layout>
+
+	<layout id="main_west_north_west" containingLayout="main_west_north"
+		region="west">
+		<north id="schSummary" initialSize="25%" split="true" />
+		<center id="schBlCrossTable" />
+	</layout>
+
+	<layout id="main_west_north_center"
+		containingLayout="main_west_north" region="center">
+		<north initialSize="30%" />
+		<center id="blInfodetail" />
+	</layout>
+
+	<layout id="main_west_north_center_north"
+		containingLayout="main_west_north_center" region="north">
+		<west id="blBasicInfo" initialSize="18%" />
+		<center id="blPhoto" autoScroll="false" />
+	</layout>
+	<title translatable="true">
+		XueXiaoFangChanJiJianZhuWuQingKuang
+	</title>
+
+	<!-- dataSource for building info panel -->
+	<dataSource id="ds_ScBlBasicInfo_form_bl">
+		<table name="bl" role="main" />
+		<table name="site" role="standard" />
+
+		<!--basic info-->
+		<field table="bl" name="bl_id" />
+		<field table="bl" name="name" />
+		<field table="bl" name="site_id" />
+		<field table="site" name="name" />
+		<field table="bl" name="address1" />
+		<field table="bl" name="use1" />
+		<!--area info-->
+		<field table="bl" name="area_building_manual" />
+		<field table="bl" name="area_rm" />
+		<field table="bl" name="area_undergroud" />
+		<field table="bl" name="area_bl_comn_gp" />
+		<!--asset info-->
+		<field table="bl" name="value_book" />
+		<field table="bl" name="ownship_shape" />
+		<field table="bl" name="ownership_code" />
+		<field table="bl" name="date_fazheng" />
+		<field table="bl" name="asset_type" />
+		<field table="bl" name="rm_laiyuan" />
+
+		<!--construction info-->
+		<field table="bl" name="construction_type" />
+		<field table="bl" name="date_building_end" />
+		<field table="bl" name="date_use" />
+		<field table="bl" name="bl_situation" />
+		<field table="bl" name="quake_grade" />
+		<field table="bl" name="count_upground" />
+		<field table="bl" name="count_underground" />
+
+		<!--use info-->
+		<field table="bl" name="contact_name" />
+		<field table="bl" name="dv_use" />
+		<field table="bl" name="dv_manage" />
+		<field table="bl" name="image_file" />
+		<field table="bl" name="gongtanlv" />
+		<field table="bl" name="date_last_daxiu" />
+		<field table="bl" name="building_cat" />
+
+		<parameter name="blIdRes" dataType="text" value="" />
+		<restriction type="sql" sql="bl.bl_id=${parameters['blIdRes']}" />
+	</dataSource>
+
+	<panel type="form" id="buildingPhotos"
+		dataSource="ds_ScBlBasicInfo_form_bl" columns="2"
+		layoutRegion="blPhoto" showOnLoad="false">
+		<title translatable="true">Jian Zhu Wu</title>
+		<field table="bl" name="bl_id" hidden="true" />
+		<field table="bl" name="image_file" hidden="true" />
+		<!-- inline image display field -->
+		<field>
+			<html>
+				<img alt="Building Photo" id="bl_photo" width="300"
+					height="160" style="display:none;" />
+			</html>
+		</field>
+	</panel>
+	<!-- base building info panel-->
+	<panel type="columnReport" id="abScBlBasicInfoForm"
+		dataSource="ds_ScBlBasicInfo_form_bl" columns="1" showOnLoad="false"
+		layoutRegion="blBasicInfo">
+		<title>jianzhuwuxinxizhaiyao</title>
+		<field id="basic" labelClass="prominentLabel"
+			cssClass="prominentLabel">
+			<title translatable="true">Ji Ben Xin Xi</title>
+		</field>
+
+		<field table="bl" name="bl_id" />
+		<field table="site" name="name" />
+		<field table="bl" name="name" />
+		<field table="bl" name="use1" />
+		<field table="bl" name="address1" />
+	</panel>
+
+	<!-- base building info panel-->
+	<panel type="columnReport" id="abScBlInfoForm"
+		dataSource="ds_ScBlBasicInfo_form_bl" columns="3" showOnLoad="false"
+		layoutRegion="blInfodetail">
+
+		<field table="bl" name="bl_id" hidden="true" />
+		<field id="area" labelClass="prominentLabel">
+			<title translatable="true">Jian Zhu Xin Xi</title>
+		</field>
+
+		<field id="building" labelClass="prominentLabel">
+			<title translatable="true">Zi Chan Xin Xi</title>
+		</field>
+
+		<field id="building" labelClass="prominentLabel">
+			<title translatable="true">Qi Ta Xin Xi</title>
+		</field>
+		<!--1 row -->
+		<field table="bl" name="area_building_manual" />
+		<field table="bl" name="value_book" />
+		<field table="bl" name="contact_name" />
+
+		<!--2 row-->
+		<field table="bl" name="area_rm" />
+		<field table="bl" name="ownship_shape" />
+		<field table="bl" name="dv_use" />
+
+		<!--3 row-->
+		<field table="bl" name="area_undergroud" />
+		<field table="bl" name="ownership_code" />
+		<field table="bl" name="dv_manage" />
+
+		<!--4 row-->
+		<field table="bl" name="area_bl_comn_gp" />
+		<field table="bl" name="rm_laiyuan" />
+		<field table="bl" name="quake_grade" />
+
+		<!--5 row-->
+		<field table="bl" name="construction_type" />
+		<field table="bl" name="date_building_end" />
+		<field table="bl" name="date_use" />
+
+		<!--6 row-->
+		<field table="bl" name="gongtanlv" />
+
+		<field table="bl" name="count_upground" />
+		<field table="bl" name="count_underground" />
+
+		<!--use info-->
+		<field table="bl" name="bl_situation" />
+		<field table="bl" name="date_last_daxiu" />
+		<field table="bl" name="building_cat" />
+
+		<field table="bl" name="date_fazheng" hidden="true" />
+		<field table="bl" name="asset_type" hidden="true" />
+	</panel>
+
+	<!-- datasource for rmcat report -->
+	<dataSource id="ds_asc-bj-usms-overall-bl-whole_grid_bl">
+		<table name="bl" role="main" />
+		<table name="site" role="standard" />
+		<field table="site" name="name" />
+		<field table="bl" name="site_id" />
+		<field table="bl" name="pr_id" />
+		<field table="bl" name="bl_id" />
+		<field table="bl" name="name" />
+		<field table="bl" name="area_building_manual" />
+		<field table="bl" name="construction_type" />
+		<field table="bl" name="use1" />
+		<field table="bl" name="count_upground" />
+		<field table="bl" name="count_underground" />
+		<field table="bl" name="area_undergroud" />
+		<field table="bl" name="building_cat" />
+		<field table="bl" name="count_rm_keyong">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field table="bl" name="area_rm" />
+		<field name="common_area" dataType="number" decimals="2">
+			<title translatable="true">Common Area</title>
+			<sql dialect="generic">
+				(bl.area_building_manual - bl.area_rm)
+			</sql>
+		</field>
+		<field name="gongtanlv"></field>
+		<parameter name="blCatRes" dataType="verbatim" value="" />
+		<restriction type="sql"
+			sql="bl.site_id is not null ${parameters['blCatRes']}" />
+	</dataSource>
+
+	<!-- dataSource for site basic info panel -->
+	<dataSource id="ds_asc-bj-usms-overall-bl-whole_basic_school">
+		<table name="sc_school" role="main" />
+		<field table="sc_school" name="sch_id" />
+		<!--basic info-->
+		<field table="sc_school" name="address" />
+		<field table="sc_school" name="telephone" />
+		<field table="sc_school" name="zip" />
+		<field table="sc_school" name="count_student_actual" />
+		<field table="sc_school" name="count_teacher_actual" />
+		<field table="sc_school" name="count_bl" />
+		<field table="sc_school" name="photo1" />
+	</dataSource>
+
+
+
+	<!-- base university info panel-->
+	<panel type="columnReport"
+		id="ascBjUsmsOverallBlWhole_siteBasicGrid"
+		dataSource="ds_asc-bj-usms-overall-bl-whole_basic_school" columns="1"
+		layoutRegion="schSummary">
+		<title>XueXiaoGaiYao</title>
+		<field table="sc_school" name="sch_id" hidden="true" />
+		<field table="sc_school" name="address" />
+		<field table="sc_school" name="zip" />
+		<field table="sc_school" name="telephone" />
+		<field name="count_student_actual" dataType="number"
+			decimals="0">
+			<title translatable="true">XueShengZongRenShu</title>
+		</field>
+		<field name="count_teacher_actual" dataType="number"
+			decimals="0">
+			<title translatable="true">ZhiGongZongRenShu</title>
+		</field>
+		<field table="sc_school" name="count_bl" />
+	</panel>
+
+	<!-- dataSource for site basic info panel -->
+	<dataSource id="ds_asc-bj-usms-overall-bl-whole_basic_blsum">
+
+		<sql dialect="generic">
+			( select 'XuexiaozongJi' ${sql.as} bl_use,
+			sum(area_building_manual) ${sql.as} area_jianzhu,
+			sum(area_rm) ${sql.as} area_shiyong from bl ) union ( select
+			'JiaoXueBanGong' ${sql.as} bl_use, sum(area_building_manual)
+			${sql.as} area_jianzhu, sum(area_rm) ${sql.as} area_shiyong
+			from bl where use1 in ('TE', 'TEOFF', 'TEASS', 'TELV',
+			'OFF', 'LVOFF') ) union ( select 'JiaoGongSuShe' ${sql.as}
+			bl_use, rmcat.area_jianzhu ${sql.as} area_jianzhu,
+			rmcat.area ${sql.as} area_shiyong from rm, rmcat where
+			rm.rm_cat = rmcat.rm_cat and ${parameters['rmCatZG']} group
+			by rmcat.area_jianzhu, rmcat.area )union ( select
+			'XueShengSuShe' ${sql.as} bl_use, rmcat.area_jianzhu
+			${sql.as} area_jianzhu, rmcat.area ${sql.as} area_shiyong
+			from rm, rmcat where rm.rm_cat = rmcat.rm_cat and
+			${parameters['rmCatXS']} group by rmcat.area_jianzhu,
+			rmcat.area ) union ( select 'QiTa' ${sql.as} bl_use,
+			sum(area_building_manual) ${sql.as} area_jianzhu,
+			sum(area_rm) ${sql.as} area_shiyong from bl where use1 not
+			in ('TE', 'TEOFF', 'TEASS', 'TELV', 'OFF', 'LVOFF') and not
+			exists (select 1 from rm where rm.bl_id = bl.bl_id and
+			${parameters['rmCatZGXS']} ))
+		</sql>
+
+		<table name="bl" role="main" />
+		<field table="bl" name="bl_use" dataType="text" />
+		<field table="bl" name="area_jianzhu" dataType="number"
+			decimals="2" />
+		<field table="bl" name="area_shiyong" dataType="number"
+			decimals="2" />
+		<parameter name="rmCatZG" dataType="verbatim" value="" />
+		<parameter name="rmCatXS" dataType="verbatim" value="" />
+		<parameter name="rmCatZGXS" dataType="verbatim" value="" />
+
+	</dataSource>
+
+
+
+	<panel id="abScShowDvStackGridPanel" type="grid"
+		controlType="reportGrid"
+		dataSource="ds_asc-bj-usms-overall-bl-whole_basic_blsum"
+		layoutRegion="schBlCrossTable">
+		<title translatable="true">xuexiaofangchantongji</title>
+		<sortField table="bl" name="area_jianzhu" ascending="false" />
+		<field table="bl" name="bl_use" controlType="link">
+			<title translatable="true">JianZhuLeiXing</title>
+			<!--    <command type="callFunction" functionName="showBlList"/>  -->
+		</field>
+		<field table="bl" name="area_jianzhu">
+			<title translatable="true">ZongJianZhuMianJi</title>
+		</field>
+		<field table="bl" name="area_shiyong">
+			<title translatable="true">ZongShiYongMian</title>
+		</field>
+
+	</panel>
+
+	<!-- Display records from the aggregated DataSource in a grid -->
+	<panel type="grid" id="ascBjUsmsOverallBlWhole_blGrid"
+		dataSource="ds_asc-bj-usms-overall-bl-whole_grid_bl" showOnLoad="true"
+		layoutRegion="blList">
+		<title translatable="true">XueXiaoJianZhuWuliebiao</title>
+		<sortField table="site" name="name" ascending="true" />
+		<sortField table="bl" name="pr_id" ascending="true" />
+		<sortField table="bl" name="bl_id" ascending="true" />
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls"
+				panelId="ascBjUsmsOverallBlWhole_blGrid" />
+		</action>
+		<field id="showBlInfo" controlType="button">
+			<title translatable="true">ChaKanXiangQing</title>
+		</field>
+		<field table="site" name="name" />
+		<field table="bl" name="pr_id" />
+		<field table="bl" name="bl_id"  hidden="true"/>
+		<field table="bl" name="name" controlType="link"  >
+			<command type="callFunction" functionName="fangwufenbu" />
+		</field>
+		<field table="bl" name="area_building_manual" />
+		<field table="bl" name="area_rm" />
+		<field name="common_area" dataType="number" decimals="2">
+			<title translatable="true">Common Area</title>
+			<sql dialect="generic">
+				(bl.area_building_manual - bl.area_rm)
+			</sql>
+		</field>
+		<field name="gongtanlv" />
+		<field table="bl" name="construction_type" />
+		<field table="bl" name="use1" />
+		<field table="bl" name="count_upground" />
+		<field table="bl" name="count_underground" />
+	</panel>
+	<panel type="html" id="buttonLinkPanel" layoutRegion="rptLink">
+		<title>Report Link</title>
+		<html></html>
+	</panel>
+
+	<panel type="form" id="schMap"
+		dataSource="ds_asc-bj-usms-overall-bl-whole_basic_school"
+		layoutRegion="schMap" showOnLoad="true">
+		<title translatable="true">Xiao Qu Tu</title>
+		<field table="sc_school" name="sch_id" hidden="true" />
+		<field table="sc_school" name="photo1" displayField="sch_map"
+			hidden="true" />
+		<!-- inline image display field -->
+		<field id="sch_map" controlType="image" width="350"
+			height="650" />
+	</panel>
+	<js file="asc-bj-usms-dash-sch-house-bl.js" />
+	<js file="asc-bj-usms-overall-common.js" />
+</view>

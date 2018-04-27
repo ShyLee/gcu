@@ -1,0 +1,268 @@
+<view version="2.0">
+    <title translatable="true">View Room Category Summary and Room Inventory</title>
+    
+    <layout id="main">
+        <west  initialSize="55%" split="true"/>
+        <center/>
+    </layout>
+    <layout id="nested_west" containingLayout="main" region="west">
+        <north id="rmcatPosition" initialSize="52%" split="true"/>
+        <center id="rmcatChartPosition" />
+    </layout>
+    <layout id="nested_center" containingLayout="main" region="center">
+        <north id="blRptPosition" initialSize="52%" split="true"/>
+        <center id="rmRptPosition" />
+    </layout>
+    
+    <message name="total" translatable="true">Total</message>
+    <message name="topPanelTitle" translatable="true">University All Rooms Category</message>
+    <message name="secondPanelTitle" translatable="true">Rooms Category : {0}</message>
+    <message name="bottomPanelTitle" translatable="true">Jian Zhu Wu : {0}</message>
+   
+    <!-- datasource for rmcat report -->
+    <dataSource id="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmcat">
+        <table name="rmcat" role="main" />
+        <table name="rmuse" role="standard"/>
+        
+        <field table="rmcat" name="rm_cat"  hidden="true"  controlType="link">
+        </field>
+        <field table="rmcat" name="rmcat_name" controlType="link">
+       	    <command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+        <!-- super category -->
+        <field table="rmcat" name="rm_use"  hidden="true" controlType="link">
+            <title translatable="true">Da Lei</title>
+            <command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+        <field table="rmuse" name="rm_use"  hidden="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+        <field table="rmuse" name="rmuse_name" controlType="link">
+            <command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+        <field table="rmcat" name="area_jianzhu"  controlType="link">
+            <title translatable="true">Total Structure Area</title>
+            <command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+        <field table="rmcat" name="area" controlType="link">
+            <title translatable="true">Total Usable Area</title>
+            <command type="callFunction" functionName="onRefreshSecondReport"/>
+        </field>
+        <field name="percent_area" dataType="number"  size="6" decimals="2" controlType="link">
+            <title translatable="true">Zhan Bi</title>
+            <command type="callFunction" functionName="onRefreshSecondReport"/>
+            <sql dialect="generic">rmcat.area_jianzhu/(SELECT decode(SUM(ino.area_jianzhu),0,1) FROM rmcat ino)</sql>
+        </field>
+        
+<!--         <sortField name="rmcat_name" table="rmcat" ascending="true" /> -->
+    </dataSource>
+    
+    <!-- datasource for rmcat-bl report-->
+    <dataSource id="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmtype" type="grouping">
+        <table name="rm" role="main" />
+        <table name="bl" role="standard" />
+        
+        <field table="rmcat" name="rm_cat" groupBy="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+         <field table="rmcat" name="rmcat_name" groupBy="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field table="bl" name="gongtanlv" groupBy="true" hidden="true"/>
+        
+        <!--building name-->
+        <field table="bl" name="bl_id" groupBy="true" hidden="true"/>
+        
+        <field table="bl" name="name" groupBy="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field name="count_rm" formula="COUNT" dataType="number" 
+            baseField="rm.rm_id" decimals="0" controlType="link">
+            <title translatable="true">Room Count</title>
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field name="total_area_shiyong" formula="SUM" dataType="number" 
+            baseField="rm.area" decimals="2" controlType="link">
+            <title translatable="true">Total Usable Area</title>
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <!--jianzhu area-->
+        <field name="total_area_jianzhu" dataType="number" decimals="2" controlType="link" hidden="true">
+            <title translatable="true">Total Structure Area</title>
+            <sql dialect="generic">
+                CASE WHEN bl.gongtanlv =1 THEN 0 ELSE sum(rm.area)/(1-bl.gongtanlv) END
+            </sql>
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <sortField name="bl_id" table="bl" ascending="true" />
+        
+        <restriction type="sql" sql="rm.rm_cat=${parameters['rmcatRes']} and bl.acc_type!='yxz'"/>
+        <parameter name="rmcatRes" dataType="text" value=""/>
+    </dataSource>
+    
+    
+    <!-- 各类别房屋类型汇总数据源 -->
+    <dataSource id="ds_ab-sc-rpt-rm-by-bl-rmtype_grid_rmtype" type="grouping">
+        <table name="rm" role="main" />
+        <table name="bl" role="standard" />
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        
+        <field table="rmcat" name="rm_cat" hidden="true" groupBy="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshTypeReport"/>
+        </field>
+        <field table="rmcat" name="rmcat_name"  groupBy="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshTypeReport"/>
+        </field>
+         <!--building name-->
+        <field table="rmtype" name="rm_type" hidden="true"/>
+        <field table="rmtype" name="rmtype_name" groupBy="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshTypeReport"/>
+        </field>
+        <field table="bl" name="gongtanlv" groupBy="true" hidden="true"/>
+   
+        <field name="count_rm" formula="COUNT" dataType="number" 
+            baseField="rm.rm_id" decimals="0" controlType="link">
+            <title translatable="true">Room Count</title>
+            <command type="callFunction" functionName="onRefreshTypeReport"/>
+        </field>
+        
+        <field name="total_area_shiyong" formula="SUM" dataType="number" 
+            baseField="rm.area" decimals="2" controlType="link">
+            <title translatable="true">Total Usable Area</title>
+            <command type="callFunction" functionName="onRefreshTypeReport"/>
+        </field>
+      
+        <restriction type="sql" sql="rm.rm_cat=${parameters['rmcatRes']} and bl.acc_type!='yxz'"/>
+        <parameter name="rmcatRes" dataType="text" value=""/>
+    </dataSource>
+    <panel  id="abScRptRmbyBlRmcatChartPie" 
+            type="chart" 
+            controlType="pieChart" 
+            dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmcat" 
+            showLegendOnLoad="true"
+            showLegendAsPopUp="true" 
+            legendLocation="right"
+            showDataTips="true" 
+            backgroundColor="0xc6e2ff" 
+            fillType="solid"
+            layoutRegion="rmcatChartPosition">
+        
+        <groupingAxis dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmcat" table="rmcat" field="rmcat_name" labelRotation="45"/>
+        <dataAxis dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmcat" table="rmcat" field="area_jianzhu" labelPosition="callout">
+            <title translatable="true">Total Structure Area</title>
+        </dataAxis>
+    </panel>
+    
+    <!-- dataSource for room panel -->
+    <dataSource id="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rm">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <table name="dv" role="standard"/>
+        
+        <field table="rm" name="bl_id"/>
+        <field table="rmcat" name="rm_cat"/>
+        <field table="bl" name="name"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type"/>
+    </dataSource>
+    
+    <!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="abScRptRmbyBlRmcat_rmcatSumGrid" dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmcat"  controlType="reportGrid" layoutRegion="rmcatPosition">
+        <title translatable="true">Room Category Summary</title>
+        
+        <action id="export:XLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="abScRptRmbyBlRmcat_rmcatSumGrid"/>
+        </action>   
+        
+    </panel>
+    
+    <panel type="grid" id="abScRptRmbyBlRmcat_blSumGrid" dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmtype"  controlType="reportGrid" showOnLoad="false" layoutRegion="blRptPosition">
+        <title translatable="true">Rooms Category</title>
+        
+        <action id="export:XLS1">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="abScRptRmbyBlRmcat_blSumGrid"/>
+        </action>   
+       <field table="rmcat" name="rm_cat" groupBy="true" controlType="link" hidden="true">
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        <field table="rmcat" name="rmcat_name" groupBy="true" controlType="link" >
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        <field table="bl" name="gongtanlv" groupBy="true" hidden="true"/>
+        
+        <!--building name-->
+        <field table="bl" name="bl_id" groupBy="true" hidden="true"/>
+        
+        <field table="bl" name="name" groupBy="true" controlType="link">
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field name="count_rm" formula="COUNT" dataType="number" 
+            baseField="rm.rm_id" decimals="0" controlType="link">
+            <title translatable="true">Room Count</title>
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field name="total_area_shiyong" formula="SUM" dataType="number" 
+            baseField="rm.area" decimals="2" controlType="link">
+            <title translatable="true">Total Usable Area</title>
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <!--jianzhu area-->
+        <field name="total_area_jianzhu" dataType="number" decimals="2" controlType="link" hidden="true">
+            <title translatable="true">Total Structure Area</title>
+            <sql dialect="generic">
+                CASE WHEN bl.gongtanlv =1 THEN 0 ELSE sum(rm.area)/(1-bl.gongtanlv) END
+            </sql>
+            <command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        <field id="viewBl" controlType="button" >
+            <title translatable="true">ViewCAD</title>
+        </field>
+    </panel>
+    
+    <panel type="grid" id="abScRptRmbyBlRmcat_rmGrid" dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rm"  controlType="reportGrid" showOnLoad="false" >
+        <title translatable="true">Jian Zhu Wu</title>
+        
+        <action>
+            <title>XLS</title>  
+            <command type="exportPanel" outputType="xls" panelId="abScRptRmbyBlRmcat_rmGrid"/>
+        </action>   
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rmcat" name="rm_cat" hidden="true"/>
+        <field table="bl" name="name"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+    </panel>
+    <panel type="grid" id="abScRptRmbyBlRmtype_typeSumGrid" dataSource="ds_ab-sc-rpt-rm-by-bl-rmtype_grid_rmtype" controlType="reportGrid" showOnLoad="true" layoutRegion="rmRptPosition">
+        <title translatable="true">Rooms Type</title>
+        <action id="export:XLS1">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="abScRptRmbyBlRmtype_typeSumGrid"/>
+        </action>
+    </panel>
+    
+    <js file="asc-bj-usms-type-rm-analysize.js"/>
+</view>

@@ -1,0 +1,12 @@
+<template-context>
+    <translatable-strings
+            logoutView = "login.axvw"
+            tabNames = "EXPRÈS BASE D'ORIGINE; APPLICATIONS"
+            breadcrumbControlTitle = "Tâches"
+            searchBoxInitialText = "Trouver un formulaire ou un rapport"
+            signOutTitle = "Se Déconnecter"
+            helpTitle = "Aide"
+            bannerTitle = "ARCHIBUS"
+            windowTitle = "Navigation Exprès"
+    />
+</template-context>

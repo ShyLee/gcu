@@ -1,0 +1,343 @@
+<view version="2.0">
+    <title>Add or Edit Users</title>
+    
+    <layout id="main">
+        <west  initialSize="45%" split="true"/>
+        <center/>
+    </layout>
+    <layout id="botton" containingLayout="main" region="west">
+    	<north id="top"  initialSize="80" split="true"/>		
+        <center id="left"/>
+    </layout> 
+    <layout id="left" containingLayout="main" region="center">
+    	<north id="right"  initialSize="60%" split="true"/>		
+        <center id="rolesRegion"/>
+    </layout> 
+    <js file="ab-edit-users-eq.js"/>
+    <dataSource id="consoleDs">
+    	<table name="em" role="main"/>
+    	<field table="em" name="em_id"/>
+    	<field table="em" name="name"/>
+    	<field table="em" name="dv_id"/>
+		
+    </dataSource>
+    
+    <panel type="console" id="consolePanel" dataSource="consoleDs" labelsPosition="top"  columns="2" layoutRegion="top">
+    	<title>Filter</title>
+    	<action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearForm"/>
+        </action>
+        <field table="em" name="name"/>
+    	<field table="em" name="dv_id"/>
+    </panel>
+    
+    
+    <dataSource id="usersDs">
+        <sql dialect="oracle">
+            SELECT em.em_id, em.name as em_name, em.dv_id, afm_users.email,afm_users.user_name ,afm_users.role_name,afm_roles.role_title,dv.dv_name ${sql.as} dv_name,
+            afm_users.locale,afm_users.home_page
+            FROM afm_users, em,afm_roles,dv
+            WHERE afm_users.email = em.email  ${parameters['emName']} and em.dv_id(+) =dv.dv_id
+			   AND afm_users.role_name is not null
+			   AND afm_users.user_level !=3 and afm_roles.role_name=afm_users.role_name and ${parameters['roleNames']} 
+			   
+        </sql>
+        <table name="afm_users" role='main'/>
+        <field name="user_name"/>
+        <field name="role_name"/>
+        <field name="dv_id" dataType="text"/>
+        <field name="dv_name" dataType="text"/>
+        <field name="em_name" dataType="text"/>
+        <field name="email"/>
+		<field name="role_title" dataType="text"/>
+        <parameter name="emName" dataType="verbatim" value=" and 1 = 1 "/>
+        <parameter name="roleNames" dataType="verbatim" value=" 1 = 1 "/>
+    </dataSource>
+    
+    <panel type="grid" id="users" dataSource="usersDs" layoutRegion="left" showOnLoad="true">
+        <title>Users</title>
+        
+        <action id="add">
+            <title>Add New User</title>
+            <command type="showPanel" panelId="user" newRecord="true"/>
+            <command type="showPanel" panelId="userRolesPanel" show="false"/>
+        </action>
+        
+        <indexField name="user_name" table="afm_users"/>
+        <sortField name="role_name" table="afm_users" ascending="true"/>
+        <sortField name="dv_name" table="afm_users" ascending="true"/>
+        
+        <field name="user_name" controlType="link">
+            <command type="showPanel" panelId="user"/>
+            <command type="callFunction" functionName="editUser.addOtherRoles(false)"/>
+        </field>
+        <field name="em_name" controlType="link">
+        	<title>Employee Name</title>
+            <command type="showPanel" panelId="user"/>
+             <command type="callFunction" functionName="editUser.addOtherRoles(false)"/>
+        </field>
+        <field name="role_name" controlType="link" hidden="true">
+            <command type="showPanel" panelId="user"/>
+             <command type="callFunction" functionName="editUser.addOtherRoles(false)"/>
+        </field>
+		<field name="role_title" controlType="link">
+			<title>Role Title</title>
+            <command type="showPanel" panelId="user"/>
+             <command type="callFunction" functionName="editUser.addOtherRoles(false)"/>
+        </field>
+        <field name="dv_name" controlType="link">
+        	<title>Division Name</title>
+            <command type="showPanel" panelId="user"/>
+             <command type="callFunction" functionName="editUser.addOtherRoles(false)"/>
+        </field>
+        <field name="email" controlType="link" hidden='true'>
+            <command type="showPanel" panelId="user"/>
+             <command type="callFunction" functionName="editUser.addOtherRoles(false)"/>
+        </field>
+    </panel>
+    
+    <dataSource id="userDs">
+        <table name="afm_users"/>
+        <field name="user_name"/>
+        <field name="is_named_user"/>
+        <field name="bim_license"/>
+        <field name="user_pwd"/>
+        <field name="num_retries"/>
+        <field name="home_page"/>
+        <field name="clr_scheme"/>
+        <field name="locale"/>
+        <field name="email"/>
+        <field name="role_name"/>
+        <field name="group_1"/>
+        <field name="group_2"/>
+        <field name="group_3"/>
+        <field name="group_4"/>
+        <field name="group_5"/>
+        <field name="preferences"/>
+        <field name="vpa_option1"/>
+        <field name="vpa_option2"/>
+        <field name="vpa_option3"/>
+        <field name="vpa_option4"/>
+    </dataSource>
+ 		 
+    <dataSource id="employeeDs">
+        <table name="em"/>
+        <field name="em_id"/>
+        <field name="email"/>
+        <field name="dv_id"/>
+    </dataSource>
+    <dataSource id="dv_ds">
+        <table name="dv"/>
+        <field name="dv_id"/>
+        <field name="dv_name"/>
+        <field name="head"/>
+    </dataSource>
+    
+    <panel type="form" id="user" dataSource="userDs" showOnLoad="false" layoutRegion="right">
+        <title>Edit User</title>
+        
+        <action id="save">
+            <title>Save</title>
+        </action>
+        <action>
+            <title>Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="users" applyParentRestriction="false"/>
+            <command type="showPanel" panelId="user" show="false"/>
+        </action>
+        <action>
+            <title>Cancel</title>
+            <command type="showPanel" panelId="user" show="false"/>
+        </action>
+        
+        <field id="em_name_text" required="true">
+            <title>ZhiGongHao</title>
+            <html>
+            	<input type="text" id="em_name_text_input" value="" class="inputField" disabled="disabled"/>
+                <input style="color:black;" type="button" value="..." id="onSelectResource_std"
+                 onclick="selectUserName();" class="selectValue_AbActionButtonFormStdWidth"/>
+            </html>
+        </field>
+        <field name="user_name">
+            
+        </field>
+        <field name="role_name" required="true">
+        	 <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="afm_users.role_name,afm_users.role_desc"
+                 selectFieldNames="afm_roles.role_name,afm_roles.role_title"
+                 visibleFieldNames="afm_roles.role_name,afm_roles.role_title"
+                 restriction="afm_roles.role_name in('UNV DV EQ ADMIN','UNV DV EQ OWN ADMIN','UNV EQ HEAD','UNV EQ ADMIN')"
+				 applyfielter="false">
+                </command>
+            </action>
+        </field>
+        <field name="user_pwd">
+            <action id="changePassword">
+                <title>Change Password</title>
+                <command type="openDialog" viewName="ab-change-password-admin.axvw" width="500" height="300" closeButton="false"/>
+            </action>
+        </field>
+        <field name="num_retries"/>
+        <field name="home_page"/>
+        <field name="clr_scheme" />
+        <field name="locale" value="zh_CN" readOnly="true"/>
+        <field name="email" hidden="false"/>
+        <field name="is_named_user" hidden="true"/>
+        <field name="bim_license" hidden="true"/>
+        <field name="preferences" width="250" hidden="true"/>
+        <field name="vpa_option3" hidden="true" value="NULL"/>
+        <field name="vpa_option4" >
+            <title translatable="true">DevelopS</title>
+            <action id="selectDv">
+	        	<title>Select Dv</title>
+	    	</action>
+	    	<action id="clearDv" >
+	        	<title>Clear Dv</title>
+	    	</action>
+        </field>
+        <field name="vpa_option1" hidden="true" value="NULL"/>
+        <field name="vpa_option2" >
+            <title translatable="true">DepartmentS</title>
+            <action id="selectDp">
+	        	<title>Select Dp</title>
+	    	</action>
+	    	<action id="clearDp" >
+	        	<title>Clear Dp</title>
+	    	</action>
+        </field>
+    </panel>
+     
+    <dataSource id="scSchoolMailUrlDs">
+        <table name="sc_school"/>
+        <field name="sch_id"/>
+        <field name="web_url"/>
+    </dataSource>
+    <dataSource id="sc_user_roles_ds">
+        <table name="sc_user_roles"/>
+        <field table="sc_user_roles" name="user_name"/>
+        <field table="sc_user_roles" name="role_name1"/>
+        <field table="sc_user_roles" name="role_name2"/>
+        <field table="sc_user_roles" name="role_name3"/>
+        <field table="sc_user_roles" name="role_name4"/>
+        <field table="sc_user_roles" name="role_title1"/>
+        <field table="sc_user_roles" name="role_title2"/>
+        <field table="sc_user_roles" name="role_title3"/>
+        <field table="sc_user_roles" name="role_title4"/>
+        <field table="sc_user_roles" name="home_page1"/>
+        <field table="sc_user_roles" name="home_page2"/>
+        <field table="sc_user_roles" name="home_page3"/>
+        <field table="sc_user_roles" name="home_page4"/>
+    </dataSource>
+    
+    <panel type="form" id="userRolesPanel" dataSource="sc_user_roles_ds" showOnLoad="false" columns="4" layoutRegion="rolesRegion">
+        <title>Add User Role</title>
+       	<action id="save">
+       		<title>Save</title>
+       	</action>
+        <field table="sc_user_roles" name="user_name" hidden="true"/>
+       	<field width="40">
+       		<action id="delRole1">
+       			<title>Delete</title>
+       		</action>
+       	</field>
+        <field table="sc_user_roles" name="role_name1">
+        	 <action>
+                <title>...</title>
+                <command type="selectValue"
+                 	fieldNames="sc_user_roles.role_name1,sc_user_roles.role_title1"
+                 	selectFieldNames="afm_roles.role_name,afm_roles.role_title"
+                 	visibleFieldNames="afm_roles.role_name,afm_roles.role_title"
+				 	applyfielter="false">
+                </command>
+            </action>
+        </field>
+        <field table="sc_user_roles" name="role_title1" readOnly="true"/>
+        <field table="sc_user_roles" name="home_page1"/>
+        <field width="40">
+       		<action id="delRole2">
+       			<title>Delete</title>
+       		</action>
+       	</field>
+        <field table="sc_user_roles" name="role_name2">
+        	 <action>
+                <title>...</title>
+                <command type="selectValue"
+                 	fieldNames="sc_user_roles.role_name2,sc_user_roles.role_title2"
+                 	selectFieldNames="afm_roles.role_name,afm_roles.role_title"
+                 	visibleFieldNames="afm_roles.role_name,afm_roles.role_title"
+				 	applyfielter="false">
+                </command>
+            </action>
+        </field>
+        <field table="sc_user_roles" name="role_title2" readOnly="true"/>
+        <field table="sc_user_roles" name="home_page2"/>
+        <field width="40">
+       		<action id="delRole3">
+       			<title>Delete</title>
+       		</action>
+       	</field>
+        <field table="sc_user_roles" name="role_name3">
+        	 <action>
+                <title>...</title>
+                <command type="selectValue"
+                 	fieldNames="sc_user_roles.role_name3,sc_user_roles.role_title3"
+                 	selectFieldNames="afm_roles.role_name,afm_roles.role_title"
+                 	visibleFieldNames="afm_roles.role_name,afm_roles.role_title"
+				 	applyfielter="false">
+                </command>
+            </action>
+        </field>
+        <field table="sc_user_roles" name="role_title3" readOnly="true"/>
+        <field table="sc_user_roles" name="home_page3"/>
+        <field width="40">
+       		<action id="delRole4">
+       			<title>Delete</title>
+       		</action>
+       	</field>
+        <field table="sc_user_roles" name="role_name4">
+        	 <action>
+                <title>...</title>
+                <command type="selectValue"
+                 	fieldNames="sc_user_roles.role_name4,sc_user_roles.role_title4"
+                 	selectFieldNames="afm_roles.role_name,afm_roles.role_title"
+                 	visibleFieldNames="afm_roles.role_name,afm_roles.role_title"
+				 	applyfielter="false">
+                </command>
+            </action>
+        </field>
+        <field table="sc_user_roles" name="role_title4" readOnly="true"/>
+        <field table="sc_user_roles" name="home_page4"/>
+     </panel>
+     <dataSource id="dp_ds">
+        <table name="dv" role="main"/>
+        <table name="dp" role="standard"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dp" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+    </dataSource>
+     <panel type="grid" id="dpPanel" dataSource="dp_ds" showOnLoad="false"  multipleSelectionEnabled="true">
+        <title>Add Dp</title>
+         <action id="sure">
+            <title translatable="true">Sure</title>
+        </action>
+    </panel>
+    <panel type="grid" id="dvPanel" dataSource="dv_ds" showOnLoad="false"  multipleSelectionEnabled="true">
+        <title>Add Dv</title>
+         <action id="sure">
+            <title translatable="true">Sure</title>
+        </action>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+    </panel>
+    <message name="changePasswordTitle">Change Password</message>
+    <message name="changePasswordText">Type new password:</message>
+    <message name="addUserTitle">Add New User</message>
+    <message name="editUserTitle">Edit User</message>
+</view>

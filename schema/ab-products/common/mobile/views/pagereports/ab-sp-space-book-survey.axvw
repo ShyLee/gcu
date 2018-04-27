@@ -1,0 +1,53 @@
+<view version="2.0">
+    <title translatable="true">Rooms</title>
+
+    <report  drawingHighlightFileFormat="png"/>
+
+    <!-- The highlight data source.  This provides the thematic
+        highlight patterns in the hpattern_acad field of the standard
+        table.  The report routine restricts this just to records for the
+        drawing that is currently being displayed,
+        e.g. rm.dwgname=[drawing being displayed]  -->
+
+    <dataSource id="ds_ab-sp-space-book-survey_rmHighlight">
+        <table name="rm" role="main" />
+        <field table="rm" name="bl_id" />
+        <field table="rm" name="fl_id" />
+        <field table="rm" name="rm_id" />
+        <field table="rm" name="rm_std" />
+        <restriction type="parsed">
+            <clause op="!=" table="rm" name="rm_cat" value="OPENPLAN" />
+        </restriction>
+    </dataSource>
+
+    <!-- The label data source. -->
+    <dataSource id="ds_ab-sp-space-book-survey_rmLabel">
+        <table name="rm" role="main" />
+    </dataSource>
+
+    <panel type="drawing" id="panel_ab-sp-space-book-survey_cad"
+        highlightDataSource="ds_ab-sp-space-book-survey_rmHighlight"
+        labelsDataSource="ds_ab-sp-space-book-survey_rmLabel"
+        highlightType="thematic">
+    </panel>
+
+    <!-- The legend data source.  The "rm" table is included because
+        the report routine restricts this legend just to the records
+        pertaining to the drawing that is currently being displayed.
+        e.g. rm.dwgname=[drawing being displayed] -->
+
+    <dataSource id="ds_ab-sp-space-book-survey_legend">
+        <table name="rm" role="main" />
+        <field table="rm" name="bl_id" />
+        <field table="rm" name="fl_id" />
+        <field table="rm" name="rm_id" />
+        <field table="rm" name="rm_std" />
+    </dataSource>
+
+    <panel type="legend" role="legend" format="table"
+        id="panel_ab-sp-space-book-survey_legend"
+        dataSource="ds_ab-sp-space-book-survey_legend">
+        <title translatable="true">Legend</title>
+    </panel>
+
+</view>

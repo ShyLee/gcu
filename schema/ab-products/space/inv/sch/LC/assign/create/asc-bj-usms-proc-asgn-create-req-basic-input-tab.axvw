@@ -1,0 +1,110 @@
+<view version="2.0">    
+    <js file="asc-bj-usms-proc-common.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+    <js file="asc-bj-usms-lc-constant.js"/>
+    <js file="asc-bj-usms-proc-asgn-create-req-basic-input-tab.js"/>
+    
+    <message name="noUser" translatable="true">Please select a division or room user or project group</message>
+    
+    <dataSource id="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS">
+        <table name="activity_log" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="bl" role="standard"/>
+        <table name="em" role="standard"/>
+        
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="prob_type"/>
+        <field table="activity_log" name="requestor"/>
+        <field table="activity_log" name="requestor_name"/>
+        <field table="activity_log" name="phone_requestor"/>
+        <field table="activity_log" name="date_requested"/>
+        <field table="activity_log" name="rm_cat"/>
+        <field table="activity_log" name="rm_type"/>
+        <field table="activity_log" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="activity_log" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="activity_log" name="date_used_from"/>
+        <field table="activity_log" name="date_used_to"/>
+        <field table="activity_log" name="count_rm"/>
+        <field table="activity_log" name="area"/>
+        <field table="activity_log" name="description"/>
+        <field table="activity_log" name="comments"/>
+        <field table="activity_log" name="notes"/>
+        <field table="activity_log" name="notes2"/>
+        <field table="activity_log" name="created_by"/>
+        <field table="activity_log" name="created_name"/>
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnCreateReqBasicInputTabForm1" showOnLoad="false" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS">
+        <title translatable="true">Requestor</title>
+        
+        <action id="back">
+            <title translatable="true">Back</title>
+            <command type="callFunction" functionName="asgnCreateReqBasicInputTabController.onBack()"/>
+        </action>
+        
+        <action id="submit">
+            <title translatable="true">Submit</title>
+            <command type="callFunction" functionName="asgnCreateReqBasicInputTabController.onSubmit()"/>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="true"/>
+        <field table="activity_log" name="requestor" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.requestor,activity_log.requestor_name,activity_log.phone_requestor"
+                 selectFieldNames="em.em_id,em.name,em.phone"
+                 visibleFieldNames="em.em_id,em.name,em.phone,dv.dv_name"></command>
+            </action>
+        </field>
+        <field table="activity_log" name="requestor_name" required="true"/>
+        <field table="activity_log" name="phone_requestor" showSelectValueAction="false" value="${user.employee.phone}"/>
+        <field name="dv_id" table="activity_log" required="true" value="${user.employee.organization.divisionId}" hidden="true">
+            <title translatable="true">ShengQingDanWei</title>
+        </field>
+        <field name="dv_name" table="dv" readOnly="false">
+        	<action>
+                <title>...</title>
+               <command type="selectValue"  
+			   fieldNames="activity_log.dv_id,dv.dv_name"
+			   selectFieldNames="dv.dv_id,dv.dv_name" 
+			   visibleFieldNames="dv.dv_id,dv.dv_name" 
+			   filterFieldNames="activity_log.dv_id"/>
+            </action>
+        </field>
+        <field table="activity_log" name="date_requested"/>
+        <field table="activity_log"  name="created_name"  readOnly="true"/>
+        <field table="activity_log"  name="date_used_from"  required="true"/>
+        <field table="activity_log"  name="date_used_to"  required="true"/>
+        <field table="activity_log"  name="activity_type"   hidden="true"/>
+   		<field table="activity_log"  name="prob_type"   hidden="true"/>
+    </panel>
+    
+    <panel type="form" columns="1" id="ascBjUsmsProcAsgnCreateReqBasicInputTabDestricptionForm" formLabelWidth="25" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS"  showOnLoad="false">
+        <title translatable="true">Description</title>
+        
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="area" table="activity_log" hidden="true"/>
+        <field name="count_rm" table="activity_log" value="0" hidden="true"/>
+        <field name="prob_type" table="activity_log" readOnly="true" hidden="true"/>
+        <field name="activity_type" table="activity_log" readOnly="true" required="true"/>
+        <field table="activity_log" name="description"
+         colspan="4" required="true" style="width: 100%; height: 80px;"
+         showSelectValueAction="false"/>
+        
+        <field id="instruction">
+            <html>
+                <span translatable="true" style="margin-left:4px">instruction</span>
+                <br/>
+            </html>
+        </field>
+        <field table="activity_log" name="comments" colspan="4" required="true" style="width: 100%; height: 80px;"
+         	   showSelectValueAction="false">
+            <title translatable="true">Requirement</title>
+        </field>
+        <field name="priority" table="activity_log" hidden="true"/>
+    </panel>
+</view>

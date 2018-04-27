@@ -1,0 +1,72 @@
+<view version="2.0">   
+    <dataSource id="projStatPkgChgDs1">
+        <table name="activity_log" role="main" />
+        <field name="project_id" table="activity_log"/>
+        <field name="work_pkg_id" table="activity_log"/>
+        <field name="activity_log_id" table="activity_log"  />
+        <field name="requestor_type" table="activity_log" />
+        <field name="activity_type" table="activity_log" />
+        <field name="status" table="activity_log" />
+        <field name="created_by" table="activity_log"/>
+            
+        <field name="action_title" table="activity_log" />
+        <field name="project_id" table="activity_log" />
+        <field name="work_pkg_id" table="activity_log" />
+        <field name="proj_phase" table="activity_log" />
+        <field name="doc" table="activity_log" />
+        <field name="date_requested" table="activity_log" />
+        <field name="date_planned_for" table="activity_log" />
+        <field name="duration_est_baseline" table="activity_log" />
+        <field name="cost_est_cap" table="activity_log" />
+        <field name="cost_estimated" table="activity_log" />
+        <field name="date_scheduled" table="activity_log" />
+        <field name="tot_costs_design" dataType="number" decimals="0" size="20" showTotals="true">
+            <sql dialect="generic">cost_est_design_exp + cost_est_design_cap</sql>
+        </field>
+        <field name="wbs_id" table="activity_log" />
+        <field name="site_id" table="activity_log" />
+        <field name="bl_id" table="activity_log" />
+        <field name="fl_id" table="activity_log" />
+        <field name="rm_id" table="activity_log" />
+        <field name="location" table="activity_log" />
+        <field name="date_required" table="activity_log" />
+        <field name="hours_est_baseline" table="activity_log" />
+        <field name="description" table="activity_log" />
+        <restriction type="sql" sql="activity_type='PROJECT - CHANGE ORDER'"/>
+    </dataSource>
+    
+    <panel type="grid" id="projStatPkgChgGrid" dataSource="projStatPkgChgDs1" showOnLoad="false">
+        <title>Work Package Change Orders</title>
+        <action>
+            <title>Add New</title>
+            <command type="openDialog" viewName="ab-proj-stat-pkg-chg-add.axvw" newRecord="true"/>
+        </action>
+        <action id="exportDOCX">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="projStatPkgChgGrid"/>
+        </action>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="projStatPkgChgGrid"/>
+        </action>
+        <sortField table="activity_log" name="action_title" ascending="true"/>
+        <field controlType="button">
+            <title>Edit</title>
+            <command type="openDialog" viewName="ab-proj-stat-pkg-chg-edit.axvw"/>
+        </field>
+        <field name="wbs_id" table="activity_log">
+            <title>WBS Code</title>
+        </field>
+        <field table="activity_log" name="action_title" />
+        <field name="status" table="activity_log" >
+                <title>Action Item Status</title>
+        </field>
+        <field name="date_scheduled" table="activity_log" />
+        <field name="tot_costs_design" dataType="number" showTotals="true">
+            <title>Estimated Costs</title>
+        </field>
+        <field name="description" table="activity_log" />
+        <field name="work_pkg_id" table="activity_log"/>
+        <field table="activity_log" name="activity_log_id" />
+    </panel>
+</view>

@@ -1,0 +1,127 @@
+<view version="2.0">
+    <title translatable="true">
+        Define School
+    </title>
+    <js file="asc-bj-usms-data-def-sch.js"/>
+    <dataSource id="abScDefSchoolDS">
+        <table name="sc_school" role="main"/>
+		<table name="em" role="standard" />
+        <field table="sc_school" name="address"/>
+        <field table="sc_school" name="area_comn"/>
+        <field table="sc_school" name="area_jianzhu"/>
+        <field table="sc_school" name="area_land_occu"/>
+        <!--<field table="sc_school" name="area_land_occu_bl"/> 
+		建筑总占地  是从各个建筑物的占地面积统计上来的
+		-->
+	
+        <field table="sc_school" name="area_serv"/>
+        <field table="sc_school" name="area_shiyong"/>
+        <field table="sc_school" name="area_underground_jianzhu"/>
+        <field table="sc_school" name="count_bl"/>
+        <field table="sc_school" name="count_rm"/>
+        <field table="sc_school" name="count_student_actual"/>
+        <field table="sc_school" name="count_student_plan"/>
+        <field table="sc_school" name="count_teacher_actual"/>
+        <field table="sc_school" name="count_teacher_plan"/>
+        <field table="sc_school" name="date_jianxiao"/>
+        <field table="sc_school" name="description"/>
+        <field table="sc_school" name="head1"/>
+        <field table="sc_school" name="head2"/>
+        <field table="sc_school" name="notes"/>
+        <field table="sc_school" name="option1"/>
+        <field table="sc_school" name="option2"/>
+        <field table="sc_school" name="photo1"/>
+        <field table="sc_school" name="sch_code"/>
+        <field table="sc_school" name="sch_id"/>
+        <field table="sc_school" name="sch_name"/>
+        <field table="sc_school" name="sch_type"/>
+        
+        <field table="sc_school" name="telephone"/>
+        <field table="sc_school" name="web_url"/>
+        <field table="sc_school" name="zip"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+		<field table="em" name="name_2" dataType="text" baseField="sc_school.head2">
+			 <sql dialect="generic">(select em.name from em where em_id=sc_school.head2) </sql>
+		</field>
+    </dataSource>
+    
+    <panel type="form" id="abScDefSchForm" columns="2" dataSource="abScDefSchoolDS">
+        <title translatable="true">
+            Define Employ
+        </title>
+        <action id="save">
+            <title translatable="true">
+                Save
+            </title>
+        </action>
+<!--         <action id="test"> -->
+<!--             <title translatable="test"> -->
+<!--                 Save -->
+<!--             </title> -->
+<!--         </action> -->
+        <field table="sc_school" name="sch_id" hidden="true"/>
+        <field table="sc_school" name="sch_name"/>
+        <field table="sc_school" name="sch_code"/>
+        <field table="sc_school" name="sch_type"/>
+        <field table="sc_school" name="telephone"/>
+        <field table="sc_school" name="web_url"/>
+        <field table="sc_school" name="zip"/>
+        <field table="sc_school" name="head1" hidden="true" />
+<!--         <field table="em" name="name" readOnly="false" showSelectValueAction="true" required="false" > -->
+<!--         	<title> -->
+<!--         		Dang Wei Shu Ji -->
+<!--         	</title> -->
+<!--             <action> -->
+<!--                 <title>...</title> -->
+<!--                 <command type="selectValue" -->
+<!--                     fieldNames="sc_school.head1,em.name" -->
+<!--                     selectFieldNames="em.em_id,em.name" -->
+<!--                     visibleFieldNames="em.em_id,em.name" -->
+<!-- 					applyFilter="false"> -->
+<!--                 </command> -->
+<!--             </action> -->
+<!--         </field> -->
+<!--         <field table="sc_school" name="head2" hidden="true" /> -->
+<!-- 		<field table="em" name="name_2" dataType="text" readOnly="false" showSelectValueAction="true" required="false" > -->
+<!-- 			<title> -->
+<!-- 				Xiao Zhang -->
+<!-- 			</title> -->
+<!--             <action> -->
+<!--                 <title>...</title> -->
+<!--                 <command type="selectValue" -->
+<!--                     fieldNames="sc_school.head2,em.name_2" -->
+<!--                     selectFieldNames="em.em_id,em.name" -->
+<!--                     visibleFieldNames="em.em_id,em.name" -->
+<!-- 					applyFilter="false"> -->
+<!--                 </command> -->
+<!--             </action> -->
+<!--         </field> -->
+        <field table="sc_school" name="area_jianzhu" readOnly="true"/>
+       <field table="sc_school" name="area_underground_jianzhu" readOnly="true"/>
+		<field table="sc_school" name="area_shiyong" readOnly="true"/>
+        <field table="sc_school" name="area_serv" readOnly="true"/>
+        <field table="sc_school" name="area_comn" readOnly="true"/>
+        <!--<field table="sc_school" name="area_land_occu_bl"/>-->
+	
+       <field table="sc_school" name="area_land_occu"/>
+      
+        <field table="sc_school" name="count_bl" readOnly="true"/>
+        <field table="sc_school" name="count_rm" readOnly="true"/>
+        <field table="sc_school" name="count_student_actual" readOnly="true"/>
+        <field table="sc_school" name="count_student_plan"/>
+        <field table="sc_school" name="count_teacher_actual"  readOnly="true"/>
+        <field table="sc_school" name="count_teacher_plan"/>
+        <field table="sc_school" name="date_jianxiao"/>
+        <field table="sc_school" name="photo1" displayField="image_field"/>
+        <field table="sc_school" name="option1" hidden="true"/>
+        <field table="sc_school" name="option2" hidden="true"/>
+        <field table="sc_school" name="description" colspan="2"/>
+		<field table="sc_school" name="address" width='207'/>
+        <field table="sc_school" name="notes" width='207'/>
+        <field id="image_field" controlType="image" width="300px">
+		       <title translatable="true">Photo</title>
+		 </field>
+    </panel>
+    
+</view>

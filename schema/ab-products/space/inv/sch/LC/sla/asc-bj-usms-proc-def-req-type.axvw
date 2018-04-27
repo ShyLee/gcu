@@ -1,0 +1,14 @@
+<view version="2.0">
+    <title translatable="true">Manage Approve Steps</title>
+    <tabs workflow="free" id="tabsFrame">
+        <tab name="select" file="asc-bj-usms-proc-def-req-type-select-tab.axvw" selected="true">
+            <title translatable="true">Select</title>
+        </tab>
+        <tab name="request" file="asc-bj-usms-proc-def-req-type-request-para-tab.axvw">
+            <title translatable="true">Request Parameters</title>
+        </tab>
+        <tab name="response" file="asc-bj-usms-proc-def-req-type-response-para-tab.axvw">
+            <title translatable="true">Response Parameters</title>
+        </tab>
+    </tabs>
+</view>

@@ -1,0 +1,42 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-add-dv-assign-dialog.js"/>
+    <title translatable="true">Select Equipment To Budget</title>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="100" />
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqDefBudgetDialogDs">
+        <table name="csi" role="main"/>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+    </dataSource>
+    <panel type="console" id="consolePanel" dataSource="ascBjUsmsEqDefBudgetDialogDs" columns="2" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="btnShow">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="btnClear">
+            <title translatable="true">Clear</title>
+        </action>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description">
+            <action>
+                 <title>...</title>
+                 <tooltip>Select Value</tooltip>
+                 <command type="selectValue" fieldNames="csi.csi_id,csi.description"
+                    selectFieldNames="csi.csi_id,csi.description" 
+                    visibleFieldNames="csi.csi_id,csi.description" 
+                    filterFieldNames="csi.csi_id"
+                    showIndex="false"/>
+             </action>
+        </field>
+    </panel>
+    <panel type="grid" id="csiGridPanel" dataSource="ascBjUsmsEqDefBudgetDialogDs"  layout="mainLayout" region="center" >
+        <title translatable="true">Detail Of Select</title>
+        <field id="btnClick" controlType="button">
+            <title translatable="true">Select</title>        
+        </field>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+    </panel>
+</view>

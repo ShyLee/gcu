@@ -1,0 +1,67 @@
+<view version="2.0">
+	<title>generate report</title>
+	<css>
+		#content{width:300px;height:300px; display:block;padding:10;margin:0 auto;font-size:1.4em;margin-top:30px}
+		#yearField{display:none}
+		#content input[type=radio]{margin-bottom:8px;margin-left:15px}
+		#confirm{margin-left:50px}
+	</css>
+	<css file="font-awesome.min.css" />
+	<css file="buttons.css" />
+	<css file="bootstrap.min.css" />
+    <panel type="html" id="rs_report">
+        <html>
+        	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+        	<div id="content">
+        	  <span translatable="true">please select report type</span>
+			 <select name='selectRpt' id='rpt' class="" onchange="" style="width:150;">
+             </select>
+             
+			 <br /> 
+			<!--<span translatable="true">Date</span>-->
+			<label  class="radio inline">
+			<input type="radio" name="controlyear" value = "point" id = "point" checked="true" onClick="controlDate(this)"></input> <span translatable="true">time point</span>
+			</label>
+			<label  class="radio inline">
+            <input type="radio" name="controlyear" value = "nonpoint" id = "nonpoint" onClick="controlDate(this)"></input> <span translatable="true">time quantum</span>
+			</label>
+			<br />
+		             <div id="pointTime">
+		             	<span translatable="true" style="font-size:14px">year</span><br/>
+					 <select name='selectYear' id='year' onchange="gradeChange()" style="width:100">
+		             </select><br/>
+		             <input type="text" name="text" id="yearField" width="100" hidden="true" />
+					 </div>
+					<div id="nonpointTime" style="display:none">
+						<span translatable="true" style="font-size:14px">date from</span><br/>
+						<input id="datefrom" class="Wdate" type="text" onFocus="WdatePicker({lang:'zh-cn'})"  ></input><br/>
+						<span translatable="true" style="font-size:14px">date to</span><br/>
+						<input id="dateto" class="Wdate" type="text" onFocus="WdatePicker({lang:'zh-cn'})" ></input>
+					</div>
+					
+					
+
+			   <div class="bd">
+			   	 <!--<span translatable="true" style="font-size:14px">please select format</span>-->
+       						<label  class="radio inline">
+                            <input id="locked" type="radio" name="lock" value="1" checked="1"/>
+								
+                            <span id="lockedLabel" class="legendTitle">PDF</span>
+							</label>
+							<label  class="radio inline">
+                            <input id="unlocked" type="radio" name="lock" value="0"/>
+                            <span id="unlockedLabel" class="legendTitle">XLS</span>
+         					</label>
+            </div>
+			<br />
+			 <input id="confirm" type="button" value="confirm" onClick="confirmGenerate()" style="text-align:center" class="button glow button-rounded button-flat-primary"/>
+			</div>
+        </html>
+    </panel>
+	
+	<!--<css file="jquery-ui-1.10.3.custom.css" />
+	<js file="jquery-1.9.1.js" />
+	<js file="jquery-ui-1.8.23.custom.min.js" />-->
+	<js file="WdatePicker.js" />
+    <js file="asc-bj-usms-bl-fixed-rpt.js" />
+</view>

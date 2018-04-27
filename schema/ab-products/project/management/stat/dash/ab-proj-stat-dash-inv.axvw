@@ -1,0 +1,106 @@
+<view version="2.0">
+    <title>Add Invoice</title>
+
+  	<js file="ab-proj-stat-dash-inv.js"/>
+    <js file="ab-proj-stat-common.js"/>
+    
+    <dataSource id="projStatDashInvDs1">
+        <table name="invoice" role="main" />
+        <field name="project_id" table="invoice"/>
+        <field name="work_pkg_id" table="invoice"/>
+        <field name="invoice_id" table="invoice" />        
+        <field name="status" table="invoice" />
+        <field name="amount_tot_invoice" table="invoice" showTotals="true"/>
+        <field name="date_expected_rec" table="invoice" />
+        <field name="vn_id" table="invoice" /> 
+        <field name="date_sent" table="invoice" />
+        <field name="contact_id_send_to" table="invoice" />
+        <field name="contact_id_remit_to" table="invoice" />
+        <field name="terms" table="invoice" />
+        <field name="amount_closed" table="invoice" showTotals="true" />
+        <field name="qty_invoiced" table="invoice" />
+        <field name="qty_received" table="invoice" />
+        <field name="qty_accepted" table="invoice" />
+        <field name="ac_id" table="invoice" />
+        <field name="bl_id" table="invoice" />
+        <!--field name="ls_id" table="invoice" />
+        <field name="pr_id" table="invoice" /-->
+        <field name="doc" table="invoice" />
+        <field name="description" table="invoice" /> 
+        <restriction type="sql" sql="invoice.project_id IS NOT NULL"/>       
+    </dataSource>
+    
+    <dataSource id="projStatDashInvDs2">
+        <table name="invoice_payment" role="main" />
+        <field name="invoice_id" table="invoice_payment"/>
+        <field name="payment_id" table="invoice_payment"/>
+        <field name="amount_expense" table="invoice_payment"/>
+        <field name="date_paid" table="invoice_payment"/>
+        <field name="check_number" table="invoice_payment"/>
+        <field name="description" table="invoice_payment"/>
+    </dataSource>
+    
+    <tabs id="projStatDashInvTabs" workflow="enforced">
+    		<tab name="projStatDashInvTab1" selected="true">
+    				<title>Invoice</title>
+				    <panel type="form" id="projStatDashInv_inv" dataSource="projStatDashInvDs1" showOnLoad="true" columns="2">
+				        <title>Invoice Details</title>
+				        <action id="save">
+				        		<title>Save</title>
+				        		<command type="saveForm"/>
+				        		<command type="showPanel" panelId="projStatDashCps_cps" applyParentRestriction="false"/>
+				        </action>
+				        <action id="save">
+				        		<title>Add Payment</title>
+				        		<command type="saveForm"/>
+				        		<command type="showPanel" panelId="projStatDashCps_cps" applyParentRestriction="false"/>
+				        		<command type="selectTabPage" tabPageName="projStatDashInvTab2" newRecord="true"/>
+				        </action>
+				        <action>
+				        		<title>Cancel</title>
+				        		<command type="closeDialog"/>
+				        </action>
+				        <field name="invoice_id" table="invoice" colspan="2" hidden="${record['invoice.invoice_id'] == ''}"/>
+				        <field name="project_id" table="invoice" readOnly="true"/>
+				        <field name="status" table="invoice" value="ISSUED"/>
+				        <field name="work_pkg_id" table="invoice"/>
+				        <field name="amount_tot_invoice" table="invoice" />
+				        <field name="vn_id" table="invoice" />
+				        
+				        <field name="amount_closed" table="invoice" />
+				        <field name="contact_id_send_to" table="invoice" />
+				        <field name="date_sent" table="invoice" />
+				        <field name="contact_id_remit_to" table="invoice" />
+				        <field name="date_expected_rec" table="invoice" />
+				        <field name="ac_id" table="invoice" />
+				        <field name="terms" table="invoice" />
+				        <field name="bl_id" table="invoice" />
+				        <field name="qty_invoiced" table="invoice" />
+				        <field name="doc" table="invoice" />
+				        <field name="qty_received" table="invoice" />
+				        <field/>
+				        <field name="qty_accepted" table="invoice" />
+				        <field name="description" table="invoice" colspan="2" />  
+				    </panel>
+	    </tab>
+	    <tab name="projStatDashInvTab2" >
+	    		<title>Payment</title>
+	    		<panel type="form" id="projStatDashInv_pay" dataSource="projStatDashInvDs2" showOnLoad="true">
+	    				<title>Add Payment</title>
+	    				<action id="save">
+	    						<title>Save</title>
+	    				</action>
+	    				<action>
+	    						<title>Cancel</title>
+	    						<command type="closeDialog"/>
+	    				</action>
+	    				<field name="invoice_id" table="invoice_payment" readOnly="true"/>
+			        <field name="payment_id" table="invoice_payment" hidden="${record['invoice_payment.payment_id'] == ''}"/>
+			        <field name="amount_expense" table="invoice_payment"/>
+			        <field name="date_paid" table="invoice_payment"/>
+			        <field name="check_number" table="invoice_payment"/>
+			        <field name="description" table="invoice_payment"/>
+	    		</panel>
+	    </tab>
+	  </tabs>
+</view>

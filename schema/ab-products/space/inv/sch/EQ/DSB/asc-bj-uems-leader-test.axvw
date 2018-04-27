@@ -1,0 +1,105 @@
+<view version="2.0">
+   <js file="asc-bj-uems-leader-test.js"/>
+ 
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <table name="csi" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_commnets"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_id"/>
+        <field table="eq" name="dl_id"/>
+        <field table="eq" name="servcont_id"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/> 
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="attachments_num"/>
+        <field table="eq" name="attachments_price"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="handling_em"/>
+        <field table="eq" name="sci_resh_id"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="approved"/>
+        <field table="eq" name="comments"/>
+        <field table="eq" name="approved_fiance"/>
+        <field table="eq" name="date_fin_approved"/>
+        <field table="eq" name="approved_by_fin"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="is_assign"/>
+        <field table="eq" name="number2"/>
+        <field table="eq" name="option1"/>
+        <field table="eq" name="option2"/>
+    </dataSource>
+    
+    <dataSource id="ascBjEqSumByYearDs">
+        <sql dialect="generic">
+           select niandai,sum(price) ${sql.as} sumPrice,count(*) ${sql.as} CountEq
+            from (select date_purchased,price,eq_id,
+              (case when date_purchased &gt;TO_DATE('1950/01/01','YYYY/MM/DD') and date_purchased &lt;=TO_DATE('1970/12/31','YYYY/MM/DD') then ${parameters['5070']}
+                    when date_purchased &gt;TO_DATE('1970/01/01','YYYY/MM/DD') and date_purchased &lt;=TO_DATE('1990/12/31','YYYY/MM/DD') then ${parameters['7090']}
+                    when date_purchased &gt;TO_DATE('1990/01/01','YYYY/MM/DD') and date_purchased &lt;=TO_DATE('2010/12/31','YYYY/MM/DD') then ${parameters['902010']}
+                     else  ${parameters['2010after']} end) ${sql.as} niandai
+                        from eq) group by niandai
+        </sql>
+        <table name="eq" role="main"/>
+        <parameter name="5070" dataType="text" value=""/>
+        <parameter name="7090" dataType="text" value=""/>
+        <parameter name="902010" dataType="text" value=""/>
+        <parameter name="2010after" dataType="text" value=""/>
+        <field table="eq" name="CountEq" dataType="number" decimals="0"/>
+        <field table="eq" name="niandai" dataType="text"/>
+        <field table="eq" name="sumPrice" dataType="number" decimals="0"/>
+    </dataSource>
+    <panel  id="chartPie_chart" 
+            type="chart" 
+            controlType="pieChart" 
+            dataSource="ascBjEqSumByYearDs" 
+            showLegendOnLoad="true"
+            showLegendAsPopUp="false" 
+            legendLocation="right"
+            showDataTips="true" 
+            backgroundColor="0xc6e2ff" 
+            fillColor="0xff0000"
+            fillType="solid"
+            >
+        <title translatable="true">Select Eq By Year</title>
+            <event type="onClickItem">                 
+                 <command type="callFunction" functionName="selectEqByYear"/>
+            </event>
+            <action id="exportDOCX">
+                <title>Report</title>
+                <command type="exportPanel" outputType="docx" panelId="chartPie_chart"/>
+            </action> 
+            <groupingAxis dataSource="ascBjEqSumByYearDs" table="eq" field="niandai" labelRotation="45">
+                <title translatable="true">Property</title>
+            </groupingAxis>
+            <dataAxis dataSource="ascBjEqSumByYearDs" table="eq" field="sumPrice" labelPosition="callout">
+                <title translatable="true">Book Value</title>
+            </dataAxis>
+    </panel>
+    
+    
+   
+   
+    
+    
+   
+</view>

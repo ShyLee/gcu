@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <!-- ================== Bean definitions for applications. This file is a part of the root Spring context configuration file. =========== -->
+    <!-- The beans defined here are shared between all projects. -->
+    <!-- The beans defined here can be exposed through DWR. -->
+
+    <!-- Load property files for applications. -->
+    <!-- Configurer that replaces $Applications{...} placeholders with values from properties files -->
+    <bean
+        id="propertyConfigurerApplications"
+        class="com.archibus.utility.LoggingPropertyPlaceholderConfigurer"
+        p:placeholderPrefix="$Applications{">
+        <property name="locations">
+            <list>
+                <value>
+                    classpath:context/applications/mobileservices.properties
+                </value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Load additional configuration files into the context. -->
+    <bean
+        id="contextPostProcessorApplications"
+        class="com.archibus.servletx.WebCentralContextPostProcessor">
+        <property name="configurationFiles">
+            <list>
+                <value>$Applications{mobileServices.configurationFile}</value>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="..\..\..\..\schema\ab-products\common\resources\appContext-services.xml"/>
+
+</beans>

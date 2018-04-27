@@ -1,0 +1,201 @@
+<view version="2.0">
+    <title>Equipment Management</title>
+    <js file="asc-bj-usms-eq-budget-comp-add.js"/>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="60" split="true"/>
+        <center />
+    </layout>
+    <layout type="borderLayout" id="nextLayout" containingLayout="mainLayout" region="center">
+        <west initialSize="30%" autoScroll="true" split="true"/>
+        <center />
+    </layout>
+    <layout type="borderLayout" id="nextCenterLayout" containingLayout="nextLayout" region="center">
+        <north initialSize="30%" autoScroll="true" split="true"/>
+        <center autoScroll="true"/>
+    </layout>
+    <dataSource id="ascBjUsmsBudgetCompAddDs">
+        <sql dialect="generic">
+            SELECT a.budget_id,
+            a.name,
+            a.type,
+            a.dv_id,
+            dv.dv_name,
+            a.cost_budget_cap,
+            a.comments,
+            a.fiscal_year,
+            (select sum(b.sch_capital)
+            from eq_budget_item b
+            where b.budget_id = a.budget_id) ${sql.as} sch_capital,
+       
+            (select sum(b.dv_capital)
+            from eq_budget_item b
+            where b.budget_id = a.budget_id) ${sql.as} dv_capital,
+       
+            (select sum(b.other_capital)
+            from eq_budget_item b
+            where b.budget_id = a.budget_id) ${sql.as} other_capital,
+       
+            (select NVL(sum(c.total_price),0)
+            from add_eq c
+            where c.budget_id = a.budget_id) ${sql.as} add_total_price,
+       
+            a.cost_budget_cap - (select NVL(sum(c.total_price),0)
+            from add_eq c
+            where c.budget_id = a.budget_id) ${sql.as} yusuanyue
+            from eq_budget a,dv where a.dv_id=dv.dv_id and a.status !='0' and ${parameters['para_year']}
+        </sql>
+        <table name="eq_budget" role="main"/>
+        <field table="eq_budget" name="budget_id" dataType="text" />
+        <field table="eq_budget" name="type" dataType="text"/>
+        <field table="eq_budget" name="dv_id" dataType="text"/>
+        <field table="eq_budget" name="dv_name" dataType="text"/>
+        <field table="eq_budget" name="name" dataType="text"/>
+        <field table="eq_budget" name="fiscal_year" dataType="text"/>
+        <field table="eq_budget" name="cost_budget_cap" dataType="text"/>
+        <field table="eq_budget" name="comments" dataType="text"/>
+        <field table="eq_budget" name="sch_capital" dataType="number" decimals="2"/>
+        <field table="eq_budget" name="dv_capital" dataType="number" decimals="2"/>
+        <field table="eq_budget" name="other_capital" dataType="number" decimals="2"/>
+        <field table="eq_budget" name="add_total_price" dataType="number" decimals="2"/>
+        <field table="eq_budget" name="yusuanyue" dataType="number" decimals="2"/>
+        
+         <parameter name="para_year" dataType="verbatim" value=" 1=1"/> 
+    </dataSource>
+    <dataSource id="ascBjUsmsBudgetCompAddBudgetItemGridDs">
+        <table name="eq_budget_item" role="main"/>
+        <field table="eq_budget_item" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_item_id"/>
+<!--         <field table="eq_budget_item" name="add_eq_id"/> -->
+        <field table="eq_budget_item" name="eq_name"/>
+        <field table="eq_budget_item" name="csi_id"/>
+        <field table="eq_budget_item" name="use"/>
+        <field table="eq_budget_item" name="count"/>
+        <field table="eq_budget_item" name="price"/>
+        <field table="eq_budget_item" name="total_cost"/>
+        <field table="eq_budget_item" name="units"/>
+        <field table="eq_budget_item" name="comments"/>
+    </dataSource>
+    <panel type="console" id="consolePanel" dataSource="ascBjUsmsBudgetCompAddDs" layout="mainLayout" region="north" columns="3">
+        <title>Filter</title>
+        <action id="btnShow">
+            <title>Show</title>
+        </action>
+        <action id="btnClear">
+            <title>Clear</title>
+        </action>
+        
+        <field table="eq_budget" name="budget_id" dataType="text">
+            <action>
+                 <title>...</title>
+                 <tooltip>Select Value</tooltip>
+                 <command type="selectValue" fieldNames="eq_budget.budget_id"
+                    selectFieldNames="eq_budget.budget_id" 
+                    visibleFieldNames="eq_budget.budget_id,eq_budget.comments" 
+                    restriction="eq_budget.status !='0'"
+                    showIndex="false"/>
+             </action>
+        </field>
+        <field table="eq_budget" name="dv_id" dataType="text">
+            <action>
+                 <title>...</title>
+                 <tooltip>Select Value</tooltip>
+                 <command type="selectValue" fieldNames="eq_budget.budget_id,eq_budget.dv_id"
+                    selectFieldNames="eq_budget.budget_id,eq_budget.dv_id" 
+                    visibleFieldNames="eq_budget.budget_id,eq_budget.dv_id,dv.dv_name" 
+                    filterFieldNames="eq_budget.budget_id"
+                    restriction="eq_budget.status !='0'"
+                    showIndex="false"/>
+             </action>
+        </field>
+         <field table="eq_budget" name="fiscal_year" dataType="text">
+            <action>
+                 <title>...</title>
+                 <tooltip>Select Value</tooltip>
+                 <command type="selectValue" fieldNames="eq_budget.fiscal_year"
+                    selectFieldNames="eq_budget.fiscal_year" 
+                    visibleFieldNames="eq_budget.fiscal_year" 
+                    restriction="eq_budget.status !='0'"
+                    showIndex="false"/>
+             </action>
+         </field>
+    </panel>
+    <panel type="grid" id="gridPanel" dataSource="ascBjUsmsBudgetCompAddDs" layout="nextLayout" region="west" showOnLoad="false">
+        <title>List Of Select</title>
+        <field table="eq_budget" name="budget_id" dataType="text" controlType="link">
+           <command type="showPanel" panelId="columnReportPanel"/>
+           <command type="showPanel" panelId="bugetItemGridPanel"/>
+        </field>
+        <field table="eq_budget" name="name" dataType="text"/>
+        <field table="eq_budget" name="dv_id" dataType="text" hidden="true"/>
+        <field table="eq_budget" name="dv_name" dataType="text">
+        	<title>Dv Name</title>
+        </field>
+        <field table="eq_budget" name="type" dataType="text"/>
+        <field table="eq_budget" name="comments" dataType="text"/>
+    </panel>
+    <panel type="columnReport" id="columnReportPanel" dataSource="ascBjUsmsBudgetCompAddDs" columns="2" showOnLoad="false" layout="nextCenterLayout" region="north">
+        <title>Detail Of The Select</title>
+        <action id="exportDOCX" hidden="true">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="columnReportPanel"/>
+        </action>
+       
+        <field table="eq_budget" name="budget_id" dataType="text" width="200"/>
+        
+        <field table="eq_budget" name="cost_budget_cap" dataType="text" width="200"/> 
+        <field/>
+        <field id="xinzeng">
+            <title>qizhong</title>
+        </field>
+        <field table="eq_budget" name="dv_id" dataType="text" hidden="true"/>
+        <field table="eq_budget" name="dv_name" dataType="text">
+        	<title>Dv Name</title>
+        </field>
+        <field table="eq_budget" name="sch_capital" dataType="number" decimals="2">
+            <title>XiaoBoZiJin</title>
+        </field>
+        <field/>
+        <field table="eq_budget" name="dv_capital" dataType="number" decimals="2">
+            <title>BuMenFaZhanZiJin</title>
+        </field>
+        <field table="eq_budget" name="add_total_price" dataType="number" decimals="2">
+            <title>YiBaoZengZongE</title>
+        </field>
+       
+        <field table="eq_budget" name="other_capital" dataType="number" decimals="2">
+            <title>QiTaZiJin</title>
+        </field>
+       <field/>
+       <field/>
+        <field table="eq_budget" name="yusuanyue" dataType="number" decimals="2">
+            <title>YuSuanYuE</title>
+        </field>
+        <field />
+        <field />
+        <field />
+        <field table="eq_budget" name="comments" dataType="text"/>
+    </panel>
+    <panel type="grid" id="bugetItemGridPanel" dataSource="ascBjUsmsBudgetCompAddBudgetItemGridDs" showOnLoad="false" layout="nextCenterLayout" region="center">
+        <title>bao zeng of this year</title>
+         <field id="LianJie" controlType="button" width="80">
+            <title>Slect</title>
+            <command type="callFunction" functionName="showDetailDialog"/>
+         </field>
+        <field id="PiCi">
+            <title>BaoZengPiCi</title>
+        </field>
+         <field table="eq_budget_item" name="budget_id" />
+         <field table="eq_budget_item" name="budget_item_id"/>
+<!--          <field table="eq_budget_item" name="add_eq_id"/> -->
+         <field table="eq_budget_item" name="eq_name"/>
+         <field table="eq_budget_item" name="csi_id"/>
+         <field table="eq_budget_item" name="use"/>
+         <field table="eq_budget_item" name="count"/>
+         <field table="eq_budget_item" name="price"/>
+         <field table="eq_budget_item" name="total_cost"/>
+         <field table="eq_budget_item" name="units" width="100"/>
+         <field table="eq_budget_item" name="comments"/>
+         <sortField table="eq_budget_item" name="budget_id"/>
+         <sortField table="eq_budget_item" name="budget_item_id"/>
+    </panel>
+</view>

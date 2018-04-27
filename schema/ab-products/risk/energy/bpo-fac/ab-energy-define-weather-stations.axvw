@@ -1,0 +1,96 @@
+<!-- map with single datasource  -->
+<view version="2.0" docType="html4/strict">
+	<message name="miles" translatable="true">Miles</message>
+	<message name="km" translatable="true">Km</message>
+	<message name="set_radius" translatable="true">Distance from Building:</message>
+	<message name="invalidLic" translatable="true">You have not licensed the ESRI ArcGIS Online Services that support this view. Please refer to the Enabling GIS Services System Management Help topic for instructions on how to enable this view.</message>
+	<message name="messageConfirmGeoCode" translatable="true">This building has not yet been GeoCoded, would you like to GeoCode it right now?</message>
+	<message name="msg_ie_eight" translatable="true">You are using Interner Explorer 8. To properly display maps please turn on the Compatibility mode by clicking on the Tools : Compatibility View menu</message>
+	<js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+	<js file="ab-energy-define-weather-stations.js"/>
+	<js file="ab-arcgis-map.js"/>
+	<js file="ab-arcgis-geocoder.js"/>
+	<!--layout file="dashboard-1-1-0.axvw"/-->
+	
+	<layout type="borderLayout" id="mainLayout">
+	    	<west initialSize="400" split="true"/>
+		<center autoScroll="true"/>
+	</layout>
+	<layout type="borderLayout" id="nestedLayout_1" containingLayout="mainLayout" region="west">
+		<north initialSize="60%" split="true"/>
+		<center autoScroll="true"/>
+  	</layout>
+	<css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css"/>
+	<dataSource id="bl_ds">
+		<table name="bl" role="main"/>
+		<field name="name" table="bl"/>
+		<field name="site_id" table="bl"/>
+		<field name="bl_id" table="bl"/>
+		<field name="address1" table="bl"/>
+		<field name="address2" table="bl"/>
+		<field name="lat" table="bl"/>
+		<field name="lon" table="bl"/>
+		<field name="weather_station_id" table="bl"/>
+		<field name="state_id" table="bl"/>
+		<field name="city_id" table="bl"/>
+		<field name="weather_source_id" table="bl"/>
+		<!--restriction type="sql" sql="(bl.lat IS NOT NULL OR bl.lon IS NOT NULL)"/-->
+	</dataSource>
+	<panel type="html" id="distancePanel" layout="nestedLayout_1" region="north">
+		<title translatable="true">1. Set Search Radius</title>		
+		<html>
+			<div id="set_radius" style="display: inline; font-size: 9px; padding: 3px;" class="panelReport"></div>
+			<input id="distance" type="text" style="width: 30px; height: 12px; font-size: 9px;" value="15"/>
+			<span style="font-size: 9px; color: gray;">
+				<input id="miles" type="radio" name="unit" value="miles" checked="true"/> <span id="miles_label"></span>
+				<input id="km" type="radio" name="unit" value="km" /> <span id="km_label"></span>
+			</span>
+		</html>
+	</panel> 	
+	<panel type="grid" id="bl_list" dataSource="bl_ds" layout="nestedLayout_1" region="north">
+		<title translatable="true">2. Select a Building</title>	
+		<sortField table="bl" name="bl_id" ascending="true"/>
+		<indexField table="bl" name="bl_id"/>		
+		<field id="Mapit" controlType="button">
+			<command type="showPanel" panelId="bl_form" />
+		    <title translatable="true">Select</title>
+		</field>
+		<field id="GeoCode" controlType="button" enabled="${record['bl.lat'] == '' || record['bl.lon'] == ''}">
+			<command type="showPanel" panelId="bl_form" />
+		    	<title translatable="true">GeoCode</title>
+		</field>		
+		<field name="site_id" table="bl"/>
+		<field name="bl_id" table="bl"/>
+		<field name="weather_station_id" table="bl"/>
+		<field name="lat" table="bl"/>
+		<field name="lon" table="bl"/>		
+	</panel>	
+	<panel type="html" id="mapPanel" layout="mainLayout" region="center">
+		<title translatable="true">3. Select a Weather Station</title>
+		<action id="layersMenu">
+			<title translatable="true">Map Type</title>
+		</action>		
+		<html>
+			<div id="map"></div>
+		</html>
+	</panel>
+	<panel type="form" id="bl_form" dataSource="bl_ds" layout="nestedLayout_1" region="center" showOnLoad="false" columns="2" labelsPosition="top">
+		<action id="abVnAcEdit_save">
+		    <title translatable="true">4. Save Changes</title>
+		    <command type="saveForm"/>
+		    <command type="showPanel" panelId="bl_list" clearRestriction="true"/>
+		</action>
+		<title translatable="true"></title>
+		<field name="bl_id" table="bl" readOnly="true" hidden="true"/>
+		<field name="name" table="bl" readOnly="true"/>
+		<field />
+		<field name="lat" table="bl" readOnly="true"/>
+		<field name="lon" table="bl" readOnly="true"/>		
+		<field name="weather_station_id" table="bl"/>
+		<field name="weather_source_id" table="bl"/>		
+		<field name="address1" table="bl" readOnly="true"/>
+		<field name="address2" table="bl" readOnly="true"/>
+		<field name="city_id" table="bl" readOnly="true"/>
+		<field name="state_id" table="bl" readOnly="true"/>
+	</panel>	
+</view>

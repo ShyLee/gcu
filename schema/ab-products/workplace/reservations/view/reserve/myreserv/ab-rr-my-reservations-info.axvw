@@ -1,0 +1,56 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+   
+    <message translatable="true" name="cancelCurrent">Do you wish to cancel only this selected reservation?</message>
+    <message translatable="true" name="cancelRecurrent">Do you wish to cancel all the reservations in the recurrence set?</message>
+    
+    <!-- List of reservations -->
+    <dataSource id="ds_ab-rr-my-reservations-info_grid_reserve">
+        <table name="reserve" role="main"/>
+        <field table="reserve" name="res_id"/>
+        <field table="reserve" name="date_start"/>
+        <field table="reserve" name="user_requested_for"/>
+        <field table="reserve" name="user_requested_by"/>
+        <field table="reserve" name="time_start"/>
+        <field table="reserve" name="time_end"/>
+        <field table="reserve" name="status"/>
+        <field table="reserve" name="reservation_name"/>
+    </dataSource>
+    
+    <panel id="infoReport" type="grid" dataSource="ds_ab-rr-my-reservations-info_grid_reserve" showOnLoad="false">
+        <field table="reserve" name="res_id"/>
+        <field table="reserve" name="date_start"/>
+        <field table="reserve" name="user_requested_for"/>
+        <field table="reserve" name="user_requested_by"/>
+        <field table="reserve" name="time_start"/>
+        <field table="reserve" name="time_end"/>
+        <field table="reserve" name="status"/>
+        <field table="reserve" name="reservation_name"/>
+        <field id="edit" controlType="button">
+                <title translatable="true">Edit</title>
+        </field>
+        <field id="cancelReserv" controlType="button">
+                <title translatable="true">Cancel</title>
+        </field>
+        <field id="cancelRecurReserv" controlType="button">
+                <title translatable="true">Cancel Recurring</title>
+        </field>
+        <field id="copy" controlType="button">
+                <title translatable="true">Copy</title>
+				<command type="openDialog" viewName="ab-rr-room-copy-reservation.axvw" newRecord="false" width="500" height="400"/>
+        </field>
+        <field id="viewComments" controlType="button">
+                <title translatable="true">View Comments</title>
+				<command type="openDialog" viewName="ab-rr-content-my-reservation-comments.axvw" newRecord="true" width="780" height="400" closeButton="false"/>
+        </field>
+ 
+        <sortField name="date_start" table="reserve" ascending="false"/>
+        <sortfield name="time_start" table="reserve" ascending="false"/>
+    </panel>
+    
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-my-reservation-detailtab-common.js"/>
+    <js file="ab-rr-my-reservations-info.js"/>
+</view>

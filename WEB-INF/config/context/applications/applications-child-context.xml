@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <!-- ========================= Bean definitions for applications. This is a child Spring context, loaded for each project instance. It will become a child context of the /core/project-child-context.xml context. This means that bean definitions here will override bean definitions with the same names in the parent context. ========================= -->
+    <!-- A bean belongs here if all of the following conditions are met: -->
+    <!-- 1. The bean class belongs to an application. -->
+    <!-- 2. The bean is not referenced in a core Java class, or it is referenced conditionally. -->
+    <!-- 3. The bean is not referenced in DWR configuration file. -->
+    <!-- The "ext" package does not belong to the core. -->
+
+    <!-- dataEventListeners bean specifies which listeners will be notified about data events. The beans in the list must implement DataEventListener interface. The dataEventListeners bean is used by ProjectImpl and TransactionTemplate. -->
+    <util:list id="dataEventListeners">
+        <ref bean="workflowRuleInvokerDataEventListener"/>
+    </util:list>
+    <!-- Listener which is configured to be notified by the core when there is a DataEvent. Invokes all active workflow rules of DataEvent type. -->
+    <!-- Requires archibus-system-administration.jar -->
+    <bean
+        id="workflowRuleInvokerDataEventListener"
+        class="com.archibus.app.sysadmin.event.data.WorkflowRuleInvokerDataEventListener"
+        p:project-ref="project"/>
+
+    <!-- Configured as a WFR of DataEvent type. The security group of this WFR is always ignored. The WFR container loads "AbSystemAdministration-DataChangeLogger" bean. Listener which will be notified by the core when there is a DataEvent. -->
+    <!-- Requires archibus-system-administration.jar -->
+    <bean
+        id="AbSystemAdministration-DataChangeLogger"
+        class="com.archibus.app.sysadmin.event.data.LoggerDataEventListener"
+        p:project-ref="project"
+        p:loggerRecordChanged-ref="loggerRecordChanged"
+        p:loggerSqlExecuted-ref="loggerSqlExecuted"
+        scope="prototype"/>
+
+    <bean
+        id="loggerSqlExecuted"
+        class="com.archibus.app.sysadmin.event.data.LoggerSqlExecuted"
+        p:sqlExecutedDao-ref="sqlExecutedDao"
+        scope="prototype"/>
+
+    <bean
+        id="loggerRecordChanged"
+        class="com.archibus.app.sysadmin.event.data.LoggerRecordChanged"
+        p:recordChangedDao-ref="recordChangedDao"
+        scope="prototype"/>
+
+    <!-- Configured as a WFR of DataEvent type. The security group of this WFR is always ignored. The WFR container loads "AbSpaceRoomInventoryBAR-RoomTransactionRecorderForDataChangeEvent" bean. Listener which will be notified by the core when there is a DataEvent. -->
+    <!-- TODO Requires archibus-space???.jar -->
+    <bean
+        id="AbSpaceRoomInventoryBAR-RoomTransactionRecorderForDataChangeEvent"
+        class="com.archibus.service.space.datachangeevent.RoomTransactionDataEventListener"
+        p:project-ref="project"
+        p:roomTransactionService-ref="roomTransactionService"
+        p:roomDao-ref="roomDao"
+		p:employeeDataSource-ref="employeeDataSource"
+        scope="prototype"/>
+
+    <!-- Configured as a WFR of DataEvent type. The security group of this WFR is always ignored. The WFR container loads "AbRiskMSDS-MsdsDataChangeEvent" bean. Listener which will be notified by the core when there is a DataEvent. Records any MSDS data changes to according historical tables. -->
+    <bean
+        id="AbRiskMSDS-MsdsDataChangeEvent"
+        class="com.archibus.eventhandler.msds.MsdsDataEventListener"
+        scope="prototype"/>
+
+    <!-- Local version of RoomTransactionService, used by WFRs. -->
+    <bean
+        id="roomTransactionService"
+        class="com.archibus.service.space.datachangeevent.RoomTransactionService"
+        p:roomDao-ref="roomDao"
+		p:roomTransactionDao-ref="roomTransactionDao"
+        p:insertRoomTransactionRecorder-ref="insertRoomTransactionRecorder"
+        p:updateRoomTransactionRecorder-ref="updateRoomTransactionRecorder"
+        p:deleteRoomTransactionRecorder-ref="deleteRoomTransactionRecorder"
+        p:insertEmployeeRecorder-ref="insertEmployeeRecorder"
+        p:updateEmployeeRecorder-ref="updateEmployeeRecorder"
+        p:deleteEmployeeRecorder-ref="deleteEmployeeRecorder"
+        scope="prototype">
+    </bean>
+    <bean
+        id="insertRoomTransactionRecorder"
+        class="com.archibus.service.space.datachangeevent.InsertRoomTransactionRecorder"
+        p:roomTransactionDao-ref="roomTransactionDao"
+        p:roomDao-ref="roomDao"
+        scope="prototype">
+    </bean>
+    <bean
+        id="updateRoomTransactionRecorder"
+        class="com.archibus.service.space.datachangeevent.UpdateRoomTransactionRecorder"
+        p:roomTransactionDao-ref="roomTransactionDao"
+        p:roomDao-ref="roomDao"
+        scope="prototype">
+    </bean>
+    <bean
+        id="deleteRoomTransactionRecorder"
+        class="com.archibus.service.space.datachangeevent.DeleteRoomTransactionRecorder"
+        p:roomTransactionDao-ref="roomTransactionDao"
+        p:roomDao-ref="roomDao"
+        p:archivedRoomTransactionDao-ref="archivedRoomTransactionDao"
+        scope="prototype">
+    </bean>
+
+    <bean
+        id="insertEmployeeRecorder"
+        class="com.archibus.service.space.datachangeevent.InsertEmployeeRecorder"
+        p:project-ref="project"
+        p:roomTransactionDao-ref="roomTransactionDao"
+        p:roomDao-ref="roomDao"
+        p:roomCategoryDao-ref="roomCategoryDao"
+        scope="prototype">
+    </bean>
+    <bean
+        id="updateEmployeeRecorder"
+        class="com.archibus.service.space.datachangeevent.UpdateEmployeeRecorder"
+        p:project-ref="project"
+        p:roomTransactionDao-ref="roomTransactionDao"
+        p:roomDao-ref="roomDao"
+        p:roomCategoryDao-ref="roomCategoryDao"
+        scope="prototype">
+    </bean>
+    <bean
+        id="deleteEmployeeRecorder"
+        class="com.archibus.service.space.datachangeevent.DeleteEmployeeRecorder"
+        p:project-ref="project"
+        p:roomTransactionDao-ref="roomTransactionDao"
+        p:roomDao-ref="roomDao"
+        p:archivedRoomTransactionDao-ref="archivedRoomTransactionDao"
+        scope="prototype">
+    </bean>
+
+    <!-- room bean. -->
+    <bean
+        id="roomBean"
+        class="com.archibus.app.common.space.domain.Room"
+        scope="prototype">
+    </bean>
+    <bean
+        id="employee"
+        class="com.archibus.app.common.organization.domain.Employee"
+        scope="prototype">
+    </bean>
+    <bean
+        id="roomCategory"
+        class="com.archibus.app.common.space.domain.RoomCategory"
+        scope="prototype">
+    </bean>
+    <bean
+        id="roomDao"
+        class="com.archibus.app.common.space.dao.datasource.RoomDataSource"
+        scope="prototype">
+    </bean>
+	<bean id="employeeDataSource"
+		class="com.archibus.app.common.organization.dao.datasource.EmployeeDataSource" 		 
+		scope="prototype">  
+	</bean> 
+
+    <!-- roomTransaction bean. -->
+    <bean
+        id="roomTransaction"
+        class="com.archibus.app.common.space.domain.RoomTransaction"
+        scope="prototype">
+    </bean>
+    <bean
+        id="roomTransactionDao"
+        class="com.archibus.app.common.space.dao.datasource.RoomTransactionDataSource"
+        scope="prototype">
+    </bean>
+    <bean
+        id="roomCategoryDao"
+        class="com.archibus.app.common.space.dao.datasource.RoomCategoryDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- archivedRoomTransaction bean. -->
+    <bean
+        id="archivedRoomTransaction"
+        class="com.archibus.app.common.space.domain.ArchivedRoomTransaction"
+        scope="prototype">
+    </bean>
+    <bean
+        id="archivedRoomTransactionDao"
+        class="com.archibus.app.common.space.dao.datasource.ArchivedRoomTransactionDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- recordChanged bean. -->
+    <bean
+        id="recordChanged"
+        class="com.archibus.app.common.event.domain.RecordChanged"
+        scope="prototype">
+    </bean>
+    <bean
+        id="recordChangedDao"
+        class="com.archibus.app.common.event.dao.datasource.RecordChangedDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- sqlExecuted bean. -->
+    <bean
+        id="sqlExecuted"
+        class="com.archibus.app.common.event.domain.SqlExecuted"
+        scope="prototype">
+    </bean>
+    <bean
+        id="sqlExecutedDao"
+        class="com.archibus.app.common.event.dao.datasource.SqlExecutedDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- notification bean. -->
+    <bean
+        id="notificationBean"
+        class="com.archibus.app.common.notification.domain.Notification"
+        scope="prototype">
+    </bean>
+    <bean
+        id="notificationDao"
+        class="com.archibus.app.common.notification.dao.datasource.NotificationDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- notification template bean. -->
+    <bean
+        id="notificationTemplateBean"
+        class="com.archibus.app.common.notification.domain.NotificationTemplate"
+        scope="prototype">
+    </bean>
+    <bean
+        id="notificationTemplateDao"
+        class="com.archibus.app.common.notification.dao.datasource.NotificationTemplateDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- notification message bean. -->
+    <bean
+        id="notificationMessageBean"
+        class="com.archibus.app.common.notification.domain.NotificationMessage"
+        scope="prototype">
+    </bean>
+    <bean
+        id="notificationMessageDao"
+        class="com.archibus.app.common.notification.dao.datasource.NotificationMessageDataSource"
+        scope="prototype">
+    </bean>
+
+</beans>
+

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- ======================= Examples of WebServices using CXF ======================== -->
+	<!-- Remoting: stateless WebServices; remotingFilter supplies context with specified project. -->
+
+	<import resource="../../cxf-common/cxf-common.xml" />
+
+	<!-- Booking Service (example) -->
+	<bean id="bookingService-remote" class="com.archibus.app.solution.common.eventhandler.webservice.BookingServiceImpl" />
+	<jaxws:endpoint id="bookingService-ws" implementor="#bookingService-remote" address="/BookingService"> 
+        <jaxws:dataBinding>
+            <ref bean="aegisDataBinding" />
+        </jaxws:dataBinding>
+	</jaxws:endpoint>
+
+
+	<!-- HelloWorld Service (example). -->
+	<bean id="hello-remote" class="com.archibus.app.solution.common.webservice.helloworld.HelloWorldImpl" />
+	<jaxws:endpoint id="helloWorld-ws" implementor="#hello-remote" address="/HelloWorld" >
+        <jaxws:dataBinding>
+            <ref bean="aegisDataBinding" />
+        </jaxws:dataBinding>
+	</jaxws:endpoint>
+
+
+	<!-- LogicExample Service (example). -->
+	<bean id="logicExampleService-remote" class="org.springframework.aop.framework.ProxyFactoryBean"
+		p:proxyInterfaces="com.archibus.app.solution.common.webservice.logicexample.LogicExampleService">
+		<property name="target">
+			<bean class="com.archibus.app.solution.common.webservice.logicexample.LogicExampleServiceImpl">
+			</bean>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<!--
+					TODO <value>securityInterceptor</value>
+				-->
+				<value>exceptionHandlingInterceptor</value>
+				<value>contextInterceptor</value>
+				<value>transactionInterceptor.data</value>
+				<value>eventHandlerContextInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	<jaxws:endpoint id="logicExampleService-ws" implementor="#logicExampleService-remote"
+		address="/LogicExampleService">
+		<jaxws:dataBinding>
+			<ref bean="aegisDataBinding" />
+		</jaxws:dataBinding>
+	</jaxws:endpoint>
+
+	<!-- Cost Upload Service (example). -->
+	<bean id="costService-remote" class="org.springframework.aop.framework.ProxyFactoryBean"
+		p:proxyInterfaces="com.archibus.app.solution.common.webservice.cost.server.CostService">
+		<property name="target">
+            <ref bean="costService" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<!--
+					TODO <value>securityInterceptor</value>
+				-->
+				<value>exceptionHandlingInterceptor</value>
+				<value>contextInterceptor</value>
+				<value>transactionInterceptor.data</value>
+				<value>eventHandlerContextInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	<jaxws:endpoint id="costService-ws" implementor="#costService-remote"
+		address="/CostService">
+	</jaxws:endpoint>
+    <bean id="costService" class="com.archibus.app.solution.common.webservice.cost.server.CostServiceImpl"
+        p:actualCostDataSource-ref="actualCostDataSource">
+    </bean>
+
+    <!-- ActualCostDataSource -->
+    <bean id="actualCost" class="com.archibus.app.common.finance.domain.ActualCost" scope="prototype">
+    </bean>
+    <bean id="actualCostDataSource" class="com.archibus.app.common.finance.dao.datasource.ActualCostDataSource"
+        scope="prototype">
+    </bean>
+</beans>

@@ -1,0 +1,109 @@
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr//dwr30.dtd">
+
+<dwr>
+    <init>
+        <converter id="customTypeConverter" class="com.archibus.app.common.mobile.sync.service.dwr.CustomTypeConverter"/> 
+        <converter id="date" class="com.archibus.app.common.mobile.sync.service.dwr.CustomDateConverter"/>    
+    </init>
+    <allow>
+    	<create creator="new" javascript="FileUpload" scope="application">  
+            <param name="class" value="com.archibus.service.space.DWRUploadService" />  
+        </create>  
+        
+        <create creator="spring" javascript="AjaxDataService" >  
+            <param name="beanName" value="ajaxDataService" />  
+        </create>  
+        <create creator="new" javascript="workflow">
+            <param name="class" value="com.archibus.servlet.DWRWorkflowService" />
+        </create>
+        <create creator="spring" javascript="AdminService">
+            <param name="beanName" value="adminServiceForUi" />
+        </create>
+        <create creator="spring" javascript="DocumentService">
+            <param name="beanName" value="documentService" />
+        </create>
+        <create creator="spring" javascript="SecurityService">
+            <param name="beanName" value="securityService" />
+        </create>
+        <create creator="spring" javascript="SmartClientConfigService">
+            <param name="beanName" value="smartClientConfigService-remote" />
+        </create>
+        <create creator="spring" javascript="AddInManagerService">
+            <param name="beanName" value="addInManagerService" />
+        </create>
+        <create creator="spring" javascript="AppUpdateWizardService">
+            <param name="beanName" value="appUpdateWizardService" />
+        </create>
+        <create creator="spring" javascript="SchemaUpdateWizardService">
+            <param name="beanName" value="schemaUpdateWizardService" />
+        </create>
+        <create creator="spring" javascript="ProjectUpdateWizardService">
+            <param name="beanName" value="projectUpdateWizardService" />
+        </create>
+        <create creator="spring" javascript="MobileSyncService">
+            <param name="beanName" value="mobileSyncService-remote" />
+        </create>
+        <create creator="spring" javascript="MobileSecurityService">
+            <param name="beanName" value="mobileSecurityService-remote" />
+        </create>
+        <create creator="spring" javascript="DrawingSvgService">
+            <param name="beanName" value="drawingSvgService-remote" />
+        </create>
+
+        <convert match="java.lang.Exception" converter="exception">
+            <param name="exclude" value="stackTrace" />
+        </convert>
+        <convert converter="bean" match="org.directwebremoting.io.FileUpload" />
+
+        <convert converter="bean" match="com.archibus.model.*" />
+        <convert converter="bean" match="com.archibus.model.config.BeanConfig" />
+        <convert converter="bean" match="com.archibus.model.config.LocaleConfig" />
+        <convert converter="bean" match="com.archibus.model.config.LocalizedStringConfig" />
+        <convert converter="bean" match="com.archibus.model.config.ProjectConfig" />
+        <convert converter="bean" match="com.archibus.model.config.UnitsProperties" />
+        <convert converter="bean" match="com.archibus.model.config.Currency" />
+        <convert converter="bean" match="com.archibus.model.drawing.*" />
+        <convert converter="bean" match="com.archibus.model.licensing.*" />
+        <convert converter="bean" match="com.archibus.model.schema.*" />
+        <convert converter="bean" match="com.archibus.model.security.*" />
+        <convert converter="bean" match="com.archibus.model.view.*" />
+        <convert converter="bean" match="com.archibus.model.view.report.*" />
+        <convert converter="bean" match="com.archibus.context.*" />
+        
+        <convert converter="enum" match="com.archibus.model.config.ProjectConfig$BaseUnits" />
+        <convert converter="enum" match="com.archibus.model.config.ProjectConfig$DatabaseEngineType" />
+        <convert converter="enum" match="com.archibus.model.config.ProjectConfig$Units" />
+
+        <convert converter="enum" match="com.archibus.model.config.Measure" />
+        <convert converter="enum" match="com.archibus.model.config.Units" />
+        <convert converter="enum" match="com.archibus.model.licensing.BimLicenseType" />
+
+        <convert converter="bean" match="com.archibus.servlet.DWRWorkflowServiceResult"/>
+
+        <convert converter="customTypeConverter" match="com.archibus.model.view.datasource.*" />
+        <convert converter="customTypeConverter" match="com.archibus.app.common.mobile.sync.service.Record" />
+        <convert converter="customTypeConverter" match="com.archibus.app.common.mobile.sync.service.AppConfig" />
+        <convert converter="customTypeConverter" match="com.archibus.app.common.mobile.sync.service.FieldNameValue" />
+        <convert converter="enum" match="com.archibus.schema.Formatting"/>
+        <convert converter="enum" match="com.archibus.model.view.AbstractViewFieldDef$DataType"/>
+        <convert converter="enum" match="com.archibus.schema.ArchibusFieldType" />
+        <convert converter="customTypeConverter" match="com.archibus.model.processor.translator.*" />
+        <convert converter="enum" match="com.archibus.model.view.datasource.ClauseDef$Operation"/>
+        <convert converter="enum" match="com.archibus.model.view.datasource.ClauseDef$RelativeOperation"/>
+        <convert match="java.util.Date" converter="date"/>
+        <convert match="java.sql.Date" converter="date"/>
+        <convert match="java.sql.Time" converter="date"/>
+        <convert match="java.sql.Timestamp" converter="date"/>
+        <convert match="java.util.Calendar" converter="date"/>
+    </allow>
+    <signatures>
+        <![CDATA[
+          import java.lang.*;
+          import java.util.*;
+          import java.io.InputStream;
+          import com.archibus.servlet.DWRWorkflowService;
+          DWRWorkflowService.runWorkflowRule(String workflowRuleName, Map<String, String> workflowRuleInputs, InputStream uploadFile);
+          DocumentService.getImage(Map<String, String> keys, String tableName, String fieldName, String version, boolean lastVersion)
+        ]]>
+    </signatures>
+</dwr>

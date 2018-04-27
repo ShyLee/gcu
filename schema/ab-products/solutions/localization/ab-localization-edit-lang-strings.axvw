@@ -1,0 +1,183 @@
+<view version="2.0">
+    <title translatable="true">Edit Language Strings Table</title>
+    <layout type="borderLayout" id="mainLayout">
+        <north autoScroll="true" split="true" initialSize="140"/>
+        <center autoScroll="true"/>
+    </layout>
+    
+    <dataSource id="abLocalizationEditLangStrings_ds_0">
+        <table name="lang_strings" role="main"/>
+        <field table="lang_strings" name="language"/>
+        <field table="lang_strings" name="string_type"/>
+        <field table="lang_strings" name="string_english"/>
+        <field table="lang_strings" name="string_trans"/>
+        <field table="lang_strings" name="date_last_updated"/>
+        <field table="lang_strings" name="transfer_status"/>
+        <field table="lang_strings" name="reference_info"/>
+        <sortField table="lang_strings" name="language"/>
+        <sortField table="lang_strings" name="string_english"/>
+        <sortField table="lang_strings" name="string_type"/>
+    </dataSource>
+    
+    <panel type="console" columns="1" id="abLocalizationEditLangStrings_consolePanel" dataSource="abLocalizationEditLangStrings_ds_0" region="north">
+        <title translatable="true">Filter</title>
+        <action type="javaScript" onclick="setFilterAndRender()">
+            <title translatable="true">Show</title>
+            <script language="javaScript">
+                     function afterViewLoad(){     
+                             var consolePrefix = 'abLocalizationEditLangStrings_consolePanel_';                            
+                             setup_enum_field(consolePrefix, 'lang_strings', 'string_type');                                         
+                     }
+
+                    function afterInitialDataFetch(){
+                        var grid =  View.panels.get('abLocalizationEditLangSringsHiddenPanel');
+                        var rows = grid.rows;
+                        var default_language = '';
+                        
+                        if (rows.length == 1){
+                            var row = rows[0];
+                            default_language = row['lang_lang.language']; 
+                        } else {
+                             default_language = window.top.locLanguage;
+                        }
+                        populateLanguage(default_language);
+                        setFilterAndRender()
+                    }
+                    
+                    function setFilterAndRender() {
+                           var restriction = new Ab.view.Restriction();
+                           var sqlRest = '';
+                           var console = View.panels.get('abLocalizationEditLangStrings_consolePanel');                 
+                           var language = $('language').value;
+                           if (language != '') {
+                                     restriction.addClause('lang_strings.language', language + '%', 'LIKE');
+                                     sqlRest += "lang_strings.language LIKE '" + language + "%' AND ";
+                            }
+                            
+                           var string_type = console.getFieldValue('lang_strings.string_type');
+                           if (string_type != '') {
+                                    restriction.addClause('lang_strings.string_type', string_type, '=');
+                                    sqlRest += "lang_strings.string_type LIKE '" + string_type + "%' AND ";
+                            }
+
+                         var report = View.panels.get('abLocalizationEditLangStrings_detailsPanel');                          
+                         if ($('abLocalizationEditLangStrings.longStrings').checked){
+                                    sqlRest += '(length(lang_strings.string_trans) > 128) AND (string_type=7 OR string_type=11 OR string_type=13 OR string_type=14)';   
+                                    report.refresh(sqlRest);
+                          }  else {
+                                    report.refresh(restriction);
+                          }                                                                
+                 }  
+                 
+                    function clearPanel(){
+                         $('language').selectedIndex = 0;
+                         $('abLocalizationEditLangStrings.longStrings').checked = false;
+                    }                             
+            </script>
+        </action>
+        <action id="abLocalizationEditLangStrings_clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="abLocalizationEditLangStrings_consolePanel"/>
+            <command type="callFunction" functionName="clearPanel"/>
+        </action>
+        <field name="language" table="lang_strings" hidden="true"/>
+        <field> 
+            <title>Language</title>
+            <html>
+                <select class="inputField_box" name="language" id="language" onchange="setLocLanguage()">
+                </select>
+            </html>
+        </field>
+        <field name="string_type" table="lang_strings" readOnly="false"/>
+        <field>
+            <html>
+                <input type="checkbox" name="abLocalizationEditLangStrings.longStrings" id="abLocalizationEditLangStrings.longStrings"/>
+                <span translatable="true">Restrict to show translated strings that are too long</span>
+                <br/>
+            </html>
+        </field>
+    </panel>
+    
+    <panel type="grid" id="abLocalizationEditLangStrings_detailsPanel" dataSource="abLocalizationEditLangStrings_ds_0" showOnLoad="true" selectionEnabled="true" region="center">
+        <title translatable="true">Nav &amp; Table Strings - Translate</title>
+        <field table="lang_strings" name="language" controlType="link">
+            <command type="openDialog" panelId="abLocalizationEditLangStrings_popupPanel" width="600" height="400"/>
+        </field>
+        <field table="lang_strings" name="string_type" controlType="link">
+            <command type="openDialog" panelId="abLocalizationEditLangStrings_popupPanel" width="600" height="400"/>
+        </field>
+        <field table="lang_strings" name="string_english" controlType="link">
+            <command type="openDialog" panelId="abLocalizationEditLangStrings_popupPanel" width="600" height="400"/>
+        </field>
+        <field table="lang_strings" name="string_trans" controlType="link">
+            <command type="openDialog" panelId="abLocalizationEditLangStrings_popupPanel" width="600" height="400"/>
+        </field>
+        <field table="lang_strings" name="date_last_updated" controlType="link">
+            <command type="openDialog" panelId="abLocalizationEditLangStrings_popupPanel" width="600" height="400"/>
+        </field>
+        <field table="lang_strings" name="transfer_status" controlType="link">
+            <command type="openDialog" panelId="abLocalizationEditLangStrings_popupPanel" width="600" height="400"/>
+        </field>
+        <field table="lang_strings" name="reference_info" controlType="link">
+            <command type="openDialog" panelId="abLocalizationEditLangStrings_popupPanel" width="600" height="400"/>
+        </field>
+        <indexField table="lang_strings" name="string_english"/>
+    </panel>
+    
+    <dataSource id="abLocalizationEditLangStrings_ds_1">
+        <table name="lang_strings" role="main"/>
+        <field table="lang_strings" name="string_english"/>
+        <field table="lang_strings" name="string_trans"/>
+        <field table="lang_strings" name="string_type"/>
+        <field table="lang_strings" name="language"/>
+        <field table="lang_strings" name="date_last_updated"/>
+        <field table="lang_strings" name="transfer_status"/>
+        <field table="lang_strings" name="reference_info"/>
+    </dataSource>
+    
+    <panel type="form" id="abLocalizationEditLangStrings_popupPanel" dataSource="abLocalizationEditLangStrings_ds_1" showOnLoad="false" columns="1">
+        <title translatable="true">Nav &amp; Table Strings - Translate</title>
+        <action id="abLocalizationEditLangStrings_save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="showPanel" panelId="abLocalizationEditLangStrings_detailsPanel" applyParentRestriction="false"/>
+            <command type="closeDialog"/>
+        </action>
+        <!-- action id="abLocalizationEditLangStrings_delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="abLocalizationEditLangStrings_popupPanel" show="false"/>
+            <command type="showPanel" panelId="abLocalizationEditLangStrings_detailsPanel" applyParentRestriction="false"/>
+        </action -->
+        <action id="delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="abLocalizationEditLangStrings_detailsPanel" applyParentRestriction="false"/>
+            <command type="closeDialog"/> 
+        </action> 
+        <action id="abLocalizationEditLangStrings_cancel">
+            <title translatable="true">Cancel</title>
+            <command type="closeDialog"/>
+        </action>
+        <field name="string_english" table="lang_strings"/>
+        <field name="string_trans" table="lang_strings"/>
+        <field name="language" table="lang_strings"/>
+        <field name="string_type" table="lang_strings"/>
+        <field name="date_last_updated" table="lang_strings"/>
+        <field name="transfer_status" table="lang_strings"/>
+        <field table="lang_strings" name="reference_info" readOnly="false" style="height:20px; width:400px;"/>
+    </panel>
+   
+       <dataSource id="abLocalizationEditLangStringsHiddenDs">
+        <table name="lang_lang" role="main"/>
+        <field table="lang_lang" name="language"/>
+        <field table="lang_lang" name="is_default_language"/>
+        <restriction type="parsed">
+           <clause relop="AND" op="=" table="lang_lang" name="is_default_language" value="1" />
+       </restriction>
+    </dataSource>
+    <panel type="grid" id="abLocalizationEditLangSringsHiddenPanel" dataSource="abLocalizationEditLangStringsHiddenDs" showOnLoad="true" hidden="true"/>  
+    
+    <js file="ab-viewdef-common-console.js"/>
+    <js file="ab-localization-helper.js"/>   
+</view>

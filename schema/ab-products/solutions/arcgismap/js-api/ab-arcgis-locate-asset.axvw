@@ -1,0 +1,77 @@
+   
+<view version="2.0" docType="html4/strict">
+    <title>Example: Map with Asset Locator</title>
+
+    <layout file="dashboard-1-1-0.axvw"/>
+	<!-- esri js library -->
+    <js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+    <!-- ab-core js libraries -->
+	<js file="ab-arcgis-map.js"/>
+	<css file="ab-arcgis-map.css"/>
+	<js file="ab-arcgis-geocoder.js"/>
+	<js file="ab-arcgis-assetlocator.js"/>
+	<!-- view js -->
+    <js file="ab-arcgis-locate-asset.js"/>
+    <!-- esri map theme -->
+	<css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css" />
+	
+    <dataSource id="assetDS">
+        <table name="bl"/>
+        <field name="bl_id"/>
+        <field name="address1"/>
+        <field name="city_id"/>
+        <field name="state_id"/>
+        <field name="ctry_id"/>
+        <field name="zip"/>
+        <field name="lat"/>
+        <field name="lon"/>
+    </dataSource>
+	
+	<panel type="grid" id="assetPanel" multipleSelectionEnabled="true" dataSource="assetDS" layoutRegion="row1col1">
+        <title>Assets</title>
+		<instructions>
+		[b]Purpose:[/b][br]
+		The locate asset tool allows one to specify asset locations (lat-lon) by clicking the desired location on the map.[/br]
+		[b]To Locate an Asset:[/b][br]
+		[li]Click the 'Locate' button for the desired asset.[/li]
+		[li]If a location exists for the asset, the map will zoom to and display a marker at that location.[/li]
+		[li]If a location does not exist for the asset, the map will drop a marker at the current map location.[/li]
+		[li]In either case, click on the map to move the marker and adjust the asset location.[/li]
+		[li]Click 'Save Location' to save the new asset location,  or click 'Cancel' to discard your changes.[/li]
+		</instructions>
+		<action id="showAssets">
+        	<title>Show Assets</title>
+        </action>
+        <action id="geocodeAssets">
+        	<title>Geocode Assets</title>
+        </action>
+
+		<field controlType="button" onclick="mapController.startLocateAsset">
+			<title translatable="true">Locate</title>
+		</field>
+		<field name="bl_id"/>
+        <field name="address1"/>
+        <field name="city_id"/>
+        <field name="state_id"/>
+        <field name="ctry_id"/>
+        <field name="zip"/>
+        <field name="lat"/>
+        <field name="lon"/>
+    </panel>
+
+    <panel type="html" id="mapPanel" layoutRegion="row1col2">
+        <title>Asset Map</title>
+
+		<action id="cancelLocateAsset">
+        	<title>Cancel</title>
+        </action>
+        
+		<action id="finishLocateAsset">
+        	<title>Save Location</title>
+        </action>
+		
+		<html>    
+          	<div id="map"> </div>
+        </html>
+    </panel>
+</view>

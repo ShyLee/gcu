@@ -1,0 +1,117 @@
+<view version="2.0">
+    <layout id="main">
+        <north id="sushePositon" initialSize="22%" split="false"/>
+        <center id="zichanPositon"/>
+    </layout>   
+
+     <dataSource id="ds_rm">
+        <table name="rm" role="main"/>
+        <table name="rmtype" role="standard"/>
+        <table name="sc_student" role="standard"/>
+        <table name="bl" role="standard"/>
+        <field table="bl" name="name"/>
+        <field table="rm" name="bl_id"/>
+		<field table="rm" name="fl_id"/>
+		<field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_manual"/>
+        <field table="rm" name="kongxian" dataType="integer">
+            <sql dialect="generic">
+            	(rm.cap_em-
+				(SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ))
+            </sql>
+		</field>
+		<parameter name="BlFlRm" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['BlFlRm']}"/>
+    </dataSource>
+
+     <dataSource id="ds_eq">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+		<field table="eq" name="eq_name"/>
+		<field table="eq" name="eq_std"/>
+		<field table="eq" name="eq_type"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="asset_code"/>
+        <field table="eq" name="comments"/>
+        <field table="eq" name="bl_id"/>
+		<field table="eq" name="fl_id"/>
+		<field table="eq" name="rm_id"/>
+		<parameter name="BlFlRmEq" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['BlFlRmEq']}"/>
+    </dataSource>
+    
+    <!--form/columnReport -->
+    <panel type="form" id="Grid1" dataSource="ds_rm" columns="3"  layoutRegion="sushePositon">
+    	<title translatable="true">sushe</title>
+    	<field table="bl" name="name">
+    		<title>Bl Name</title>
+    	</field>
+        <field table="rm" name="bl_id"  hidden="true"/>
+		<field table="rm" name="fl_id"  readOnly="true"/>
+		<field table="rm" name="rm_id"  readOnly="true"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="cap_em" readOnly="true">
+            <title translatable="true">biaozhun</title>
+        </field>
+        <field table="rm" name="kongxian" readOnly="true">
+            <title translatable="true">kongxian</title>
+        </field>
+        <field table="rm" name="area" readOnly="true"/>
+        <field table="rm" name="area_manual" readOnly="true"/>
+    </panel>
+    
+    <dataSource id="stu_ds">
+        <table name="sc_student" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="sc_student" name="bl_id"/>
+		<field table="sc_student" name="fl_id"/>
+		<field table="sc_student" name="rm_id"/>
+		<field table="sc_student" name="stu_no"/>
+		<field table="sc_student" name="stu_name"/>
+		<field table="sc_student" name="stu_in_year"/>
+		<field table="sc_student" name="stu_tec"/>
+		<field table="dv" name="dv_name"/>
+		<parameter name="BlFlRmStu" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['BlFlRmStu']}"/>
+    </dataSource>
+    
+    <tabs id="dormInfoTabs" workflow="free" layoutRegion="zichanPositon">
+       <tab name="studentTab" selected="true" >
+		    <title translatable="true">Student</title>
+		    <panel type="grid" id="stuGrid" dataSource="stu_ds">
+		        <field table="sc_student" name="bl_id" hidden="true"/>
+				<field table="sc_student" name="fl_id" hidden="true"/>
+				<field table="sc_student" name="rm_id" hidden="true"/>
+				<field table="sc_student" name="stu_in_year"/>
+				<field table="sc_student" name="stu_no"/>
+				<field table="sc_student" name="stu_name"/>
+				<field table="sc_student" name="stu_tec"/>
+				<field table="dv" name="dv_name">
+					<title>Dv Name</title>
+				</field>
+		    </panel>
+    	</tab>
+    	<tab name="assetTab" >
+		    <title translatable="true">Asset</title>
+		    <panel type="grid" id="Grid2" dataSource="ds_eq">
+		        <field table="eq" name="eq_id"/>
+				<field table="eq" name="eq_name"/>
+				<field table="eq" name="eq_std"/>
+				<field table="eq" name="eq_type"/>
+		        <field table="eq" name="price"/>
+		        <field table="eq" name="date_purchased"/>
+		        <field table="eq" name="asset_code"/>
+		        <field table="eq" name="comments">
+		        	<title translatable="true">beizhu</title>
+		        </field>
+		    </panel>
+    	</tab>
+    </tabs>
+    <js file="asc-bj-dorm-view-assets-information.js"/>
+<!--     <js file="ab-sp-common.js"/> -->
+</view>

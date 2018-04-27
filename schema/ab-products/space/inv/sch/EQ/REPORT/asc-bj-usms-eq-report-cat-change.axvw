@@ -1,0 +1,175 @@
+<view version="2.0">
+	<title translatable="true">eq Cat Change 16</title>	
+	
+	<dataSource id="eq_DS" >
+		<sql dialect="generic">
+ 	select CS.csdes as csiname
+      ,A.t_eq as before_count ,A.t_price as before_sum
+      ,B.t_eq as add_gz_count ,B.t_price as add_gz_sum
+      ,C.t_eq as add_zr_count ,C.t_price as add_zr_sum
+      ,D.t_eq as add_qt_count ,D.t_price as add_qt_sum
+      ,E.t_eq as add_hj_count ,E.t_price as add_hj_sum
+      ,F.t_eq as re_dc_count ,F.t_price as re_dc_sum
+      ,G.t_eq as re_zc_count ,G.t_price as re_zc_sum
+      ,H.t_eq as re_bf_count ,H.t_price as re_bf_sum
+      ,I.t_eq as re_qt_count ,I.t_price as re_qt_sum
+      ,J.t_eq as re_hj_count ,J.t_price as re_hj_sum
+      ,K.t_eq as after_count ,K.t_price as after_sum
+      
+      from (select SUBSTR(csi.csi_id,1,2) as csi_sub ,csi.description as csdes from csi where length(csi.hierarchy_ids)&lt; 12 and length(csi.hierarchy_ids)&gt; 2  order by csi_id) CS
+      
+      left join      
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &lt; trunc(sysdate,'yyyy')
+      and not (eq.date_purchased &lt; trunc(sysdate,'yyyy') and sch_status in ('3','5','6','7','C','D'))
+      group by SUBSTR(csi_id,1,2)) A on CS.csi_sub = A.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub, sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      and  eq.source = '1'
+      group by SUBSTR(csi_id,1,2)) B on CS.csi_sub = B.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      and  eq.source = '4'
+      group by SUBSTR(csi_id,1,2)) C on CS.csi_sub = C.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      and  eq.source in ('2','3')
+      group by SUBSTR(csi_id,1,2)) D on CS.csi_sub = D.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      group by SUBSTR(csi_id,1,2)) E on CS.csi_sub = E.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status in ('5','7')
+      group by SUBSTR(csi_id,1,2)) F on CS.csi_sub = F.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status = 'C'
+      group by SUBSTR(csi_id,1,2)) G on CS.csi_sub = G.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status in ('3','6')
+      group by SUBSTR(csi_id,1,2)) H on CS.csi_sub = H.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status = 'D'
+      group by SUBSTR(csi_id,1,2)) I on CS.csi_sub = I.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status in ('3','5','6','7','C','D')
+      group by SUBSTR(csi_id,1,2)) J on CS.csi_sub = J.csi_sub
+      
+      left join
+      (select SUBSTR(csi_id,1,2) as csi_sub , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where sch_status not in ('3','5','6','7','C','D')
+      group by SUBSTR(csi_id,1,2)) K on CS.csi_sub = K.csi_sub
+		</sql>
+		<table name="eq" role="main" />
+		<field table="eq" name="csiname"  dataType="text" >
+			<title translatable="true">dvname</title>
+		</field>
+		<field table="eq" name="before_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="before_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="add_gz_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="add_gz_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="add_zr_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="add_zr_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="add_qt_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="add_qt_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="add_hj_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="add_hj_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="re_dc_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="re_dc_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="re_zc_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="re_zc_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="re_bf_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="re_bf_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="re_qt_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="re_qt_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="re_hj_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="re_hj_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field table="eq" name="after_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="after_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+	</dataSource>
+	
+		
+    <panel type="grid" id="tablePanel" dataSource="eq_DS" showOnLoad="false">
+		<title translatable="true">eq Cat Change</title>
+		<action id="report"><title>Report</title></action>
+	</panel>
+		
+	<js file="asc-bj-usms-eq-report-cat-change.js"/>
+</view>

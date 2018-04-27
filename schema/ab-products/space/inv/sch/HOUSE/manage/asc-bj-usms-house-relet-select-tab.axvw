@@ -1,0 +1,355 @@
+<view version="2.0">
+	  <layout type="borderLayout" id="main">
+         <north  id="needRegion" autoScroll="true" split="true" initialSize="45%" />
+         <center id="finishRegion" autoScroll="true" />
+      </layout>
+       <dataSource id="sc_zzfcard_ds">
+        <table name="sc_zzfcard" role="main"/>
+        <table name="bl" role="standard"/>
+        <!--         申请信息 -->
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="date_register" />
+        <field table="sc_zzfcard" name="apply_reason" />
+        <field table="sc_zzfcard" name="apply_beizhu" />
+<!--         人员信息 -->
+        <field table="sc_zzfcard" name="card_type"/>
+        <field table="sc_zzfcard" name="is_em" />
+        <field table="sc_zzfcard" name="em_id" />
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" />
+        <field table="sc_zzfcard" name="sex"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="phone_home"/>
+        <field table="sc_zzfcard" name="email"/>
+        <field table="sc_zzfcard" name="dv_id"/>
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="date_work_begin"/>
+        <field table="sc_zzfcard" name="xueli" />
+        <field table="sc_zzfcard" name="zhiw_id" />
+        <field table="sc_zzfcard" name="zhic_id" />
+        <field table="sc_zzfcard" name="marriage_stat" />
+        <field table="sc_zzfcard" name="is_working_parents" />
+        <field table="sc_zzfcard" name="po_em_id" />
+        <field table="sc_zzfcard" name="po_name"/>
+        <field table="sc_zzfcard" name="po_identi_code" />
+        <field table="sc_zzfcard" name="po_dv_id"/>
+        <field table="sc_zzfcard" name="po_dv_name"/>
+        <field table="sc_zzfcard" name="curr_addr"/>
+<!--         房间信息 -->
+        <field table="sc_zzfcard" name="site_id" />
+        <field table="sc_zzfcard" name="pr_id" />
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="sc_zzfcard" name="unit_code"/>
+        <field table="sc_zzfcard" name="fl_id" />
+        <field table="sc_zzfcard" name="rm_id" />
+        <field table="sc_zzfcard" name="rm_cat"/>
+        <field table="sc_zzfcard" name="rmcat_name"/>
+        <field table="sc_zzfcard" name="rm_type"/>
+        <field table="sc_zzfcard" name="rmtype_name"/>
+        <field table="sc_zzfcard" name="is_left"/>
+        <field table="sc_zzfcard" name="is_low_high"/>
+        <field table="sc_zzfcard" name="huxing"/>
+        <field table="sc_zzfcard" name="chaoxiang"/>
+        <field table="sc_zzfcard" name="area"/>
+        <field table="sc_zzfcard" name="area_comn_rm"/>
+        <field table="sc_zzfcard" name="area_lease"/>
+        <field table="sc_zzfcard" name="eq_desc"/>
+        <field table="sc_zzfcard" name="weixiu_log"/>
+<!--         合同信息 -->
+        <field table="sc_zzfcard" name="lease_id"/>
+        <field table="sc_zzfcard" name="htqx"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="payment_to"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="is_day_first"/>
+        <field table="sc_zzfcard" name="rent_rate"/>
+        <field table="sc_zzfcard" name="cash_deposit"/>
+        <field table="sc_zzfcard" name="rent_type"/>
+        <field table="sc_zzfcard" name="rent_level"/>
+        <field table="sc_zzfcard" name="curr_rent_rate"/>
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="rent_pay_people"/>
+        <field table="sc_zzfcard" name="rent_pay_id"/>
+        <field table="sc_zzfcard" name="cash_clean"/>
+        <field table="sc_zzfcard" name="clean_people_id"/>
+        <field table="sc_zzfcard" name="clean_pay_people"/>
+        <field table="sc_zzfcard" name="sponsor"/>
+        <field table="sc_zzfcard" name="sponsor_name"/>
+        <field table="sc_zzfcard" name="sponsor_dv" />
+<!--        入住登记信息 -->
+        <field table="sc_zzfcard" name="doc1"/>
+        <field table="sc_zzfcard" name="doc2"/>
+        <field table="sc_zzfcard" name="doc_lease" />
+        <field table="sc_zzfcard" name="rmsrc_situation"/>
+        <field table="sc_zzfcard" name="key_checkin"/>
+        <field table="sc_zzfcard" name="comment_checkin"/>
+<!--         后台必须信息 -->
+        <field table="sc_zzfcard" name="date_created" />
+        <field table="sc_zzfcard" name="date_payrent_last" />
+        <field table="sc_zzfcard" name="card_status" />
+<!--         续租信息 -->
+        <field table="sc_zzfcard" name="date_check_ought_old" />
+        <field table="sc_zzfcard" name="date_checkin_old" />
+        <field table="sc_zzfcard" name="date_relet" />
+        <field table="sc_zzfcard" name="doc_relet" />
+        <field table="sc_zzfcard" name="is_renew" />
+        <field table="sc_zzfcard" name="new_card_id" />
+        <field table="sc_zzfcard" name="sponsor_name_old" />
+        <field table="sc_zzfcard" name="sponsor_old" />
+        <sortField table="sc_zzfcard" name="card_id" />
+        <restriction type="sql" sql="(card_status='yrz' and is_renew='1')"/>
+    </dataSource>
+     <panel type="grid" id="needPanel" dataSource="sc_zzfcard_ds" layoutRegion="needRegion">
+     	<title>Need Relet</title>
+     	<field controlType="button" width="80"  id="select">
+            <title translatable="true">Select</title>
+        </field>
+        <indexField table="sc_zzfcard" name="card_id"/>
+     	<field table="sc_zzfcard" name="card_id" hidden="true"/>          
+     	<field table="sc_zzfcard" name="em_id" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="em_name" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="lease_id" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="identi_code" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="dv_name"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="phone"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="unit_code"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="fl_id"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="rm_id"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+        <field table="sc_zzfcard" name="card_status" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="is_renew" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(1)"/>
+        </field>
+        <field table="sc_zzfcard" name="is_em" hidden="true"/>
+     </panel>
+     <dataSource id="sc_zzfcard_ds1">
+        <table name="sc_zzfcard" role="main"/>
+        <table name="bl" role="standard"/>
+        <!--         申请信息 -->
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="date_register" />
+        <field table="sc_zzfcard" name="apply_reason" />
+        <field table="sc_zzfcard" name="apply_beizhu" />
+<!--         人员信息 -->
+        <field table="sc_zzfcard" name="card_type"/>
+        <field table="sc_zzfcard" name="is_em" />
+        <field table="sc_zzfcard" name="em_id" />
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" />
+        <field table="sc_zzfcard" name="sex"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="phone_home"/>
+        <field table="sc_zzfcard" name="email"/>
+        <field table="sc_zzfcard" name="dv_id"/>
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="date_work_begin"/>
+        <field table="sc_zzfcard" name="xueli" />
+        <field table="sc_zzfcard" name="zhiw_id" />
+        <field table="sc_zzfcard" name="zhic_id" />
+        <field table="sc_zzfcard" name="marriage_stat" />
+        <field table="sc_zzfcard" name="is_working_parents" />
+        <field table="sc_zzfcard" name="po_em_id" />
+        <field table="sc_zzfcard" name="po_name"/>
+        <field table="sc_zzfcard" name="po_identi_code" />
+        <field table="sc_zzfcard" name="po_dv_id"/>
+        <field table="sc_zzfcard" name="po_dv_name"/>
+        <field table="sc_zzfcard" name="curr_addr"/>
+<!--         房间信息 -->
+        <field table="sc_zzfcard" name="site_id" />
+        <field table="sc_zzfcard" name="pr_id" />
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="sc_zzfcard" name="unit_code"/>
+        <field table="sc_zzfcard" name="fl_id" />
+        <field table="sc_zzfcard" name="rm_id" />
+        <field table="sc_zzfcard" name="rm_cat"/>
+        <field table="sc_zzfcard" name="rmcat_name"/>
+        <field table="sc_zzfcard" name="rm_type"/>
+        <field table="sc_zzfcard" name="rmtype_name"/>
+        <field table="sc_zzfcard" name="is_left"/>
+        <field table="sc_zzfcard" name="is_low_high"/>
+        <field table="sc_zzfcard" name="huxing"/>
+        <field table="sc_zzfcard" name="chaoxiang"/>
+        <field table="sc_zzfcard" name="area"/>
+        <field table="sc_zzfcard" name="area_comn_rm"/>
+        <field table="sc_zzfcard" name="area_lease"/>
+        <field table="sc_zzfcard" name="eq_desc"/>
+        <field table="sc_zzfcard" name="weixiu_log"/>
+<!--         合同信息 -->
+        <field table="sc_zzfcard" name="lease_id"/>
+        <field table="sc_zzfcard" name="htqx"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="payment_to"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="is_day_first"/>
+        <field table="sc_zzfcard" name="rent_rate"/>
+        <field table="sc_zzfcard" name="cash_deposit"/>
+        <field table="sc_zzfcard" name="rent_type"/>
+        <field table="sc_zzfcard" name="rent_level"/>
+        <field table="sc_zzfcard" name="curr_rent_rate"/>
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="rent_pay_people"/>
+        <field table="sc_zzfcard" name="rent_pay_id"/>
+        <field table="sc_zzfcard" name="cash_clean"/>
+        <field table="sc_zzfcard" name="clean_people_id"/>
+        <field table="sc_zzfcard" name="clean_pay_people"/>
+        <field table="sc_zzfcard" name="sponsor"/>
+        <field table="sc_zzfcard" name="sponsor_name"/>
+        <field table="sc_zzfcard" name="sponsor_dv" />
+<!--        入住登记信息 -->
+        <field table="sc_zzfcard" name="doc1"/>
+        <field table="sc_zzfcard" name="doc2"/>
+        <field table="sc_zzfcard" name="doc_lease" />
+        <field table="sc_zzfcard" name="rmsrc_situation"/>
+        <field table="sc_zzfcard" name="key_checkin"/>
+        <field table="sc_zzfcard" name="comment_checkin"/>
+<!--         后台必须信息 -->
+        <field table="sc_zzfcard" name="date_created" />
+        <field table="sc_zzfcard" name="date_payrent_last" />
+        <field table="sc_zzfcard" name="card_status" />
+<!--         续租信息 -->
+        <field table="sc_zzfcard" name="date_check_ought_old" />
+        <field table="sc_zzfcard" name="date_checkin_old" />
+        <field table="sc_zzfcard" name="date_relet" />
+        <field table="sc_zzfcard" name="doc_relet" />
+        <field table="sc_zzfcard" name="is_renew" />
+        <field table="sc_zzfcard" name="new_card_id" />
+        <field table="sc_zzfcard" name="sponsor_name_old" />
+        <field table="sc_zzfcard" name="sponsor_old" />
+    </dataSource>
+    
+     <panel type="grid" id="finishPanel" dataSource="sc_zzfcard_ds1" layoutRegion="finishRegion" showOnLoad="true">
+     	<title>Finish Relet</title>
+     	<action id="showAll">
+     		<title>Show All</title>
+     	</action>
+        <field id="xuzu" controlType="button">
+            <title>Show XZ</title>
+        </field>
+        <indexField table="sc_zzfcard" name="card_id"/>
+		<field table="sc_zzfcard" name="card_id" hidden="false"/>
+        <field table="sc_zzfcard" name="em_id" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="em_name" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="lease_id" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="identi_code" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="dv_name"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="phone"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="unit_code"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="fl_id"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="rm_id"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+        <field table="sc_zzfcard" name="card_status" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+         <field table="sc_zzfcard" name="is_renew" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(2)"/>
+        </field>
+        <field table="sc_zzfcard" name="is_em" hidden="true"/>
+        <field table="sc_zzfcard" name="new_card_id" hidden="true"/>
+     </panel>
+     
+     <panel type="grid" id="xqListPanel" dataSource="sc_zzfcard_ds1" showOnLoad="false">
+        <title>XQ List</title>
+        <indexField table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="em_id" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="em_name" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="identi_code" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="dv_name"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="phone"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="unit_code" controlType="link" >
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="fl_id"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="rm_id"  controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+        <field table="sc_zzfcard" name="card_status" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+         <field table="sc_zzfcard" name="is_renew" controlType="link">
+            <command type="callFunction" functionName="abReletRoomController.showDetail(3)"/>
+        </field>
+        <field table="sc_zzfcard" name="is_em" hidden="true"/>
+        <field table="sc_zzfcard" name="new_card_id" hidden="true"/>
+     </panel>
+     <js file="asc-bj-usms-house-relet-select-tab.js"/>
+     
+</view>

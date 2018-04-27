@@ -1,0 +1,28 @@
+<view version="2.0">
+  <js file="asc-bj-usms-file-print.js"/>
+  <title translatable="true">DownLoad File of PDF and XLS</title>
+  <message name="output">outPutZongZhang</message>
+  <dataSource id="datePickerDs">
+    <table name="eq" role="main"/>
+    <field table="eq" name="eq_id"/>
+    <field table="eq" name="date_purchased" />
+  </dataSource>
+  <panel type="html" id="printPanel" dataSource="datePickerDs">
+       <title translatable="true">DownLoad File</title>
+       <html>
+            <h1><span translatable="true">Please Check the file you want print!</span></h1>
+            <table id="printTable">
+                
+            </table>
+       </html>
+      
+    </panel>
+    <!-- <panel type="form" dataSource="datePickerDs"  id="dateInputPanel" columns="2">
+        <field table="eq" name="date_purchased" alias="dateBegin">
+            <title translatable="true">DateBegin</title>
+        </field>
+        <field table="eq" name="date_purchased" alias="dateEnd">
+            <title translatable="true">DateEnd</title>
+        </field>
+    </panel> -->
+</view>

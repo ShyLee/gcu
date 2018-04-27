@@ -1,0 +1,132 @@
+<view version="2.0">
+	<title translatable="true">Loss Eq View</title>
+	<dataSource id="eq_check_DS">
+		<table name="eq_check" role="main" />
+		<table name="dv" role="standard" />
+		<table name="dp" role="standard" />
+		<field table="eq_check" name="check_id" />
+		<field table="eq_check" name="check_main_id"  />
+		<field table="eq_check" name="eq_id"/>
+        <field table="eq_check" name="eq_name"/>
+		<field table="eq_check" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="eq_check" name="dp_id"/>
+		<field table="dp" name="dp_name"/>
+		<field table="eq_check" name="loss_option" />
+		<field table="eq_check" name="price" showTotals="true"/>
+		<field table="eq_check" name="check_date"/>
+		<field table="eq_check" name="approved"/>
+		<field table="eq_check" name="check_doc"/>
+		<field table="eq_check" name="check_doc_02"  />
+		<field table="eq_check" name="check_doc_03" />
+	</dataSource>
+	<dataSource id="eq_check_attach_ds">
+        <table name="eq_check_attach" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="eq_check_attach" name="check_id"/>
+        <field table="eq_check_attach" name="check_main_id"/>
+        <field table="eq_check_attach" name="eq_id"/>
+        <field table="eq_check_attach" name="eq_attach_id"/>
+        <field table="eq_check_attach" name="eq_attach_name"/>
+        <field table="eq_check_attach" name="price" showTotals="true"/>
+        <field table="eq_check_attach" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_check_attach" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_check_attach" name="loss_option"/>
+        <field table="eq_check_attach" name="check_doc"/>
+        <field table="eq_check_attach" name="check_doc_02"/>
+        <field table="eq_check_attach" name="check_doc_03"/>
+        <field table="eq_check_attach" name="approved"/>
+        <field table="eq_check_attach" name="option1"/>
+        <field table="eq_check_attach" name="option_approve"/>
+    </dataSource>
+	<panel type="console" id="eq_checkConsolePanel"
+		dataSource="eq_check_DS" columns="3">
+		<title translatable="true">Console</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+			<command type="showPanel" panelId="eq_checkGridPanel" />
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel" panelId="eq_checkConsolePanel" />
+		</action>
+		<field table="eq_check" name="check_main_id">
+			<title translatable="true">Check Mission</title>
+			<action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" fieldNames="eq_check.check_main_id"
+                    selectFieldNames="eq_check_main.check_main_id" 
+                    visibleFieldNames="eq_check_main.check_main_id,eq_check_main.check_name,eq_check_main.check_date_start,eq_check_main.check_date_end,eq_check_main.check_option" 
+                    showIndex="false" />
+            </action>
+		</field>
+		<field table="eq_check" name="dv_id" />
+		<field table="eq_check" name="approved" />
+	</panel>
+	 <tabs workflow="free" id="needApproveTabs" tabRefreshPolicy="never">
+    	 <tab name="eqTab"  selected="true">
+		    <title translatable="true">Loss Eq List</title>
+			<panel type="grid" id="eq_checkGridPanel" dataSource="eq_check_DS">
+		        <title translatable="true"></title>
+				<action id="btnPrint">
+		            <title translatable="true">XLS</title>
+		            <command type="exportPanel" outputType="xls" panelId="eq_checkGridPanel"/>
+		        </action>
+		        <field table="eq_check" name="check_id" hidden="true" />
+				<field table="eq_check" name="check_main_id" hidden="true" />
+				<field table="eq_check" name="eq_id" controlType="link">
+		            <command type="callFunction" functionName="controller.showEqCard()"/>
+		        </field>
+				<field table="eq_check" name="eq_name" controlType="link">
+		            <command type="callFunction" functionName="controller.showEqCard()"/>
+		        </field>
+		        <field table="eq_check" name="dv_id" hidden="true" />
+		        <field table="dv" name="dv_name" />
+		        <field table="eq_check" name="dp_id" hidden="true" />
+		        <field table="dp" name="dp_name" />
+				<field table="eq_check" name="loss_option" />
+				<field table="eq_check" name="price" showTotals="true"/>
+				<field table="eq_check" name="approved" />
+				<field table="eq_check" name="check_doc" controlType="link"/>
+				<field table="eq_check" name="check_doc_03" />	
+			</panel>
+    	  </tab>
+          <tab name="attachTab" >
+		    <title translatable="true">Lose eqAttach</title>
+        	<panel type="grid" id="eqAttach_checkGridPanel" dataSource="eq_check_attach_ds">
+		        <title translatable="true"></title>
+				<action id="btnPrint">
+		            <title translatable="true">XLS</title>
+		            <command type="exportPanel" outputType="xls" panelId="eq_checkGridPanel"/>
+		        </action>
+		        <field table="eq_check_attach" name="check_id" hidden="true" />
+				<field table="eq_check_attach" name="check_main_id" hidden="true" />
+				<field table="eq_check_attach" name="eq_id" controlType="link">
+		            <command type="callFunction" functionName="controller.showEqAttachCard()"/>
+		        </field>
+				<field table="eq_check_attach" name="eq_attach_id" readOnly="true"/>
+				<field table="eq_check_attach" name="eq_attach_name" readOnly="true"/>
+		        <field table="eq_check_attach" name="dv_id" hidden="true" />
+		        <field table="dv" name="dv_name" />
+		        <field table="eq_check_attach" name="dp_id" hidden="true" />
+		        <field table="dp" name="dp_name" />
+				<field table="eq_check_attach" name="loss_option" />
+				<field table="eq_check_attach" name="price" showTotals="true"/>
+				<field table="eq_check_attach" name="approved" />
+				<field table="eq_check_attach" name="check_doc" controlType="link"/>
+				<field table="eq_check_attach" name="check_doc_03" />	
+			</panel>
+         </tab>
+    </tabs>
+    <panel type="form" id="docPanel" dataSource="eq_check_DS" showOnLoad="false">
+        <field table="eq_check" name="check_id" hidden="true"/>
+        <field table="eq_check" name="eq_id" />
+        <field table="eq_check" name="eq_name" readOnly="true"/>
+        <field table="eq_check" name="check_doc" readOnly="true"/>
+    </panel>
+	<js file="asc-bj-usms-eq-check-loss-view.js"/>
+</view>

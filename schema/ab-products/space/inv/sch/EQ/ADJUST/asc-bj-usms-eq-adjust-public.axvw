@@ -1,0 +1,40 @@
+<view version="2.0">
+    <dataSource id="eq_notice_ds">
+        <table name="eq_change" role="main"/>
+        <field table="eq_change" name="id"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="dv_id"/>
+        <field table="eq_change" name="dv_name"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="dv_name_old"/>
+        <field table="eq_change" name="adjust_cause"/>
+        <field table="eq_change" name="adjust_date"/>
+        <field table="eq_change" name="adjust_em_id"/>
+        <field table="eq_change" name="adjust_em_name"/>
+        <field table="eq_change" name="adjust_dv_id"/>
+        <field table="eq_change" name="adjust_dv_name"/>
+        <field table="eq_change" name="adjust_status"/>
+        <field table="eq_change" name="okBadStatus"/>
+        <field table="eq_change" name="change_reason"/>
+        <restriction type="sql" sql="dv_id_old!='${user.employee.organization.divisionId}' and eq_change.rtr_dip_id in (select rtr_dip_id from return_dispose where audit_status='5') and eq_change.adjust_status in ('0','3')"/>
+    </dataSource>
+     <panel type="grid" id="eqListPanel" showOnLoad="true" dataSource="eq_notice_ds">
+        <title translatable="true">Adjust Public</title>
+        <field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id" id="eq_id" controlType="link"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="dv_name_old"/>
+        <field table="eq_change" name="okBadStatus"/>
+        <field table="eq_change" name="change_reason"  width="120"/>
+        <field table="eq_change" name="adjust_status"/>
+    </panel>
+     
+    <js file="asc-bj-usms-eq-adjust-public.js"/> 
+</view>

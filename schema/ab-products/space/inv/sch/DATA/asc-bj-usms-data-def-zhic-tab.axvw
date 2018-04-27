@@ -1,0 +1,92 @@
+<view version="2.0">
+	<message name="noStanderZhic" translatable="true">noStanderZhic</message>
+	<message name="biaoZhunZhiCheng" translatable="true">BiaoZhunZhiCheng</message>
+    <message name="zhiCheng" translatable="true">ZhiCheng</message>
+	<message name="formSaved" translatable="true">Form saved successfully.</message>
+	<message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+	<message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+	
+    <layout id="main">
+        <west id="selectedPosition" initialSize="300" split="true"/>
+        <center id="centerPosition"/>
+    </layout>
+    
+   <dataSource id="abScDefStdZhicBzTreeDs">
+        <table name="sc_zhic_bz" role="main"/>
+        <field table="sc_zhic_bz" name="zhic_bz_id"/>
+        <field table="sc_zhic_bz" name="zhic_bz_name"/>
+    </dataSource>
+    
+    <dataSource id="abScDefStdZhicTreeDs">
+        <table name="sc_zhic" role="main"/>
+        <field table="sc_zhic" name="zhic_bz_id"/>
+        <field table="sc_zhic" name="zhic_id"/>
+        <field table="sc_zhic" name="zhic_name"/>
+    </dataSource>
+	
+	<dataSource id="abScDefStdZhicBzDs">
+        <table name="sc_zhic_bz" role="main"/>
+        <field table="sc_zhic_bz" name="zhic_bz_id"/>
+		<field table="sc_zhic_bz" name="zhic_bz_name"/>
+		<field table="sc_zhic_bz" name="description"/>
+    </dataSource>
+	
+	<dataSource id="abScDefStdZhicDs">
+        <table name="sc_zhic" role="main"/>
+		<field table="sc_zhic" name="zhic_bz_id"/>
+        <field table="sc_zhic" name="zhic_id"/>
+        <field table="sc_zhic" name="zhic_name"/>
+		<field table="sc_zhic" name="description"/>
+    </dataSource>
+    <panel type="tree" id="abScDefStdZhicBzTree" dataSource="abScDefStdZhicBzTreeDs" layoutRegion="selectedPosition">
+        <title translatable="true">Select BiaoZhunZhiCheng,ZhiCheng</title>
+		<action id="addNew">
+            <title translatable="true">Add New</title>
+        </action>
+        <event type="onClickNode">
+            <command type="callFunction" functionName="onBusinessUnitClick"/>
+        </event>
+		
+        <panel type="tree" id="abScDefStdZhicTree" dataSource="abScDefStdZhicTreeDs">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="zhicDetailTabs" tabPageName="zhiChengTab"/>
+                <command type="showPanel" panelId="abScDefStdZhic"/>
+                <command type="callFunction" functionName="onTreeviewClick"/>
+            </event>
+			<field table="sc_zhic" name="zhic_id"/>
+        </panel>
+		<field table="sc_zhic_bz" name="zhic_bz_id"/>
+    </panel>
+	<tabs id="zhicDetailTabs" workflow="enforced" cssClass="wizard" layout="centerPosition" region="center">
+		
+    	<tab name="biaoZhunZhiChengTab" selected="true">
+            <title translatable="true">Biao Zhun Zhi Cheng</title>
+            <panel type="form" id="abScDefStdZhicBz" showOnLoad="false" dataSource="abScDefStdZhicBzDs" columns="1">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+            </panel>
+        </tab>
+		
+        <tab name="zhiChengTab" selected="false">
+            <title translatable="true">Zhi Cheng</title>
+            <panel type="form" id="abScDefStdZhic" showOnLoad="false" dataSource="abScDefStdZhicDs" columns="1">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+		        <field table="sc_zhic" name="zhic_bz_id" readOnly="true"/>
+		        <field table="sc_zhic" name="zhic_id"/>
+		        <field table="sc_zhic" name="zhic_name"/>
+				<field table="sc_zhic" name="description"/>
+            </panel>
+        </tab>
+    </tabs>
+  <js file="asc-bj-usms-data-def-zhic-tab.js"/>
+  <js file="asc-bj-usms-def-common.js"/>
+</view>

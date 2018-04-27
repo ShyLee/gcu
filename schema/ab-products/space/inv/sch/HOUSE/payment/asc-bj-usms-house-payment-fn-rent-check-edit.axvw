@@ -1,0 +1,111 @@
+<view version="2.0">
+    <title translatable="true">edit different</title>
+    <js file="asc-bj-usms-house-payment-fn-rent-check-edit.js" />
+    
+	<layout id="mainLayout" type="borderLayout">
+		<north id="consoleRegion" split="true" initialSize="100" />
+		<center id="gridRegion" />
+	</layout>
+            <dataSource id="sc_zzfrent_details_ds">
+                <table name="sc_zzfrent_details" role="main"/>
+                <table name="sc_zzfcard" role="standard"/>
+                <field table="sc_zzfrent_details" name="rent_detail_id"/>
+              	<field table="sc_zzfrent_details" name="em_id"/>
+                <field table="sc_zzfrent_details" name="em_name"/>
+                <field table="sc_zzfrent_details" name="card_id"/>
+                <field table="sc_zzfrent_details" name="year" />
+                <field table="sc_zzfrent_details" name="month" />
+                <field table="sc_zzfrent_details" name="area_lease"/>
+                <field table="sc_zzfrent_details" name="note1"/>
+                <field table="sc_zzfcard" name="bl_id"/>
+                <field table="sc_zzfcard" name="fl_id"/>
+                <field table="sc_zzfcard" name="rm_id"/>
+                <field table="sc_zzfcard" name="area_lease" />
+                <field table="sc_zzfcard" name="dv_name" />
+                <field table="sc_zzfcard" name="date_checkin"/>
+                <field table="sc_zzfcard" name="date_checkout_ought" />
+                <field table="sc_zzfrent_details" name="month_rent"/>
+                <field table="sc_zzfrent_details" name="amount_payrent"/>
+                <field table="sc_zzfrent_details" name="cash_clean" hidden="true"/>
+                <field table="sc_zzfrent_details" name="actual_payoff"/>
+                <field table="sc_zzfrent_details" name="actual_cash_clean"/>
+                <restriction type="sql" sql="sc_zzfcard.payment_to='finance' and  sc_zzfrent_details.card_id = sc_zzfcard.card_id and (sc_zzfrent_details.actual_payoff != sc_zzfrent_details.amount_payrent)"/>
+          </dataSource> 
+     <panel type="console" columns="2" id="selectConsole"  dataSource="sc_zzfrent_details_ds" layoutRegion="consoleRegion">
+        <title translatable="true">Filter</title>
+        <action id="filter">
+            <title translatable="true">Show</title>
+            <command type="showPanel" panelId="diffRecords"/>    </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="selectConsole"/>
+        </action>
+           <field table="sc_zzfrent_details" name="em_id" required="false"/>
+           <field table="sc_zzfrent_details" name="em_name" required="false"/>
+           <field table="sc_zzfrent_details" name="year"  required="false" />
+           <field table="sc_zzfrent_details" name="month" required="false" />
+    </panel>
+         <!-- 编辑数据的 表单-->
+         <panel type="form" id="editDiff" columns="2" showOnLoad="false" dataSource="sc_zzfrent_details_ds" layoutRegion="gridRegion">
+                <title  translatable="true">bian ji yuan yin</title> 
+                <action id="save">
+                    <title>Save Form</title>
+                    <command type="saveForm"/>
+                    <command type="showPanel" panelId="diffRecords" applyParentRestriction="false"/>
+                    <command type="closeDialog"/>
+                    <command type="callFunction" functionName="editController.refreshPanel()" />
+                </action>
+                <action id="cancel">
+                    <title>Cancel Edit</title>
+                    <command type="callFunction" functionName="editController.refreshPanel()" />
+                    <command type="closeDialog"/>
+                </action>
+                <field table="sc_zzfrent_details" name="rent_detail_id" hidden="true"/>
+                <field table="sc_zzfrent_details" name="em_id" readOnly="true"/>
+                <field table="sc_zzfrent_details" name="em_name" readOnly="true"/>
+                <field table="sc_zzfrent_details" name="card_id" hidden="true"/>
+                <field table="sc_zzfcard" name="bl_id"/>
+                <field table="sc_zzfcard" name="fl_id"/>
+                <field table="sc_zzfcard" name="rm_id" readOnly="true"/>
+                <field name="area_lease" table="sc_zzfcard"/>
+                <field table="sc_zzfrent_details" name="year"  readOnly="true"/>
+                <field table="sc_zzfrent_details" name="month"  readOnly="true"/>
+                <field table="sc_zzfcard" name="date_checkin" required="false"/>
+                <field table="sc_zzfcard" name="date_checkout_ought" required="false"/>
+                <field table="sc_zzfrent_details" name="month_rent">
+                     <title>ying kou jin e</title>
+                </field>
+                <field table="sc_zzfrent_details" name="actual_payoff">
+                     <title>shi kou jin e</title>
+                </field>
+                <field table="sc_zzfrent_details" name="note1" colspan="2"/>
+         </panel>    
+         <!-- 检查不同数据的列表 -->
+         <panel type="grid" id="diffRecords" dataSource="sc_zzfrent_details_ds"  showOnLoad="true" layoutRegion="gridRegion">
+                <title>Different Record</title>
+				<action id="export:XLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="diffRecords" />
+				</action>
+                <!--交互 事件为打开对话框  说明代扣不相同的原因-->
+                <sortField table="sc_zzfrent_details" name="card_id"/>
+                <indexField table="sc_zzfrent_details" name="card_id"/>
+                <field controlType="button">
+                    <title>Edit DATA</title>
+                    <command type="openDialog" panelId="editDiff"/>
+                </field>
+                <field table="sc_zzfrent_details" name="rent_detail_id" hidden="true"/>
+                <field table="sc_zzfrent_details" name="year" />
+                <field table="sc_zzfrent_details" name="month" />
+                <field table="sc_zzfrent_details" name="em_id"/>
+                <field table="sc_zzfrent_details" name="em_name"/>
+                <field table="sc_zzfcard" name="dv_name"/>
+                <field table="sc_zzfrent_details" name="card_id" hidden="true"/>
+                <field table="sc_zzfrent_details" name="month_rent"/>
+                <field table="sc_zzfrent_details" name="amount_payrent"/>
+                <field table="sc_zzfrent_details" name="cash_clean"  hidden="true"/>
+                <field table="sc_zzfrent_details" name="actual_payoff"/>
+                <field table="sc_zzfrent_details" name="actual_cash_clean"  hidden="true"/>
+                <field table="sc_zzfrent_details" name="note1"/>
+         </panel>
+</view>

@@ -1,0 +1,38 @@
+<view version="2.0">
+
+	<dataSource id="stepLogDS">
+    	<table name="helpdesk_step_log" role="main"/>
+    	
+    	<field name="status" />
+    	<field name="step_type" />
+    	<field name="step" />      	
+    	<field name="date_created" />
+    	<field name="time_created" />
+    	<field name="date_response" />
+    	<field name="time_response" />
+    	<field name="step_status_result" />
+    	<field name="user_name" />
+    	<field name="comments" />
+    	<field name="vn_id" />
+    	<field name="em_id" />
+    	<field name="cf_id" />    
+    	<sortField name="step_log_id" ascending="true"/>   
+    </dataSource>
+	
+	<panel type="grid" controlType="reportGrid" id="stepsReport" dataSource="stepLogDS">
+		<title translatable="true">Step History</title>
+		
+		<field table="helpdesk_step_log" name="status" />
+		<field table="helpdesk_step_log" name="step" />  		
+    	<field table="helpdesk_step_log" name="date_created"/>
+    	<field table="helpdesk_step_log" name="time_created"/>
+    	
+    	<field table="helpdesk_step_log" name="date_response"/>
+    	<field table="helpdesk_step_log" name="time_response"/>
+    	<field table="helpdesk_step_log" name="step_status_result" />
+    	<field table="helpdesk_step_log" name="user_name"/>
+    	
+    	<field table="helpdesk_step_log" name="comments" />
+   </panel>
+   
+</view>

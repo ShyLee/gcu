@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <!-- ========================= Mail Preferences. ========================= -->
+    <!-- The beans defined here are shared between all projects. -->
+
+    <bean id="mailPreferences" class="com.archibus.config.MailPreferences">
+        <property name="hostName" value="$HasEncryptedPasswords{mail.host.name}"/>
+        <property name="hostPort" value="$HasEncryptedPasswords{mail.host.port}"/>
+        <property name="hostUsername" value="$HasEncryptedPasswords{mail.host.username}"/>
+        <property name="hostPassword" value="$HasEncryptedPasswords{mail.host.password}"/>
+        <property name="mailAddresses">
+            <util:map>
+                <entry key="administrator" value="$HasEncryptedPasswords{mail.addresses.administrator}" />
+                <entry key="moveAdministrator" value="$HasEncryptedPasswords{mail.addresses.moveAdministrator}" />
+                <entry key="maintmagr" value="$HasEncryptedPasswords{mail.addresses.maintmgr}" />
+                <entry key="moveCC" value="$HasEncryptedPasswords{mail.addresses.moveCC}" />
+                <entry key="wrCC" value="$HasEncryptedPasswords{mail.addresses.wrCC}" />
+                <entry key="notificationSender" value="$HasEncryptedPasswords{mail.addresses.notificationSender}" />
+            </util:map>
+        </property>
+    </bean>
+
+</beans>

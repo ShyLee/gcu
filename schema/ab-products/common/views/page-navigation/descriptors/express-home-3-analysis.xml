@@ -1,0 +1,115 @@
+<navigation-page>
+	<row height="full">
+		<bucket 
+			title="Space Express"
+			tooltip="Manage your space and occupancy."
+			type="process"
+			activity_id="AbSpaceRoomInventoryBAR"
+			process_id="Building Performance"
+			/>
+		<bucket 
+			title="Ops Express"
+			tooltip="Manage your building operations and work requests."
+			type="process"
+            activity_id="AbBldgOpsHelpDesk"
+            process_id="Service Desk Manager"
+			/>
+		<bucket 
+			title="Favorites"
+			tooltip="Drag and drop your favorite reports onto this panel."
+			type="favorites"
+			background-shading="bucket-background-light"
+			/>
+		<bucket 
+			title="Top Priority"
+			tooltip="Your top-of-mind tasks for the day, week, and month."
+			type="app-specific"
+			control="ab-helpdesk-top-priority.js"
+			/>
+	</row>
+	<row height="two-thirds">
+		<bucket 
+			title="Process Oversight"
+			tooltip="Key-performance indicators monitoring the processes under your department's purview."
+			type="app-specific"
+			control="ab-common-metrics-process-oversight.js"
+			column-span="2"
+			/>
+
+		<bucket 
+			title="Buildings Overbudget (top 5)"
+			tooltip="Top 5 buildings with largest overrun for this month's budget."
+			type="app-specific"
+			control="ab-helpdesk-barbucket-buildings-overbudget.js"
+			background-shading="bucket-background-light"
+			/>
+        <bucket
+            title="Alerts"
+            tooltip="Time-sensitive tasks, reports and requests."
+            type="app-specific"
+            control="ab-user-alerts.js"
+            />
+	</row>
+
+	<page-divider 
+		title="ARCHIBUS in Depth"  
+		background-shading="bucket-background-medium" 
+		/>
+
+	<row height="full">
+		<bucket 
+			title="Space Process"
+			tooltip="Develop and manage your space and occupancy data."
+			type="process"
+			activity_id="AbSpaceRoomInventoryBAR"
+			process_id="Department Manager"
+			/>
+		<bucket 
+			title="Space Reports"
+			tooltip="Review operational reports on your space inventory."
+			type="process"
+			activity_id="AbSpaceRoomInventoryBAR"
+			process_id="Executive Reports"
+			background-shading="bucket-background-light"
+			/>
+		<bucket 
+			title="Space Background"
+			tooltip="Define, update, and merge validating categories for your space inventory."
+			type="process"
+			activity_id="AbSpaceRoomInventoryBAR"
+			process_id="Background Data"
+			/>
+	</row>
+
+	<row height="full">
+		<bucket 
+			title="Ops Process"
+			tooltip="Managing your building operations."
+			type="process"
+			activity_id="AbBldgOpsHelpDesk"
+			process_id="Business Process Owner"
+			/>
+		<bucket 
+			title="Ops Reports"
+			tooltip="Review detailed operational reports on your maintenance process."
+			type="process"
+			activity_id="AbBldgOpsHelpDesk"
+			process_id="Reports"
+			/>
+		<bucket 
+			title="Ops Management"
+			tooltip="Review management rollup reports and analyses on your maintenance process."
+			type="process"
+			activity_id="AbBldgOpsHelpDesk"
+			process_id="Business Manager"
+			/>
+		<bucket 
+			title="Ops Background"
+			tooltip="Define, update, and merge validating categories for your maintenance data."
+			type="process"
+			activity_id="AbBldgOpsHelpDesk"
+			process_id="System Integrator"
+			/>
+	</row>
+
+</navigation-page>

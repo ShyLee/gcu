@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+	<display-name>ARCHIBUS Web Central</display-name>
+
+	<!-- Spring config files locations ========================= -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/config/context/appContext.xml</param-value>
+	</context-param>
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>
+    </context-param>
+
+	<!--
+		- Location of the Log4J config file, for initialization and refresh checks.
+		- Applied by Log4jConfigListener.
+	-->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/config/context/logging/logging.xml</param-value>
+	</context-param>
+	<!--
+		- Key of the system property that should specify the root directory of this
+		- web app. Applied by WebAppRootListener or Log4jConfigListener.
+		- Required for the WebCentral start-up.
+	-->
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>WebCentral.root</param-value>
+	</context-param>
+
+	<!--
+		- Key of the system property that should specify the server info of this
+		- web app. Applied by WebCentralConfigListener.
+	-->
+	<context-param>
+		<param-name>webAppServerinfoKey</param-name>
+		<param-value>WebCentral.serverinfo</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>photoLocation</param-name>
+		<param-value>/projects/gcu/graphics</param-value>
+	</context-param>
+	<!-- Proxy for Spring-managed filters/beans -->
+	<filter>
+		<filter-name>springSecurityFilterChainRendering</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+<!--     Proxy for Spring-managed filters/beans: Remoting -->
+    <filter>
+        <filter-name>springSecurityFilterChainRemoting</filter-name>
+        <filter-class>
+            org.springframework.web.filter.DelegatingFilterProxy
+        </filter-class>
+    </filter>
+
+	<!-- Rendering requests pass through Spring-managed filters -->
+	<filter-mapping>
+		<filter-name>springSecurityFilterChainRendering</filter-name>
+		<url-pattern>*.dwr</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChainRendering</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChainRendering</filter-name>
+		<url-pattern>*.axvw</url-pattern>
+	</filter-mapping>
+
+    <!-- CXF requests pass through Spring-managed filters -->
+    <filter-mapping>
+        <filter-name>springSecurityFilterChainRemoting</filter-name>
+        <url-pattern>/cxf/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>PhotoUploadServlet</servlet-name>
+        <servlet-class>com.archibus.service.school.tools.PhotoUploadService</servlet-class>
+    </servlet>
+
+	<servlet-mapping>
+        <servlet-name>PhotoUploadServlet</servlet-name>
+        <url-pattern>/PhotoUploadService.do</url-pattern>
+     </servlet-mapping>
+     
+	<!--
+		- Exports a "web app server info key", i.e. a system property that specifies the server info of this web app.
+		- This web app specifies "WebCentral.serverinfo", which is used for logging.
+	-->
+	<listener>
+		<listener-class>
+			com.archibus.servletx.WebCentralConfigListener
+		</listener-class>
+	</listener>
+
+	<!--
+		- Configures Log4J for this web app.
+		- As this context specifies a context-param "log4jConfigLocation", its file path
+		- is used to load the Log4J configuration, including periodic refresh checks.
+		-
+		- Would fall back to default Log4J initialization (non-refreshing) if no special
+		- context-params are given.
+		-
+		- Exports a "web app root key", i.e. a system property that specifies the root
+		- directory of this web app, for usage in log file paths.
+		- This web app specifies "WebCentral.root" (see log4j.properties file).
+		- Required for the WebCentral start-up.
+	-->
+	<listener>
+		<listener-class>
+			org.springframework.web.util.Log4jConfigListener
+		</listener-class>
+	</listener>
+
+	<!-- Spring context loader ========================= -->
+	<listener>
+		<listener-class>
+			com.archibus.servletx.WebCentralContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<!-- Old view rendering pipelne -->
+	<servlet>
+		<servlet-name>ControllerServlet</servlet-name>
+		<servlet-class>
+			com.archibus.servlet.ControllerServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- DWR Remoting -->
+	<servlet>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>
+			org.directwebremoting.servlet.DwrServlet
+		</servlet-class>
+        <!-- When set to "false", DWR will compress JS code it serves. -->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>logLevel</param-name>
+			<param-value>INFO</param-value>
+		</init-param>
+		<init-param>
+			<!-- Timeout for DWR Ajax sessions. 2100000 ms = 35 minutes. 
+                 Typically we want it to be longer than HTTP session timeouts, so that users working 
+                 with 1.0 views do not encounter DWR timeouts when accessing the Process Navigator. -->
+			<param-name>scriptSessionTimeout</param-name>
+			<param-value>2100000</param-value>
+		</init-param>
+		<init-param>
+            <!-- override default DWR download handler to add support for content-disposition -->
+    		<param-name>url:/download/</param-name>
+			<param-value>com.archibus.servlet.DWRDownloadHandler</param-value>
+		</init-param>
+        <init-param>
+            <param-name>maxWaitingThreads</param-name>
+            <param-value>300</param-value>
+        </init-param>
+        <init-param>
+            <param-name>maxHitsPerSecond</param-name>
+            <param-value>1000</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.directwebremoting.extend.ScriptSessionManager</param-name>
+            <param-value>com.archibus.servlet.DWRScriptSessionManager</param-value>
+        </init-param>
+	</servlet>
+    <!-- Servlet definition for Web Service remoting via CXF -->
+    <servlet>
+        <servlet-name>CXFServlet</servlet-name>
+        <servlet-class>
+            org.apache.cxf.transport.servlet.CXFServlet
+        </servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+	<!-- Old view rendering pipelne -->
+	<servlet-mapping>
+		<servlet-name>ControllerServlet</servlet-name>
+		<url-pattern>*.axvw</url-pattern>
+	</servlet-mapping>
+	<!-- DWR Remoting -->
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+    <!-- CXF Remoting -->
+    <servlet-mapping>
+        <servlet-name>CXFServlet</servlet-name>
+        <url-pattern>/cxf/*</url-pattern>
+    </servlet-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<mime-mapping>
+		<extension>jar</extension>
+		<mime-type>application/x-gzip</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>war</extension>
+		<mime-type>application/x-gzip</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wbmp</extension>
+		<mime-type>image/vnd.wap.wbmp</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wml</extension>
+		<mime-type>text/vnd.wap.wml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wmlc</extension>
+		<mime-type>application/vnd.wap.wmlc</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wmls</extension>
+		<mime-type>text/vnd.wap.wmls</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wmlscriptc</extension>
+		<mime-type>application/vnd.wap.wmlscriptc</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>doc</extension>
+		<mime-type>application/msword</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+    		<extension>docx</extension>
+    		<mime-type>application/vnd.openxmlformats</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xls</extension>
+		<mime-type>application/vnd.ms-excel</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pdf</extension>
+		<mime-type>application/pdf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ppt</extension>
+		<mime-type>application/vnd.ms-powerpoint</mime-type>
+	</mime-mapping>
+    <mime-mapping>
+        <extension>csv</extension>
+        <mime-type>application/csv</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>xml</extension>
+        <mime-type>text/xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>appcache</extension>
+        <mime-type>text/cache-manifest</mime-type>
+    </mime-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.htm</welcome-file>
+	</welcome-file-list>
+</web-app>

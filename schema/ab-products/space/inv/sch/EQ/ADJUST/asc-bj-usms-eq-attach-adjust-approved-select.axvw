@@ -1,0 +1,106 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-attach-adjust-approved-select.js"/>
+    
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="50%" split="true"/>
+        <center/>
+    </layout>
+    
+    <dataSource id="eq_attach_change_ds">
+    	<table name="eq_attach_change" role="main"/>
+        <field table="eq_attach_change" name="id"/>
+        <field table="eq_attach_change" name="rtr_dip_id"/>
+        <field table="eq_attach_change" name="eq_id"/>
+        <field table="eq_attach_change" name="eq_attach_id"/>
+        <field table="eq_attach_change" name="eq_attach_name"/>
+        <field table="eq_attach_change" name="eq_type"/>
+        <field table="eq_attach_change" name="dv_id"/>
+        <field table="eq_attach_change" name="dv_name"/>
+        <field table="eq_attach_change" name="dv_id_old"/>
+        <field table="eq_attach_change" name="dv_name_old"/>
+        <field table="eq_attach_change" name="bl_id"/>
+        <field table="eq_attach_change" name="bl_id_old"/>
+        <field table="eq_attach_change" name="rm_id"/>
+        <field table="eq_attach_change" name="rm_id_old"/>
+<!--         <field table="eq_attach_change" name="date_appraisal"/> -->
+<!--         <field table="eq_attach_change" name="person_appraisal"/> -->
+<!--         <field table="eq_attach_change" name="person_appraisal_name"/> -->
+<!--         <field table="eq_attach_change" name="appraisal_option"/> -->
+<!--         <field table="eq_attach_change" name="date_change"/> -->
+<!--         <field table="eq_attach_change" name="audit_status"/> -->
+        <field table="eq_attach_change" name="adjust_cause"/>
+        <field table="eq_attach_change" name="adjust_date"/>
+        <field table="eq_attach_change" name="adjust_em_id"/>
+        <field table="eq_attach_change" name="adjust_em_name"/>
+        <field table="eq_attach_change" name="adjust_dv_id"/>
+        <field table="eq_attach_change" name="adjust_dv_name"/>
+        <field table="eq_attach_change" name="adjust_status"/>
+        <field table="eq_attach_change" name="okBadStatus"/>
+        <field table="eq_attach_change" name="change_reason"/>
+        <restriction type="sql" sql="adjust_status='1'"/>
+    </dataSource>
+    
+    <dataSource id="eq_attach_change_approve_ds">
+        <table name="eq_attach_change" role="main"/>
+        <field table="eq_attach_change" name="id"/>
+        <field table="eq_attach_change" name="rtr_dip_id"/>
+        <field table="eq_attach_change" name="eq_attach_id"/>
+        <field table="eq_attach_change" name="eq_attach_name"/>
+        <field table="eq_attach_change" name="eq_type"/>
+        <field table="eq_attach_change" name="dv_id"/>
+        <field table="eq_attach_change" name="dv_name"/>
+        <field table="eq_attach_change" name="dv_id_old"/>
+        <field table="eq_attach_change" name="dv_name_old"/>
+        <field table="eq_attach_change" name="bl_id"/>
+        <field table="eq_attach_change" name="bl_id_old"/>
+        <field table="eq_attach_change" name="rm_id"/>
+        <field table="eq_attach_change" name="rm_id_old"/>
+<!--         <field table="eq_attach_change" name="date_appraisal"/> -->
+<!--         <field table="eq_attach_change" name="person_appraisal"/> -->
+<!--         <field table="eq_attach_change" name="person_appraisal_name"/> -->
+<!--         <field table="eq_attach_change" name="appraisal_option"/> -->
+<!--         <field table="eq_attach_change" name="date_change"/> -->
+<!--         <field table="eq_attach_change" name="audit_status"/> -->
+        <field table="eq_attach_change" name="adjust_cause"/>
+        <field table="eq_attach_change" name="adjust_date"/>
+        <field table="eq_attach_change" name="adjust_em_id"/>
+        <field table="eq_attach_change" name="adjust_em_name"/>
+        <field table="eq_attach_change" name="adjust_dv_id"/>
+        <field table="eq_attach_change" name="adjust_dv_name"/>
+        <field table="eq_attach_change" name="adjust_status"/>
+        <field table="eq_attach_change" name="okBadStatus"/>
+        <field table="eq_attach_change" name="change_reason"/>
+        <restriction type="sql" sql="adjust_status='2'"/>
+    </dataSource>
+    
+    <panel type="grid" id="needApprovePanel" dataSource="eq_attach_change_ds" layout="mainLayout" region="north">
+        <title translatable="true">Need Approve</title>
+        <field id="view" controlType="button" width="120">
+            <title translatable="true">View</title>
+        </field>
+        <field table="eq_attach_change" name="id" hidden="true"/>
+        <field table="eq_attach_change" name="rtr_dip_id" hidden="false"/>
+        <field table="eq_attach_change" name="eq_attach_id" />
+        <field table="eq_attach_change" name="eq_attach_name"/>
+        <field table="eq_attach_change" name="adjust_em_name"/>
+        <field table="eq_attach_change" name="adjust_dv_name"/>
+        <field table="eq_attach_change" name="adjust_date"/>
+        <field table="eq_attach_change" name="dv_name_old"/>
+        <field table="eq_attach_change" name="adjust_cause"/>
+        <field table="eq_attach_change" name="adjust_status"/>
+    </panel>
+    
+    <panel type="grid" id="approvedPanel" dataSource="eq_attach_change_approve_ds" layout="mainLayout" region="center">
+        <title translatable="true">Adjust Approved</title>
+        <field table="eq_attach_change" name="id" hidden="true"/>
+        <field table="eq_attach_change" name="rtr_dip_id" hidden="false"/>
+        <field table="eq_attach_change" name="eq_attach_id" />
+        <field table="eq_attach_change" name="eq_attach_name"/>
+        <field table="eq_attach_change" name="adjust_em_name"/>
+        <field table="eq_attach_change" name="adjust_dv_name"/>
+        <field table="eq_attach_change" name="adjust_date"/>
+        <field table="eq_attach_change" name="dv_name_old"/>
+        <field table="eq_attach_change" name="dv_name"/>
+        <field table="eq_attach_change" name="adjust_status"/>
+    </panel>
+</view>

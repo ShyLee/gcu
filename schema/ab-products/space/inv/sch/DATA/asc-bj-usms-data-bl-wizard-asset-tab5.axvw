@@ -1,0 +1,132 @@
+<view version="2.0">
+	<js file="asc-bj-usms-data-bl-wizard-asset-tab5.js"/>
+	<dataSource id="tsBl">
+		<table name="bl" role="main"/>
+				
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="date_use"/>
+		<field table="bl" name="fund_src"/>
+		<field table="bl" name="self_collected_funds"/>
+		<field table="bl" name="value_net"/>
+		<!-- <field table="bl" name="unsold_area_seg"/> -->
+		<!-- <field table="bl" name="unsold_value_seg"/> -->
+		<field table="bl" name="acc_type"/>
+		<field table="bl" name="value_market_uinc_sold"/>
+		<field table="bl" name="value_market_inc_sold"/>
+		<field table="bl" name="value_origi_uinc_sold"/>
+		<field table="bl" name="value_original_all"/>
+		<field table="bl" name="value_fiscal_alloc"/>
+		<field table="bl" name="business_income"/>
+		<field table="bl" name="ysw_income"/>
+		<field table="bl" name="other_funds"/>
+		<field table="bl" name="czxjy_funds"/>
+		<field table="bl" name="in_acc_em"/>
+		<field table="bl" name="auditor"/>
+		<field table="bl" name="in_acc_proof"/>
+		<field table="bl" name="cgzzxs_id"/>
+		<field table="bl" name="value_type"/>
+		<field table="bl" name="zhejiu_add"/>
+		<field table="bl" name="value_net"/>
+		<field table="bl" name="account_proof"/>
+		<field table="bl" name="zhejiu_status"/>
+		<field table="bl" name="avg_price"/>
+		<field table="bl" name="value_ziyong"/>
+		<field table="bl" name="value_lend"/>
+		<field table="bl" name="value_rent"/>
+		<field table="bl" name="value_invest"/>
+		<field table="bl" name="value_danbao"/>
+		<field table="bl" name="value_other"/>
+		<field table="bl" name="deprec_method"/>
+		<field table="bl" name="deprec_months"/>
+		<field table="bl" name="remain_rate"/>
+		<field table="bl" name="depre_reserves"/>
+		
+	</dataSource>
+	<tabs workflow="free" id="wizardTabs" tabRefreshPolicy="refreshOnLoad">
+		
+	    <tab name="Value"  selected="true" useFrame="true">
+		    <title translatable="true">Value</title>
+		    <panel type="form" dataSource="tsBl" id="tsBlForm0" columns="2">
+				<!-- <title translatable="true">Value</title> -->
+				<action id="return">
+					<title translatable="true">Return</title>
+					<command type="callFunction" functionName="rplmBuildingBuildAssetController.returnToIndex()"/>
+				</action>
+				<action id="clear">
+					<title translatable="true">Cancel</title>
+					<command type="showPanel" panelId="tsBlForm0" applyParentRestriction="true"/>
+				</action>
+				<action id="save">
+					<title translatable="true">Save</title>
+					<command type="saveForm"/>
+					<!-- <command type="selectTabPage" tabPageName="qita" /> -->
+				</action>
+				    <field table="bl" name="bl_id" readOnly="true" hidden="false"/>
+				    <field table="bl" name="value_type"/>
+					<field table="bl" name="value_original"/>
+					<field table="bl" name="value_other"/>
+					<field table="bl" name="value_original_all"/>
+					<field table="bl" name="value_origi_uinc_sold"/>
+					<field table="bl" name="value_market_inc_sold"/>
+					<field table="bl" name="value_market_uinc_sold"/>		
+					<field table="bl" name="value_fiscal_alloc"/>
+					<field table="bl" name="value_ziyong"/>
+					<field table="bl" name="value_lend"/>
+					<field table="bl" name="value_rent"/>
+					<field table="bl" name="value_invest"/>
+					<field table="bl" name="value_danbao"/>
+			</panel>
+	    </tab>
+	
+	    <tab name="qita"  useFrame="true">
+		    <title translatable="true">qita</title>
+		    <panel type="form" dataSource="tsBl" id="tsBlForm1" columns="2" showOnLoad="true">
+
+					<action id="cancel">
+						<title translatable="true">Return</title>
+						<!-- <command type="selectTabPage" tabPageName="Value" /> -->
+						<command type="callFunction" functionName="rplmBuildingBuildAssetController.returnToIndex()"/>
+					</action>
+					<action id="clear">
+						<title translatable="true">Cancel</title>
+						<command type="showPanel" panelId="tsBlForm1" applyParentRestriction="true"/>
+					</action>
+					<action id="save">
+						<title translatable="true">Save</title>
+						<command type="saveForm"/>
+						<!-- <command type="callFunction" functionName="rplmBuildingBuildAssetController.Finish()"/> -->
+					</action>
+					<field table="bl" name="bl_id" readOnly="true" hidden="false"/>
+					<field table="bl" name="date_use"/>
+					<field table="bl" name="fund_src"/>
+					<field table="bl" name="self_collected_funds"/>
+					<!-- <field table="bl" name="unsold_area_seg"/> -->
+					<!-- <field table="bl" name="unsold_value_seg"/> -->
+					<field table="bl" name="acc_type"/>
+					<field table="bl" name="business_income"/>
+					<field table="bl" name="ysw_income"/>
+					<field table="bl" name="other_funds"/>
+					<field table="bl" name="czxjy_funds"/>
+					<field table="bl" name="in_acc_em"/>
+					<field table="bl" name="auditor"/>
+					<field table="bl" name="in_acc_proof"/>
+					<field table="bl" name="cgzzxs_id"/>
+					<field table="bl" name="zhejiu_add"/>
+					<field table="bl" name="value_net"/>
+					<field table="bl" name="account_proof"/>
+					<field table="bl" name="zhejiu_status"/>
+					<field table="bl" name="avg_price"/>
+					<field table="bl" name="deprec_method"/>
+					<field table="bl" name="deprec_months"/>
+					<field table="bl" name="remain_rate"/>
+					<field table="bl" name="depre_reserves"/>
+			</panel>
+	    </tab>
+	  
+	</tabs>
+	
+	
+	
+	
+	
+</view>	

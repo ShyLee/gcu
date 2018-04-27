@@ -1,0 +1,41 @@
+<!-- map with single datasource  -->
+
+<view version="2.0" docType="html4/strict">
+  <title>Example: Show Properties as Single Datasource on Map</title>
+  <js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+  <js file="ab-arcgis-property-single-datasource-map.js"/>
+  <js file="ab-arcgis-map.js"/>
+  <css file="ab-arcgis-map.css"/>
+  <css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css" />
+  
+  <layout file="dashboard-1-1-0.axvw"/>
+  
+  <dataSource id="pr_ds">
+    <table name="property" role="main"/>
+    <field name="pr_id" table="property"/>
+    <field name="area_manual" table="property"/>
+    <field name="value_market" table="property"/>
+    <field name="value_book" table="property"/>
+    <field name="lat" table="property"/>
+    <field name="lon" table="property"/>
+  </dataSource>
+
+  <panel type="grid" id="pr_list" multipleSelectionEnabled="true" dataSource="pr_ds" layoutRegion="row1col1">
+    <title translatable="true">Properties</title>
+    <action id="showProperties" >
+    	<title>Show Properties</title>
+    </action>
+    <field name="pr_id" table="property"/>
+    <field name="area_manual" table="property"/>
+    <field name="value_market" table="property"/>
+    <field name="value_book" table="property"/>
+  </panel>
+
+  <panel type="html" id="mapPanel" layoutRegion="row1col2">
+    <title translatable="true">Properties Map</title>
+    <html> 	   	
+      <div id="map" style="width:100%;"> </div>
+    </html>
+  </panel>
+ 
+</view>

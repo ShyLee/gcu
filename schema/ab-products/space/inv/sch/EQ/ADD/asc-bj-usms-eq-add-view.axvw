@@ -1,0 +1,201 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-add-view.js"/>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="200" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <table name="add_eq" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="bl" role="standard"/>
+        <table name="csi" role="standard"/>
+        <field table="eq" name="add_eq_id"/>
+        <field table="add_eq" name="add_eq_id"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="num_eq"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="total_price" />
+        <field table="eq" name="attachments_num" />
+        <field table="eq" name="attachments_price" />
+        <field table="eq" name="date_in_service" />
+        <field table="eq" name="date_purchased" />
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="is_up"/>
+        <field table="eq" name="is_label"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="add_comment"/>
+    </dataSource>  
+    <title></title>
+	  <dataSource id="eq_attach_ds">
+        <table name="eq_attach" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="bl" role="standard"/>
+        <table name="csi" role="standard"/>
+        <field table="eq_attach" name="eq_id"/>
+        <field table="eq_attach" name="eq_attach_id" />
+        <field table="eq_attach" name="eq_attach_name"/>
+        <field table="eq_attach" name="brand"/> 
+        <field table="eq_attach" name="eq_std"/>
+        <field table="eq_attach" name="eq_type"/>
+        <field table="eq_attach" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq_attach" name="eq_warehouse"/>
+        <field table="eq_attach" name="num_eq"/>
+        <field table="eq_attach" name="units"/>
+        <field table="eq_attach" name="price"/>
+        <field table="eq_attach" name="price_old"/>
+        <field table="eq_attach" name="date_manufactured"/>
+        <field table="eq_attach" name="date_purchased"/>
+        <field table="eq_attach" name="em_id"/>
+        <field table="eq_attach" name="em_name"/>
+        <field table="eq_attach" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="eq_attach" name="fl_id"/>
+        <field table="eq_attach" name="rm_id"/>
+        <field table="eq_attach" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_attach" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_attach" name="type_use"/>
+        <field table="eq_attach" name="buy_type"/>
+        <field table="eq_attach" name="source"/>
+        <field table="eq_attach" name="subject_funds"/>
+        <field table="eq_attach" name="ctry_id"/>
+        <field table="eq_attach" name="ctry_name"/>
+        <field table="eq_attach" name="num_serial"/>
+        <field table="eq_attach" name="vn_id"/>
+        <field table="eq_attach" name="is_up"/>
+        <field table="eq_attach" name="is_label"/>
+        <field table="eq_attach" name="sch_status"/>
+        <field table="eq_attach" name="type"/>
+        <field table="eq_attach" name="add_comment"/>
+          
+        <field table="eq_attach" name="handling_em"/>
+        <field table="eq_attach" name="handling_em_name"/>
+        <field table="eq_attach" name="sci_resh_id"/>
+        <field table="eq_attach" name="danju_id"/>
+        <field table="eq_attach" name="comments"/>
+        <field table="eq_attach" name="eq_photo"/>
+        <field table="eq_attach" name="add_eq_id"/>
+        <field table="eq_attach" name="is_assign"/>
+        <restriction type="sql" sql=" eq_attach.type='0'"/>
+    </dataSource>
+
+    <panel type="grid" id="eqListOfAddEqPanel" dataSource="ascBjUsmsEqDs" showOnLoad="false" layout="mainLayout" region="north">
+        <title translatable="true">Eq List Of AddEq</title>
+        <field table="add_eq" name="add_eq_id" controlType="link">
+        	<command type="callFunction" functionName="dialogController.refreshPanel()"/>
+        </field>
+        <field table="eq" name="eq_id" controlType="link">
+        	<command type="callFunction" functionName="dialogController.refreshPanel()"/>
+        </field>
+        <field table="eq" name="eq_name" controlType="link">
+        	<command type="callFunction" functionName="dialogController.refreshPanel()"/>
+        </field>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi_id" hidden="true"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="num_eq"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="total_price" />
+        <field table="eq" name="attachments_num" />
+        <field table="eq" name="attachments_price" />
+        <field table="eq" name="date_in_service" />
+        <field table="eq" name="date_purchased" />
+        <field table="eq" name="em_id" hidden="true"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="ctry_id" hidden="true"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="is_up"/>
+        <field table="eq" name="is_label"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="add_comment"/>
+    </panel>
+    
+   <panel type="grid" id="eqAttachPanel" dataSource="eq_attach_ds"  showOnLoad="false" layout="mainLayout" region="center">
+    	<title></title>
+        <field table="eq_attach" name="add_eq_id" hidden="true"/>
+        <field table="eq_attach" name="eq_id" />
+		<field table="eq_attach" name="eq_attach_id" />
+        <field table="eq_attach" name="eq_attach_name"/>
+        <field table="eq_attach" name="brand"/> 
+        <field table="eq_attach" name="eq_std"/>
+        <field table="eq_attach" name="eq_type"/>
+        <field table="eq_attach" name="csi_id" hidden="true"/>
+        <field table="csi" name="description"/>
+        <field table="eq_attach" name="eq_warehouse"/>
+        <field table="eq_attach" name="num_eq"/>
+        <field table="eq_attach" name="units"/>
+        <field table="eq_attach" name="price"/>
+        <field table="eq_attach" name="price_old"/>
+        <field table="eq_attach" name="date_manufactured"/>
+        <field table="eq_attach" name="date_purchased"/>
+        <field table="eq_attach" name="em_id" hidden="true"/>
+        <field table="eq_attach" name="em_name"/>
+        <field table="eq_attach" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <field table="eq_attach" name="fl_id"/>
+        <field table="eq_attach" name="rm_id"/>
+        <field table="eq_attach" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_attach" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_attach" name="type_use"/>
+        <field table="eq_attach" name="buy_type"/>
+        <field table="eq_attach" name="source"/>
+        <field table="eq_attach" name="subject_funds"/>
+        <field table="eq_attach" name="ctry_id" hidden="true"/>
+        <field table="eq_attach" name="ctry_name"/>
+        <field table="eq_attach" name="num_serial"/>
+        <field table="eq_attach" name="vn_id"/>
+        <field table="eq_attach" name="is_up"/>
+        <field table="eq_attach" name="is_label"/>
+        <field table="eq_attach" name="sch_status"/>
+        <field table="eq_attach" name="type"/>
+        <field table="eq_attach" name="add_comment"/>
+    </panel>
+</view>

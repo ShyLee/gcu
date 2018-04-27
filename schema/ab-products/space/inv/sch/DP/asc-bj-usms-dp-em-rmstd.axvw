@@ -1,0 +1,123 @@
+<view version="2.0">
+    <title translatable="true">ChaXunJiaoZhiGongShiJiYongFangQingKuang</title>
+	
+    <layout type="borderLayout" id="mainLayout">
+        <north id="north" initialSize="12%" split="true"/>
+        <center id="center"/>
+    </layout>
+    <!-- Retrieves all funding sources, and additional visible fields per funding source. -->
+    <dataSource id="ascBjUsmsDpEmRmStdConsoleDS">
+        <table name="em" role="main"/>
+		<table name="dv" role="standard"/>
+		<table name="bl" role="standard"/>
+		<table name="site" role="standard"/>
+		
+		<field table="dv" name="dv_id"/>
+		<field table="dv" name="bu_id"/>
+		<field table="bl" name="site_id"/>
+		<field table="site" name="name"/>
+		<field table="bl" name="name"/>
+    </dataSource>
+    
+    <panel type="console" id="ascBjUsmsDpEmRmStdConsole" labelsPosition="top" dataSource="ascBjUsmsDpEmRmStdConsoleDS" columns="4" layoutRegion="north">
+        <title translatable="true">ChaXunTiaoJian</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+		<field table="dv" name="bu_id"/>
+		<field table="dv" name="dv_id"/>
+		<field table="bl" name="site_id"/>
+		<field table="bl" name="name"/>
+    </panel>
+    
+    <dataSource id="ascBjUsmsDpEmRmStd_grid_em">
+    		 <sql dialect="generic">
+            SELECT 
+			em.name  ${sql.as} name,
+            em.em_id  ${sql.as} em_id,
+            em.zhic_id  ${sql.as} zhic_id,
+           	em.zhiw_id  ${sql.as}  zhiw_id,
+           	em.area_rm	 ${sql.as} area_rm,
+           	bl.name  ${sql.as} blName,
+           	bl.site_id  ${sql.as} site_id,
+            em.fl_id  ${sql.as}  fl_id,
+            em.rm_id  ${sql.as}  rm_id,
+           	dp.area_rm  ${sql.as} dp_area_rm,
+            rm.count_design  ${sql.as} count_design,
+            em.dv_id  ${sql.as} dv_id,
+            dv.dv_name  ${sql.as} dv_name,
+            dv.bu_id  ${sql.as} bu_id,
+            dp.dp_name  ${sql.as}  dpName,
+			em.sex  ${sql.as}  sex
+            FROM em
+            LEFT OUTER JOIN rm
+            ON em.rm_id=rm.rm_id and em.fl_id = rm.fl_id and em.bl_id = rm.bl_id
+            LEFT OUTER JOIN bl
+            ON em.bl_id=bl.bl_id
+            LEFT OUTER JOIN dp
+            ON em.dp_id = dp.dp_id and em.dv_id = dp.dv_id
+            LEFT OUTER JOIN dv
+            ON em.dv_id = dv.dv_id
+        </sql>
+        <table name="em" role="main"/>
+		<field table="em" name="name" dataType="text"/>
+        <field table="em" name="em_id" dataType="text"/>
+		<field table="em" name="zhic_id" dataType="text"/>
+		<field table="em" name="zhiw_id" dataType="text"/>
+		<field table="em" name="area_rm" dataType="number" size="8" decimals="2" showTotals="true"/>
+		<field table="em" name="blName" dataType="text"/>
+		<field table="em" name="site_id" dataType="text"/>
+		<field table="em" name="fl_id" dataType="text"/>
+		<field table="em" name="rm_id" dataType="text"/>
+		<field table="em" name="dp_area_rm" dataType="number" size="8" decimals="2" showTotals="true"/>
+		<field table="em" name="count_design" dataType="text">
+			<title translatable="true">shejizuowei</title>
+		</field>	
+		<field table="em" name="dv_id" dataType="text"/>
+		<field table="em" name="dv_name" dataType="text"/>
+		<field table="em" name="bu_id" dataType="text"/>
+		<field table="em" name="dpName" dataType="text"/>
+		<field table="em" name="sex"/>
+		 <parameter name="res" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql=" ${parameters['res']}"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsDpEmRmStdGrid" showCounts="true" dataSource="ascBjUsmsDpEmRmStd_grid_em" layoutRegion="center" showOnLoad="true">
+    	<action id="exportXLS">
+	        <title>XLS</title>
+	        <command type="exportPanel" outputType="xls" panelId="ascBjUsmsDpEmRmStdGrid"/>
+	    </action>
+    	<sortField name="em_id" table="em" ascending="true"/>
+        <title translatable="true">JiaoZhiGongBanGongZhanYongMianJiZhuangKuang</title>
+   		<field table="em" name="name" />
+        <field table="em" name="em_id" />
+		<field table="em" name="zhic_id" />
+		<field table="em" name="zhiw_id" />
+		<field table="em" name="area_rm" dataType="number" size="8" decimals="2" showTotals="true"/>
+		<field table="em" name="blName">
+			<title>BL Name</title>
+		</field>
+		<field table="em" name="fl_id" />
+		<field table="em" name="rm_id" />
+		<field table="em" name="dp_area_rm" dataType="number" size="8" decimals="2" showTotals="true">
+			<title>Area Room</title>
+		</field>
+		<field table="em" name="count_design" hidden="true">
+			<title translatable="true">shejizuowei</title>
+		</field>	
+		<field table="em" name="dv_id" hidden="true"/>
+		<field table="em" name="dv_name">
+			<title>Devision Name</title>
+		</field>
+		<field table="em" name="dpName">
+			<title>Department Name</title>
+		</field>
+		<field table="em" name="sex"/>
+   
+    </panel>
+	
+    <js file="asc-bj-usms-dp-em-rmstd.js"/>
+</view>

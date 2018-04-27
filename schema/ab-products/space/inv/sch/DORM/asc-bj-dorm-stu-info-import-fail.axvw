@@ -1,0 +1,89 @@
+<view version="2.0">
+	<dataSource id="stu_verify_DS">
+		<sql dialect="generic">
+			SELECT
+			sc_student_verify.message,sc_student_verify.stu_no,sc_student_verify.stu_name,sc_student_verify.stu_sex,sc_student_verify.stu_in_year,
+			sc_student_verify.status,sc_student_verify.dv_name,sc_student_verify.pro_name,sc_student_verify.bl_id,
+			sc_student_verify.fl_id,sc_student_verify.rm_id,sc_student_verify.phone,sc_student_verify.telephone,
+			sc_student_verify.comments,sc_student_verify.dv_id,sc_student_verify.pro_id
+			FROM sc_student_verify WHERE NOT EXISTS (SELECT stu_no FROM
+			sc_student
+			WHERE sc_student.stu_no =sc_student_verify.stu_no) AND
+			stu_in_year= ${parameters['stuInYear']}
+		</sql>
+		<table name="sc_student_verify" role="main" />
+		<field table="sc_student_verify" name="stu_no" dataType="text" />
+		<field table="sc_student_verify" name="stu_name" dataType="text" />
+		<field table="sc_student_verify" name="stu_sex" dataType="text" />
+		<field table="sc_student_verify" name="stu_in_year" dataType="text" />
+		<field table="sc_student_verify" name="status" dataType="text" />
+		<field table="sc_student_verify" name="dv_id" dataType="text" />
+		<field table="sc_student_verify" name="pro_id" dataType="text" />
+		<field table="sc_student_verify" name="dv_name" dataType="text" />
+		<field table="sc_student_verify" name="pro_name" dataType="text" />
+		<field table="sc_student_verify" name="bl_id" dataType="text" />
+		<field table="sc_student_verify" name="fl_id" dataType="text" />
+		<field table="sc_student_verify" name="rm_id" dataType="text" />
+		<field table="sc_student_verify" name="phone" dataType="text" />
+		<field table="sc_student_verify" name="telephone" dataType="text" />
+		<field table="sc_student_verify" name="comments" dataType="text" />
+		<field table="sc_student_verify" name="message" dataType="text" />
+		<parameter name="stuInYear" dataType="text" value="" />
+	</dataSource>
+	<panel type="grid" id="importFailGridPanel" dataSource="stu_verify_DS"
+		 showOnLoad="false">
+<!-- 		<action> -->
+<!-- 			<title>Add Import</title> -->
+<!-- 		</action> -->
+		<field table="sc_student_verify"  name="stu_no" controlType="link">
+			<command type="callFunction" functionName="importStudentController.showEditPanel()"/>
+		</field>
+		<field table="sc_student_verify"  name="message" controlType="link">
+			<command type="callFunction" functionName="importStudentController.showEditPanel()"/>
+		</field>
+		<field table="sc_student_verify"  name="stu_name"  controlType="link">
+			<command type="callFunction" functionName="importStudentController.showEditPanel()"/>
+		</field>
+		<field table="sc_student_verify"  name="stu_sex" controlType="link">
+			<command type="callFunction" functionName="importStudentController.showEditPanel()"/>
+		</field>
+		<field table="sc_student_verify"  name="stu_in_year"  controlType="link">
+			<command type="callFunction" functionName="importStudentController.showEditPanel()"/>
+		</field>
+		<field table="sc_student_verify"  name="status"  />
+		<field table="sc_student_verify"  name="dv_name"/>
+		<field table="sc_student_verify"  name="pro_name"/>
+		<field table="sc_student_verify"  name="bl_id"  />
+		<field table="sc_student_verify"  name="fl_id"  />
+		<field table="sc_student_verify"  name="rm_id"  />
+		<field table="sc_student_verify"  name="phone"  />
+		<field table="sc_student_verify"  name="telephone"  />
+		<field table="sc_student_verify"  name="comments"  />
+	</panel>
+	<panel type="form" id="importFailFormPanel" dataSource="stu_verify_DS"	showOnLoad="false" columns="2">
+		<title>Edit</title>
+<!-- 		<action id="save"> -->
+<!-- 			<title>Save</title> -->
+<!-- 		</action> -->
+		<action id="add">
+			<title>Add Import</title>
+		</action>
+		<action id="close">
+			<title>Close Dialog</title>
+		</action>
+		<field table="sc_student_verify"  name="stu_no"  />
+		<field table="sc_student_verify"  name="stu_name"  />
+		<field table="sc_student_verify"  name="stu_sex"  />
+		<field table="sc_student_verify"  name="stu_in_year"  />
+		<field table="sc_student_verify"  name="status" />
+		<field table="sc_student_verify"  name="dv_name"  />
+		<field table="sc_student_verify"  name="pro_name"  />
+		<field table="sc_student_verify"  name="bl_id" />
+		<field table="sc_student_verify"  name="fl_id" />
+		<field table="sc_student_verify"  name="rm_id"  />
+		<field table="sc_student_verify"  name="phone"  />
+		<field table="sc_student_verify"  name="telephone"  />
+		<field table="sc_student_verify"  name="comments" />
+	</panel>
+	<js file="asc-bj-dorm-stu-info-import-fail.js" />
+</view>

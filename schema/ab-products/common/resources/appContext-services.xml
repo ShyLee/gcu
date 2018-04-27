@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<!-- ========================= Start of SERVICE DEFINITIONS ========================= -->
+
+	<!--
+		Per-activity configuration bean.
+	-->
+	<bean id="AbCommonResources-configuration"
+		class="com.archibus.service.cost.Configuration">
+		<property name="defaultDateStart" value="1980-01-01" />
+		<property name="defaultDateEnd" value="2099-12-31" />
+	</bean>
+
+	<!-- TODO remove this bean: not used anywhere, incorrect definition.
+		Remote version of CostService. This service is not used when the client calls WFRs. 
+        TODO: fix proxyInterfaces="com.archibus.utility.Immutable": define and use ICostService interface.
+	-->
+	<bean id="CostService-remote"
+		class="org.springframework.aop.framework.ProxyFactoryBean"
+		p:proxyInterfaces="com.archibus.utility.Immutable"
+		p:target-ref="CostService">
+		<property name="interceptorNames">
+			<list>
+				<value>securityInterceptor</value>
+				<value>exceptionHandlingInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 
+		Local version of CostService, used by WFRs. 
+	-->
+	<bean id="CostService"
+		class="com.archibus.service.cost.CostService"
+		scope="prototype"
+		p:configuration-ref="AbCommonResources-configuration">
+	</bean>
+
+	<!--
+		Cost beans.
+	-->
+	<bean id="actualCost"
+		class="com.archibus.app.common.finance.domain.ActualCost"
+		scope="prototype">
+	</bean>
+	<bean id="scheduledCost"
+		class="com.archibus.app.common.finance.domain.ScheduledCost"
+		scope="prototype">
+	</bean>
+	<bean id="recurringCost"
+		class="com.archibus.app.common.finance.domain.RecurringCost"
+		p:configuration-ref="AbCommonResources-configuration"
+		scope="prototype">
+	</bean>
+    
+    <!-- Cost indexing -->
+    <bean
+        id="costIndexProfile"
+        class="com.archibus.app.common.finance.domain.CostIndexProfile"
+        scope="prototype">
+    </bean>
+    <bean
+        id="costIndexTrans"
+        class="com.archibus.app.common.finance.domain.CostIndexTrans"
+        scope="prototype">
+    </bean>
+    
+    <!-- Svg Highlight -->
+    <bean
+        id="drawingSvgService-remote"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.app.common.drawing.svg.service.IDrawingSvgService"
+        scope="prototype">
+        <property name="target">
+            <ref bean="drawingSvgService"/>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <!-- In production, add securityInterceptor. -->
+                <value>contextInterceptor</value>
+                <value>exceptionHandlingInterceptor</value>
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    <bean
+        id="drawingSvgService"
+        class="com.archibus.app.common.drawing.svg.service.impl.DrawingSvgService"
+        p:highlightParametersDao-ref="highlightParametersDao"
+        p:siteDao-ref="siteDao"
+        p:drawingDao-ref="drawingDao"
+        scope="prototype">
+    </bean>
+    <bean
+        id="svgHighlightParameters"
+        class="com.archibus.app.common.drawing.svg.service.domain.HighlightParameters"
+        scope="prototype">
+    </bean>
+    <bean
+        id="highlightParametersDao"
+        class="com.archibus.app.common.drawing.svg.service.dao.datasource.HighlightParametersDataSource"
+        scope="prototype">
+    </bean>
+     <bean
+        id="svgSite"
+        class="com.archibus.app.common.drawing.svg.service.domain.Site"
+        scope="prototype">
+    </bean>
+     <bean
+        id="siteDao"
+        class="com.archibus.app.common.drawing.svg.service.dao.datasource.SiteDataSource"
+        scope="prototype">
+    </bean>
+    <bean
+        id="svgDrawing"
+        class="com.archibus.app.common.drawing.svg.service.domain.Drawing"
+        scope="prototype">
+    </bean>
+    <bean
+        id="drawingDao"
+        class="com.archibus.app.common.drawing.svg.service.dao.datasource.DrawingDataSource"
+        scope="prototype">
+    </bean>
+</beans>

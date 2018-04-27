@@ -1,0 +1,66 @@
+<view version="2.0">
+
+<!-- dataSource to fetch AXVWs by task_id for Bali 1 Express Navigation
+
+     product \ activity \ process \ task
+
+     afm_products.title as icon_small \
+     afm_activities.title as activity_id \ 
+     afm_processes.title as process_id \ 
+     afm_ptasks.task_id
+-->
+
+    <dataSource id="taskSearch_ds">
+        <table name="afm_ptasks" role="main"/>
+        <field table="afm_ptasks" name="task_id" dataType="text"/>
+        <field table="afm_ptasks" name="task_file" dataType="text"/>
+        <field table="afm_ptasks" name="display_order" dataType="text"/>
+        <field table="afm_ptasks" name="task_type" dataType="text"/>
+        <field table="afm_ptasks" name="hot_user_name" dataType="text"/>
+        <field table="afm_ptasks" name="security_group" dataType="text"/>
+        <field table="afm_ptasks" name="activity_id" dataType="text"/>
+        <field table="afm_ptasks" name="process_id" dataType="text"/>
+        <field table="afm_ptasks" name="icon_small" dataType="text"/>
+	<sql dialect="generic">
+		SELECT DISTINCT afm_ptasks.task_id,afm_ptasks.task_file,afm_ptasks.display_order,afm_ptasks.task_type,afm_ptasks.hot_user_name,
+		afm_ptasks.security_group,afm_activities.title ${sql.as} activity_id, afm_processes.title ${sql.as} process_id,
+		afm_products.title ${sql.as} icon_small
+		FROM afm_ptasks
+		LEFT OUTER JOIN afm_activities ON afm_ptasks.activity_id=afm_activities.activity_id
+		LEFT OUTER JOIN afm_processes ON afm_processes.activity_id=afm_ptasks.activity_id  AND afm_ptasks.process_id=afm_processes.process_id
+		LEFT OUTER JOIN afm_roleprocs ON afm_processes.activity_id=afm_roleprocs.activity_id 
+		AND afm_processes.process_id=afm_roleprocs.process_id 
+		LEFT OUTER JOIN afm_userprocs ON afm_processes.activity_id=afm_userprocs.activity_id 
+		AND afm_processes.process_id=afm_userprocs.process_id 
+		LEFT OUTER JOIN afm_actprods ON afm_actprods.activity_id=afm_activities.activity_id
+		LEFT OUTER JOIN afm_products ON afm_actprods.product_id=afm_products.product_id
+		WHERE ((afm_processes.is_active = '1'  AND (afm_processes.process_type = 'WEB' OR afm_processes.process_type = 'WEB URL')
+		AND (afm_userprocs.user_name = '${user.name}' OR afm_roleprocs.role_name = '${user.role}')))
+		AND((afm_ptasks.task_type = 'WEB' or afm_ptasks.task_type = 'WEB URL') 
+		AND (afm_ptasks.is_hotlist='0' OR afm_ptasks.hot_user_name = '${user.name}'))
+        </sql>
+    </dataSource>
+
+  <panel type="grid" id="taskSearchReportGrid" controlType="reportGrid" dataSource="taskSearch_ds">
+    <sortField table="afm_ptasks" name="icon_small" ascending="true"/>
+    <sortField table="afm_ptasks" name="activity_id" ascending="true"/>
+    <sortField table="afm_ptasks" name="process_id" ascending="true"/>
+    <sortField table="afm_ptasks" name="display_order" ascending="true"/>
+    
+    <field table="afm_ptasks" name="task_id" dataType="text" controlType="link">
+	<title>Task Name</title>
+	<!-- Display the selected work request in the form -->
+	<command type="showPanel" panelId="exWorkRequest_wrColumns"/>
+    </field> 
+    <field table="afm_ptasks" name="icon_small" dataType="text">
+	<title>Product Name</title>
+    </field> 
+    <field table="afm_ptasks" name="activity_id" dataType="text">
+	<title>Activity Name</title>
+    </field> 
+    <field table="afm_ptasks" name="process_id" dataType="text">
+	<title>Process Name</title>
+    </field> 
+
+  </panel>
+</view>

@@ -1,0 +1,195 @@
+<view version="2.0">
+    <message translatable="true" name="errorTabs">This view can only be used as a part of the Room Reservations wizard</message>
+    <message translatable="true" name="AllStatuses">All Statuses</message>
+    <message translatable="true" name="resourceCode">Resource Code</message>
+    <message translatable="true" name="resourceStandard">Resource Standard</message>
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <layout file="ab-rr-my-reservations-layout.axvw"/>
+    <dataSource id="ds_ab-rr-content-my-reservations_console_reserve_rm">
+        <table name="reserve_rm" role="main"/>
+        <table name="reserve" role="standard"/>
+        <table name="bl" role="standard"/>
+        
+        <field table="bl" name="ctry_id"/>
+        <field table="bl" name="site_id"/>
+        <field table="reserve_rm" name="bl_id"/>
+        <field table="reserve_rm" name="fl_id"/>
+        <field table="reserve_rm" name="rm_id"/>
+        <field table="reserve_rm" name="config_id"/>
+        <field table="reserve" name="user_created_by"/>
+        <field table="reserve" name="user_requested_by"/>
+        <field table="reserve" name="user_requested_for"/>
+        <field table="reserve" name="phone"/>
+        <field table="reserve" name="email"/>
+        <field table="reserve" name="dv_id"/>
+        <field table="reserve" name="dp_id"/>
+        <field table="reserve" name="reservation_name"/>
+        <field table="reserve" name="date_start"/>
+        <field table="reserve" name="date_end"/>
+        <field table="reserve" name="time_start"/>
+        <field table="reserve" name="time_end"/>
+        <field table="reserve" name="res_id"/>
+        <field table="reserve" name="status"/>
+        <restriction type="sql" sql="rmres_id IS NULL"/>
+        <sortField name="res_id" table="reserve" ascending="true"/>
+    </dataSource>
+	
+    <panel id="myReservationConsolePanel" type="console" columns="3" tabOrder="column" dataSource="ds_ab-rr-content-my-reservations_console_reserve_rm" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="search">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+        <!-- first row -->
+        <field table="bl" name="ctry_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id"
+                 selectFieldNames="ctry.ctry_id"
+                 visibleFieldNames="ctry.ctry_id">
+                 <title>Country Code</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="user_created_by" showSelectValueAction="true"/>
+        <field table="reserve" name="res_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.res_id"
+                 selectFieldNames="reserve.res_id"
+                 visibleFieldNames="reserve.res_id">
+                 <title>Reservation Code</title>
+               </command>
+            </action>
+        </field>
+        <!-- second row -->
+        <field table="bl" name="site_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id,bl.site_id"
+                 selectFieldNames="site.ctry_id,site.site_id"
+                 visibleFieldNames="site.ctry_id,site.site_id">
+                 <title>Site Code</title>
+               </command>
+            </action>
+        </field>
+        <field table="reserve" name="user_requested_by" showSelectValueAction="true"/>
+        <field table="reserve" name="date_start"/>
+        <!-- third row -->
+        <field table="reserve_rm" name="bl_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id"
+                 selectFieldNames="bl.ctry_id,bl.site_id,bl.bl_id"
+                 visibleFieldNames="bl.ctry_id,bl.site_id,bl.bl_id">
+                 <title>Building Code</title>
+               </command>
+            </action>
+        </field>
+        <field table="reserve" name="user_requested_for" showSelectValueAction="true"/>
+        <field table="reserve" name="date_end"/>
+        <!-- fourth row -->
+        <field table="reserve_rm" name="fl_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id,reserve_rm.fl_id"
+                 selectFieldNames="bl.ctry_id,bl.site_id,fl.bl_id,fl.fl_id"
+                 visibleFieldNames="bl.ctry_id,bl.site_id,fl.bl_id,fl.fl_id">
+                 <title>Floor Code</title>
+               </command>
+            </action>
+        </field>
+        <field table="reserve" name="phone" showSelectValueAction="true"/>
+        <field table="reserve" name="time_start"/>
+        <!-- fifth row-->
+        <field table="reserve_rm" name="rm_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id,reserve_rm.fl_id,reserve_rm.rm_id"
+                 selectFieldNames="bl.ctry_id,bl.site_id,rm.bl_id,rm.fl_id,rm.rm_id"
+                 visibleFieldNames="bl.ctry_id,bl.site_id,rm.bl_id,rm.fl_id,rm.rm_id"
+                 restriction="rm.reservable=1">
+                 <title>Room Code</title>
+              </command>
+            </action>
+        </field>
+        <field table="reserve" name="email" showSelectValueAction="true"/>
+        <field table="reserve" name="time_end"/>
+        <!-- sixth row-->
+        <field table="reserve_rm" name="config_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id,reserve_rm.fl_id,reserve_rm.rm_id,reserve_rm.config_id"
+                 selectFieldNames="bl.ctry_id,bl.site_id,rm_config.bl_id,rm_config.fl_id,rm_config.rm_id,rm_config.config_id"
+                 visibleFieldNames="bl.ctry_id,bl.site_id,rm_config.bl_id,rm_config.fl_id,rm_config.rm_id,rm_config.config_id"
+                 restriction="EXISTS (SELECT 1 FROM rm WHERE rm.bl_id=rm_config.bl_id AND rm.fl_id=rm_config.fl_id AND rm.rm_id=rm_config.rm_id AND rm.reservable=1)"
+                 applyFilter="true">
+                 <title>Configuration Code</title>
+               </command>
+            </action>
+        </field>
+        <field table="reserve" name="dv_id" showSelectValueAction="true" />
+        <field table="reserve" name="status" required="true" showSelectValueAction="true"/>
+        <!-- seventh row-->
+        <field id="resourceCodeField">
+            <title translatable="true">Resource Code</title>
+            <html>
+                <input type="text" id="resource_id" class="inputField" maxlength="64"/>
+                <input type="button" value="..." onclick="selectResourceCode()" class="selectValue_AbActionButtonFormStdWidth"/>
+            </html>
+        </field>
+        <field table="reserve" name="dp_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.dv_id,reserve.dp_id"
+                 selectFieldNames="dp.dv_id,dp.dp_id"
+                 visibleFieldNames="dp.dv_id,dp.dp_id">
+                 <title>Dept. for Chargeback</title>
+               </command>
+            </action>
+        </field>
+        <field>
+            <html>
+                <input type="checkbox" id="status_all" onclick="selectStatusAll()" value="All" align="left"/>
+            </html>
+        </field>
+        <!-- eighth row-->
+        <field id="resourceStdField">
+            <title translatable="true">Resource Standard</title>
+            <html>
+                <input type="text" id="resource_std" class="inputField" maxlength="64"/>
+                <input type="button" value="..." onclick="selectResourceStd()" class="selectValue_AbActionButtonFormStdWidth"/>
+            </html>
+        </field>
+        <field table="reserve" name="reservation_name" showSelectValueAction="true"/>
+    </panel>
+    
+    <tabs id="viewReservationTabs" workflow="free" layout="mainLayout" region="center">
+        <tab name="info-reservations" file="ab-rr-my-reservations-info.axvw" selected="true" useFrame="false">
+            <title translatable="true">Reservations</title>
+        </tab>
+        <tab name="rm-reservations" file="ab-rr-my-reservations-rm.axvw" useFrame="false">
+            <title translatable="true">Rooms</title>
+        </tab>
+        <tab name="rs-reservations" file="ab-rr-my-reservations-rs.axvw" useFrame="false">
+            <title translatable="true">Resources</title>
+        </tab>		
+    </tabs>
+    
+	<!-- JS functions specific to this tab -->
+	<js file="ab-rr-common.js"/>
+    <js file="ab-rr-content-my-reservations.js"/>
+</view>

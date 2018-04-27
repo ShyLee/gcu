@@ -1,0 +1,199 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="13%" split="true"/>
+        <center id="rmcatPosition"/>
+    </layout>
+    <message name="total" translatable="true">Total</message>
+	
+	<!-- datasource for division summary data report -->
+    <dataSource id="ds_asc-bj-usms-overall-dp-occu-main_grid_dv" type="grouping">
+    	<sql dialect="generic">
+    	   SELECT rm.bl_id  ${sql.as} bl_id,
+                      dv.dv_id ${sql.as} dv_id,
+					  dv.dv_code ${sql.as} dv_code,
+                      dv.name ${sql.as} dv_name,
+                      bu.name ${sql.as} bu_name,
+                      dv.bu_id ${sql.as} bu_id, 
+					  (SELECT count(em.em_id) FROM em WHERE em.dv_id=dv.dv_id) ${sql.as} count_em,
+                      (SELECT SUM(in_r.area) FROM rm in_r WHERE in_r.dv_id=dv.dv_id and in_r.rm_type=${parameters['officeRmRes']}) ${sql.as} area_office,
+                      (SELECT SUM(in_r.area) FROM rm in_r WHERE in_r.dv_id=dv.dv_id and in_r.rm_type=${parameters['meetingRmRes']}) ${sql.as} area_meeting,
+                      (SELECT SUM(in_r.area) FROM rm in_r WHERE in_r.dv_id=dv.dv_id and in_r.rm_type=${parameters['teaOfficeRmRes']}) ${sql.as} area_tea_office,
+                      COUNT(rm.rm_id) ${sql.as} count_rm,
+                      SUM(rm.area) ${sql.as} dv_bl_area_shiyong,
+                      CASE WHEN bl.share_serv_rate =1 THEN 0 ELSE SUM(rm.area)/(1-bl.share_serv_rate) END ${sql.as} dv_bl_area_jianzhu
+                   FROM rm,bl,dv,bu
+                   WHERE rm.bl_id=bl.bl_id and rm.dv_id=dv.dv_id  and bl.acc_type!='yxz' and dv.bu_id=bu.bu_id
+				    and rm.dv_id IS NOT NULL and bl.site_id =${parameters['siteIdRes']}
+                   GROUP BY rm.bl_id, dv.dv_id,dv.dv_code,dv.name,bu.name,dv.bu_id, bl.share_serv_rate
+        UNION ALL
+              (
+                SELECT bl.bl_id ${sql.as} bl_id,
+                   bl.dv_use ${sql.as} dv_id,
+				   dv.dv_code ${sql.as} dv_code,
+				   dv.name ${sql.as} dv_name,
+				   bu.name ${sql.as} bu_name,
+                   dv.bu_id ${sql.as} bu_id,
+				   0 ${sql.as} count_em,
+				   0 ${sql.as} area_office,
+				   0 ${sql.as} area_meeting,
+				   0 ${sql.as} area_tea_office,
+                   bl.count_rm_keyong ${sql.as} count_rm,
+                   bl.area_building_manual * (1-bl.share_serv_rate) ${sql.as} dv_bl_area_shiyong,
+                   bl.area_building_manual ${sql.as} dv_bl_area_jianzhu
+                FROM bl,dv,bu
+                WHERE bl.dv_use=dv.dv_id  and bl.dv_use is not null and bl.acc_type != 'yxz' and dv.bu_id=bu.bu_id
+				and bl.site_id =${parameters['siteIdRes']}
+             )
+        UNION ALL (
+                SELECT br.bl_id ${sql.as} bl_id,
+                    dv.dv_id ${sql.as} dv_id,
+					dv.dv_code ${sql.as} dv_code,
+                    dv.name ${sql.as} dv_name,
+                    bu.name ${sql.as} bu_name,
+                    dv.bu_id ${sql.as} bu_id,
+					0 ${sql.as} count_em,
+				    0 ${sql.as} area_office,
+				    0 ${sql.as} area_meeting,
+				    0 ${sql.as} area_tea_office,
+                    br.count_rm ${sql.as} count_rm,
+                    br.area_shiyong ${sql.as} dv_bl_area_shiyong,
+                    br.area_jianzhu ${sql.as} dv_bl_area_jianzhu
+                 FROM bl,sc_bl_rmcat br,dv,bu
+                 WHERE bl.bl_id = br.bl_id and br.dv_use=dv.dv_id and bl.dv_use is null and dv.bu_id=bu.bu_id
+				  and bl.acc_type != 'yxz' and bl.site_id =${parameters['siteIdRes']}
+               ) 
+	   </sql>
+    	<table name="dv" role="main" />
+    	
+		<field table="dv" name="bu_id" dataType="text" groupBy="true" hidden="true"/>
+		<field table="dv" name="bu_name" dataType="text" groupBy="true" />
+		<field table="dv" name="dv_code" dataType="text" groupBy="true" hidden="true"/>
+		<field table="dv" name="dv_name" dataType="text" groupBy="true" />
+		<field table="dv" name="dv_id" dataType="text" groupBy="true" />
+		<field name="total_count_em" formula="SUM" dataType="number"
+		  baseField="dv.count_em"  decimals="0">
+			<title translatable="true">Employee Count</title>
+        </field>
+		
+		<field name="total_count_rm" formula="SUM" dataType="number" 
+			baseField="dv.count_rm" decimals="0">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="dv.dv_bl_area_shiyong" decimals="2">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		<field name="total_area_jianzhu" formula="SUM" dataType="number" 
+			baseField="dv.dv_bl_area_jianzhu" decimals="2" >
+			<title translatable="true">Total Structure Area</title>
+		</field>
+		
+		<!-- the following fields setting in the js, the data from the ds-->
+		
+		<field  name="area_comn_ocup" formula="SUM" dataType="number"
+		    baseField="dv.area_office" decimals="2">
+			<title translatable="true">Total Office Area</title>
+		</field>
+		<field  name="area_conference" formula="SUM" dataType="number" 
+		   baseField="dv.area_meeting" decimals="2">
+			<title translatable="true">Total Meeting Area</title>
+		</field>
+		<field  name="area_comn_nocup" formula="SUM" dataType="number" 
+		   baseField="dv.area_tea_office" decimals="2"/>
+		
+		<restriction type="sql" sql="not dv.dv_id in (${parameters['xuexiaoBuDv']},${parameters['wuDv']})"/>
+		<parameter name="xuexiaoBuDv" dataType="text" value=""/>
+		<parameter name="wuDv" dataType="text" value=""/>
+		<parameter name="officeRmRes" dataType="text" value=""/>
+		<parameter name="meetingRmRes" dataType="text" value=""/>
+		<parameter name="teaOfficeRmRes" dataType="text" value=""/>
+		<parameter name="siteIdRes" dataType="text" value=""/>
+	</dataSource>
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-dp-occu-main_basic_site">
+    	<table name="site" role="main"/>
+		<!--basic info-->
+		<field table="site" name="name"/>
+		<field table="site" name="area_rm"/>
+		<field table="site" name="area_gross_int"/>
+	    <parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="site.site_id=${parameters['siteIdRes']}"/>
+    </dataSource>
+	
+	
+	<!-- base university info panel-->
+    <panel type="form" id="ascBjUsmsOverallDeptOccuMain_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-dp-occu-main_basic_site" columns="3"  layoutRegion="sitePosition">
+    	<!-- row 1-->
+		<field table="site" name="name" readOnly="true"/>
+		<field >
+			<title>Total Structure Area</title>
+			<html>
+				<div id="area_jianzhu"></div>
+			</html>
+		</field>
+		<field >
+			<title>Total Usable Area</title>
+			<html>
+				<div id="area_shiyong"></div>
+			</html>
+		</field>	
+    </panel>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallDeptOccuMain_dvGrid" dataSource="ds_asc-bj-usms-overall-dp-occu-main_grid_dv" layoutRegion="rmcatPosition">
+    	<title translatable="true">Xue Xiao Suo You Shi Yong Dan Wei</title>
+		<sortField name="bu_id" table="dv" ascending="true" />
+		<sortField name="dv_code" table="dv" ascending="true" />
+		
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallDeptOccuMain_dvGrid"/>
+		</action>
+		
+		<field table="dv" name="bu_name" dataType="text">
+			<title translatable="true">Division Type</title>
+        </field>
+		<field table="dv" name="dv_id" dataType="text">
+			<title translatable="true">Division Code</title>
+        </field>
+		<field table="dv" name="dv_name" dataType="text">
+			<title translatable="true">Division Name</title>
+        </field>
+		
+		<field  name="total_count_em" dataType="number" decimals="0">
+			<title translatable="true">Employee Count</title>
+        </field>
+		
+		<field table="dv" name="total_count_rm" dataType="number" decimals="0">
+			<title translatable="true">Room Count</title>
+        </field>
+		
+		<field table="dv" name="total_area_jianzhu" dataType="number" decimals="2">
+			<title translatable="true">Total Structure Area</title>
+		</field>
+		
+		<field table="dv"  name="total_area_shiyong" dataType="number" decimals="2">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		
+		<!-- the following fields setting in the js, the data from the ds-->
+		
+		<field  name="area_comn_ocup" dataType="number" decimals="2">
+			<title translatable="true">Total Office Area</title>
+		</field>
+		<field  name="area_conference" dataType="number" decimals="2">
+			<title translatable="true">Total Meeting Area</title>
+		</field>
+		<field  name="area_comn_nocup" dataType="number" decimals="2">
+			<title translatable="true">Total Teacher Office Area</title>
+		</field>
+		
+    </panel>
+	
+    
+    <js file="asc-bj-usms-overall-dp-rm-occu-main-wd.js"/>
+</view>

@@ -1,0 +1,180 @@
+<view version="2.0">
+    
+    <title translatable="true">Budget Year Summary Report</title>
+    <layout type="borderLayout" id="centerLayout">
+        <north id="consoleRegion"  split="true" initialSize="90"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="centerCenterLayout" containingLayout="centerLayout" region="center">
+        <north id="gridRegion" autoScroll="true" split="true" initialSize="85%"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqBudgetSummaryDs">
+        <table name="eq_budget" role="main"/>
+        <table name="eq_budget_item" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+       
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq_budget" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq_budget" name="type"/>
+        <field table="eq_budget" name="cost_budget_cap" dataType="number" decimals="2" />
+        <field table="eq_budget" name="cost_budget_exp" dataType="number" decimals="2">
+            <sql dialect="generic">
+            (select NVL(sum(total_price),0)  from add_eq where budget_id=eq_budget.budget_id )
+            </sql>
+        </field>
+        <field table="eq_budget" name="cost_budget_jieyu" dataType="number" decimals="2">
+            
+            <sql dialect="generic">
+            NVL(eq_budget.cost_budget_cap-(select nvl(sum(total_price),0)  from add_eq where budget_id=eq_budget.budget_id),0.00)
+            </sql>
+        </field>
+        <field table="eq_budget" name="dv_manager"/>
+        <field table="eq_budget" name="dv_manager_name"/>
+        <field table="eq_budget" name="fiscal_year"/>
+        <field table="eq_budget" name="comments"/>
+        <parameter name="para_year" dataType="verbatim" value="1=1"/> 
+        <restriction type="sql" sql=" eq_budget.status!='0' and  ${parameters['para_year']}"/>
+   </dataSource>
+   <dataSource id="ascBjUsmsEqBudgetSumDs">
+        <sql dialect="generic">
+            select sum(cost_budget_cap) as count_budget_cap from eq_budget where status!='0' and ${parameters['dvId']} and ${parameters['year']}
+        </sql>
+        <table name="eq_budget" role="main"/>
+        <field name="count_budget_cap" dataType="number" decimals="2"/>
+        <parameter name="dvId" dataType="verbatim" value="1=1"/> 
+        <parameter name="year" dataType="verbatim" value="1=1"/> 
+   </dataSource>
+   <dataSource id="ascBjUsmsEqBudgetExpSumDs">
+        <sql dialect="generic">
+            select sum(total_price)  as count_budget_exp from add_eq,eq_budget where add_eq.budget_id=eq_budget.budget_id and ${parameters['dvId']} and ${parameters['year']}
+        </sql>
+        <table name="eq_budget" role="main"/>
+        <field name="count_budget_exp" dataType="number" decimals="2"/>
+        <parameter name="dvId" dataType="verbatim" value="1=1"/> 
+        <parameter name="year" dataType="verbatim" value="1=1"/> 
+   </dataSource>
+   <dataSource id="ascBjUsmsAddEqDs">
+        <table name="add_eq" role="main"/>
+        <field table="add_eq" name="add_eq_id"/>
+        <field table="add_eq" name="budget_id"/>
+        <field table="add_eq" name="budget_item_id"/>
+   </dataSource>
+   <dataSource id="ascBjUsmsBudgetItemDs">
+        <table name="eq_budget_item" role="main"/>
+        <field table="eq_budget_item" name="budget_item_id"/>
+   </dataSource>
+   <dataSource id="ascBjUsmsBudgetDs">
+        <table name="eq_budget" role="main"/>
+        <field table="eq_budget" name="budget_id"/>
+   </dataSource>
+   <panel type="console" id="consolePanel" showOnLoad="true" dataSource="ascBjUsmsEqBudgetSummaryDs" columns="2" layoutRegion="consoleRegion">
+        <title translatable="true">Filter</title>
+        <field table="eq_budget" name="dv_id"/>
+        <field table="eq_budget" name="fiscal_year"/>
+        <action id="btnShow">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="btnCancel">
+            <title translatable="true">Cancel</title>
+        </action>
+  </panel>
+  <panel type="grid" id="ascBjUsmsEqBudgetSummaryGrid" dataSource="ascBjUsmsEqBudgetSummaryDs"  layoutRegion="gridRegion">
+        <sortField name="budget_id" table="eq_budget" ascending="true"/>
+        <title translatable="true">Budget List</title>
+        <action id="exportXls">
+			<title translatable="true">Export:XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="ascBjUsmsEqBudgetSummaryGrid" />
+		</action>
+        <field id="view" controlType="button" width="80">
+                <title translatable="true">View Details</title>
+        </field>
+        <field id="delete" controlType="button" width="80">
+            <title translatable="true">Delete</title>
+        </field>
+        <field name="budget_id" table="eq_budget" />
+        <field name="name" table="eq_budget" />
+        <field table="eq_budget" name="type" hidden="true"/>
+        <field name="dv_id" table="eq_budget" hidden="true"/>
+        <field table="dv" name="dv_name" />
+        <field table="dp" name="dp_name"/>
+        <field name="cost_budget_cap" table="eq_budget" />
+        <field table="eq_budget" name="cost_budget_exp" dataType="number" decimals="2"/>
+        <field table="eq_budget" name="cost_budget_jieyu" dataType="number" decimals="2">
+            <title translatable="true">Capatial Balance</title>
+        </field>
+        <field name="dv_manager" table="eq_budget" hidden="true"/>
+        <field name="dv_manager_name" table="eq_budget"/>
+        <field name="fiscal_year" table="eq_budget" />
+        <field name="comments" table="eq_budget"/>
+  </panel>
+
+   <dataSource id="ds_asc-bj-usms-eq-data-def-budget-item">
+        <table name="eq_budget_item" role="main"/>
+        <table name="eq_budget" role="standard"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_id"/>
+        <field table="eq_budget_item" name="budget_item_id"/>
+        <field table="eq_budget_item" name="csi_id"/>
+        <field table="eq_budget_item" name="eq_name"/>
+        <field table="eq_budget_item" name="brand"/>
+        <field table="eq_budget_item" name="eq_std"/>
+        <field table="eq_budget_item" name="use"/>
+        <field table="eq_budget_item" name="count"/>
+        <field table="eq_budget_item" name="price"/>
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget_item" name="budget_item_name"/>
+        <field table="eq_budget_item" name="cost_budget_exp" dataType="number" decimals="2">
+            <sql dialect="generic">(select NVL(sum(total_price),0) from add_eq where budget_item_id=eq_budget_item.budget_item_id )</sql>
+        </field>
+        <field table="eq_budget" name="cost_budget_jieyu" dataType="number" decimals="2"> 
+            <sql dialect="generic">NVL(eq_budget_item.total_cost-(select sum(total_price) from add_eq where budget_item_id=eq_budget_item.budget_item_id ),0.00)</sql>
+        </field>
+        <field table="eq_budget_item" name="total_cost"/>
+        <field table="eq_budget_item" name="units"/>
+        <field table="eq_budget_item" name="comments"/> <!-- 
+        <field table="eq_budget_item" name="supplier_agreement_id"/>
+        <field table="eq_budget_item" name="important_level"/>-->
+        <field table="eq_budget_item" name="capital_source"/>
+        <field table="eq_budget_item" name="date_buy_old_eq"/>
+        <field table="eq_budget_item" name="actual_price"/>
+        <field table="eq_budget_item" name="actual_total"/>
+        <field table="eq_budget_item" name="type"/>
+        <field table="eq_budget_item" name="teach_num"/>
+        <field table="eq_budget_item" name="admin_num"/>
+        <field table="eq_budget_item" name="dv_capital"/>
+        <field table="eq_budget_item" name="other_capital"/>
+        <field table="eq_budget_item" name="sch_capital"/>
+        <field table="eq_budget_item" name="comments"/>
+    </dataSource>
+    
+  <panel type="grid" id="budgetItemPanel" showOnLoad="false" dataSource="ds_asc-bj-usms-eq-data-def-budget-item" >
+        <action id="exportXls">
+            <title translatable="true">Export:XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="budgetItemPanel" />
+        </action>
+        <sortField name="budget_id" table="eq_budget" ascending="true"/>
+        <title translatable="true">View Budget Items</title>
+        <field table="eq_budget" name="budget_id"  hidden="true"/>
+        <field table="eq_budget_item" name="budget_item_id"  />
+        <field table="eq_budget_item" name="budget_id_old"/>
+        <field table="eq_budget_item" name="budget_item_name"/>
+        <field name="total_cost" table="eq_budget_item" />
+        <field table="eq_budget_item" name="cost_budget_exp" dataType="number" decimals="2">
+             <title translatable="true">Budget Item Cost</title>
+        </field>
+        <field table="eq_budget" name="cost_budget_jieyu" dataType="number" decimals="2">
+             <title translatable="true" >Budget Item Balance</title>
+        </field>
+        <field table="eq_budget_item" name="type"/>
+        <field table="eq_budget_item" name="comments"/>
+  </panel>
+  
+  <js file="asc-bj-usms-eq-budget-view.js"/>
+   <js file="asc-bj-usms-def-common.js"/>
+</view>

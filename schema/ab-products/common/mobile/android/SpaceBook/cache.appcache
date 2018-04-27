@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# 98cec1ebe6918007f786bf6ade26ef86f8ef0db2
+index.html
+# df8f0c60eb081427e464b919b47fb2d38b5f0f5b
+device-api.js
+# 66e7468bb416058e7a4d1646f073e90df38ad15a
+d3.v3.min.js
+
+
+FALLBACK:
+
+
+NETWORK:
+*

@@ -1,0 +1,141 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="28%" split="true"/>
+        <center id="rmcatPosition"/>
+    </layout>
+    
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_asc-bj-usms-overall-bl-main_grid_bl">
+    	<table name="bl" role="main" />
+		
+		<field table="sc_bl_xz" name="bl_id"/>
+		<field table="sc_bl_xz" name="area_building_manual"/>
+		<field table="sc_bl_xz" name="area_jianzhu_yuan"/>
+		<field table="sc_bl_xz" name="area_rm"/>
+		<field table="sc_bl_xz" name="date_xiazhang"/>
+		<field table="sc_bl_xz" name="status"/>
+		<field table="sc_bl_xz" name="use1" />
+		<field table="sc_bl_xz" name="construction_type"/>
+		
+		<parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="sc_bl_xz.site_id=${parameters['siteIdRes']}"/>
+	</dataSource>
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-bl-main_basic_site">
+    	<table name="site" role="main"/>
+		
+		<!--basic info-->
+		<field table="site" name="name"/>
+		<field table="site" name="address"/>
+		<field table="site" name="site_id"/>
+		<field table="site" name="telephone"/>
+		<field table="site" name="youbian"/>
+		
+		<field table="site" name="guihuayongdi"/>
+		<field table="site" name="jianzhuyongdi"/>
+		<field table="site" name="no_bldgs"/>
+		<field table="site" name="count_teacher_plan"/>
+		<field table="site" name="count_student_plan"/>
+		<field table="site" name="count_teacher_actual"/>
+		<field table="site" name="count_student_actual"/>
+		<field table="site" name="area_rm"/>
+		<field table="site" name="area_gross_int"/>
+		<field table="site" name="area_underground"/>
+		
+	    <parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="site.site_id=${parameters['siteIdRes']}"/>
+    </dataSource>
+	
+	<!-- base university info panel-->
+    <panel type="columnReport" id="ascBjUsmsOverallBlMain_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-bl-main_basic_site" columns="3"  layoutRegion="sitePosition">
+		<field name="name"/>
+		<field name="address"/>
+		<field/>
+		
+		<field name="youbian"/>
+		<field name="telephone"/>
+		<field/>
+		
+		
+		<field name="guihuayongdi" />
+		<field id="plan" labelClass="prominentLabel">
+           		 <title translatable="true">Plan Person Quantity</title>
+        </field>
+		<field id="actual" labelClass="prominentLabel">
+           		 <title translatable="true">Actial Person Quantity</title>
+        </field>
+		
+		
+		<field name="jianzhuyongdi" />
+		<field name="count_teacher_plan"/>
+		<field name="count_teacher_actual"/>
+		
+		
+		<field name="no_bldgs" />
+		<field name="count_student_plan"/>
+		<field name="count_student_actual"/>
+		
+		<field name="area_gross_int" >
+			<title translatable="true">Zong Jian Zhu Mian Ji</title>
+		</field>	
+		<field name="area_rm">
+			<title translatable="true">Zong Shi Yong Mian Ji</title>
+		</field>	
+		<field name="area_underground">
+			<title translatable="true">Area of Floors under Ground</title>
+		</field>
+    </panel>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallBlMain_blGrid" dataSource="ds_asc-bj-usms-overall-bl-main_grid_bl" layoutRegion="rmcatPosition">
+        <title translatable="true">YiXiaZhang JianZhuWu</title>
+		<sortField name="bl_id" table="sc_bl_xz" ascending="true" />
+		<field id="showBlInfo" controlType="button">
+			<title translatable="true">ChaKanXiangQing</title>
+		</field>
+		<field id="showRmCat" controlType="button">
+            <title translatable="true">ChaKanRmCat</title>
+        </field>
+		<field table="sc_bl_xz" name="bl_id"/>
+		<field table="sc_bl_xz" name="area_building_manual"/>
+		<field table="sc_bl_xz" name="area_jianzhu_yuan"/>
+		<field table="sc_bl_xz" name="area_rm"/>
+		<field table="sc_bl_xz" name="date_xiazhang"/>
+		<field table="sc_bl_xz" name="status"/>
+		<field table="sc_bl_xz" name="use1" />
+		<field table="sc_bl_xz" name="construction_type"/>
+    </panel>
+	 <dataSource id="ds_asc-bj-usms-overall-bl-whole_ds_scHisRmCatBl">
+		<table name="sc_his_rmcat_bl" role="main" />
+		
+		<field table="sc_his_rmcat_bl" name="area_jianzhu"/>
+		<field table="sc_his_rmcat_bl" name="area_rm"/>
+		<field table="sc_his_rmcat_bl" name="bl_id"/>
+		<field table="sc_his_rmcat_bl" name="count_rm"/>
+		<field table="sc_his_rmcat_bl" name="rm_cat"/>
+		<field table="sc_his_rmcat_bl" name="dv_id"/>
+		<field table="sc_his_rmcat_bl" name="rm_type" />
+		<field table="sc_his_rmcat_bl" name="rm_use"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="sc_his_rmcat_bl.bl_id=${parameters['blIdRes']}"/>
+	</dataSource>
+
+    <panel type="grid" id="ascBjUsmsOverallBlWhole_grid_scHisRmCatBl" dataSource="ds_asc-bj-usms-overall-bl-whole_ds_scHisRmCatBl"  showOnLoad="false" >
+        <title translatable="true">YiXiaZhangJianZhuWuSuoYouFangWuLeiBie</title>
+		<sortField name="bl_id" table="sc_his_rmcat_bl" ascending="true" />
+	
+		<field table="sc_his_rmcat_bl" name="bl_id"/> 
+		<field table="sc_his_rmcat_bl" name="dv_id"/>
+		<field table="sc_his_rmcat_bl" name="rm_cat"/>
+		<field table="sc_his_rmcat_bl" name="rm_type" />
+		<field table="sc_his_rmcat_bl" name="count_rm"/>
+		<field table="sc_his_rmcat_bl" name="area_jianzhu"/>
+		<field table="sc_his_rmcat_bl" name="area_rm"/>
+       </panel>
+    
+    <js file="asc-bj-usms-overall-bl-yxz-main.js"/>
+</view>

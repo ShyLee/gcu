@@ -1,0 +1,66 @@
+
+<view version="2.0">
+    
+    <report orientation="landscape"/>
+    <title translatable="true">Emergency Contacts by Building</title>
+    
+    <dataSource id="ds_ab-em-contactsxbl-pgrp_grid_bl">
+        <table name="bl" role="main"/>
+        <field name="bl_id" table="bl"/>
+        <field name="name" table="bl"/>
+        <sortField name="bl_id" table="bl" ascending="true"/>
+    </dataSource>
+    
+    <panel id="panel_abEmContactsxBl_parent" type="paginatedReport" dataSource="ds_ab-em-contactsxbl-pgrp_grid_bl" format="table" role="parent">
+        <title translatable="true">Buildings</title>
+        <field name="bl_id" table="bl" restrictionParameterName="blId"/>
+        <field name="name" table="bl"/>
+    </panel>
+    
+    <dataSource id="ds_ab-em-contactsxbl-pgrp_grid_contact">
+        <table name="contact" role="main"/>
+        
+        <field name="contact_type" table="contact"/>
+        <field name="contact_id" table="contact"/>
+        <field name="name_first" table="contact"/>
+        <field name="name_last" table="contact"/>
+        <field name="phone" table="contact"/>
+        <field name="email" table="contact"/>
+        <field name="pager" table="contact"/>
+        <field name="company" table="contact"/>
+        <field name="city_id" table="contact"/>
+        <field name="bl_id" table="contact"/>
+        <field name="state_id" table="contact"/>
+        <field name="status" table="contact"/>
+        <field name="notes" table="contact"/>
+        
+        <sortField name="contact_type" table="contact" ascending="true"/>
+        <sortField name="contact_id" table="contact" ascending="true"/>
+        
+        <restriction type="parsed">
+   			<clause table="contact" name="contact_type" op="IN" value="FIRE AND SAFETY,OWNER,LANDLORD,BLDG SUPER,HAZMAT"/>
+		</restriction>
+		
+        <restriction type="parsed">
+            <clause relop="AND" table="contact" name="bl_id" op="=" value="${parameters['blId']}"/>
+        </restriction>
+        <parameter name="blId" dataType="text" value=""/>
+    </dataSource>
+    
+    <panel id="panel_abEmContactsxBl_data" type="paginatedReport" dataSource="ds_ab-em-contactsxbl-pgrp_grid_contact" format="table" role="data">
+        <title translatable="true">Contact Information</title>
+		<field name="contact_type" table="contact"/>
+        <field name="contact_id" table="contact"/>
+        <field name="name_first" table="contact"/>
+        <field name="name_last" table="contact"/>
+        <field name="phone" table="contact"/>
+        <field name="email" table="contact"/>
+        <field name="pager" table="contact"/>
+        <field name="company" table="contact"/>
+        <field name="city_id" table="contact"/>
+        <field name="state_id" table="contact"/>
+        <field name="status" table="contact"/>
+        <field name="notes" table="contact"/>
+    </panel>
+	
+</view>

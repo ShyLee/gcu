@@ -1,0 +1,69 @@
+
+<!-- View That lets users graphically locate Equipments -->
+
+<view version="2.0">
+  <title translatable="true">Locate Equipemnt</title>
+  <!-- Custom control used to display user information -->
+  <!-- Control can be defined in AXVW -->
+
+  <dataSource id="locateEquipment_labelNamesDs" type="DrawingControlLabels">
+    <title>Names</title>
+    <table name="eq" role="main"/>
+    <field table="eq" name="eq_id"/>
+    <field table="eq" name="bl_id"/>
+    <field table="eq" name="fl_id"/>
+    <field table="eq" name="rm_id"/>
+    <restriction type="sql" sql="eq.rm_id IS NOT NULL"/>
+  </dataSource>
+  
+  <dataSource id="locateEquipment_EquipmentsDs">
+    <table name="eq" role="main"/>
+    <table name="rm" role="standard"/>
+    <field table="eq" name="eq_id"/>
+    <field table="eq" name="bl_id"/>
+    <field table="eq" name="fl_id"/>
+    <field table="eq" name="rm_id"/>
+    <field table="rm" name="dwgname"/>
+    <restriction type="sql" sql="eq.rm_id IS NOT NULL"/>
+  </dataSource>
+  
+  <layout file="dashboard-1-1-0.axvw"/>
+  
+  <panel type="grid" id="locateEquipment_equipments" multipleSelectionEnabled="true" dataSource="locateEquipment_EquipmentsDs" layoutRegion="row1col1">
+    <title translatable="true">Equipments</title>
+    
+    <action id="showSelected">
+        <title>Show Selected</title>
+    </action>
+    
+    <sortField table="eq" name="eq_id" ascending="true"/>
+    <field table="eq" name="eq_id">
+      <title translatable="true">Name</title>
+    </field>
+    <field table="eq" name="bl_id">
+      <title translatable="true">Building</title>
+    </field>
+    <field table="eq" name="fl_id">
+      <title translatable="true">Floor</title>
+    </field>
+    <field table="eq" name="rm_id">
+      <title translatable="true">Room</title>
+    </field>
+    <field table="rm" name="dwgname" hidden="true"/>
+  </panel>
+  
+  <panel type="drawing" id="locateEquipment_cadPanel" layoutRegion="row1col2"
+            assetTypes="eq"
+  			labelsDataSource="locateEquipment_labelNamesDs"
+  			selectionMode="0"
+  			toolbarSettings="hide=resetAssets,clearAssets">
+	<title translatable="true">[]</title>
+  </panel>
+
+  <!-- Report that displays the list of buildings (unrelated to custom controls) -->
+
+  <!-- Include JS event handlers for this view -->
+
+  <js file="ab-locate-eq-drawing.js"/>
+
+</view>

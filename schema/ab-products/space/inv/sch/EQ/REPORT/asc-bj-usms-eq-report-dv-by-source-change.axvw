@@ -1,0 +1,178 @@
+<view version="2.0">
+	<title translatable="true">eqdvsourcechange</title>	
+	
+	<dataSource id="eq_DS" >
+		<sql dialect="generic">
+ 		select dv.dv_id as dvId
+ 	  ,dv.dv_name as dvname
+      ,A.t_eq as before_count ,A.t_price as before_sum
+      ,B.t_eq as add_gz_count ,B.t_price as add_gz_sum
+      ,C.t_eq as add_zr_count ,C.t_price as add_zr_sum
+      ,D.t_eq as add_qt_count ,D.t_price as add_qt_sum
+      ,E.t_eq as add_hj_count ,E.t_price as add_hj_sum
+      ,F.t_eq as re_dc_count ,F.t_price as re_dc_sum
+      ,G.t_eq as re_zc_count ,G.t_price as re_zc_sum
+      ,H.t_eq as re_bf_count ,H.t_price as re_bf_sum
+      ,I.t_eq as re_qt_count ,I.t_price as re_qt_sum
+      ,J.t_eq as re_hj_count ,J.t_price as re_hj_sum
+      ,K.t_eq as after_count ,K.t_price as after_sum
+      
+      from dv left join
+      
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &lt; trunc(sysdate,'yyyy')
+      and not (eq.date_purchased &lt; trunc(sysdate,'yyyy') and sch_status in ('3','5','6','7','C','D'))
+      group by dv_id) A on dv.dv_id = A.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      and  eq.source = '1'
+      group by dv_id) B on dv.dv_id = B.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      and  eq.source = '4'
+      group by dv_id) C on dv.dv_id = C.dv_id 
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      and  eq.source in ('2','3')
+      group by dv_id) D on dv.dv_id = D.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_purchased &gt;= trunc(sysdate,'yyyy')
+      group by dv_id) E on dv.dv_id = E.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status in ('5','7')
+      group by dv_id) F on dv.dv_id = F.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status = 'C'
+      group by dv_id) G on dv.dv_id = G.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status in ('3','6')
+      group by dv_id) H on dv.dv_id = H.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status = 'D'
+      group by dv_id) I on dv.dv_id = I.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where eq.date_change &gt;= trunc(sysdate,'yyyy')
+      and sch_status in ('3','5','6','7','C','D')
+      group by dv_id) J on dv.dv_id = J.dv_id
+      
+      left join
+      (select dv_id , sum(price) as t_price,count(eq_id) as t_eq 
+      from eq 
+      where sch_status not in ('3','5','6','7','C','D')
+      group by dv_id) K on dv.dv_id = K.dv_id
+		</sql>
+		<table name="eq" role="main" />
+		<sortField  name="dvId" />
+		<field  name="dvname"  dataType="text" >
+			<title translatable="true">dvname</title>
+		</field>
+		<field  name="before_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="before_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="add_gz_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="add_gz_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="add_zr_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="add_zr_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="add_qt_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="add_qt_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="add_hj_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="add_hj_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="re_dc_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="re_dc_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="re_zc_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="re_zc_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="re_bf_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="re_bf_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="re_qt_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="re_qt_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="re_hj_count"  dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="re_hj_sum"  dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field  name="after_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field  name="after_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+	</dataSource>
+	
+		
+    <panel type="grid" id="tablePanel" dataSource="eq_DS" showOnLoad="false" >
+		<title translatable="true">eqdvsourcechange</title>
+		<action id="report">
+			<title>Report</title>
+		</action>
+	</panel>
+	
+	<js file="asc-bj-usms-eq-report-dv-by-source-change.js"/>
+</view>

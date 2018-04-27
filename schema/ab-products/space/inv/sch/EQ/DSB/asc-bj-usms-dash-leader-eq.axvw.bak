@@ -1,0 +1,543 @@
+<view version="2.0">
+   <js file="asc-bj-usms-dash-leader-eq.js"/>
+   <layout id="mainLayout" type="borderLayout">
+        <west initialSize="30%" split="true"/>
+        <center/>
+   </layout>
+   <layout id="mainWestLayout" type="borderLayout" containingLayout="mainLayout" region="west">
+        <north initialSize="60%" split="true"/>
+        <center/>
+   </layout>
+   <layout id="mainCenterLayout" type="borderLayout" containingLayout="mainLayout" region="center">
+        <north initialSize="170" split="true"/>
+        <center/>
+   </layout>
+   <dataSource id="ascDvDs">
+        <table name="dv" role="main"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="bu_id"/>
+        
+   </dataSource>
+   <dataSource id="ascDvDsOther">
+        <table name="dv" role="main"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="bu_id"/>
+        
+   </dataSource>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <table name="csi" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_commnets"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_id"/>
+        <field table="eq" name="dl_id"/>
+        <field table="eq" name="servcont_id"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/> 
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="attachments_num"/>
+        <field table="eq" name="attachments_price"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="handling_em"/>
+        <field table="eq" name="sci_resh_id"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="approved"/>
+        <field table="eq" name="comments"/>
+        <field table="eq" name="approved_fiance"/>
+        <field table="eq" name="date_fin_approved"/>
+        <field table="eq" name="approved_by_fin"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="is_assign"/>
+        <field table="eq" name="number2"/>
+        <field table="eq" name="option1"/>
+        <field table="eq" name="option2"/>
+    </dataSource>
+    <panel type="grid" id="dvJiaoXueListPanel" dataSource="ascDvDs" layout="mainWestLayout" region="north">
+        <title translatable="true">Dv JiaoXue List</title>
+        <action id="viewWholeSchool">
+            <title translatable="true">ViewWholeSchool</title>
+            <command type="callFunction" functionName="controller.viewWholeSchoolEq()"/>
+        </action>
+        <field table="dv" name="dv_id" controlType="link">
+            <command type="callFunction" functionName="controller.showTongJiByDv()"/>
+        </field>
+        <field table="dv" name="bu_id"/>
+    </panel>
+    <panel type="grid" id="dvOtherListPanel" dataSource="ascDvDsOther" layout="mainWestLayout" region="center">
+        <title translatable="true">Dv Other List</title>
+        <field table="dv" name="dv_id" controlType="link">
+            <command type="callFunction" functionName="controller.showOtherByDv()"/>
+        </field>
+        <field table="dv" name="bu_id"/>
+    </panel>
+     <!-- 查看各单位的增减变动情况 -->
+    <dataSource id="eq_DS">     
+        <sql dialect="generic">
+        select * from (
+        select dv.dv_id as dvName,
+        A.thisYearAddSum as addSum,A.thisYearAddCount as addCount
+        ,B.thisYearReduceSum as reduceSum,B.AllYearReduceCount as reduceCount
+        ,C.AllYearSum as AllSum,C.AllYearCount as AllCount
+        from dv 
+        left join
+        (select eq.dv_id, sum(eq.price) as thisYearAddSum, count(eq.eq_id) as thisYearAddCount
+        from eq where  date_purchased &gt;= trunc(sysdate,'yyyy') 
+        group by eq.dv_id) A on A.dv_id=dv.dv_id
+
+        left join
+
+        (select sum(Price) as thisYearReduceSum,count(eqId) as AllYearReduceCount,OldDv from(
+            select eqId,Price
+             ,(select distinct return_dispose.dv_id from return_dispose where return_dispose.rtr_dip_id in (select rtr_dip_id from eq_change where eq_change.eq_id=eqId)) as OldDv
+            from ( select M.eq_id as eqId,M.price as Price from eq M
+            where eq_id in
+            (select eq_id from eq_change where rtr_dip_id in (select rtr_dip_id from return_dispose where audit_status='2')))
+        ) group by OldDv) B on B.OldDv=dv.dv_id
+
+        left join
+
+        (select eq.dv_id, sum(eq.price) as AllYearSum, count(eq.eq_id) AllYearCount
+            from eq 
+            group by eq.dv_id ) C on C.dv_id=dv.dv_id
+            ) where ${parameters['dv_id_change']}
+            </sql>
+            
+        <table name="dv" role="main" />
+        <parameter name="dv_id_change" dataType="verbatim" value=""/>
+        <field name="dvName" dataType="text">
+            <title translatable="true">dvName</title>
+        </field>
+        <field name="addCount" dataType="text"  decimals="0">
+            <title translatable="true">addSum</title>
+        </field>
+        <field name="addSum" dataType="number" decimals="2">
+            <title translatable="true">addCount</title>
+        </field>
+        <field name="reduceCount" dataType="number" decimals="0">
+            <title translatable="true">reduceCount</title>
+        </field>
+        
+        <field name="reduceSum" dataType="number" decimals="2">
+            <title translatable="true">reduceSum</title>
+        </field>
+        <field name="AllCount" dataType="number" decimals="0">
+            <title translatable="true">AllCount</title>
+        </field>
+        <field name="AllSum" dataType="number" decimals="2">
+            <title translatable="true">AllSum</title>
+        </field>
+        
+    </dataSource>
+    <panel type="grid" id="gridPanel" dataSource="eq_DS" layout="mainCenterLayout" region="north" >
+        <title translatable="true">dveqchange</title>
+        <action id="exportXLS">
+            <title translatable="true">XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="gridPanel"/>
+        </action>
+        
+    </panel>
+    
+    <dataSource id="ascBjEqSumByYearDs">
+        <sql dialect="generic">
+           select niandai,sum(price) ${sql.as} sumPrice,count(*) ${sql.as} CountEq
+            from (select date_purchased,price,eq_id,
+              (case when date_purchased &gt;TO_DATE('1950/01/01','YYYY/MM/DD') and date_purchased &lt;=TO_DATE('1970/12/31','YYYY/MM/DD') then ${parameters['5070']}
+                    when date_purchased &gt;TO_DATE('1970/01/01','YYYY/MM/DD') and date_purchased &lt;=TO_DATE('1990/12/31','YYYY/MM/DD') then ${parameters['7090']}
+                    when date_purchased &gt;TO_DATE('1990/01/01','YYYY/MM/DD') and date_purchased &lt;=TO_DATE('2010/12/31','YYYY/MM/DD') then ${parameters['902010']}
+                     else  ${parameters['2010after']} end) ${sql.as} niandai
+                        from eq where ${parameters['dv_id_byYear']}) group by niandai
+        </sql>
+        <table name="eq" role="main"/>
+        <parameter name="dv_id_byYear" dataType="verbatim" value=""/>
+        <parameter name="5070" dataType="text" value=""/>
+        <parameter name="7090" dataType="text" value=""/>
+        <parameter name="902010" dataType="text" value=""/>
+        <parameter name="2010after" dataType="text" value=""/>
+        <field table="eq" name="CountEq" dataType="number" decimals="0"/>
+        <field table="eq" name="niandai" dataType="text"/>
+        <field table="eq" name="sumPrice" dataType="number" decimals="2"/>
+    </dataSource>
+    <panel  id="chartPie_chart" 
+            type="chart" 
+            controlType="pieChart" 
+            dataSource="ascBjEqSumByYearDs" 
+            showLegendOnLoad="true"
+            showLegendAsPopUp="false" 
+            legendLocation="right"
+            showDataTips="true" 
+            backgroundColor="0xc6e2ff" 
+            fillColor="0xff0000"
+            fillType="solid"
+           layout="mainCenterLayout"
+           region="center"
+           showOnLoad="false" >
+        <title translatable="true">Select Eq By Year</title>
+            <event type="onClickItem">                 
+                 <command type="callFunction" functionName="selectEqByYear"/>
+            </event>
+            <action id="exportIamge">
+                <title>Report Image</title>
+                <command type="exportPanel" outputType="docx" panelId="chartPie_chart"/>
+            </action> 
+            <action id="exportDOCX">
+                <title>Report Grid</title>
+                <command type="callFunction" functionName="exportEqSumByYear"/>
+            </action>
+            <groupingAxis dataSource="ascBjEqSumByYearDs" table="eq" field="niandai" labelRotation="45">
+                <title translatable="true">niandai</title>
+            </groupingAxis>
+            <dataAxis dataSource="ascBjEqSumByYearDs" table="eq" field="sumPrice" labelPosition="callout">
+                <title translatable="true">Sum Value</title>
+            </dataAxis>
+    </panel>
+    
+    <!-- 根据设备用途统计 -->
+    <dataSource id="ascBjEqSumByStdDs"  type="grouping">
+        
+        <table name="eq" role="main"/>
+        <field table="eq" name="type_use" groupBy="true"/>
+        <field table="eq" name="price" formula="sum" baseField="eq.price"
+            dataType="number"  decimals="2"/>
+        <field table="eq" name="countEq" formula="count" baseField="eq.eq_id"
+            dataType="number"  decimals="0"/>
+    </dataSource>
+    <panel  id="chartByStd" 
+            type="chart" 
+            controlType="pieChart" 
+            dataSource="ascBjEqSumByStdDs" 
+            showLegendOnLoad="true"
+            showLegendAsPopUp="false" 
+            legendLocation="right"
+            showDataTips="true" 
+            backgroundColor="0xc6e2ff" 
+            fillColor="0xff0000"
+            fillType="solid"
+            layout="mainCenterLayout"
+            region="center"
+            >
+        <title translatable="true">Select Eq By TypeUse</title>
+            <event type="onClickItem">                 
+                 <command type="callFunction" functionName="selectEqByStd"/>
+            </event>
+            <action id="exportIamge">
+                <title>Report Image</title>
+                <command type="exportPanel" outputType="docx" panelId="chartByStd"/>
+            </action> 
+            <action id="exportDOCX">
+                <title>Report Grid</title>
+                <command type="callFunction" functionName="exportEqSumByTypeUse"/>
+            </action>
+            <groupingAxis dataSource="ascBjEqSumByStdDs" table="eq" field="type_use" labelRotation="45">
+                <title translatable="true">TypeUse</title>
+            </groupingAxis>
+            <dataAxis dataSource="ascBjEqSumByStdDs" table="eq" field="price" labelPosition="callout">
+                <title translatable="true">Sum Value</title>
+            </dataAxis>
+    </panel>
+   
+    <!-- 弹出panel -->
+    <panel type="grid" id="eqSumByYearGrid" dataSource="ascBjUsmsEqDs" showOnLoad="false">
+        <title translatable="true">Eq List By year</title>
+        <indexField table="eq" name="number2"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="eq_std"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_commnets"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="comments"/>  
+        <field table="eq" name="number2" hidden="true"/>
+    </panel>
+    
+    
+    <!-- 按16大类 -->
+    <dataSource id="ascBjEqSumByTypeDs">
+        <sql dialect="generic">
+           select csi,sum(price) ${sql.as} sumEq,count(*) ${sql.as} countEq
+            from (select price,
+              (case when csi_id  like '01%' then ${parameters['01']}
+                    when csi_id  like '02%' then ${parameters['02']}
+                    when csi_id  like '03%' then ${parameters['03']}
+                    when csi_id  like '04%' then ${parameters['04']}
+                    when csi_id  like '05%' then ${parameters['05']}
+                    when csi_id  like '06%' then ${parameters['06']}
+                    when csi_id  like '07%' then ${parameters['07']}
+                    when csi_id  like '08%' then ${parameters['08']}
+                    when csi_id  like '09%' then ${parameters['09']}
+                    when csi_id  like '10%' then ${parameters['10']}
+                    when csi_id  like '11%' then ${parameters['11']}
+                    when csi_id  like '12%' then ${parameters['12']}
+                    when csi_id  like '13%' then ${parameters['13']}
+                    when csi_id  like '14%' then ${parameters['14']}
+                    when csi_id  like '15%' then ${parameters['15']}
+                    when csi_id  like '16%' then ${parameters['16']}
+                    else '' end) ${sql.as} csi
+        from eq where ${parameters['dv_id_byCsi']}) group by csi 
+        </sql>
+        <table name="eq" role="main"/>
+        <parameter name="dv_id_byCsi" dataType="verbatim" value=""/>
+        <parameter name="01" dataType="text" value=""/>
+        <parameter name="02" dataType="text" value=""/>
+        <parameter name="03" dataType="text" value=""/>
+        <parameter name="04" dataType="text" value=""/>
+        <parameter name="05" dataType="text" value=""/>
+        <parameter name="06" dataType="text" value=""/>
+        <parameter name="07" dataType="text" value=""/>
+        <parameter name="08" dataType="text" value=""/>
+        <parameter name="09" dataType="text" value=""/>
+        <parameter name="10" dataType="text" value=""/>
+        <parameter name="11" dataType="text" value=""/>
+        <parameter name="12" dataType="text" value=""/>
+        <parameter name="13" dataType="text" value=""/>
+        <parameter name="14" dataType="text" value=""/>
+        <parameter name="15" dataType="text" value=""/>
+        <parameter name="16" dataType="text" value=""/>
+        <field table="eq" name="sumEq" dataType="number" decimals="2"/>
+        <field table="eq" name="csi" dataType="text"/>
+        <field table="eq" name="countEq" dataType="number" decimals="0"/>
+    </dataSource>
+    <panel  id="chartByType" 
+            type="chart" 
+            controlType="pieChart" 
+            dataSource="ascBjEqSumByTypeDs" 
+            showLegendOnLoad="true"
+            showLegendAsPopUp="false" 
+            legendLocation="right"
+            showDataTips="true" 
+            backgroundColor="0xc6e2ff" 
+            fillColor="0xff0000"
+            fillType="solid"
+             layout="mainCenterLayout"
+            region="center"
+            showOnLoad="false">
+        <title translatable="true">Eq Sum By CSI</title>
+        <event type="onClickItem">                 
+                 <command type="callFunction" functionName="selectEqByType"/>
+        </event>
+        <action id="exportIamge">
+                <title>Report Image</title>
+                <command type="exportPanel" outputType="docx" panelId="chartByType"/>
+            </action> 
+            <action id="exportDOCX">
+                <title>Report Grid</title>
+                <command type="callFunction" functionName="exportEqSumByCsiTypeUse"/>
+        </action>
+        <groupingAxis dataSource="ascBjEqSumByTypeDs" table="eq" field="csi" showLabel="true" labelRotation="45">
+            <title translatable="true">CSI</title>
+        </groupingAxis>
+        <dataAxis dataSource="ascBjEqSumByTypeDs" table="eq" field="sumEq" showLabel="true" labelPosition="callout">
+            <title translatable="true">Sum Value</title>
+        </dataAxis>
+    </panel>
+    <!-- 根据单位大类 -->
+    <dataSource id="ascBjEqSumByDvDs" >
+        <sql dialect="generic">
+            select dv.bu_id ${sql.as} bu_id,sum(eq.price) ${sql.as} sumPrice,count(*) ${sql.as} countEq from dv,eq where eq.dv_id=dv.dv_id group by dv.bu_id
+        </sql>
+        <table name="dv" role="main"/>
+        <field table="dv" name="countEq" dataType="number" decimals="0"/>
+        <field table="dv" name="sumPrice" dataType="number" decimals="2"/>
+        <field table="dv" name="bu_id" dataType="text"/>
+    </dataSource>
+    <panel  id="chartByDv" 
+            type="chart" 
+            controlType="columnChart" 
+            dataSource="ascBjEqSumByDvDs" 
+            showLegendOnLoad="true"
+            showLegendAsPopUp="false" 
+            legendLocation="right"
+            showDataTips="true" 
+            backgroundColor="0xc6e2ff" 
+            fillColor="0xff0000"
+            fillType="solid"
+             layout="mainCenterLayout"
+             region="center"
+            >
+        <title translatable="true">Eq Sum By BUID</title>
+        <event type="onClickItem">                 
+                 <command type="callFunction" functionName="selectEqByDvAll"/>
+        </event>
+        <action id="exportIamge">
+                <title>Report Image</title>
+                <command type="exportPanel" outputType="docx" panelId="chartByDv"/>
+        </action> 
+        <action id="exportDOCX">
+                <title>Report Grid</title>
+                <command type="callFunction" functionName="exportEqSumByBUId"/>
+        </action>
+        <groupingAxis dataSource="ascBjEqSumByDvDs" table="dv" field="bu_id" showLabel="true" labelRotation="45">
+            <title translatable="true">BUID</title>
+        </groupingAxis>
+        <dataAxis dataSource="ascBjEqSumByDvDs" table="dv" field="sumPrice" showLabel="true" labelPosition="callout">
+            <title translatable="true">Sum Value</title>
+        </dataAxis>
+    </panel>
+<!--     根据部门类别选出所有单位 -->
+    <dataSource id="ascBjEqSumByDvDpDs" >
+        <sql dialect="generic">
+            select dv.dv_id ${sql.as} dvId,sum(eq.price) ${sql.as} sumPrice,count(*) ${sql.as} countEq from dv,eq where dv.bu_id=${parameters['buId']} and eq.dv_id=dv.dv_id group by dv.dv_id
+        </sql>
+        <table name="dv" role="main"/>
+        <parameter name="buId" dataType="text" value=""/>
+        <field table="dv" name="countEq" dataType="number" decimals="0"/>
+        <field table="dv" name="sumPrice" dataType="number" decimals="2"/>
+        <field table="dv" name="dvId" dataType="text"/>
+    </dataSource>
+    <panel  id="chartSumByDvPanel" 
+            type="chart" 
+            controlType="pieChart" 
+            dataSource="ascBjEqSumByDvDpDs" 
+            showLegendOnLoad="true"
+            showLegendAsPopUp="false" 
+            legendLocation="right"
+            showDataTips="true" 
+            backgroundColor="0xc6e2ff" 
+            fillColor="0xff0000"
+            fillType="solid"
+             
+            showOnLoad="false">
+        <title translatable="true">Eq Sum By DVID</title>
+        <event type="onClickItem">                 
+                 <command type="callFunction" functionName="selectEqSumByDv"/>
+        </event>
+        <action id="exportIamge">
+                <title>Report Image</title>
+                <command type="exportPanel" outputType="docx" panelId="chartSumByDvPanel"/>
+            </action> 
+            <action id="exportDOCX">
+                <title>Report Grid</title>
+                <command type="callFunction" functionName="exportEqSumByDVDPId"/>
+        </action>
+        <groupingAxis dataSource="ascBjEqSumByDvDpDs" table="dv" field="dvId" showLabel="true" labelRotation="45">
+            <title translatable="true">DVID</title>
+        </groupingAxis>
+        <dataAxis dataSource="ascBjEqSumByDvDpDs" table="dv" field="sumPrice" showLabel="true" labelPosition="callout">
+            <title translatable="true">Sum Value</title>
+        </dataAxis>
+    </panel>
+    <!-- 根据年代的报表页面 -->
+    <panel type="grid" id="eqSumByYearPanel" dataSource="ascBjEqSumByYearDs" showOnLoad="false">
+        <title translatable="true">Select Eq By Year</title>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="eqSumByYearPanel"/>
+        </action>
+        <sortField table="eq" name="niandai"/>
+        <field table="eq" name="niandai" dataType="text">
+            <title translatable="true">niandai</title>
+        </field>
+        <field table="eq" name="CountEq" dataType="number" decimals="0">
+            <title translatable="true">countEq</title>
+        </field>
+        <field table="eq" name="sumPrice" dataType="number" decimals="2">
+            <title translatable="true">Sum Value</title>
+        </field>
+    </panel>
+    
+    <!-- 根据使用方式分类统计报表页面 -->
+    <panel type="grid" id="eqSumByTypeUsePanel" dataSource="ascBjEqSumByStdDs" showOnLoad="false">
+        <title translatable="true">Select Eq By TypeUse</title>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="eqSumByTypeUsePanel"/>
+        </action>
+        <field table="eq" name="type_use" groupBy="true">
+            <title translatable="true">TypeUse</title>
+        </field>
+        <field table="eq" name="price" formula="sum" baseField="eq.price"
+            dataType="number"  decimals="2">
+                <title translatable="true">Sum Value</title>
+            </field>
+        <field table="eq" name="countEq" formula="count" baseField="eq.eq_id"
+            dataType="number"  decimals="0">
+                <title translatable="true">countEq</title>
+            </field>
+    </panel>
+    
+    <!-- 根据16大类统计报表 -->
+    <panel type="grid" id="eqSumByCSIPanel" dataSource="ascBjEqSumByTypeDs" showOnLoad="false">
+        <title translatable="true">Eq Sum By CSI</title>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="eqSumByCSIPanel"/>
+        </action>
+        <field table="eq" name="csi" dataType="text">
+            <title translatable="true">Eq Sum By CSI</title>
+        </field>
+        <field table="eq" name="countEq" dataType="number" decimals="0">
+            <title translatable="true">countEq</title>
+        </field>
+        <field table="eq" name="sumEq" dataType="number" decimals="2">
+            <title translatable="true">Sum Value</title>
+        </field>
+        
+    </panel>
+    <!-- 根据部门大类统计报表 -->
+    <panel type="grid" id="eqSumByBuIdPanel" dataSource="ascBjEqSumByDvDs" showOnLoad="false">
+        <title translatable="true">Eq Sum By CSI</title>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="eqSumByBuIdPanel"/>
+        </action>
+        <field table="dv" name="bu_id" dataType="text"/>
+        <field table="dv" name="countEq" dataType="number" decimals="0">
+             <title translatable="true">countEq</title>
+        </field>
+        <field table="dv" name="sumPrice" dataType="number" decimals="2">
+            <title translatable="true">Sum Value</title>
+        </field>
+        
+    </panel>
+    
+    <!-- 按单位进行设备统计报表 -->
+    <panel type="grid" id="eqSumByDvDpIdPanel" dataSource="ascBjEqSumByDvDpDs" showOnLoad="false">
+        <title translatable="true">Eq Sum By CSI</title>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="eqSumByDvDpIdPanel"/>
+        </action>
+        <field table="dv" name="dvId" dataType="text">
+            <title translatable="true">DVID</title>
+        </field>
+        <field table="dv" name="countEq" dataType="number" decimals="0">
+            <title translatable="true">countEq</title>
+        </field>
+        <field table="dv" name="sumPrice" dataType="number" decimals="2">
+            <title translatable="true">Sum Value</title>
+        </field>
+    </panel>
+   
+</view>

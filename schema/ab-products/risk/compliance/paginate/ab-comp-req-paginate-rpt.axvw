@@ -1,0 +1,757 @@
+<view version="2.0">
+	<designInfo type="paginated" pattern="ab-viewdef-paginated" isAlterable="true"/>
+	<title translatable="true">Compliance Requirements</title>
+	<report orientation="landscape"/>
+
+	<dataSource id="abCompRegPaginateDS" distinct="true">
+        <table name="regrequirement" role="main"/>
+        <table name="regprogram" role="standard"/>
+        <table name="regulation" role="standard"/>
+        
+        <field table="regulation" name="regulation" />
+        <field table="regprogram" name="reg_program" hidden="true"/>
+        <field table="regulation" name="date_compliance" />
+        <field name="progCount" dataType="integer">
+			    <title>Program Count</title>
+			    <sql dialect="generic">
+				    ( select count(*) from regprogram where regprogram.regulation=regulation.regulation )
+			    </sql>
+		    </field>
+        
+        <field table="regulation" name="reg_name" />
+        <field table="regulation" name="date_start" />
+        <field name="reqCount" dataType="integer">
+			    <title>Requirement Count</title>
+			    <sql dialect="generic">
+				    ( select count(*) from regrequirement where regrequirement.regulation=regulation.regulation )
+			    </sql>
+		    </field>
+        
+        <field table="regulation" name="reg_rank" />
+        <field table="regulation" name="date_end" />	    		    
+        <field name="docCount" dataType="integer">
+			    <title>Document Count</title>
+			    <sql dialect="generic">
+				    ( select count(*) from docs_assigned where docs_assigned.regulation=regulation.regulation and docs_assigned.reg_program IS NULL )
+			    </sql>
+		    </field>
+
+        <field table="regulation" name="reg_cat" />
+        <field table="regulation" name="citation" />
+        <field name="locCount" dataType="integer">
+			    <title>Location Count</title>
+			    <sql dialect="generic">
+				    ( select count(*) from regloc where regloc.regulation=regulation.regulation and regloc.reg_program IS NULL )
+			    </sql>
+		    </field>
+		
+        <field table="regulation" name="reg_type" />
+        <field table="regulation" name="reg_class" />
+        <field name="commlogCount" dataType="integer">
+			    <title>Comm. Log Count</title>
+			    <sql dialect="generic">
+				    ( select count(*) from ls_comm where ls_comm.regulation=regulation.regulation and  ls_comm.reg_program IS NULL )
+			    </sql>
+		    </field>
+
+        <field table="regulation" name="authority" />
+        <field table="regulation" name="hierarchy_ids" />
+        <field table="regulation" name="related_reg" />
+
+        <field table="regulation" name="description" />
+
+        <field table="regulation" name="website" />
+
+        <field table="regulation" name="web_ref1" />
+
+        <field table="regulation" name="legal_refs" />
+
+        <sortField table="regulation" name="regulation" ascending="true"/>
+        
+		<parameter name="consoleRes" dataType="verbatim" value=" 1=1 "/> 
+        <restriction type="sql" sql=" ${parameters['consoleRes']} "/>
+	</dataSource>
+	
+	<panel id="abCompRegPaginate" dataSource="abCompRegPaginateDS" format="column" columns="3" role="parent">
+		<title translatable="true">Compliance Regulation</title>
+
+		<field table="regulation" name="regulation" restrictionParameterName="regulationRes"/>
+        <field table="regulation" name="date_compliance" />
+        <field name="progCount"/>
+        
+        <field table="regulation" name="reg_name" />
+        <field table="regulation" name="date_start" />
+        <field name="reqCount"/>
+        
+        <field table="regulation" name="reg_rank" />
+        <field table="regulation" name="date_end" />	    		    
+        <field name="docCount"/>
+
+        <field table="regulation" name="reg_cat" />
+        <field table="regulation" name="citation" />
+        <field name="locCount"/>
+		
+        <field table="regulation" name="reg_type" />
+        <field table="regulation" name="reg_class" />
+        <field name="commlogCount"/>
+
+        <field table="regulation" name="authority" />
+        <field table="regulation" name="hierarchy_ids" />
+        <field table="regulation" name="related_reg" />
+
+        <field table="regulation" name="description" />
+
+        <field table="regulation" name="website" />
+
+        <field table="regulation" name="web_ref1" />
+
+        <field table="regulation" name="legal_refs" />
+	</panel>
+
+    <dataSource id="abCompProgPaginateDS"  distinct="true">
+        <table name="regrequirement" role="main"/>
+        <table name="regprogram" role="standard"/>
+        <table name="regulation" role="standard"/>
+
+        <field table="regulation" name="regulation" />
+
+        <field table="regprogram" name="regulation" />
+        <field table="regprogram" name="comp_level" />
+        <field table="regprogram" name="regprog_cat" />
+
+        <field table="regprogram" name="reg_program" />
+        <field table="regprogram" name="status" />
+        <field table="regprogram" name="regprog_type" />
+
+
+        <field table="regprogram" name="contact_id" />
+        <field table="regprogram" name="em_id" />
+        <field table="regprogram" name="priority" />
+
+        <field table="regprogram" name="project_id" />
+        <field table="regprogram" name="vn_id" />
+        <field table="regprogram" name="criteria_type" />
+
+        <field table="regprogram" name="date_start" />
+        <field name="reqCount" dataType="integer">
+			<title>Requirement Count</title>
+			<sql dialect="generic">
+				( select count(*) from regrequirement where regrequirement.regulation=regprogram.regulation and regrequirement.reg_program=regprogram.reg_program )
+			</sql>
+		</field>
+        <field name="locCount" dataType="integer">
+			<title>Location Count</title>
+			<sql dialect="generic">
+				( select count(*) from regloc where regloc.regulation=regprogram.regulation and regloc.reg_program=regprogram.reg_program and regloc.reg_requirement is null )
+			</sql>
+		</field>
+
+        <field table="regprogram" name="date_end" />
+         <field name="docCount" dataType="integer">
+			<title>Document Count</title>
+			<sql dialect="generic">
+				( select count(*) from docs_assigned where docs_assigned.regulation=regprogram.regulation and docs_assigned.reg_program=regprogram.reg_program and docs_assigned.reg_requirement is null )
+			</sql>
+		</field>
+
+        <field name="commlogCount" dataType="integer">
+			    <title>Comm. Log Count</title>
+			    <sql dialect="generic">
+				    ( select count(*) from ls_comm where ls_comm.regulation=regprogram.regulation and  ls_comm.reg_program=regprogram.reg_program and ls_comm.reg_requirement is null )
+			    </sql>
+		    </field>
+
+        <field table="regprogram" name="summary" />
+        
+        <field table="regprogram" name="description" />
+                    
+        <field table="regprogram" name="hold_reason" />
+
+        <field table="regprogram" name="criteria" />
+
+        <sortField table="regprogram" name="regulation" ascending="true"/>
+        <sortField table="regprogram" name="reg_program" ascending="true"/>
+
+		<parameter name="consoleRes" dataType="verbatim" value=" 1=1 "/> 
+        <parameter name="regulationRes" dataType="verbatim" value=""/>
+        <restriction type="sql" sql=" ${parameters['consoleRes']} "/>
+        <restriction type="parsed">
+             <clause relop="AND" op="=" table="regprogram" name="regulation" value="${parameters['regulationRes']}" />
+        </restriction>
+    </dataSource>
+    
+    <panel id="abCompProgPaginate" dataSource="abCompProgPaginateDS"  format="column" columns="3" role="parent">
+		<title translatable="true">Compliance Program</title>
+
+        <field table="regprogram" name="regulation"   restrictionParameterName="regulationRes"/>
+
+        <field table="regprogram" name="comp_level" />
+        <field table="regprogram" name="regprog_cat" />
+
+        <field table="regprogram" name="reg_program"  restrictionParameterName="programRes"/>
+        <field table="regprogram" name="status" />
+        <field table="regprogram" name="regprog_type" />
+
+
+        <field table="regprogram" name="contact_id" />
+        <field table="regprogram" name="em_id" />
+        <field table="regprogram" name="priority" />
+
+        <field table="regprogram" name="project_id" />
+        <field table="regprogram" name="vn_id" />
+        <field table="regprogram" name="criteria_type" />
+
+        <field table="regprogram" name="date_start" />
+        <field name="reqCount"/>
+        <field name="locCount"/>
+
+        <field table="regprogram" name="date_end" />
+         <field name="docCount"/>
+        <field name="commlogCount"/>
+
+        <field table="regprogram" name="summary" />
+        
+        <field table="regprogram" name="description" />
+                    
+        <field table="regprogram" name="hold_reason" />
+
+        <field table="regprogram" name="criteria" />
+
+    </panel>
+
+    <dataSource id="abCompReqPaginateDS">
+        <table name="regrequirement" role="main"/>
+
+		<table name="regulation" role="standard"/>
+		<table name="regprogram" role="standard"/>
+        <field table="regulation" name="regulation" hidden="true"/>
+        <field table="regprogram" name="reg_program" hidden="true"/>
+
+        <field table="regrequirement" name="regulation"/>
+        <field table="regrequirement" name="comp_level" />
+        <field table="regrequirement" name="contact_id" />
+
+        <field table="regrequirement" name="reg_program"/>
+        <field table="regrequirement" name="em_id"/>
+        <field table="regrequirement" name="vn_id" />
+
+        <field name="locCount" dataType="integer">
+			<title>Location Count</title>
+			<sql dialect="generic">
+				( select count(*) from regloc where regloc.regulation=regrequirement.regulation and  regloc.reg_program=regrequirement.reg_program  and  regloc.reg_requirement=regrequirement.reg_requirement )
+			</sql>
+		</field>
+        <field name="commlogCount" dataType="integer">
+			<title>Comm. Log Count</title>
+			<sql dialect="generic">
+				( select count(*) from ls_comm where ls_comm.regulation=regrequirement.regulation and  ls_comm.reg_program=regrequirement.reg_program  and  ls_comm.reg_requirement=regrequirement.reg_requirement )
+			</sql>
+		</field>
+         <field name="docCount" dataType="integer">
+			<title>Document Count</title>
+			<sql dialect="generic">
+				( select count(*) from docs_assigned where docs_assigned.regulation=regrequirement.regulation and  docs_assigned.reg_program=regrequirement.reg_program  and  docs_assigned.reg_requirement=regrequirement.reg_requirement )
+			</sql>
+		</field>
+
+         <field name="eventCount" dataType="integer">
+			<title>Events</title>
+			<sql dialect="generic">
+				( select count(*) from activity_log where activity_log.regulation=regrequirement.regulation 
+				and  activity_log.reg_program=regrequirement.reg_program  
+				and  activity_log.reg_requirement=regrequirement.reg_requirement
+				and  activity_log.activity_type = 'COMPLIANCE - EVENT' )
+			</sql>
+		</field>
+
+        <field table="regrequirement" name="reg_requirement" />
+        <field table="regrequirement" name="status" />
+        <field table="regrequirement" name="priority" />
+
+        <field table="regrequirement" name="regreq_type" />
+        <field table="regrequirement" name="regreq_cat" />
+        <field table="regrequirement" name="date_expire" />
+
+        <field table="regrequirement" name="date_start" />
+        <field table="regrequirement" name="date_end" />
+        <field table="regrequirement" name="date_required" />
+
+        <field table="regrequirement" name="summary"/>
+        <field table="regrequirement" name="citation"/>
+        
+        <field table="regrequirement" name="description"/>
+        <field table="regrequirement" name="criteria_type" />
+
+        <field table="regrequirement" name="hold_reason"/>
+        <field table="regrequirement" name="completion_criteria"/>
+
+        <field table="regrequirement" name="notes"/>  
+
+        <field table="regrequirement" name="event_duration"/>
+        <field table="regrequirement" name="event_sched_buffer"/>
+        <field table="regrequirement" name="date_initial"/>
+
+        <field table="regrequirement" name="notify_active"/>
+        <field table="regrequirement" name="date_recurrence_end"/>
+        <field table="regrequirement" name="sched_loc"/>
+        <field table="regrequirement" name="event_title"/>
+       <field table="regrequirement" name="recurring_rule"/>
+
+        <field name="recurring_rule_display" dataType="text">
+            <title>Recurrence Rule</title>
+  
+            <sql dialect="generic">
+                (
+                        (CASE SUBSTRING(recurring_rule, PATINDEX('%type="%', recurring_rule) + 6 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%type="%', recurring_rule) + 6))-1)
+                            WHEN 'once' THEN ${parameters["param_reccurence_type_once"]}
+                            WHEN 'day' THEN ${parameters["param_reccurence_type_day"]} 
+                                ${sql.concat} (CASE  
+                                    WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) &lt;&gt; ''
+                                        THEN REPLACE(': ' ${sql.concat} ${parameters["param_recurrence_details_day"]} , '{0}', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1))
+                                    ELSE ''
+                                  END)
+                            WHEN 'week' THEN ${parameters["param_reccurence_type_week"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8))-1) &lt;&gt; ''
+                                            THEN REPLACE(': ' ${sql.concat} ${parameters["param_recurrence_details_week"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8))-1))
+                                        ELSE ''
+                                    END)
+                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) &lt;&gt; ''
+                                            AND SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) NOT LIKE '0,0,0,0,0,0,0'
+                                            THEN ', ' ${sql.concat} ${parameters["param_on"]} 
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) LIKE '1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_mon"]} ${sql.concat} ',' ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) LIKE '_,1,%'
+                                                            THEN ' ' ${sql.concat} ${parameters["param_recurrence_day_tue"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) LIKE '_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_wed"]}  ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) LIKE '_,_,_,1,%' 
+                                                            THEN ' ' ${sql.concat} ${parameters["param_recurrence_day_thu"]}  ${sql.concat} ',' ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) LIKE '_,_,_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_fri"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) LIKE '_,_,_,_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_sat"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1) LIKE '_,_,_,_,_,_,1' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_sun"]} ${sql.concat} ','  ELSE '' END )
+                                    END)
+                            WHEN 'month' THEN ${parameters["param_reccurence_type_month"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8))-1) &lt;&gt; ''
+                                            THEN REPLACE(': '${sql.concat} ${parameters["param_recurrence_details_month"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8))-1))
+                                          ELSE ''  
+                                    END)
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8))-1) = '' 
+                                            THEN REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_month_one"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1))
+                
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8))-1) &lt;&gt; ''
+                                            THEN REPLACE(
+                                                    REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_month_two"]}, 
+                                                                '{0}', 
+                                                                (CASE SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1)
+                                                                    WHEN '1st' THEN ${parameters["param_recurrence_day_first"]}
+                                                                    WHEN '2nd' THEN ${parameters["param_recurrence_day_second"]}
+                                                                    WHEN '3rd' THEN ${parameters["param_recurrence_day_third"]}
+                                                                    WHEN '4th' THEN ${parameters["param_recurrence_day_fourth"]}
+                                                                    WHEN 'last' THEN ${parameters["param_recurrence_day_last"]}
+                                                                END)    
+                                                            ),
+                                                        '{1}',
+                                                        (CASE  SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8))-1)
+                                                            WHEN 'mon' THEN ${parameters["param_recurrence_day_mon"]}
+                                                            WHEN 'tue' THEN ${parameters["param_recurrence_day_tue"]}
+                                                            WHEN 'wed' THEN ${parameters["param_recurrence_day_wed"]}
+                                                            WHEN 'thu' THEN ${parameters["param_recurrence_day_thu"]}
+                                                            WHEN 'fri' THEN ${parameters["param_recurrence_day_fri"]}
+                                                            WHEN 'sat' THEN ${parameters["param_recurrence_day_sat"]}
+                                                            WHEN 'sun' THEN ${parameters["param_recurrence_day_sun"]}
+                                                            WHEN 'day' THEN ${parameters["param_recurrence_day_day"]}
+                                                            WHEN 'weekday' THEN ${parameters["param_recurrence_day_weekday"]}
+                                                            WHEN 'weekendday' THEN ${parameters["param_recurrence_day_weekendday"]}
+                                                            ELSE '' 
+                                                        END)
+                                                    )
+                                         ELSE ''
+                                    END)
+                
+                            WHEN 'year' THEN ${parameters["param_reccurence_type_year"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8))-1) &lt;&gt; ''
+                                            THEN REPLACE(': '${sql.concat} ${parameters["param_recurrence_details_year"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8))-1))
+                                        ELSE '' 
+                                    END)
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8))-1) &lt;&gt; ''
+                                            THEN 
+                                                REPLACE(
+                                                            REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_year_one"]}, 
+                                                                        '{0}', 
+                                                                        SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8))-1)
+                                                                    ),
+                                                            '{1}', 
+                                                            (CASE  SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8))-1)
+                                                                WHEN 'jan' THEN ${parameters["param_recurrence_month_jan"]}
+                                                                WHEN 'feb' THEN ${parameters["param_recurrence_month_feb"]}
+                                                                WHEN 'mar' THEN ${parameters["param_recurrence_month_mar"]}
+                                                                WHEN 'apr' THEN ${parameters["param_recurrence_month_apr"]}
+                                                                WHEN 'may' THEN ${parameters["param_recurrence_month_may"]}
+                                                                WHEN 'jun' THEN ${parameters["param_recurrence_month_jun"]}
+                                                                WHEN 'jul' THEN ${parameters["param_recurrence_month_jul"]}
+                                                                WHEN 'aug' THEN ${parameters["param_recurrence_month_aug"]}
+                                                                WHEN 'sep' THEN ${parameters["param_recurrence_month_sep"]}
+                                                                WHEN 'oct' THEN ${parameters["param_recurrence_month_oct"]}
+                                                                WHEN 'nov' THEN ${parameters["param_recurrence_month_nov"]}
+                                                                WHEN 'dec' THEN ${parameters["param_recurrence_month_dec"]}
+                                                                ELSE ''
+                                                            END)
+                                                        )
+                                      ELSE '' 
+                                    END)
+                
+                        END)
+                      ${sql.concat} (CASE
+                            WHEN SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7))-1) &lt;&gt; ''
+                                THEN REPLACE(', '${sql.concat} ${parameters["param_recurrence_end_after"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7))-1) )
+                            ELSE '' 
+                         END)
+                    )
+            </sql>
+            <sql dialect="sqlserver">
+                (
+                        (CASE SUBSTRING(recurring_rule, PATINDEX('%type="%', recurring_rule) + 6 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%type="%', recurring_rule) + 6, LEN(recurring_rule)))-1)
+                            WHEN 'once' THEN ${parameters["param_reccurence_type_once"]}
+                            WHEN 'day' THEN ${parameters["param_reccurence_type_day"]} 
+                                ${sql.concat} (CASE  
+                                    WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                        THEN REPLACE(': ' ${sql.concat} ${parameters["param_recurrence_details_day"]} , '{0}', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1))
+                                    ELSE ''
+                                  END)
+                            WHEN 'week' THEN ${parameters["param_reccurence_type_week"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                            THEN REPLACE(': ' ${sql.concat} ${parameters["param_recurrence_details_week"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8, LEN(recurring_rule)))-1))
+                                        ELSE ''
+                                    END)
+                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                            AND SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) NOT LIKE '0,0,0,0,0,0,0'
+                                            THEN ', ' ${sql.concat} ${parameters["param_on"]} 
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) LIKE '1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_mon"]} ${sql.concat} ',' ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) LIKE '_,1,%'
+                                                            THEN ' ' ${sql.concat} ${parameters["param_recurrence_day_tue"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) LIKE '_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_wed"]}  ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) LIKE '_,_,_,1,%' 
+                                                            THEN ' ' ${sql.concat} ${parameters["param_recurrence_day_thu"]}  ${sql.concat} ',' ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) LIKE '_,_,_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_fri"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) LIKE '_,_,_,_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_sat"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1) LIKE '_,_,_,_,_,_,1' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_sun"]} ${sql.concat} ','  ELSE '' END )
+                                    END)
+                            WHEN 'month' THEN ${parameters["param_reccurence_type_month"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                            THEN REPLACE(': '${sql.concat} ${parameters["param_recurrence_details_month"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8, LEN(recurring_rule)))-1))
+                                          ELSE ''  
+                                    END)
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8, LEN(recurring_rule)))-1) = '' 
+                                            THEN REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_month_one"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1))
+                
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                            THEN REPLACE(
+                                                    REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_month_two"]}, 
+                                                                '{0}', 
+                                                                (CASE SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1)
+                                                                    WHEN '1st' THEN ${parameters["param_recurrence_day_first"]}
+                                                                    WHEN '2nd' THEN ${parameters["param_recurrence_day_second"]}
+                                                                    WHEN '3rd' THEN ${parameters["param_recurrence_day_third"]}
+                                                                    WHEN '4th' THEN ${parameters["param_recurrence_day_fourth"]}
+                                                                    WHEN 'last' THEN ${parameters["param_recurrence_day_last"]}
+                                                                END)    
+                                                            ),
+                                                        '{1}',
+                                                        (CASE  SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8, LEN(recurring_rule)))-1)
+                                                            WHEN 'mon' THEN ${parameters["param_recurrence_day_mon"]}
+                                                            WHEN 'tue' THEN ${parameters["param_recurrence_day_tue"]}
+                                                            WHEN 'wed' THEN ${parameters["param_recurrence_day_wed"]}
+                                                            WHEN 'thu' THEN ${parameters["param_recurrence_day_thu"]}
+                                                            WHEN 'fri' THEN ${parameters["param_recurrence_day_fri"]}
+                                                            WHEN 'sat' THEN ${parameters["param_recurrence_day_sat"]}
+                                                            WHEN 'sun' THEN ${parameters["param_recurrence_day_sun"]}
+                                                            WHEN 'day' THEN ${parameters["param_recurrence_day_day"]}
+                                                            WHEN 'weekday' THEN ${parameters["param_recurrence_day_weekday"]}
+                                                            WHEN 'weekendday' THEN ${parameters["param_recurrence_day_weekendday"]}
+                                                            ELSE '' 
+                                                        END)
+                                                    )
+                                         ELSE ''
+                                    END)
+                
+                            WHEN 'year' THEN ${parameters["param_reccurence_type_year"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                            THEN REPLACE(': '${sql.concat} ${parameters["param_recurrence_details_year"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value3="%', recurring_rule) + 8, LEN(recurring_rule)))-1))
+                                        ELSE '' 
+                                    END)
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                            THEN 
+                                                REPLACE(
+                                                            REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_year_one"]}, 
+                                                                        '{0}', 
+                                                                        SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value1="%', recurring_rule) + 8, LEN(recurring_rule)))-1)
+                                                                    ),
+                                                            '{1}', 
+                                                            (CASE  SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%value2="%', recurring_rule) + 8, LEN(recurring_rule)))-1)
+                                                                WHEN 'jan' THEN ${parameters["param_recurrence_month_jan"]}
+                                                                WHEN 'feb' THEN ${parameters["param_recurrence_month_feb"]}
+                                                                WHEN 'mar' THEN ${parameters["param_recurrence_month_mar"]}
+                                                                WHEN 'apr' THEN ${parameters["param_recurrence_month_apr"]}
+                                                                WHEN 'may' THEN ${parameters["param_recurrence_month_may"]}
+                                                                WHEN 'jun' THEN ${parameters["param_recurrence_month_jun"]}
+                                                                WHEN 'jul' THEN ${parameters["param_recurrence_month_jul"]}
+                                                                WHEN 'aug' THEN ${parameters["param_recurrence_month_aug"]}
+                                                                WHEN 'sep' THEN ${parameters["param_recurrence_month_sep"]}
+                                                                WHEN 'oct' THEN ${parameters["param_recurrence_month_oct"]}
+                                                                WHEN 'nov' THEN ${parameters["param_recurrence_month_nov"]}
+                                                                WHEN 'dec' THEN ${parameters["param_recurrence_month_dec"]}
+                                                                ELSE ''
+                                                            END)
+                                                        )
+                                      ELSE '' 
+                                    END)
+                
+                        END)
+                      ${sql.concat} (CASE
+                            WHEN SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7, LEN(recurring_rule)))-1) &lt;&gt; ''
+                                THEN REPLACE(', '${sql.concat} ${parameters["param_recurrence_end_after"]}, '{0}', SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7 , PATINDEX('%"%', SUBSTRING(recurring_rule, PATINDEX('%total="%', recurring_rule) + 7, LEN(recurring_rule)))-1) )
+                            ELSE '' 
+                         END)
+                    )
+            </sql>
+            <sql dialect="oracle">
+              (
+                        (CASE SUBSTR(recurring_rule, INSTR(recurring_rule, 'type="') + 6 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'type="') + 6), '"')-1)
+                            WHEN 'once' THEN ${parameters["param_reccurence_type_once"]}
+                            WHEN 'day' THEN ${parameters["param_reccurence_type_day"]} 
+                                ${sql.concat} (CASE  
+                                    WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) IS NOT NULL
+                                        THEN REPLACE(': ' ${sql.concat} ${parameters["param_recurrence_details_day"]} , '{0}', SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1))
+                                    ELSE ''
+                                  END)
+                            WHEN 'week' THEN ${parameters["param_reccurence_type_week"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8), '"')-1) IS NOT NULL
+                                            THEN REPLACE(': ' ${sql.concat} ${parameters["param_recurrence_details_week"]}, '{0}', SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8), '"')-1))
+                                        ELSE ''
+                                    END)
+                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) IS NOT NULL
+                                            AND SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) NOT LIKE '0,0,0,0,0,0,0'
+                                            THEN ', ' ${sql.concat} ${parameters["param_on"]} 
+                                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="')  + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) LIKE '1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_mon"]} ${sql.concat} ',' ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) LIKE '_,1,%'
+                                                            THEN ' ' ${sql.concat} ${parameters["param_recurrence_day_tue"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="')  + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) LIKE '_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_wed"]}  ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) LIKE '_,_,_,1,%' 
+                                                            THEN ' ' ${sql.concat} ${parameters["param_recurrence_day_thu"]}  ${sql.concat} ',' ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="')  + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) LIKE '_,_,_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_fri"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="')  + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) LIKE '_,_,_,_,_,1,%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_sat"]} ${sql.concat} ','  ELSE '' END )
+                                                ${sql.concat} (CASE WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1) LIKE '_,_,_,_,_,_,1%' 
+                                                            THEN ' '${sql.concat} ${parameters["param_recurrence_day_sun"]} ${sql.concat} ','  ELSE '' END )
+                                    END)
+                            WHEN 'month' THEN ${parameters["param_reccurence_type_month"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8), '"')-1) IS NOT NULL
+                                            THEN REPLACE(': '${sql.concat} ${parameters["param_recurrence_details_month"]}, '{0}', SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8), '"')-1))
+                                          ELSE ''  
+                                    END)
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8), '"')-1) IS NULL
+                                            THEN REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_month_one"]}, '{0}', SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1))
+                
+                                        WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8), '"')-1) IS NOT NULL
+                                            THEN REPLACE(
+                                                    REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_month_two"]}, 
+                                                                '{0}', 
+                                                                (CASE SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="')+ 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1)
+                                                                    WHEN '1st' THEN ${parameters["param_recurrence_day_first"]}
+                                                                    WHEN '2nd' THEN ${parameters["param_recurrence_day_second"]}
+                                                                    WHEN '3rd' THEN ${parameters["param_recurrence_day_third"]}
+                                                                    WHEN '4th' THEN ${parameters["param_recurrence_day_fourth"]}
+                                                                    WHEN 'last' THEN ${parameters["param_recurrence_day_last"]}
+                                                                END)    
+                                                            ),
+                                                        '{1}',
+                                                        (CASE  SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8), '"')-1)
+                                                            WHEN 'mon' THEN ${parameters["param_recurrence_day_mon"]}
+                                                            WHEN 'tue' THEN ${parameters["param_recurrence_day_tue"]}
+                                                            WHEN 'wed' THEN ${parameters["param_recurrence_day_wed"]}
+                                                            WHEN 'thu' THEN ${parameters["param_recurrence_day_thu"]}
+                                                            WHEN 'fri' THEN ${parameters["param_recurrence_day_fri"]}
+                                                            WHEN 'sat' THEN ${parameters["param_recurrence_day_sat"]}
+                                                            WHEN 'sun' THEN ${parameters["param_recurrence_day_sun"]}
+                                                            WHEN 'day' THEN ${parameters["param_recurrence_day_day"]}
+                                                            WHEN 'weekday' THEN ${parameters["param_recurrence_day_weekday"]}
+                                                            WHEN 'weekendday' THEN ${parameters["param_recurrence_day_weekendday"]}
+                                                            ELSE '' 
+                                                        END)
+                                                    )
+                                         ELSE ''
+                                    END)
+                
+                            WHEN 'year' THEN ${parameters["param_reccurence_type_year"]}
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8), '"')-1) IS NOT NULL
+                                            THEN REPLACE(': '${sql.concat} ${parameters["param_recurrence_details_year"]}, '{0}', SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value3="') + 8), '"')-1))
+                                        ELSE '' 
+                                    END)
+                                ${sql.concat} (CASE
+                                        WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8), '"')-1) IS NOT NULL
+                                            THEN 
+                                                REPLACE(
+                                                            REPLACE(', '${sql.concat} ${parameters["param_recurrence_details_year_one"]}, 
+                                                                        '{0}', 
+                                                                        SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value1="') + 8), '"')-1)
+                                                                    ),
+                                                            '{1}', 
+                                                            (CASE  SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="')  + 8 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'value2="') + 8), '"')-1)
+                                                                WHEN 'jan' THEN ${parameters["param_recurrence_month_jan"]}
+                                                                WHEN 'feb' THEN ${parameters["param_recurrence_month_feb"]}
+                                                                WHEN 'mar' THEN ${parameters["param_recurrence_month_mar"]}
+                                                                WHEN 'apr' THEN ${parameters["param_recurrence_month_apr"]}
+                                                                WHEN 'may' THEN ${parameters["param_recurrence_month_may"]}
+                                                                WHEN 'jun' THEN ${parameters["param_recurrence_month_jun"]}
+                                                                WHEN 'jul' THEN ${parameters["param_recurrence_month_jul"]}
+                                                                WHEN 'aug' THEN ${parameters["param_recurrence_month_aug"]}
+                                                                WHEN 'sep' THEN ${parameters["param_recurrence_month_sep"]}
+                                                                WHEN 'oct' THEN ${parameters["param_recurrence_month_oct"]}
+                                                                WHEN 'nov' THEN ${parameters["param_recurrence_month_nov"]}
+                                                                WHEN 'dec' THEN ${parameters["param_recurrence_month_dec"]}
+                                                                ELSE ''
+                                                            END)
+                                                        )
+                                      ELSE '' 
+                                    END)
+                
+                        END)
+                      ${sql.concat} (CASE
+                            WHEN SUBSTR(recurring_rule, INSTR(recurring_rule, 'total="') + 7 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'total="') + 7), '"')-1) IS NOT NULL
+                                THEN REPLACE(', '${sql.concat} ${parameters["param_recurrence_end_after"]}, '{0}', SUBSTR(recurring_rule, INSTR(recurring_rule, 'total="') + 7 , INSTR(SUBSTR(recurring_rule, INSTR(recurring_rule, 'total="') + 7), '"')-1) )
+                            ELSE '' 
+                         END)
+                    )
+            </sql>
+        </field>
+
+        <sortField table="regrequirement" name="regulation" ascending="true"/>
+        <sortField table="regrequirement" name="reg_program" ascending="true"/>
+        <sortField table="regrequirement" name="reg_requirement" ascending="true"/>
+
+        <parameter name="param_reccurence_type_once" dataType="text" value=""/>
+        <parameter name="param_reccurence_type_day" dataType="text" value=""/>
+        <parameter name="param_reccurence_type_week" dataType="text" value=""/>
+        <parameter name="param_reccurence_type_month" dataType="text" value=""/>
+        <parameter name="param_reccurence_type_year" dataType="text" value=""/>
+        <parameter name="param_recurrence_details_day" dataType="text" value=""/>
+        <parameter name="param_recurrence_details_week" dataType="text" value=""/>
+        <parameter name="param_recurrence_details_month" dataType="text" value=""/>
+        <parameter name="param_recurrence_details_month_one" dataType="text" value=""/>
+        <parameter name="param_recurrence_details_month_two" dataType="text" value=""/>
+        <parameter name="param_recurrence_details_year" dataType="text" value=""/>
+        <parameter name="param_recurrence_details_year_one" dataType="text" value=""/>
+        <parameter name="param_recurrence_end_after" dataType="text" value=""/>
+        <parameter name="param_on" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_mon" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_tue" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_wed" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_thu" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_fri" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_sat" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_sun" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_day" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_weekday" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_weekendday" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_first" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_second" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_third" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_fourth" dataType="text" value=""/>
+        <parameter name="param_recurrence_day_last" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_jan" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_feb" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_mar" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_apr" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_may" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_jun" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_jul" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_aug" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_sep" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_oct" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_nov" dataType="text" value=""/>
+        <parameter name="param_recurrence_month_dec" dataType="text" value=""/>
+
+		<parameter name="consoleRes" dataType="verbatim" value=" 1=1 "/> 
+        <parameter name="regulationRes" dataType="verbatim" value=""/>
+        <parameter name="programRes" dataType="verbatim" value=""/>
+        <restriction type="sql" sql=" ${parameters['consoleRes']} "/>
+        <restriction type="parsed">
+             <clause relop="AND" op="=" table="regrequirement" name="regulation" value="${parameters['regulationRes']}" />
+             <clause relop="AND" op="=" table="regrequirement" name="reg_program" value="${parameters['programRes']}" />
+        </restriction>
+    </dataSource>
+    
+    <panel id="abCompReqPaginate" dataSource="abCompReqPaginateDS"  format="column" columns="3" role="data">
+    <title translatable="true">Compliance Requirement</title>
+	
+        <field table="regrequirement" name="regulation"/>
+        <field table="regrequirement" name="comp_level" />
+        <field table="regrequirement" name="contact_id" />
+
+        <field table="regrequirement" name="reg_program"/>
+        <field table="regrequirement" name="em_id"/>
+        <field table="regrequirement" name="vn_id" />
+
+        <field table="regrequirement" name="reg_requirement" />
+        <field table="regrequirement" name="status" />
+        <field table="regrequirement" name="priority" />
+
+        <field table="regrequirement" name="regreq_type" />
+        <field table="regrequirement" name="regreq_cat" />
+        <field table="regrequirement" name="date_expire" />
+
+        <field table="regrequirement" name="date_start" />
+        <field table="regrequirement" name="date_end" />
+        <field table="regrequirement" name="date_required" />
+
+        <field table="regrequirement" name="summary" />
+        <field table="regrequirement" name="citation" />
+        
+        <field table="regrequirement" name="criteria_type" />
+
+        <field table="regrequirement" name="event_duration"/>
+        <field table="regrequirement" name="event_sched_buffer"/>
+        <field table="regrequirement" name="date_initial"/>
+
+        <field table="regrequirement" name="notify_active"/>
+        <field table="regrequirement" name="date_recurrence_end"/>
+        <field table="regrequirement" name="sched_loc"/>
+        <field table="regrequirement" name="event_title"/>
+        <field table="regrequirement" name="recurring_rule_display"/>
+        
+        <field name="eventCount"/>
+        <field name="locCount"/>
+        <field name="commlogCount"/>
+        <field name="docCount"/>
+        
+        <field table="regrequirement" name="description" />
+        <field table="regrequirement" name="hold_reason"/>
+        <field table="regrequirement" name="completion_criteria" />
+        <field table="regrequirement" name="notes" />  
+    </panel>
+</view>

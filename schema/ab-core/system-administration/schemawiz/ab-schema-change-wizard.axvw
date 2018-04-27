@@ -1,0 +1,17 @@
+<view version="2.0">
+    <script src="/archibus/dwr/interface/SchemaUpdateWizardService.js" language="JavaScript"> </script>
+	<title translatable="true">Schema Change Wizard</title>
+	<js file="ab-schema-update-wizard.js"/>
+	<tabs workflow="free" id="updSchWizTabs" tabRefreshPolicy="refreshOnLoad">	
+
+		<tab name="specifyUpdPref" file="ab-schem-up-wiz-specify-update-pref.axvw" useFrame="false" selected="true">
+			<title>Specify Update Preferences</title>
+		</tab>
+		<tab name="updateSQLTables" file="ab-schem-up-wiz-update-sql-tables.axvw" useFrame="true">
+			<title>Update SQL Tables</title>
+		</tab>
+        <tab name="recreateStructures" file="ab-schem-up-wiz-recreate-structures.axvw" useFrame="true">
+            <title>Re-create Structures</title>
+        </tab>
+	</tabs>
+</view>

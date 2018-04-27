@@ -1,0 +1,18 @@
+<view version="2.0">
+	<title>Return Equipment</title>
+	<tabs workflow="free" id="returnTabs" tabRefreshPolicy="refreshOnSelect">
+		<tab name="eqRequestTab" file="asc-bj-usms-eq-return-request.axvw"  selected="true" >
+		    <title translatable="true">Eq Return</title>
+	    </tab>
+		<tab name="eqRequestInfoTab" file="asc-bj-usms-eq-return-request-info.axvw">
+		    <title translatable="true">Eq Return Info</title>
+	    </tab>
+		<tab name="eqAttachRequestTab" file="asc-bj-usms-eq-attach-return-request.axvw">
+		    <title translatable="true">Attach Return</title>
+	    </tab>
+		<tab name="eqAttachInfoTab" file="asc-bj-usms-eq-attach-return-request-info.axvw">
+		    <title translatable="true">Attach Info Return</title>
+	    </tab>
+	</tabs>
+	<js file="asc-bj-usms-eq-return-request-tabs.js"/>
+</view>

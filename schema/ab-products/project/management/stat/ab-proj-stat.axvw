@@ -1,0 +1,40 @@
+<view version="2.0">	
+    <js file="ab-proj-stat.js"/>
+    <js file="ab-proj-stat-common.js"/>
+    
+	<tabs id="projStatTabs" workflow="free">
+        <tab name="projStatProjs" file="ab-proj-stat-projs.axvw" selected="true">
+            <title>Select Project</title>
+        </tab>
+				<tab name="projStatDash" file="ab-proj-stat-dash.axvw">
+            <title>Dashboard</title>
+        </tab>
+        <tab name="projStatTeam" file="ab-proj-stat-team.axvw">
+            <title>Team</title>
+        </tab>
+        <tab name="projStatLogs" file="ab-proj-stat-logs.axvw">
+            <title>Logs</title>
+        </tab>
+        <tab name="projStatDocs" file="ab-proj-stat-docs.axvw">
+            <title>Documents</title>
+        </tab>
+        <tab name="projStatPkg">
+            <title>Work Package</title>
+            <tabs id="projStatPkgTabs" workflow="free">
+                <tab name="projStatPkgProf" file="ab-proj-stat-pkg-prof.axvw" selected="true">
+                    <title>Work Package Profile and Contract</title>
+                </tab>
+                <tab name="projStatPkgAct" file="ab-proj-stat-pkg-act.axvw">
+                    <title>Update Actions</title>
+                </tab>
+                <tab name="projStatPkgInv" file="ab-proj-stat-pkg-inv.axvw" >
+                    <title>Invoices</title>
+                </tab>
+                <tab name="projStatPkgChg" file="ab-proj-stat-pkg-chg.axvw">
+                    <title>Change Orders</title>
+                </tab>
+            </tabs>
+        </tab>
+	</tabs>
+</view>
+

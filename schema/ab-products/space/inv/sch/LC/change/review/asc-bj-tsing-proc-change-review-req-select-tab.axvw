@@ -1,0 +1,133 @@
+<view version="2.0">
+    
+    <js file="asc-bj-tsing-proc-change-review-req-select-tab.js"/>
+      
+     <dataSource id="ascBjUsmsProcChangeCreateReqAddAttachmentsTabFormDS">
+        <table name="activity_log" role="main"/>     
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>	
+        <field name="status" table="activity_log"/>	
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="time_required" table="activity_log"/>
+     
+		<field name="doc1" table="activity_log"/>
+        <field name="doc2" table="activity_log"/>
+         <parameter name="activityType" dataType="text" value=""/>
+        <restriction type="sql" sql="activity_log.requestor = '${user.name}'   AND activity_log.activity_type= ${parameters['activityType']}"/>
+        
+    </dataSource>
+    
+    <panel type="console" columns="4" id="ascBjUsmsProcAsgnReviewReqSelectTabConsole"  dataSource="ascBjUsmsProcChangeCreateReqAddAttachmentsTabFormDS">
+        <title translatable="true">Filter</title>
+        
+        <action id="filter">
+            <title translatable="true">Show</title>
+            <command type="showPanel" panelId="ascBjUsmsProcAsgnReviewReqSelectTabGrid"/>
+        </action>
+        <action id="refresh">
+            <title translatable="true">Clear</title>
+            
+        </action>
+       <field name="activity_log_id" table="activity_log" hidden="true"/>
+        <field name="activity_type" table="activity_log" enabled="false"/>
+        <field name="description" table="activity_log" hidden="true"/>
+        <field name="requestor" table="activity_log" hidden="true"/>	
+        <field name="status" table="activity_log"/>	
+        <field name="phone_requestor" table="activity_log" hidden="true"/>
+        <field name="priority" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log" hidden="true"/>
+        <field table="activity_log" name="date_required" readOnly="false" alias="activity_log.date_requested.from" required="false" op="&gt;=">
+            <title translatable="true">Date Requested From</title>
+        </field>
+        <field table="activity_log" name="date_required" readOnly="false" alias="activity_log.date_requested.to" required="false" op="&lt;=">
+            <title translatable="true">Date Requested To</title>
+        </field>
+    </panel>
+    
+<!--      <dataSource id="ascBjUsmsProcAsgnReviewReqSelectTabDS1"> -->
+<!--         <table name="activity_log" role="main"/> -->
+<!--         <table name="activity_log_hactivity_log" role="standard"/> -->
+<!--         <field name="activity_log_id" table="activity_log"/> -->
+<!--         <field name="prob_type" table="activity_log"/> -->
+<!--         <field name="activity_log_id" table="activity_log_hactivity_log"/> -->
+<!--         <field name="status" table="activity_log_hactivity_log"/> -->
+<!--         <field name="requestor" table="activity_log_hactivity_log"/> -->
+
+<!--         <field name="prob_type" table="activity_log_hactivity_log"/> -->
+<!--         <field name="activity_type" table="activity_log_hactivity_log"/> -->
+<!--         <field name="date_requested" table="activity_log_hactivity_log"/> -->
+<!--         <field name="description" table="activity_log_hactivity_log"/> -->
+<!--         <parameter name="activityType" dataType="text" value=""/> -->
+<!--         <restriction type="sql" sql="activity_log_hactivity_log.requestor = '${user.name}'   AND activity_log_hactivity_log.activity_type= ${parameters['activityType']}"/> -->
+<!--      </dataSource> -->
+    
+<!--     <panel type="grid" id="ascBjUsmsProcAsgnReviewReqSelectTabGrid" showOnLoad="false" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnReviewReqSelectTabDS1"> -->
+<!--       <title translatable="true">Requests</title> -->
+<!--        <field controlType="button"  width="100" id="show">         -->
+<!--             <title translatable="true">show</title>  -->
+<!--             <command type="callFunction" functionName="selectNextTab"/>                      -->
+<!--         </field> -->
+        
+<!--         <sortField table="activity_log_hactivity_log" name="date_requested" ascending="false"/> -->
+<!--         <field name="activity_log_id" table="activity_log" /> -->
+<!--         <field name="activity_log_id" table="activity_log_hactivity_log" width="100"> -->
+<!--             <title translatable="true">Service Request ID</title> -->
+<!--         </field> -->
+<!--         <field name="activity_type" table="activity_log_hactivity_log" /> -->
+<!--         <field name="requestor" table="activity_log_hactivity_log" /> -->
+<!--         <field name="status" table="activity_log_hactivity_log"/> -->
+<!--         <field name="date_requested" table="activity_log_hactivity_log"/> -->
+<!--         <field name="description" table="activity_log_hactivity_log"/> -->
+<!--    </panel> -->
+    
+     <dataSource id="ascBjUsmsProcAsgnReviewReqSelectTabDS1">
+        <table name="activity_log" role="main"/>
+        <table name="activity_log_step_waiting" role="standard"/>        
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="user_name"/>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log_step_waiting" name="step_type"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>        
+        <parameter name="activityType" dataType="text" value=""/>        
+       <restriction type="sql"
+         sql="activity_log.activity_type= ${parameters['activityType']} "/>
+    </dataSource>
+    
+   <panel type="grid" id="ascBjUsmsProcAsgnReviewReqSelectTabGrid" showOnLoad="false" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnReviewReqSelectTabDS1"> 
+         <title translatable="true">Requests</title>
+        
+        <sortField table="activity_log" name="activity_log_id" ascending="false"/>
+        
+        <field controlType="button">
+            <title translatable="true">Select</title>
+            <command type="callFunction" functionName="selectNextTab"/>
+        </field>
+        <field name="activity_log_id" table="activity_log">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log">
+            <title translatable="true">Request Type</title>
+        </field>
+<!--         <field table="activity_log_step_waiting" name="step"/> -->
+        <field name="requestor" table="activity_log" />	
+        <field name="dv_id" table="activity_log"/>	
+        <field name="status" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+    </panel>
+    
+</view>

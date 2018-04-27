@@ -1,0 +1,26 @@
+<view version="2.0">
+    <layout id="main">
+        <north initialSize="310px" split="true"/>
+        <center id="mile"/>
+    </layout>
+    <layout id="nested_north" containingLayout="main" region="north">
+     		<west id="prof" initialSize="370px" split="true"/>
+        <center id="cps"  />       
+    </layout>
+    <message name="reportUpdated">Updated</message>
+    <js file="ab-proj-stat-dash.js"/>
+
+    <panel type="view" id="panel_prof" file="ab-proj-stat-dash-prof.axvw" layoutRegion="prof"/>
+    <panel type="view" id="panel_cps" file="ab-proj-stat-dash-cps.axvw" layoutRegion="cps"/>
+    <panel type="view" id="panel_mile" file="ab-proj-stat-dash-mile.axvw" layoutRegion="mile"/>
+    
+    
+    
+    <dataSource id="projStatDash_ds">
+        <table name="project" role="main"/>
+        <field name="project_id" />
+        <field name="project_name" />
+        <field name="summary" />
+        <field name="status" />
+    </dataSource>
+</view>

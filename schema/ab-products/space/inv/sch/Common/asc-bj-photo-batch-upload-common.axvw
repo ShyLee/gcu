@@ -1,0 +1,42 @@
+<view version="2.0">
+    <css file="uploadify.css" />  
+    <js file="jquery.uploadify.min.js" />
+    <js file="asc-bj-photo-batch-upload-common.js"/>
+    <title translatable="true">Photo Batch Upload</title>
+
+  <panel type="html" id="fileUploadPanel" columns="1">
+    <html>
+        <body>
+            <table style="margin-left:20px">
+                <tr>
+                   <td>
+                    <br/>
+						<div style="font-size:14px;font-weight:bold">
+                        <span translatable="true">Please Select Upload Type:</span>
+<!--                            <label > -->
+                          <input type="radio" name="fileType" value="em" checked="checked"/><span translatable="true">User</span>
+                          <input type="radio" name="fileType" value="bl" /><span translatable="true">Buliding</span>
+                          <input type="radio" name="fileType" value="land" /><span translatable="true">Land</span>
+                          <input type="radio" name="fileType" value="stu" /><span translatable="true">Student</span>
+<!--                             </label> -->
+                        <br/>
+						</div>
+                        <div translatable="true">Photo Name Should be ordered</div>
+                        <div translatable="true">Different Choice ,the Photos will be stored into different folder</div>
+                        <div translatable="true">Size Instruction</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div  id="uploadMessage" style="margin-left:15px;font-size:15px;color:red"></div>
+                        <div id="fileUploadArea">
+                            <input type="file" name="uploadify" id="uploadify" />  
+                             <div id="fileQueue"></div>
+                        </div>
+                    </td>
+                </tr>
+             </table>
+        </body>
+    </html>
+</panel>
+</view>

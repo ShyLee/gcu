@@ -1,0 +1,24 @@
+<view version="2.0">
+	<js file="ab-ex-group-by-status.js"/>
+	<dataSource id="statusDS" distinct="true">
+		<table name="wr" role="main"/>
+		<field table="wr" name="status"/>
+	</dataSource>	
+	<dataSource id="workRequestsDS">
+		<table name="wr" role="main"/>
+		<field table="wr" name="wr_id"/>
+		<field table="wr" name="status"/>
+		<field table="wr" name="bl_id"/>
+	</dataSource>
+
+	<panel type="tree" controlType="category" id="statusTree" dataSource="statusDS">
+		<title translatable="true">Work Requests by Status</title>
+		<sortField name="status" table="wr" ascending="true"/>
+		<panel type="tree" controlType="category" id="workRequestsGrid" dataSource="workRequestsDS">
+			<title>Work Requests</title>
+			<field name="wr_id" table="wr"/>
+			<field table="wr" name="status"/>
+			<field name="bl_id" table="wr"/>
+		</panel>
+	</panel>
+</view>

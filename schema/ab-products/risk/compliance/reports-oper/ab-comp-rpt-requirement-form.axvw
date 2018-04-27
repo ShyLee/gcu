@@ -1,0 +1,111 @@
+<view version="2.0">
+    
+    <layout id="mainCenter"  region="center">
+        <north id="north" initialSize="55%" split="true"/>
+        <west id="west" initialSize="50%" split="true"/>
+        <center id="center" />
+    </layout>
+    
+    <dataSource id="abCompDefineRequirementDS">
+        <table name="regrequirement" role="main"/>
+        
+        <field table="regrequirement" name="regulation"/>
+        <field table="regrequirement" name="reg_requirement"/>
+        <field table="regrequirement" name="reg_program" />
+        
+        <field table="regrequirement" name="comp_level" />
+        <field table="regrequirement" name="contact_id" />
+        
+        <field table="regrequirement" name="status" />
+        <field table="regrequirement" name="date_start" />
+
+        <field table="regrequirement" name="regreq_type" />
+        <field table="regrequirement" name="em_id" />
+        <field table="regrequirement" name="date_end" />
+        <field table="regrequirement" name="regreq_cat" />
+        <field table="regrequirement" name="vn_id" />
+        <field table="regrequirement" name="date_required" />
+        <field table="regrequirement" name="criteria_type" />
+        <field table="regrequirement" name="date_expire" />
+        <field table="regrequirement" name="date_initial" />
+        <field table="regrequirement" name="event_duration" />
+        <field table="regrequirement" name="event_sched_buffer" />
+        <field table="regrequirement" name="notify_active" />
+        <field table="regrequirement" name="description" />
+        <field table="regrequirement" name="citation" />
+        <field table="regrequirement" name="notes" />
+        <field table="regrequirement" name="completion_criteria" />
+        <field table="regrequirement" name="hold_reason" />
+        <field table="regrequirement" name="sched_loc"/>
+        <field table="regrequirement" name="recurring_rule"/>
+        <field table="regrequirement" name="priority" />
+        <field table="regrequirement" name="summary" />
+        <field table="regrequirement" name="date_recurrence_end"/>
+        <field table="regrequirement" name="event_title"/>
+    </dataSource>
+    
+    <panel type="columnReport" columns="3" id="abCompDefineRequirement" dataSource="abCompDefineRequirementDS" showOnLoad="false" layoutRegion="north">
+    <title translatable="true">View Requirement</title>
+        <action id="docx">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="abCompDefineRequirement"/>
+        </action>
+        
+        <field table="regrequirement" name="regulation"/>
+        <field table="regrequirement" name="comp_level" />
+        <field table="regrequirement" name="contact_id" />
+        
+        <field table="regrequirement" name="reg_program"/>
+        <field table="regrequirement" name="em_id"/>
+        <field table="regrequirement" name="vn_id" />
+        <field table="regrequirement" name="reg_requirement" />
+        
+        <field table="regrequirement" name="status" />
+        <field table="regrequirement" name="priority" />
+        <field table="regrequirement" name="regreq_type" />
+        <field table="regrequirement" name="regreq_cat" />
+        <field table="regrequirement" name="date_expire" />
+        <field table="regrequirement" name="date_start" />
+        <field table="regrequirement" name="date_end" />
+        <field table="regrequirement" name="date_required" />
+        
+        <field table="regrequirement" name="summary" colspan="3"/>
+        <field table="regrequirement" name="citation" colspan="3"/>
+        
+        <field table="regrequirement" name="description"  colspan="2"/>
+        <field table="regrequirement" name="criteria_type" />
+        <field table="regrequirement" name="hold_reason" colspan="2"/>
+        <field table="regrequirement" name="completion_criteria"  rowspan="2"/>
+        <field table="regrequirement" name="notes"  colspan="2"/>  
+
+    </panel>
+
+    
+    <panel type="columnReport" columns="1" id="abCompDefineRequirementOthers" dataSource="abCompDefineRequirementDS" showOnLoad="false"  layoutRegion="west">
+        
+        <field table="regrequirement" name="reg_requirement" hidden="true"/>
+        <field table="regrequirement" name="regulation" hidden="true"/>
+        <field table="regrequirement" name="reg_program" hidden="true"/>
+        
+        
+        <field table="regrequirement" name="event_duration" />
+        <field table="regrequirement" name="event_sched_buffer" />
+        <field table="regrequirement" name="date_initial" />
+        
+        <field table="regrequirement" name="date_recurrence_end">
+            <title translatable="true">Generate event occurrences until</title> 
+        </field>
+        <field table="regrequirement" name="sched_loc">
+            <title translatable="true">Create Scheduled Events for Each Location</title> 
+        </field>
+             
+        <field table="regrequirement" name="event_title"/>
+        <field table="regrequirement" name="notify_active" />
+    </panel>
+    
+	<panel type="view" id="recurringPatternPanel" file="ab-common-recurring-pattern-edit.axvw"  layoutRegion="center"/>
+
+    <js file="ab-comp-define-requirement.js"/>
+    <js file="ab-comp-common.js"/>
+
+</view>

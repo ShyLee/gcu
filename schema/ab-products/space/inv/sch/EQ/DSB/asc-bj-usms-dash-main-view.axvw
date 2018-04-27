@@ -1,0 +1,115 @@
+<view version="2.0">
+	<title>Do Sth All</title>
+    <layout id="mainLayout" type="borderLayout">
+        <west id="searchNorth" split="true" initialSize="50%"/>
+        <center/>
+    </layout>
+    <dataSource id="return_dispose_ds">
+  		<table name="return_dispose" role="main"/>
+  		<field table="return_dispose" name="rtr_dip_id"/>
+  		<field table="return_dispose" name="audit_status"/>
+ 	</dataSource>
+ 	
+ 	<dataSource id="eq_change_ds">
+  		<table name="eq_change" role="main"/>
+  		<field table="eq_change" name="id"/>
+  		<field table="eq_change" name="adjust_status"/>
+ 	</dataSource>
+ 	
+ 	<dataSource id="eq_attach_change_ds">
+  		<table name="eq_attach_change" role="main"/>
+  		<field table="eq_attach_change" name="id"/>
+  		<field table="eq_attach_change" name="adjust_status"/>
+ 	</dataSource>
+ 	
+ 	<dataSource id="eq_check_change_ds">
+  		<table name="eq_check_main" role="main"/>
+  		<field table="eq_check_main" name="check_main_id"/>
+  		<field table="eq_check_main" name="is_done"/>
+ 	</dataSource>
+ 	
+ 	<dataSource id="activity_log_ds">
+        <table name="activity_log" role="main"/>
+        <table name="activity_log_step_waiting" role="standard"/>
+        <table name="add_eq" role="standard"/>
+		<table name="em" role="standard"/>
+		<table name="dv" role="standard"/>
+		<table name="dp" role="standard"/>
+        
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+		<field name="name" table="em"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="user_name"/>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log_step_waiting" name="step_type"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>
+        <field name="add_eq_id" table="activity_log"/>
+        <field name="add_eq_id" table="add_eq"/>
+        <field table="add_eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="add_eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field name="status" table="add_eq"/>
+        <restriction type="sql"
+         sql="activity_log.status = activity_log_step_waiting.status  AND (activity_log_step_waiting.user_name = '${user.name}' OR  activity_log_step_waiting.em_id = '${user.name}') AND activity_log_step_waiting.step_type IN ('approval','review')"/>
+    </dataSource>
+	
+	<css file="font-awesome.min.css" />
+	<css file="buttons.css" />
+      <panel id="reportPanel" type="html" layoutRegion="searchNorth" showOnLoad="true">
+        <title translatable="true">Do Sth</title>
+        <html>
+        	<table width="200" align="center" style="border:1px solid #c8c8c8">
+        		<tr height="30" style="background-color:#00a1cb; color: white;height:40; width:100%;">
+                	<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid;text-align:center;"><span translatable="true">Do Sth</span></td>
+                	<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid;text-align:center;"><span translatable="true">Num</span></td>
+                </tr>  
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Add Eq</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report1"></span></td>
+        		</tr>
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Add</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report2"></span></td>
+        		</tr>
+        		<tr height="30">
+					<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Dispose</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report3"></span></td>
+        		</tr>
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Attach Dispose</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report4"></span></td>
+        		</tr>
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Change</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report5"></span></td>
+        		</tr>
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Attach Change</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report6"></span></td>
+        		</tr>
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Return</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report7"></span></td>
+        		</tr>
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Attach Return</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report8"></span></td>
+        		</tr>
+        		<tr height="30">
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="left"><span translatable="true">Eq Check</span></td>
+        			<td style="border-right:#c8c8c8 1px solid;border-bottom:#c8c8c8 1px solid" align="center"><span id="report9"></span></td>
+        		</tr>
+        	</table>
+        </html>
+     </panel>
+     
+     <js file="asc-bj-usms-overall-common.js" />
+     <js file="asc-bj-usms-dash-main-view.js" />
+</view>

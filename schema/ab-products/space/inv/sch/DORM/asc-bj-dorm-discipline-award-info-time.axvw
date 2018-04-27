@@ -1,0 +1,81 @@
+<view version="2.0">
+
+	<layout type="borderLayout" id="mainLayout">
+		<north id="northPosition" initialSize="80" split="true" />
+		<center id="centerPosition"/>
+	</layout>
+	<title translatable="true"></title>
+	
+	<dataSource id="dv_ds">
+		<table name="dv" role="main"/>
+		<field table="dv" name="count_other"/>
+		<field table="dv" name="dv_name"/>
+	</dataSource>
+    <dataSource id="stu_disp_statistic_ds">
+		<sql dialect="generic">
+			select dv.dv_id ${sql.as} dv_id, 
+				dv.dv_name ${sql.as} dv_name, 
+				a.stu_no ${sql.as} stu_no, 
+				a.stu_name ${sql.as} stu_name, 
+				a.count_dis ${sql.as} count_dis
+			  from (select stu_no, stu_name, dv_id, count(*) count_dis
+			          from sc_stu_disp_log
+			         where mark = '1'
+			         	and ${parameters['stuYear']}
+           				and ${parameters['dispDetail']}
+           				and ( ${parameters['dateDispForm']} and ${parameters['dateDispTo']}
+               				)
+			         group by stu_no, stu_name, dv_id) a,
+			       dv
+			 where a.dv_id(+) = dv.dv_id
+			   and dv.bu_id = '02'
+			 order by dv.dv_id,a.stu_no
+		</sql>
+		<table name="sc_stu_disp_log" role="main"/>
+		<field table="sc_stu_disp_log" name="dv_id" dataType="text" hidden="true"/>
+		<field table="sc_stu_disp_log" name="dv_name"  dataType="text">
+			<title>Dv Name</title>
+		</field>
+		<field table="sc_stu_disp_log" name="stu_no" dataType="text"/>
+		<field table="sc_stu_disp_log" name="stu_name" dataType="text"/>
+		<field table="sc_stu_disp_log" name="count_dis" dataType="text" decimals="0">
+			<title>Count Disp</title>
+		</field>
+		<parameter name="stuYear" dataType="verbatim" value="1=1"/>
+		<parameter name="dispDetail" dataType="verbatim" value="1=1"/>
+		<parameter name="dateDispForm" dataType="verbatim" value="1=1"/>
+		<parameter name="dateDispTo" dataType="verbatim" value="1=1"/>
+	</dataSource>
+	<panel type="console"  id="consolePanel" dataSource="dv_ds" columns="3" layoutRegion="northPosition" showOnLoad="true">
+		<title>Filter</title>
+		<action id="filter">
+			<title translatable="true">Show</title>
+			<command type="callFunction" functionName="checkoutDispController.show()"/>
+		</action>
+<!-- 		<action id="clear"> -->
+<!-- 			<title translatable="true">Clear</title> -->
+<!-- 			<command type="callFunction" functionName="checkoutDispController.clear()"/> -->
+<!-- 		</action> -->
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel" panelId="consolePanel"/>
+		</action>
+		<field table="dv" name="dv_name"  width="10"/>
+		<field table="dv" name="count_other" alias="dv.count_from" op="&gt;=" decimals="0" width="10">
+			<title>Count Disp From</title>
+		</field>
+		
+		<field table="dv" name="count_other" alias="dv.count_to" op="&lt;=" decimals="0" width="10">
+			<title>Count Disp To</title>
+		</field>
+	</panel> 
+	<panel type="grid"  id="dispStaticPanel" dataSource="stu_disp_statistic_ds" layoutRegion="centerPosition" showOnLoad="true">
+		<title></title>
+		<action id="export">
+			<title translatable="true">Export Excel</title>
+			<command type="exportPanel" panelId="dispStaticPanel" outputType="xls"/>
+		</action>
+		<indexField table="sc_stu_disp_log" name="dv_name"/>
+	</panel>
+	<js file="asc-bj-dorm-discipline-award-info-time.js"/>
+</view>

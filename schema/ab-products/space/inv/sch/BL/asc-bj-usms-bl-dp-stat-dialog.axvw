@@ -1,0 +1,115 @@
+<view version="2.0">
+	<message name="rptPanelTitle" translatable="true">building : {0}</message>
+	<message name="total" translatable="true">Total</message>
+<title translatable="true">anzhaoshiyongdaweihuizong</title>
+<dataSource id="ds_ab-sc-rpt-dv-rmcat-by-bl_rm">
+    	<sql dialect="generic">
+            (SELECT rm.bl_id  ${sql.as} bl_id,
+              	dv.dv_id ${sql.as} dv_id,
+            	rm.rm_cat ${sql.as} rm_cat,
+          		COUNT(rm.rm_id) ${sql.as} count_rm,
+          		SUM(rm.area) ${sql.as} dv_bl_area_shiyong
+       		FROM rm,bl,dv
+           WHERE rm.bl_id=bl.bl_id and rm.dv_id=dv.dv_id and rm.dv_id IS NOT NULL and bl.site_id is not null
+           GROUP BY rm.bl_id, dv.dv_id, rm.rm_cat)
+   		UNION ALL
+   		(
+        SELECT bl.bl_id ${sql.as} bl_id,
+   			bl.dv_use ${sql.as} dv_id,
+   			bl.building_cat ${sql.as} rm_cat,
+   			bl.count_rm_keyong ${sql.as} count_rm,
+   			bl.area_rm ${sql.as} dv_bl_area_shiyong
+        FROM bl,dv
+    	WHERE bl.dv_use=dv.dv_id  and bl.dv_use is not null and bl.site_id is not null
+    	)
+        UNION ALL (
+           SELECT br.bl_id ${sql.as} bl_id,
+           dv.dv_id ${sql.as} dv_id,
+           br.rm_cat ${sql.as} rm_cat,
+           br.count_rm ${sql.as} count_rm,
+           br.area_shiyong ${sql.as} dv_bl_area_shiyong
+            FROM bl,sc_bl_rmcat br,dv
+      		WHERE bl.bl_id = br.bl_id and br.dv_use=dv.dv_id and bl.dv_use is null and bl.site_id is not null
+        ) 
+        
+        </sql>
+        <table name="dv" role="main"/>
+		
+		<field dataType="text" name="bl_id"/>
+		
+		<field name="dv_id" dataType="text">
+			<title translatable="true">ShiYongDanWei</title>
+        </field>
+        <field name="rm_cat" dataType="text">
+        	<title translatable="true">Fangwuleibie</title>
+        </field>
+        
+        <field name="count_rm" dataType="number" decimals="0">
+        	<title translatable="true">Room Count</title>
+        </field>	
+        
+        <field name="dv_bl_area_shiyong" dataType="number" decimals="2">
+        	<title translatable="true">Usable Area</title>
+		</field>	
+		
+		<restriction type="sql" sql="dv.bl_id=${parameters['blIdRes']}"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+		
+		<parameter name="weiDingyiRes" dataType="text" value=""/>
+    </dataSource>
+	
+	<dataSource id="ds_ab-sc-rpt-dv-rm-by-bl_rm">
+        <table name="rm" role="main"/>
+		<table name="bl" role="standard"/>
+		
+		<field table="bl" name="name" />
+        <field table="rm" name="bl_id" hidden="true" />
+		<field table="rm" name="fl_id" />
+		<field table="rm" name="rm_id" />
+		<field table="rm" name="area_manual" />
+		<field table="rm" name="area_comn_rm" />
+		<field table="rm" name="rm_cat" />
+        <field table="rm" name="rm_type" />
+        <field table="rm" name="name" />
+      	<field table="rm" name="phone" />
+		<field table="rm" name="count_em" />
+		<restriction type="sql" sql="rm.bl_id=${parameters['blIdRes']} and rm.dv_id=${parameters['dvIdRes']} "/>
+		<!-- and rm.rm_cat=${parameters['rmCat']} " -->
+		<parameter name="blIdRes" dataType="text" value=""/>
+		<parameter name="dvIdRes" dataType="text" value=""/>
+<!-- 		<parameter name="rmCat" dataType="text" value=""/> -->
+    </dataSource>
+    	
+    <!-- cross table report-->
+	<panel id="abScDvRmcatRptPanel" type="grid" controlType="reportGrid"  dataSource="ds_ab-sc-rpt-dv-rmcat-by-bl_rm">
+		<title translatable="true">Jian Zhu Wu</title>
+		<sortField name="dv_id" table="dv" ascending="true"/>
+
+		<field name="bl_id" table="bl" dataType="text" hidden="true"/>	
+		
+		<field name="dv_id" table="dv" dataType="text" controlType="link">
+			<title translatable="true">ShiYongDanWei</title>
+			<command type="callFunction" functionName="abScRptDvRmcatbyBlControll.show()"/>
+        </field>
+		<field name="rm_cat" dataType="text" controlType="link">
+        	<title translatable="true">Fangwuleibie</title>
+			<command type="callFunction" functionName="abScRptDvRmcatbyBlControll.show()"/>
+        </field>
+        
+        <field name="count_rm" dataType="number" decimals="0">
+        	<title translatable="true">Room Count</title>
+        </field>	
+        
+        <field name="dv_bl_area_shiyong" dataType="number" decimals="2">
+        	<title translatable="true">Usable Area</title>
+		</field>
+	</panel>
+	
+	<panel id="abScDvRmRptPanelq" type="grid" controlType="reportGrid" dataSource="ds_ab-sc-rpt-dv-rm-by-bl_rm" showOnLoad="true">
+		<title translatable="true"></title>
+		<sortField name="rm_id" table="rm" ascending="true"/>
+		
+	</panel>
+	
+ 	<js file="asc-bj-usms-bl-dp-stat-dialog.js"/>
+</view>

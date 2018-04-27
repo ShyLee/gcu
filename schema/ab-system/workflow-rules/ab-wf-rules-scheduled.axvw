@@ -1,0 +1,54 @@
+<!-- Scheduled Workflow Rule Manager view.
+     Allows the user view scheduled WFRs and run them. -->
+<afmXmlView>
+    <title translatable="true">Scheduled Workflow Rules</title>
+    <message name="rule_executed_message" translatable="true" hidden="true">Workflow Rule execution started, unique rule key</message>
+ 	
+    <!-- List of workflow rules with mini-console search -->
+    <afmTableGroup type="report" format="grid">
+        <dataSource>
+            <database>
+                <tables>
+                    <table name="afm_wf_rules" role="main"/>
+                </tables>
+                <fields>
+                    <field table="afm_wf_rules" name="activity_id"/>
+                    <field table="afm_wf_rules" name="rule_id"/>
+                    <field table="afm_wf_rules" name="is_active"/>
+                    <field table="afm_wf_rules" name="rule_type"/>
+                    <field table="afm_wf_rules" name="xml_rule_props"/>
+                </fields>
+                <restrictions>
+                    <restriction type="sql" sql="rule_type = 'Scheduled'"/>
+                </restrictions>
+            </database>
+        </dataSource>
+        
+        <panels>
+            <panel type="grid" id="wf_report" selectionEnabled="true"
+				   refreshWorkflowRuleId="AbSystemAdministration-getWorkflowRuleRecords">
+                <title translatable="true">Workflow Rules</title>
+        
+                <fields>
+                    <field table="afm_wf_rules" name="activity_id" controlType="link">
+                        <command type="showPanel" target="formFrame" panelId="wf_form"/>
+                    </field>
+                    <field table="afm_wf_rules" name="rule_id" controlType="link">
+                        <command type="showPanel" target="formFrame" panelId="wf_form"/>
+                    </field>
+                    <field table="afm_wf_rules" name="is_active"/>
+                    <field table="afm_wf_rules" name="xml_rule_props">
+						<title translatable="true">Event Handler</title>
+					</field>
+                    <field controlType="button" onclick="runWorkflowRule">
+                        <title translatable="true">Run Now</title>
+                    </field>
+                </fields>
+            </panel>
+        </panels>
+    </afmTableGroup>
+
+    <formatting>
+        <js file="#Attribute%//@relativeFileDirectory%/ab-wf-rules.js"/>
+    </formatting>
+</afmXmlView>

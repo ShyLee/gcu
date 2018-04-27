@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:archibus="http://www.archibus.com/schema/archibus"
+    xsi:schemaLocation="
+	http://www.archibus.com/schema/archibus http://www.archibus.com/schema/archibus/webcentral-namespace.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd">
+
+    <!-- ================== This is the root Spring context configuration file. =========== -->
+    <!-- The beans defined here are shared between all projects. -->
+
+    <!-- Core infrastructure beans. -->
+    <import resource="core\core.xml"/>
+
+    <!-- View rendering pipeline implementation. -->
+    <import resource="rendering\rendering.xml"/>
+
+    <!-- Configuration for UI controls. -->
+    <import resource="controls\controls.xml"/>
+
+    <!-- Configuration for reports. -->
+    <import resource="reports\reports.xml"/>
+
+    <!-- Configuration for activities. -->
+    <import resource="applications\applications.xml"/>
+
+    <!-- Load property files. -->
+    <!-- Configurer that replaces ${...} placeholders with values from properties files -->
+    <bean
+        id="propertyConfigurerCore"
+        class="com.archibus.utility.LoggingPropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>
+                    classpath:core.properties
+                </value>
+                <value>
+                    classpath:login.properties
+                </value>
+                <value>
+                    classpath:security.properties
+                </value>
+                <value>
+                    classpath:remoting.properties
+                </value>
+                <value>
+                    classpath:smartclient.properties
+                </value>
+                <value>
+                    classpath:help.properties
+                </value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Load additional configuration files into the application context. Security configuration must be the last in the list: it overrides beans defined in rendering and remoting configurations. -->
+    <bean
+        id="contextPostProcessor"
+        class="com.archibus.servletx.WebCentralContextPostProcessor">
+        <property name="configurationFiles">
+            <list>
+                <value>${remoting.configurationFile}</value>
+                <value>${security.configurationFile}</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

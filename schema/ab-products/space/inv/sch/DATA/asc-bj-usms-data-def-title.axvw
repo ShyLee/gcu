@@ -1,0 +1,65 @@
+<view version="2.0">
+	
+	<message name="noStanderZhic" translatable="true">noStanderZhic</message>
+	<message name="biaoZhunZhiCheng" translatable="true">BiaoZhunZhiCheng</message>
+    <message name="zhiCheng" translatable="true">ZhiCheng</message>
+	<message name="formSaved" translatable="true">Form saved successfully.</message>
+	<message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+	<message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+	
+<!--     <title translatable="true">Define Zhic by Standard</title> -->
+    
+    <layout id="main">
+        <west id="selectedPosition" initialSize="30%" split="true"/>
+        <center id="centerPosition"/>
+    </layout>
+    
+    <dataSource id="abScDefStdZhicDs">
+        <table name="sc_zhic" role="main"/>
+        <field table="sc_zhic" name="zhic_id"/>
+        <field table="sc_zhic" name="name"/>
+        <field table="sc_zhic" name="description"/>
+<!--         <field table="sc_zhic" name="area_dinge"/> -->
+        <field table="sc_zhic" name="area_bt"/>
+    </dataSource>
+	
+    <panel type="grid" id="abScDefStdZhicGrid" dataSource="abScDefStdZhicDs" layoutRegion="selectedPosition">
+        <title translatable="true">ZhiCheng</title>
+		<action id="addNew">
+            <title translatable="true">Add New</title>
+            <command type="showPanel" panelId="abScDefStdZhicForm" newRecord="true"/>
+        </action>
+		<indexField table="sc_zhic" name="zhic_id" />
+        <field table="sc_zhic" name="zhic_id" controlType="link">
+        	<command type="showPanel" panelId="abScDefStdZhicForm"/>
+        </field>
+        <field table="sc_zhic" name="name" controlType="link">
+        	<command type="showPanel" panelId="abScDefStdZhicForm"/>
+        </field>
+        <field table="sc_zhic" name="area_bt" controlType="link">
+        	<command type="showPanel" panelId="abScDefStdZhicForm"/>
+        </field>
+    </panel>
+	<panel type="form" id="abScDefStdZhicForm" dataSource="abScDefStdZhicDs" layoutRegion="centerPosition">
+        <title translatable="true">ZhiCheng</title>
+		<action id="save">
+			<title translatable="true">Save</title>
+			<command type="saveForm" />
+			<command type="showPanel" panelId="abScDefStdZhicGrid" applyParentRestriction="false"/> 
+		</action>
+		<action id="delete" enabled="${!panel.newRecord}">
+			<title translatable="true">Delete</title>
+			<command type="deleteRecord"/>
+			<command type="showPanel" panelId="abScDefStdZhicGrid" applyParentRestriction="false"/>
+			<command type="showPanel" panelId="abScDefStdZhicForm" show="false"/>
+		</action>
+
+		<field table="sc_zhic" name="zhic_id" />
+		<field table="sc_zhic" name="name" />
+		<field table="sc_zhic" name="area_bt"/>
+		<field table="sc_zhic" name="description"/>
+    </panel>
+   
+<!--   <js file="asc-bj-usms-data-def-title.js"/> -->
+<!--   <js file="asc-bj-usms-def-common.js"/> -->
+</view>

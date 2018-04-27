@@ -1,0 +1,376 @@
+<view version="2.0">
+	<preferences>
+		<viewTitleBar show="false" />
+	</preferences>
+
+	<layout type="borderLayout" id="mainLayout">
+		<north id="timelineControl" initialSize="304" autoScroll="true" split="false" />
+		<center id="timeline" autoScroll="false" />
+	</layout>
+	
+	<layout type="borderLayout" id="nestedLayout_1" containingLayout="mainLayout" region="center">
+	    <north id="northTimeline" initialSize="86" split="false" />
+	    <center id="centerTimeline" autoScroll="false" />
+	</layout>
+	
+	<message translatable="true" name="selectCtry">Please select a Country</message>
+    <message translatable="true" name="selectSite">Please select a Site</message>
+    <message translatable="true" name="selectDateStart">Please select a Date Start</message>
+    <message translatable="true" name="selectDateEnd">Please select a Date End</message>
+    <message translatable="true" name="selectGuestInt">Please select the Group size</message>
+    <message translatable="true" name="selectGuestExt">Please select the number of Ext. Visitors</message>
+    <message translatable="true" name="timeSelectedNotAvailable">The selected time period for this reservation is occupied. Please change the time or date period</message>
+    <message translatable="true" name="selectRoomAndTimeError">You must select a Room and a time period to validate this step</message>
+    <message translatable="true" name="selectTimeError">The start time must be earlier than the end time</message>
+    <message translatable="true" name="roomHTML">Room</message>
+    <message translatable="true" name="roomArrangementHTML">Room Arrangement</message>
+    <message translatable="true" name="configHTML">Configuration</message>
+    <message translatable="true" name="approval">Approval Required</message>
+    <message translatable="true" name="isDefault">Is Default Arrangement</message>
+    <message translatable="true" name="OrderCriteria">Arrangement | Capacity | Resources</message>
+    <message translatable="true" name="msgBackExit">Are you sure that you want to cancel the process?</message>
+    <message translatable="true" name="errorTabs">This view can only be used as a part of the Room Reservations wizard</message>
+    <message translatable="true" name="allResourcesStds">All</message>
+    <message translatable="true" name="warningOnNext">The changes won't be applied to the resources reservations</message>
+    <message translatable="true" name="info">Info</message>
+    <message translatable="true" name="prevDay">Previous Day</message>
+    <message translatable="true" name="prevWeek">Previous Week</message>
+    <message translatable="true" name="nextDay">Next Day</message>
+    <message translatable="true" name="nextWeek">Next Week</message>
+    <message translatable="true" name="hdOpt1">Every:</message>
+    <message translatable="true" name="hdOpt2">Every week on:</message>
+    <message translatable="true" name="bdOpt2_1">Sun</message>
+    <message translatable="true" name="bdOpt2_2">Mon</message>
+    <message translatable="true" name="bdOpt2_3">Tue</message>
+    <message translatable="true" name="bdOpt2_4">Wed</message>
+    <message translatable="true" name="bdOpt2_5">Thu</message>
+    <message translatable="true" name="bdOpt2_6">Fri</message>
+    <message translatable="true" name="bdOpt2_7">Sat</message>
+    <message translatable="true" name="bdOpt3_1_1">1st</message>
+    <message translatable="true" name="bdOpt3_1_2">2nd</message>
+    <message translatable="true" name="bdOpt3_1_3">3rd</message>
+    <message translatable="true" name="bdOpt3_1_4">4th</message>
+    <message translatable="true" name="bdOpt3_1_5">last</message>
+    <message translatable="true" name="bdOpt3_2_7">Sun  of the month</message>
+    <message translatable="true" name="fillDays">Please fill in the number of days field</message>
+    <message translatable="true" name="daysInputError">Please fill in days field correctly! It should be an integer which is greater than zero.</message>
+    <message translatable="true" name="fillPattern">Please define the recurrence pattern to calculate the dates</message>
+    <message translatable="true" name="fillGreaterDateEnd">Date Start must be before Date End</message>
+    <message translatable="true" name="RecurringConfError">Please change the recurrence pattern, the one selected is generating no dates</message>
+    <message translatable="true" name="recurringText">(Recurring)</message>
+    <message translatable="true" name="allDatesOccupiedError">The selected room is occupied all the dates you're trying to reserve. Please change the time or date period, or select another room.</message>
+    <message translatable="true" name="showHidePanel">Show/Hide Panel</message>
+    <message translatable="true" name="recurringresfor">Recurring Res. for:</message>
+    <message translatable="true" name="reservationfor">Reservation for:</message>
+    <message translatable="true" name="recurringresstart">Starting at:</message>
+    <message translatable="true" name="tooltipExistReserv">Existing Reservation</message>
+    <message translatable="true" name="tooltipNewReserv">New Reservation</message>
+    <message translatable="true" name="tooltipTimeStart">Time Start</message>
+    <message translatable="true" name="tooltipTimeEnd">Time End</message>
+    <message translatable="true" name="selectedTimezone">Selected timezone:</message>
+    <message translatable="true" name="emptyTimeForRecurring">In order to select an available arrangement for a recurring reservation, please enter in Time Start and Time End.</message>
+
+	<message translatable="true" name="res_instructions">Prioritize rooms with the following resources (Note: you must separately reserve any non-fixed resources after creating the room reservation.)</message>
+
+					
+
+	<dataSource id="ds_ab-rr-content-add-room-reservation_console_reserve_rm">
+		<table name="reserve_rm" role="main" />
+		<table name="reserve" role="standard" />
+		<table name="bl" role="standard" />
+
+		<field table="bl" name="ctry_id" />
+		<field table="bl" name="site_id" />
+		<field table="reserve_rm" name="bl_id" />
+		<field table="reserve_rm" name="fl_id" />
+		<field table="reserve_rm" name="rm_id" />
+		<field table="reserve" name="date_start" />
+		<field table="reserve" name="date_end" />
+		<field table="reserve" name="time_start" />
+		<field table="reserve" name="time_end" />
+		<field table="reserve" name="recurring_rule" />
+		<field table="reserve_rm" name="guests_internal" />
+		<field table="reserve_rm" name="guests_external" />
+		<field table="reserve" name="res_type" />
+		<field table="reserve_rm" name="config_id" />
+		<field table="reserve_rm" name="rm_arrange_type_id" />
+		
+		<restriction type="sql" sql="rmres_id IS NULL" />
+	</dataSource>
+
+
+	<!-- General room and reservation options -->
+	<panel id="selectRoomConsolePanel" type="form" columns="3" tabOrder="column"
+		dataSource="ds_ab-rr-content-add-room-reservation_console_reserve_rm" layoutRegion="timelineControl">
+		<title translatable="true">Select Room</title>
+		<action id="search">
+			<title translatable="true">Show</title>
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+		</action>
+		<action id="searchAlternative">
+			<title translatable="true">Check alternative</title>
+		</action>
+
+		<action type="command" id="btnHelp">
+			<title translatable="true">Timeline Help</title>
+			<command type="showHelp"
+				file="/help/user/Subsystems/webc/Content/web_user/res/reserve/timeline.htm" />
+		</action>
+
+		<!-- first row -->
+		<field table="bl" name="ctry_id" readOnly="false" required="false" />
+		<field table="reserve_rm" name="config_id" readOnly="false" required="false">
+			<action>
+				<title>...</title>
+				<command type="selectValue"
+					fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id,reserve_rm.fl_id,reserve_rm.rm_id,reserve_rm.config_id"
+					selectFieldNames="bl.ctry_id,bl.site_id,rm_config.bl_id,rm_config.fl_id,rm_config.rm_id,rm_config.config_id"
+					visibleFieldNames="bl.ctry_id,bl.site_id,rm_config.bl_id,rm_config.fl_id,rm_config.rm_id,rm_config.config_id"
+					restriction="EXISTS (SELECT 1 FROM rm WHERE rm.bl_id=rm_config.bl_id AND rm.fl_id=rm_config.fl_id AND rm.rm_id=rm_config.rm_id AND rm.reservable=1)"
+					applyFilter="true">
+					<title>Configuration Code</title>
+                </command>
+			</action>
+		</field>
+		<field table="reserve" name="date_start" readOnly="false" required="true" />
+
+		<!-- second row -->
+		<field table="bl" name="site_id" readOnly="false" required="true">
+			<action>
+				<title>...</title>
+				<command type="selectValue" fieldNames="bl.ctry_id,bl.site_id"
+					selectFieldNames="site.ctry_id,site.site_id" visibleFieldNames="site.ctry_id,site.site_id">
+					<title>Site Code</title>
+				</command>
+			</action>
+		</field>
+		<field table="reserve_rm" name="rm_arrange_type_id" readOnly="false" required="false">
+			<action>
+				<title>...</title>
+				<command type="selectValue"
+					fieldNames="reserve_rm.rm_arrange_type_id" selectFieldNames="rm_arrange_type.rm_arrange_type_id"
+					visibleFieldNames="rm_arrange_type.rm_arrange_type_id">
+					<title>Room Arrangement Type</title>
+				</command>
+			</action>
+		</field>
+		<field table="reserve" name="time_start" readOnly="false" required="false"
+			onchange="onChangeTimes('reserve.time_start')" />
+
+		<!-- third row -->
+		<field table="reserve_rm" name="bl_id" readOnly="false" required="false">
+			<action>
+				<title>...</title>
+				<command type="selectValue"
+					fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id" selectFieldNames="bl.ctry_id,bl.site_id,bl.bl_id"
+					visibleFieldNames="bl.ctry_id,bl.site_id,bl.bl_id">
+					<title>Building Code</title>
+				</command>
+			</action>
+		</field>
+		<field table="reserve_rm" name="guests_internal" readOnly="false" required="true">
+			<title translatable="true">Group Size</title>
+		</field>
+		<field table="reserve" name="time_end" readOnly="false" required="false"
+			onchange="onChangeTimes('reserve.time_end')" />
+
+		<!-- fourth row -->
+		<field table="reserve_rm" name="fl_id" readOnly="false" required="false">
+			<action>
+				<title>...</title>
+				<command type="selectValue"
+					fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id,reserve_rm.fl_id"
+					selectFieldNames="bl.ctry_id,bl.site_id,fl.bl_id,fl.fl_id"
+					visibleFieldNames="bl.ctry_id,bl.site_id,fl.bl_id,fl.fl_id">
+					<title>Floor Code</title>
+				</command>
+			</action>
+		</field>
+		<field table="reserve_rm" name="guests_external" readOnly="false" required="true" />
+		<field table="reserve" name="res_type" readOnly="false" required="true" onchange="optionResType()" />
+
+		<!-- fifth row -->
+		<field table="reserve_rm" name="rm_id" readOnly="false" required="false">
+			<action>
+				<title>...</title>
+				<command type="selectValue"
+					fieldNames="bl.ctry_id,bl.site_id,reserve_rm.bl_id,reserve_rm.fl_id,reserve_rm.rm_id"
+					selectFieldNames="bl.ctry_id,bl.site_id,rm.bl_id,rm.fl_id,rm.rm_id"
+					visibleFieldNames="bl.ctry_id,bl.site_id,rm.bl_id,rm.fl_id,rm.rm_id" restriction="rm.reservable=1">
+					<title>Room Code</title>
+				</command>
+			</action>
+		</field>
+
+		<field />
+		<field />
+
+		<!-- sixth row-->
+		<field colspan="5">
+			<title translatable="true">Resources Required</title>
+			<html>
+				<span translatable="true" id="res_instructions" name="res_instructions"
+					class="rm_reserve_information">
+					Prioritize rooms with the following resources (Note: you must separately reserve any non-fixed
+					resources after creating the room reservation.)
+				</span>
+				<div class="resource_std">
+					<input type="checkbox" id="resource_std_all" onclick="toggleResourceStdTypes()" value="All"
+						align="left" />
+				</div>
+			</html>
+		</field>
+	</panel>
+
+	<!-- Options specific to recurring reservation -->
+	<panel id="recurring_panel" type="form" columns="1" tabOrder="column" formLabelWidth="30"
+		dataSource="ds_ab-rr-content-add-room-reservation_console_reserve_rm" showOnLoad="false"
+		layoutRegion="timelineControl">
+		<title translatable="true">Recurring Reservation Options</title>
+		<action id="showOrHide">
+			<title translatable="true">Show/Hide Panel</title>
+		</action>
+
+		<field table="reserve" name="date_end" readOnly="false" required="false" />
+
+		<field>
+			<html>
+				<table>
+					<tr>
+						<td>
+							<input type="radio" name="recurrent_type" id="day" value="day"
+								onclick="ABRV_RP_typeRecurringReservation()">
+							</input>
+						</td>
+						<td>
+							<input type="text" id="ndays" size="3" />
+							<span translatable="true" style="margin-left:4px">days</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="radio" name="recurrent_type" id="week" value="week"
+								onclick="ABRV_RP_typeRecurringReservation()">
+							</input>
+						</td>
+						<td>
+							<input type="checkbox" id="weekly_mon" value="1"></input>
+							<input type="checkbox" id="weekly_tue" value="2"></input>
+							<input type="checkbox" id="weekly_wed" value="3"></input>
+							<input type="checkbox" id="weekly_thu" value="4"></input>
+							<input type="checkbox" id="weekly_fri" value="5"></input>
+							<input type="checkbox" id="weekly_sat" value="6"></input>
+							<input type="checkbox" id="weekly_sun" value="0"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="radio" name="recurrent_type" id="month" value="month"
+								onclick="ABRV_RP_typeRecurringReservation()">
+							</input>
+						</td>
+						<td>
+							<input type="radio" name="recurrent_type2" id="first" value="1"></input>
+							<input type="radio" name="recurrent_type2" id="second" value="2"></input>
+							<input type="radio" name="recurrent_type2" id="third" value="3"></input>
+							<input type="radio" name="recurrent_type2" id="fourth" value="4"></input>
+							<input type="radio" name="recurrent_type2" id="last" value="5"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>
+
+						</td>
+						<td>
+							<input type="radio" name="recurrent_type3" id="month_mon" value="1"></input>
+							<input type="radio" name="recurrent_type3" id="month_tue" value="2"></input>
+							<input type="radio" name="recurrent_type3" id="month_wed" value="3"></input>
+							<input type="radio" name="recurrent_type3" id="month_thu" value="4"></input>
+							<input type="radio" name="recurrent_type3" id="month_fri" value="5"></input>
+							<input type="radio" name="recurrent_type3" id="month_sat" value="6"></input>
+							<input type="radio" name="recurrent_type3" id="month_sun" value="0"></input>
+						</td>
+					</tr>
+				</table>
+			</html>
+		</field>
+
+		<!-- hidden field to load/save XML -->
+		<field table="reserve" name="recurring_rule" hidden="true" />
+	</panel>
+
+	<dataSource id="ds_ab-rr-content-add-room-reservation_form_afm_timezones">
+		<table name="afm_timezones" role="main" />
+
+		<field table="afm_timezones" name="timezone_id" />
+	</dataSource>
+
+	<panel id="timezonePanel" type="form" columns="3" showOnLoad="true"
+		dataSource="ds_ab-rr-content-add-room-reservation_form_afm_timezones"  layoutRegion="northTimeline">
+		<title></title>
+
+		<field table="afm_timezones" name="timezone_id" readOnly="false" required="false">
+			<title translatable="true">Select Timezone</title>
+			<action id="btnSlktTimeZone">
+				<title>...</title>
+				<command type="selectValue" fieldNames="afm_timezones.timezone_id"
+					selectFieldNames="afm_timezones.timezone_id" visibleFieldNames="afm_timezones.timezone_id"
+					actionListener="afterSelectTimezone">
+					<title>Time Zone</title>
+				</command>
+			</action>
+		</field>
+	</panel>
+
+	<panel id="timelinePanel" type="html" layoutRegion="northTimeline">
+		<title translatable="true">
+			Available Room Arrangements: After selecting a room and timeframe press Next to continue
+		</title>
+
+		<action id="next" cssClass="borderButton">
+			<title translatable="true" >Next</title>
+		</action>
+		<action id="cancel">
+			<title translatable="true">Cancel</title>
+		</action>
+		
+		<html>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr style="background-color:#eee;">
+					<td width="40%" style="border:0;">
+						<input type="button" id="preWeek" onclick="onPreviousWeek()" value="" class="perRowButton" />
+						<input type="button" id="preDay" onclick="onPreviousDay()" value="" class="perRowButton" />
+					</td>
+					<td width="20%" style="border:0;">
+						<div id="currentDate" class="rm_reserve_center_information" />
+					</td>
+					<td width="40%" align="right" style="border:0;">
+						<input type="button" id="nextDay" onclick="onNextDay()" value="" class="perRowButton" />
+						<input type="button" id="nextWeek" onclick="onNextWeek()" value="" class="perRowButton" />
+					</td>
+				</tr>
+			</table>
+		</html>
+	</panel>
+	<!-- Timeline control -->
+	<panel id="timelinePanel_grid" type="html" layoutRegion="centerTimeline">
+		<html>
+			<div id="timeline1" style="position:relative;height:330px;"></div>
+		</html>
+	</panel>
+
+	<!--  -->
+	<css file="ab-sch-rr.css" />
+
+	<!-- ARCHIBUS JS libraries -->
+	<js file="ab-timeline-model.js" />
+	<js file="ab-timeline-controller.js" />
+
+	<!-- JS functions specific to this tab -->
+	<js file="ab-sch-rr-common.js" />
+	<js file="ab-sch-rr-content-add-room-reservation.js" />
+	<js file="ab-sch-rr-content-add-room-reservation-timeline.js" />
+	<js file="ab-sch-rr-content-add-recurring-panel.js" />
+</view>

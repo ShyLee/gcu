@@ -1,0 +1,77 @@
+<view version="2.0">
+	<title translatable="true">jianzhuwuxiazhang</title>
+	<message name="xizhang" translatable="true">qing xuan ze jian zhu wu xia zhang</message>
+	<dataSource id="blDs">
+		<table name="bl" role="main"/>
+		
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="name"/>
+		<field table="bl" name="count_fl"/>
+		<field table="bl" name="count_underground"/>
+		<field table="bl" name="area_building_manual"/>
+		<field table="bl" name="date_building_end"/>
+		<field table="bl" name="value_origi_uinc_sold"/>
+		<field table="bl" name="construction_type"/>
+		<field table="bl" name="use1"/>
+		<field table="bl" name="image_file"/>
+		<restriction type="sql" sql="acc_type='yrz'"/>
+	
+	</dataSource>
+	
+	<panel type="console" dataSource="blDs" id="blDsConsole" columns="2">
+		<title>Filter</title>
+		
+		<action id="show">
+			<title>Show</title>
+			<command type="showPanel" panelId="blDsGrid"/>		
+		</action>
+		
+		<action id="clear">
+			<title>Clear</title>
+			<command type="clearForm" panelId="blDsConsole"/>
+		</action>		
+		<field table="bl" name="bl_id" required="false">
+			<action>
+                <title translatable="true">...</title>
+                <command type="selectValue"
+                    fieldNames="bl.bl_id,bl.name"
+                    selectFieldNames="bl.bl_id,bl.name"
+                    visibleFieldNames="bl.bl_id,bl.name"/>
+            </action>
+		</field>
+		<field table="bl" name="name">
+			<action>
+                <title translatable="true">...</title>
+                <command type="selectValue"
+                    fieldNames="bl.bl_id,bl.name"
+                    selectFieldNames="bl.bl_id,bl.name"
+                    visibleFieldNames="bl.bl_id,bl.name"/>
+            </action>
+		</field>
+	
+	</panel>
+	
+	<panel type="grid" dataSource="blDs" id="blDsGrid" multipleSelectionEnabled="true">
+		<title>jian zhu wu lie biao</title>
+		<action id= "export:XLS" >
+            <title> XLS </title >
+            <command type ="exportPanel" outputType= "xls" panelId ="blDsGrid" />
+        </action>
+		<action id="xiaZhang">
+			<title>xiazhang</title>
+		</action>	
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="name"/>
+		<field table="bl" name="count_fl"/>
+		<field table="bl" name="count_underground"/>
+		<field table="bl" name="area_building_manual"/>
+		<field table="bl" name="date_building_end"/>
+		<!-- <field table="bl" name="value_origi_uinc_sold"/> -->
+		<field table="bl" name="construction_type"/>
+		<field table="bl" name="use1"/>
+		<field table="bl" name="image_file"/>
+	
+	</panel>
+	
+	<js file="asc-bj-usms-data-bl-mngt-xz.js"/>
+</view>	

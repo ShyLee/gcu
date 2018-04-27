@@ -1,0 +1,9 @@
+<ARA>
+<Table Name="afm_flds">
+<Header>
+<Parameters AllowInsertions="1" AllowUpdates="1" AllowSQLStatements="1" Restriction="((afm_flds.table_name='bl' ) AND( afm_flds.field_name='lonsou'  OR  afm_flds.field_name='latsou'))" Sort="afm_flds.table_name, afm_flds.field_name"/>
+<Fields afm_type="ARCHIBUS 类型" edit_mask="编辑掩码" edit_group="编辑组" table_name="表名称" afm_size="大小" sl_heading="单行标题" is_tc_traceable="电信可跟踪？" ml_heading="多行标题" enum_list="枚举列表" dflt_val="默认值" comments="评语" review_group="审查分组" data_type="数据 类型" transfer_status="数据传输状态" num_format="数字格式" decimals="小数" ref_table="验证表格" validate_data="验证数据？" dep_cols="要验证的字段" afm_module="应用名" allow_null="允许空值" primary_key="主键" is_atxt="资产文本？" field_name="字段名称" attributes="字段属性" field_grouping="字段组" string_format="字符串格式" max_val="最大价值" min_val="最小值"/>
+<SQLExecute/></Header>
+<Data>
+<afm_flds afm_type="2050" edit_mask="" edit_group="" table_name="bl" afm_size="32" sl_heading="" is_tc_traceable="0" ml_heading="Latitude Sou" enum_list="" dflt_val="" comments="" review_group="" data_type="1" transfer_status="NO CHANGE" num_format="0" decimals="0" ref_table="" validate_data="1" dep_cols="" afm_module="1" allow_null="1" primary_key="0" is_atxt="0" field_name="latsou" attributes="" field_grouping="" string_format="5" max_val="" min_val=""/>
+<afm_flds afm_type="2050" edit_mask="" edit_group="" table_name="bl" afm_size="32" sl_heading="" is_tc_traceable="0" ml_heading="Longitude Sou" enum_list="" dflt_val="" comments="" review_group="" data_type="1" transfer_status="NO CHANGE" num_format="0" decimals="0" ref_table="" validate_data="1" dep_cols="" afm_module="1" allow_null="1" primary_key="0" is_atxt="0" field_name="lonsou" attributes="" field_grouping="" string_format="5" max_val="" min_val=""/></Data></Table></ARA>

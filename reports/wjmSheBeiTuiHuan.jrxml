@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="wjmSheBeiTuiHuan" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="8cef31d6-c5fd-43ec-b441-ff6783da0a17">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.1000000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="21"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="rtrDipId" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[退还单号]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_rtrDipId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{rtrDipId}==null?" ":" and eq_change.rtr_dip_id='" +$P{rtrDipId}+"'"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from eq_change where 1=1 $P!{P_rtrDipId}]]>
+	</queryString>
+	<field name="APPRAISAL_OPTION" class="java.lang.String"/>
+	<field name="APPROVED" class="java.math.BigDecimal"/>
+	<field name="APPROVED_STATUS" class="java.lang.String"/>
+	<field name="ATTACHMENTS_NUM" class="java.math.BigDecimal"/>
+	<field name="ATTACHMENTS_PRICE" class="java.math.BigDecimal"/>
+	<field name="ATTACHMENTS_TOTAL_PRICE" class="java.math.BigDecimal"/>
+	<field name="ATTHT_IC_PRICE" class="java.math.BigDecimal"/>
+	<field name="ATTHT_ID" class="java.lang.String"/>
+	<field name="ATTHT_NAME" class="java.lang.String"/>
+	<field name="ATTHT_PICE" class="java.math.BigDecimal"/>
+	<field name="ATTHT_TOTL_PRICE" class="java.math.BigDecimal"/>
+	<field name="ATTHT_TYPE" class="java.lang.String"/>
+	<field name="AUDIT_STATUS" class="java.lang.String"/>
+	<field name="BL_ID" class="java.lang.String"/>
+	<field name="BL_ID_OLD" class="java.lang.String"/>
+	<field name="BOOKKEEPER" class="java.lang.String"/>
+	<field name="CAT_ID" class="java.lang.String"/>
+	<field name="CHANGE_REASON" class="java.lang.String"/>
+	<field name="CHANGED_PRICE" class="java.math.BigDecimal"/>
+	<field name="CHECK_OPTION" class="java.lang.String"/>
+	<field name="CHECK_STATUS" class="java.lang.String"/>
+	<field name="COMMENTS" class="java.lang.String"/>
+	<field name="COST" class="java.math.BigDecimal"/>
+	<field name="COST_OLD" class="java.math.BigDecimal"/>
+	<field name="CSI_ID" class="java.lang.String"/>
+	<field name="CTRY_ID" class="java.lang.String"/>
+	<field name="CTRY_NAME" class="java.lang.String"/>
+	<field name="DANJU_ID" class="java.lang.String"/>
+	<field name="DATE_APPRAISAL" class="java.sql.Timestamp"/>
+	<field name="DATE_CHANGE" class="java.sql.Timestamp"/>
+	<field name="DATE_CHECK" class="java.sql.Timestamp"/>
+	<field name="DATE_IN_STORAGE" class="java.sql.Timestamp"/>
+	<field name="DATE_MANUFACTURED" class="java.sql.Timestamp"/>
+	<field name="DATE_PURCHASED" class="java.sql.Timestamp"/>
+	<field name="DL_ID_OLD" class="java.lang.String"/>
+	<field name="DP_COMMENTS" class="java.lang.String"/>
+	<field name="DP_COMMENTS_OLD" class="java.lang.String"/>
+	<field name="DP_ID_OLD" class="java.lang.String"/>
+	<field name="DV_ID" class="java.lang.String"/>
+	<field name="DV_ID_OLD" class="java.lang.String"/>
+	<field name="EM_ID" class="java.lang.String"/>
+	<field name="EM_ID_OLD" class="java.lang.String"/>
+	<field name="EM_NAME" class="java.lang.String"/>
+	<field name="EM_NAME_OLD" class="java.lang.String"/>
+	<field name="EQ_CHANGE_DOC" class="java.lang.String"/>
+	<field name="EQ_GOTO" class="java.lang.String"/>
+	<field name="EQ_ID" class="java.lang.String"/>
+	<field name="EQ_NAME" class="java.lang.String"/>
+	<field name="EQ_STD" class="java.lang.String"/>
+	<field name="EQ_TYPE" class="java.lang.String"/>
+	<field name="FL_ID" class="java.lang.String"/>
+	<field name="FL_ID_OLD" class="java.lang.String"/>
+	<field name="FTH_DV_ID" class="java.lang.String"/>
+	<field name="GBKW" class="java.lang.String"/>
+	<field name="HANDLING_EM" class="java.lang.String"/>
+	<field name="IMAGE_FILE" class="java.lang.String"/>
+	<field name="LEVEL_MANAGE" class="java.lang.String"/>
+	<field name="MARK" class="java.math.BigDecimal"/>
+	<field name="NUM_SERIAL" class="java.lang.String"/>
+	<field name="OKBADSTATUS" class="java.lang.String"/>
+	<field name="OPERATOR" class="java.lang.String"/>
+	<field name="PERSON_APPRAISAL" class="java.lang.String"/>
+	<field name="PERSON_CHECK" class="java.lang.String"/>
+	<field name="PRICE" class="java.math.BigDecimal"/>
+	<field name="RM_ID" class="java.lang.String"/>
+	<field name="RM_ID_OLD" class="java.lang.String"/>
+	<field name="RTR_DIP_ID" class="java.math.BigDecimal"/>
+	<field name="SCI_RESH_ID" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="SUBJECT_FUNDS" class="java.lang.String"/>
+	<field name="TURN_TO_DV" class="java.lang.String"/>
+	<field name="TYPE_ADJUST" class="java.math.BigDecimal"/>
+	<field name="TYPE_USE" class="java.lang.String"/>
+	<field name="TYPE_USE_OLD" class="java.lang.String"/>
+	<field name="VN_ID" class="java.lang.String"/>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="10" y="0" width="518" height="50" uuid="5cc91ad7-4f72-48df-a924-c0fb0c71ee2e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[华南理工大学广州学院仪器设备退还单]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="10" y="1" width="120" height="20" uuid="522e4dee-bcc9-4672-a40e-940fb40624b0"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[仪器设备退还单位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="339" y="1" width="90" height="20" uuid="d20d8ead-0810-47bc-a403-5321dd0fea38"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[资产管理员]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="429" y="1" width="100" height="20" uuid="68057897-17d7-4844-8d94-0b9cca673c9f"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="10" y="21" width="60" height="20" uuid="4a491e88-5042-4557-b69b-ea33b312b079"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[序号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="70" y="21" width="190" height="20" uuid="e670e741-3f21-4a9e-a654-741897730c3e"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[退还设备编号及名称]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="260" y="21" width="79" height="20" uuid="de4bbd3a-9e7b-4ad8-9da8-0c5e6c7ab313"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[规格型号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="339" y="21" width="190" height="20" uuid="770003aa-4488-4cba-80ed-470a380c6677"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[现状(完好情况及损坏部件)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="130" y="1" width="209" height="20" uuid="0eaaf55c-53ee-4231-9405-d27d03f684e0"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DV_ID_OLD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="10" y="0" width="60" height="20" uuid="6f152dda-b98a-4b0f-8308-98782006ffb9"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-10" x="141" y="0" width="20" height="20" uuid="66b8ab87-533e-4119-a418-0d88eef3c41a"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="161" y="0" width="99" height="20" uuid="3938094f-cb79-43b2-af5d-963720821ae7"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EQ_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="260" y="0" width="79" height="20" uuid="ad96ec18-c342-4799-86cf-6dc18c011056"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="楷体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EQ_STD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-22" x="339" y="0" width="190" height="20" uuid="cd833f89-20bc-466b-8023-6eff2488c49a"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="70" y="0" width="71" height="20" uuid="24ec92bb-d750-4ea0-864b-9bfcbcf83af9"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EQ_ID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band splitType="Stretch"/>
+	</lastPageFooter>
+	<summary>
+		<band height="381" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-11" x="10" y="0" width="119" height="109" uuid="7df67279-2384-4d47-a737-278cec796ee4"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[资产管理员鉴定签字(将设备序号填入空格)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="135" y="19" width="39" height="20" uuid="cc4e79e9-0e5c-40be-9bf2-3b307465fd1a"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[序号：]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="176" y="39" width="260" height="1" uuid="e595ca28-ba49-4394-a8dd-99a077f6ae27"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-13" x="440" y="19" width="72" height="20" uuid="6f0abb03-6d54-4aa1-ae86-2b24a2ca2563"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[设备入调剂库]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="290" y="69" width="50" height="20" uuid="1a042116-2f7c-4231-b01e-c59f9b163ca1"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[签字：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="390" y="69" width="51" height="20" uuid="9f06c35c-9917-4dc6-8723-b7926cfbf1c1"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[日期：]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="130" y="108" width="398" height="1" uuid="222cad5c-01bf-4ed2-93db-8e8591681d85"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-3" x="529" y="0" width="1" height="109" uuid="931f3c65-a223-47ff-9bcb-d39b89012ddb"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-16" x="13" y="119" width="90" height="20" uuid="00d32118-82e2-4d91-b397-0ee24922466c"/>
+				<textElement>
+					<font fontName="宋体" size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[说明：]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-5" x="10" y="109" width="1" height="200" uuid="f02732bf-5774-436e-a5bd-719f28c28da0"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-17" x="15" y="155" width="305" height="20" uuid="267601a8-2289-40f2-8006-bacd45ada8d3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[①凡退还资产处的闲置设备应填写本单；]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="15" y="193" width="315" height="20" uuid="226ee1b9-9e7d-4eef-8c12-3a3f239ae718"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[②资产管理员需携带二级设备管理卡与设备仪器交设备科；]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="15" y="232" width="315" height="20" uuid="2f72d971-a6a8-4118-9ba4-2b87be7335ad"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[③本单据一式三份(二级资产管理员、设备科、信息室各一份)]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-6" x="334" y="110" width="1" height="198" uuid="102b6190-a35c-457b-aaf5-124d72458eee"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-7" x="529" y="109" width="1" height="200" uuid="b55af782-d58a-4363-ab31-6a5d09a2a673"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-8" x="10" y="309" width="520" height="1" uuid="a42e5d49-c701-4b8d-85bc-1670da6ae164"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-20" x="340" y="129" width="170" height="20" uuid="8974619e-c7b8-4d89-971a-6696ca8b40e4"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[资产管理处库管员签字：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="340" y="215" width="179" height="20" uuid="6547c7ec-fa67-4adb-a395-8d12c9975706"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[资产管理处审核签字（公章）：]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

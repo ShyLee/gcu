@@ -1,0 +1,49 @@
+<view version="2.0">
+	<js file="schema/ab-core/controls/progress/ab-progress.js" />
+	<js file="asc-bj-dorm-stu-info-import.js" />
+	<title translatable="true">Batch Import Student</title>
+	<css>
+		.pSpace{ padding-top:20px;margin-top:20px}
+	</css>
+	<tabs workflow="enforced" id="importFileTabs" layoutRegion="importPanel" tabRefreshPolicy="refreshOnSelect"> 
+
+		<tab name="importFileTabs_selection" useFrame="false" selected="true">
+			<title translatable="true">Import Files</title>
+			<panel type="html" id="selectionPanel" buttonsPosition="footer">
+				<action id="import">
+					<title translatable="true">Begin Import</title>
+				</action>
+				<html>
+					<table id="selectionTable" class="panel">
+						<tr id="in1">
+							<td align="right">
+								<span translatable="true">Import File</span>
+							</td>
+							<td class="pSpace">
+								<input type="file" id="inLocalFileBrow" name="filename"
+									size="60">
+								</input>
+							</td>
+						</tr>
+					</table>
+				</html>
+
+				<action id="close">
+					<title>Close Dialog</title>
+				</action>
+			</panel>
+
+		</tab>
+		<tab name="importFileTabs_progress" useFrame="false">
+			<title translatable="true">Import Progress</title>
+			<panel type="html" id="reportProgressPanel">
+				<action id="startOver">
+					<title>Start Over</title>
+				</action>
+				<tr><td></td></tr>
+			</panel>			
+		</tab>
+
+	</tabs>
+
+</view>

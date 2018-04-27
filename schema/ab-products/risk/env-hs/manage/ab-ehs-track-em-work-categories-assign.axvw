@@ -1,0 +1,35 @@
+<view version="2.0">
+    <js file="ab-ehs-track-em-work-categories-assign.js"/>
+    
+    <title translatable="true">Select PPE estimated date put in use and delivery place</title>
+    
+    <message name="view_title_training" translatable="true">Select Training Initial Date</message>
+    <message name="view_title_med_mon" translatable="true">Select Monitoring Initial Date</message>
+    <message name="field_title_training" translatable="true">Training Date</message>
+    <message name="field_title_med_mon" translatable="true">Monitoring Date</message>
+    <message name="action_title_training" translatable="true">Assign Training to Employee</message>
+    <message name="action_title_med_mon" translatable="true">Assign Monitoring to Employee</message>
+    
+    <message name="selectDate" translatable="true">Please select a date</message>
+    
+    <dataSource id="abEhsTrackEmWorkCategoriesAssign_ds">
+        <table name="ehs_em_ppe_types" role="main"/>
+        
+        <field name="date_use" required="true"/>
+        <field name="bl_id"/>
+        <field name="fl_id"/>
+        <field name="rm_id"/>
+    </dataSource>
+    
+    <panel type="console" id="abEhsTrackEmWorkCategoriesAssign_console" dataSource="abEhsTrackEmWorkCategoriesAssign_ds">
+        <action id="assign">
+            <title translatable="true">Assign PPE to Employee</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="closeDialog"/>
+        </action>
+    </panel>
+    
+    <panel type="view" id="abEhsCommonView" file="ab-ehs-common.axvw"/>
+</view>

@@ -1,0 +1,46 @@
+<view version="2.0">
+    <title translatable="true">Budget Change</title>
+    <layout type="borderLayout" id="mainLayout">
+        <west initialSize="30%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="eqBudgetDs">
+        <table name="eq_budget" role="main"/>
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="fiscal_year"/>
+        <field table="eq_budget" name="dv_id" />
+        <field table="eq_budget" name="cost_budget_cap"/>
+        <field table="eq_budget" name="date_requested"/>
+        <field table="eq_budget" name="date_approved"/>
+        <field table="eq_budget" name="em_id"/>
+        <field table="eq_budget" name="em_name"/>
+        <field table="eq_budget" name="dv_manager"/>
+        <field table="eq_budget" name="dv_manager_name"/>
+        <field table="eq_budget" name="comments"/>
+        <field table="eq_budget" name="type"/>
+    </dataSource>
+    
+    <panel type="grid" id="eqBudgetGrid" dataSource="eqBudgetDs" layout="mainLayout" region="west">
+        <title translatable="true">Budget List</title>
+        <field table="eq_budget" name="budget_id" controlType="link">
+            <command type="showPanel" panelId="eqBudgetChangePanel"/>
+        </field>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="fiscal_year"/>
+        <field table="eq_budget" name="dv_id" />
+        <field table="eq_budget" name="cost_budget_cap"/>
+    </panel>
+    <panel type="form" id="eqBudgetChangePanel" dataSource="eqBudgetDs" layout="mainLayout" region="center">
+        <field table="eq_budget" name="budget_id"/>
+        <field table="eq_budget" name="name"/>
+        <field table="eq_budget" name="dv_id"/>
+        <field table="eq_budget" name="cost_budget_cap" alias="cap_befor">
+            <title translatable="true">CapBefore</title>
+        </field>
+        <field table="eq_budget" name="cost_budget_cap" alias="cap_after">
+            <title translatable="true">CapAfter</title>
+        </field>
+        
+    </panel>
+</view>

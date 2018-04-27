@@ -1,0 +1,93 @@
+<view version="2.0">
+    <title>Change Room Name</title>
+    
+    
+    <js file="asc-bj-usms-data-change-rmname.js"/>
+    
+    <dataSource id="rmDs">
+        <table name="rm"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="rm_bianma"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="rm_use"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_design"/>
+        <field table="rm" name="area_manual"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="dv_id"/>
+        <field table="rm" name="chaoxiang"/>
+        <field table="rm" name="dp_id"/>
+        <field table="rm" name="phone"/>
+        <field table="rm" name="project_id"/>
+        <field table="rm" name="rm_photo"/>
+    </dataSource>
+    
+    <dataSource id="rmphotoDs">
+        <table name="sc_rmphotodoc" role="main"/>
+        <field table="sc_rmphotodoc" name="blflrm"/>
+        <field table="sc_rmphotodoc" name="rm_photo"/>
+    </dataSource>
+    
+    <panel type="form" id="changeRmNamePanel" showOnLoad="false" dataSource="rmDs" columns="2">
+        <action id="change">
+            <title>Change</title>
+        </action>
+        <action id="cancel">
+            <title>Cancel</title>
+        </action>
+        <field table="rm" name="bl_id" readOnly="true"/>
+        <field table="rm" name="fl_id" readOnly="true"/>
+        
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_bianma"/>
+        
+        <field table="rm" name="name"/>
+        <field table="rm" name="area" readOnly="true"/>
+        
+        <field table="rm" name="rm_type" showSelectValueAction="true" onchange="consoleCountEm()">
+            <action>
+                <title>Room Type</title>
+                <command type="selectValue"
+                 fieldNames="rm.rm_cat,rm.rm_type"
+                 selectFieldNames="rmtype.rm_cat,rmtype.rm_type"
+                 visibleFieldNames="rmtype.rm_cat,rmtype.rm_type,rmtype.description"
+                 actionListener="consoleCountEm"></command>
+            </action>
+        </field>
+        <field table="rm" name="rm_cat"/>
+        
+        <field table="rm" name="dv_id"/>
+        <field table="rm" name="dp_id"/>
+        
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="rm_use" readOnly="true"/>
+        
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_design"/>
+        
+        <field table="rm" name="count_em" readOnly="true"/>
+        <field table="rm" name="chaoxiang"/>
+        
+        <field table="rm" name="phone"/>
+        <field table="rm" name="project_id" showSelectValueAction="true">
+            <action>
+                <title>Project Code</title>
+                <command type="selectValue"
+                 fieldNames="rm.project_id"
+                 selectFieldNames="sc_project.project_id"
+                 visibleFieldNames="sc_project.project_id,sc_project.name,sc_project.dv_id"></command>
+            </action>
+        </field>
+    </panel>
+    <panel type="form" id="rmphoto" showOnLoad="false" dataSource="rmphotoDs" columns="2">
+        <field table="sc_rmphotodoc" name="blflrm" hidden="true"/>
+        <field table="sc_rmphotodoc" name="rm_photo" displayField="image_field"/>
+        <field id="image_field" controlType="image" rowspan="6" width="250px"></field>
+    </panel>
+</view>

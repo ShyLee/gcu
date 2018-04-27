@@ -1,0 +1,428 @@
+<view version="2.0">
+    <layout id="main">
+        <west initialSize="25%" split="true"/>
+        <center/>
+    </layout>
+    
+    <layout id="nested_west" containingLayout="main" region="west">
+        <north id="treePositon" initialSize="50%" split="true"/>
+        <center id="selectPosition"/>
+    </layout>
+    
+    <layout id="nested_center" containingLayout="main" region="center">
+        <center/>
+        <south id="assignmentsPosition" initialSize="20%" split="true"/>
+    </layout>
+    
+    <layout id="nested_north" containingLayout="nested_center" region="center">
+        <center id="dwgPosition"/>
+        <east id="legendPosition" initialSize="15%" split="true"/>
+    </layout>
+    
+    <message name="countOver" translatable="true">Employee Count will exceed Employee Capacity, Do you wish to continue?</message>
+    <message name="selectFloor" translatable="true">Please select a floor</message>
+    <message name="selectEm" translatable="true">Please select Students</message>
+    <message name="selectRm" translatable="true">Select a room to assign selected employees to</message>
+    <message name="selectAnotherEm" translatable="true">Please select Students</message>
+    <message name="saving" translatable="true">Saving changes...</message>
+    <message name="confirmMessage" translatable="true">Are you sure you want to unassign the selected employees?</message>
+    <message name="noEmSelected" translatable="true">Please make selection first</message>
+    <message name="legendLevel1" translatable="true">Non-Occupiable</message>
+    <message name="legendLevel2" translatable="true">Vacant</message>
+    <message name="legendLevel3" translatable="true">Available</message>
+    <message name="legendLevel4" translatable="true">At Capacity</message>
+    <message name="legendLevel5" translatable="true">Exceeds Capacity</message>
+    <message name="message" translatable="true">xianxuanfangjian</message>
+    <message name="message3" translatable="true">chaochu</message>
+    <message name="message4" translatable="true">tiaozhengshijian</message>
+    <message name="message5" translatable="true">tiaozhengyuanyin</message>
+
+    <!--楼层树 数据源-->
+  <dataSource id="ds_asc_bj_dorm_assign_male_tab_tree_bl">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <sortField name="bl_id" table="bl" ascending="true"/>
+        <parameter name="blName" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['blName']} AND bl.feormale in ('0','1') and EXISTS (SELECT 1 FROM rm left join rmcat on rmcat.rm_cat=rm.rm_cat WHERE rm.dwgname IS NOT NULL  AND rm.bl_id=bl.bl_id and rmcat.supercat!='VERT' and rmcat.rm_cat='301' and rm_type='30101')"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-rm_occupiable" >
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="count_key"/>
+        <field table="rm" name="count_unget_key"/>
+        <field table="rm" name="count_unrtn_key"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em"/>
+        <field table="rmcat" name="occupiable"/>
+        <field table="rmcat" name="supercat"/>
+    </dataSource> 
+    
+    <dataSource id="ds_ab-sp-rm_occupiable1" applyVpaRestrictions="false">
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="count_key"/>
+        <field table="rm" name="count_unget_key"/>
+        <field table="rm" name="count_unrtn_key"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em"/>
+        <field table="rmcat" name="occupiable"/>
+        <field table="rmcat" name="supercat"/>
+    </dataSource>
+        
+    <dataSource id="ds-asgn-stu-to-rm_tree_fl">
+        <sql dialect="generic">
+            SELECT
+            rm.bl_id ${sql.as} bl_id,
+            rm.fl_id ${sql.as} fl_id,
+            rm.dwgname ${sql.as} dwgname
+            FROM rm WHERE rm.dwgname IS NOT NULL  and rm_type='30101' and rm_cat='301' AND rm.feormale='1' 
+            GROUP BY rm.bl_id,rm.fl_id,rm.dwgname
+        </sql>
+        <table name="fl" role="main"/>
+        <field name="fl_id"/>
+		<field name="bl_id" hidden="true"/>
+        <field name="dwgname"/>
+        <sortField name="fl_id" table="fl" ascending="true"/>
+    </dataSource>
+    <!--学生 数据源-->
+    <dataSource id="stu_ds">
+        <table name="sc_student" role="main"/>
+        <table name="sc_stu_profession" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="bl" role="standard"/>
+        <field table="sc_student" name="stu_no"/>
+		<field table="sc_student" name="stu_name"/>
+		<field table="sc_stu_profession" name="pro_name"/>
+        <field table="bl" name="name"/>
+        <field table="sc_student" name="bl_id"/>
+        <field table="sc_student" name="fl_id"/>
+        <field table="sc_student" name="rm_id"/>
+        <field table="sc_student" name="dv_id"/>
+        <field table="sc_student" name="pro_id"/>
+        <field table="sc_student" name="stu_in_year"/>
+        <field table="sc_student" name="stu_sex"/>
+        <field table="sc_student" name="date_checkin"/>
+        <field table="sc_student" name="stu_tec"/>
+        <field table="dv" name="dv_name"/>
+        <parameter name="blId" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="sc_student.stu_sex='1' and ${parameters['blId']} and sc_student.rm_id is not null"/>
+    </dataSource>
+    
+        <dataSource id="stu_ds2">
+        <table name="sc_student" role="main"/>
+        <field table="sc_student" name="stu_no"/>
+		<field table="sc_student" name="stu_name"/>
+        <field table="sc_student" name="bl_id"/>
+        <field table="sc_student" name="fl_id"/>
+        <field table="sc_student" name="rm_id"/>
+        <field table="sc_student" name="dv_id"/>
+        <field table="sc_student" name="is_key"/>
+        <field table="sc_student" name="pro_id"/>
+        <field table="sc_student" name="stu_in_year"/>
+        <field table="sc_student" name="stu_sex"/>
+        <field table="sc_student" name="date_checkin"/>
+        <field table="sc_student" name="stu_tec"/>
+    </dataSource>
+    
+    <!--高亮图纸  数据源-->    
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_drawing_availRm" type="DrawingControlHighlight">
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="sc_student" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="dwgname"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="area" hidden="true" />
+        <field table="rm" name="area_manual"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em" dataType="integer">
+            <sql dialect="generic">
+			 ( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ) 
+            </sql>
+	    </field>
+        <field table="rmcat" name="occupiable"/>
+        <field table="rmcat" name="used_in_calcs"/>
+        <field table="rm" name="legend_level" dataType="String" legendKey="true">
+            <sql dialect="generic">
+        CASE 
+			WHEN rmcat.occupiable = 0 THEN '1'
+			WHEN ( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ) =0 THEN '2'
+			WHEN rm.cap_em-( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id )   >0   THEN '3'
+			WHEN rm.cap_em-( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id )   =0   THEN '4'
+			WHEN rm.cap_em-( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id )  &lt;0 THEN '5' 
+		END
+            </sql>
+        </field>
+    </dataSource>
+    <!--图例  数据源-->      
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_legend" distinct="true">
+        <table name="rm" role="main"/>
+    </dataSource>
+    <!--图纸  数据源-->      
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_drawing_rmLabel1" type="DrawingControlLabels">
+        <title translatable="true">Category-Type</title>
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <field table="rm" name="dwgname" hidden="true"/>
+        <field name="bl_id" hidden="true"/>
+        <field name="fl_id" hidden="true"/>
+        <field name="rm_id"/>
+        <field name="cap_em" hidden="true"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rmtype_name"/>
+    </dataSource>
+
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_drawing_rmLabel4" type="DrawingControlLabels">
+        <title translatable="true">Division-Department</title>
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" />
+        <field table="rm" name="stu_in_year"/>
+        <field table="rm" name="cap_em" />
+        <field table="rm" name="count_em" dataType="integer">
+            <sql dialect="generic">
+			  ( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ) 
+            </sql>
+		</field>
+		<field table="rm" name="stu_names" dataType="string">
+            <sql dialect="generic">
+			 ( SELECT LISTAGG(stu_name, ',') WITHIN GROUP(ORDER BY stu_name) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id group by rm.bl_id, rm.fl_id, rm.rm_id ) 
+            </sql>
+		</field>
+        <field table="rm" name="dp_id" hidden="true"/>
+    </dataSource>
+    <!--宿舍日志  数据源-->      
+     <dataSource id="ds_stuAssign">
+        <table name="sc_stu_log" role="main"/>
+        <field table="sc_stu_log" name="stu_no"/>
+        <field table="sc_stu_log" name="id"/>
+		<field table="sc_stu_log" name="stu_name"/>
+        <field table="sc_stu_log" name="bl_id"/>
+        <field table="sc_stu_log" name="fl_id"/>
+        <field table="sc_stu_log" name="rm_id"/>
+        <field table="sc_stu_log" name="dv_id"/>
+        <field table="sc_stu_log" name="stu_in_year"/>
+        <field table="sc_stu_log" name="stu_sex"/>
+        <field table="sc_stu_log" name="pro_id"/>
+        <field table="sc_stu_log" name="is_key"/>
+        <field table="sc_stu_log" name="cap_em"/>
+		<field table="sc_stu_log" name="date_checkin"/>
+		<field table="sc_stu_log" name="date_checkout"/>
+		<field table="sc_stu_log" name="date_adjust"/>
+		<field table="sc_stu_log" name="checkout_cause"/>
+        <field table="sc_stu_log" name="adjust_cause"/>
+		<field table="sc_stu_log" name="comments"/>
+		<field table="sc_stu_log" name="kongxian" dataType="integer"/>
+        <field table="sc_stu_log" name="bl_name" dataType="integer"/>
+		<field table="sc_stu_log" name="mark"/>
+		<field table="sc_stu_log" name="stu_tec"/>
+	    <field name="remainKey" dataType="integer">
+	    	<title>Remain Key</title>
+            <sql dialect="generic">
+			  ( SELECT count_key FROM rm WHERE sc_stu_log.bl_id = rm.bl_id AND sc_stu_log.fl_id = rm.fl_id AND sc_stu_log.rm_id = rm.rm_id ) 
+            </sql>
+		</field>
+    </dataSource>
+
+	<dataSource id="ds_ab-sp-asgn-em-to-rm_rmCnt">
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field name="countEm" dataType="integer">
+            <sql dialect="generic">
+			 ( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ) 
+            </sql>
+	</field>
+        <field table="rm" name="cap_em"/>
+    </dataSource>
+
+    <panel type="html" id="helpPanel" dataSource="none" layoutRegion="treePositon" showOnLoad="false"/> 
+    
+    <panel type="tree" id="abSpAsgnEmToRm_blTree" dataSource="ds_asc_bj_dorm_assign_male_tab_tree_bl" layoutRegion="treePositon">
+        <title translatable="true">Select Floor</title>
+        <panel type="tree" id="abSpAsgnEmToRm_flTree" dataSource="ds-asgn-stu-to-rm_tree_fl">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="onTreeClick"/>
+            </event>
+    	    <field table="fl" name="fl_id" />
+    	    <field table="fl" name="dwgname" hidden="true"/>
+        </panel>
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="name" />
+    </panel>
+    
+    <panel type="grid" id="abSpAsgnEmToRm_emSelect" dataSource="stu_ds" multipleSelectionEnabled="true" layoutRegion="selectPosition">
+        <title translatable="true">Select Student</title>
+        <indexField table="sc_student" name="stu_no"/>
+        <field table="sc_student" name="stu_no"/>
+		<field table="sc_student" name="stu_name"/>
+		<field table="dv" name="dv_name">
+			<title>Dv Name</title>
+		</field>
+		<field table="sc_stu_profession" name="pro_name" hidden="true"/>
+        <field table="sc_student" name="stu_in_year"/>
+		<field table="bl" name="name">
+			<title>Bl Name</title>
+		</field>
+		<field table="sc_student" name="bl_id" hidden="true"/>
+		<field table="sc_student" name="fl_id"/>
+		<field table="sc_student" name="rm_id"/>
+		<field table="sc_student" name="dv_id" hidden="true"/>
+		<field table="sc_student" name="pro_id" hidden="true"/>
+        <field table="sc_student" name="stu_sex" hidden="true"/>
+        <field table="sc_student" name="date_checkin"/>
+        <field table="sc_student" name="stu_tec"/>
+    </panel>
+    
+    <panel type="drawing" id="abSpAsgnEmToRm_drawingPanel" layoutRegion="dwgPosition" multiple="false" selectionMode="1" assignMode="3"
+     	highlightDataSource="ds_ab-sp-asgn-em-to-rm_drawing_availRm" 
+     	labelsDataSource="ds_ab-sp-asgn-em-to-rm_drawing_rmLabel4"
+     	legendPanel="abSpAsgnEmToRm_legendGrid">
+     	<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpAsgnEmToRm_drawingPanel"/>
+		</action>
+<!--      	<action id="showDwgView"> -->
+<!-- 			<title translatable="true">ShowDwg</title> -->
+<!-- 		</action> -->
+    </panel>
+    
+    <panel type="grid" controlType="reportGrid" id="abSpAsgnEmToRm_legendGrid" dataSource="ds_ab-sp-asgn-em-to-rm_legend" layoutRegion="legendPosition" showOnLoad="false">
+        <title translatable="true">Legend</title>
+        <field table="legend" name="color" controlType="color"/>
+        <field table="legend" name="value" width="80%">
+            <title translatable="true">Value</title>
+        </field>
+    </panel>
+    
+    <panel type="grid" controlType="reportGrid" id="abSpAsgnEmToRm_emAssigned" dataSource="ds_stuAssign" layoutRegion="assignmentsPosition" showOnLoad="false">
+        <title translatable="true">Assignments</title>
+        <action id="time">
+            <title translatable="true">Save</title>
+            <command type="callFunction" functionName="controller.ondilog()"/>
+        </action>
+        <action id="clear">
+            <title translatable="true">huanyuan</title>
+            <command type="callFunction" functionName="clearChanges"/>
+        </action>
+        <field controlType="button" width="50">
+            <title translatable="true">Remove</title>
+            <command type="callFunction" functionName="removeEmpFromList"/>
+        </field>
+        <field table="sc_stu_log" name="stu_no" width="50"/>
+        <field table="sc_stu_log" name="stu_name" width="60"/>
+        <field table="sc_stu_log" name="date_checkin" hidden="true"/>
+        <field table="sc_stu_log" name="bl_id_current" width="50">
+            <title translatable="true">Current Bulding</title>
+        </field>
+        <field table="sc_stu_log" name="fl_id_current" width="50">
+            <title translatable="true">Current Floor</title>
+        </field>
+        <field table="sc_stu_log" name="rm_id_current" width="50">
+            <title translatable="true">Current Room</title>
+        </field>
+        <field table="sc_stu_log" name="bl_name" width="50">
+            <title translatable="true">Assigned Bulding</title>
+        </field>
+        <field table="sc_stu_log" name="fl_id" width="50">
+            <title translatable="true">Assigned Floor</title>
+        </field>
+        <field table="sc_stu_log" name="rm_id" width="50">
+            <title translatable="true">Assigned Room</title>
+        </field>
+        <field table="sc_stu_log" name="cap_em" width="50">
+       		 <title translatable="true">biaozhunrenshu</title>
+        </field>
+        <field table="sc_stu_log" name="kongxian" dataType="integer">
+       		 <title translatable="true">kongxian</title>
+        </field>
+    </panel>
+    
+	<panel id="ruzhushijian" type="form" dataSource="ds_stuAssign" columns="1" showOnLoad="false" newRecord="true">
+        <title translatable="true">ruzhushijian</title>
+        <action id="save">
+            <title translatable="true">queding</title>
+        </action>
+        <action id="quxiao">
+            <title translatable="true">quxiao</title>
+            <command type="closeDialog" panelId="addPanel"/>
+        </action>
+		<field table="sc_stu_log" name="date_adjust" required="true"/>
+        <field table="sc_stu_log" name="adjust_cause" required="true"/>
+<!--         0;未领取;1;领取;2;未退还;3;退还 -->
+        <field table="sc_stu_log" name="is_key" readOnly="true"  value="1">
+        	<action id="viewKeys">
+        		<title>ViewKeys</title>
+        	</action>	
+        </field>
+        <field table="sc_stu_log" name="stu_tec" required="true">
+        	<action id="selectEm">
+                <title>Select Em</title>
+            </action>
+            <action id="clearEm">
+                <title>Clear Em</title>
+            </action>
+        </field>
+		<field table="sc_stu_log" name="comments"/>
+    </panel>
+    <dataSource id="rm_keys_ds">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <field table="rm" name="fl_id"/>
+		<field table="rm" name="rm_id"/>
+		<field table="rm" name="count_all_key"/>
+		<field table="rm" name="count_key"/>
+		<field table="rm" name="remain_key" dataType="integer" readOnly="true">
+			<title>Remain Keys</title>
+            <sql dialect="generic">
+			 (count_all_key-count_key) 
+            </sql>
+		</field>
+		<parameter name="blFlRm" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['blFlRm']}"/>
+    </dataSource>
+	<panel id="rmKeysPanel" type="grid" dataSource="rm_keys_ds" showOnLoad="false" >
+		<title>Rm Keys</title>
+	</panel>
+	<dataSource id="em_ds" >
+        <table name="em" role="main"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+        <field table="em" name="gangwei_id"/>
+        <parameter name="gangWei" dataType="verbatim" value="1=1"/>
+         <restriction type="sql" sql="${parameters['gangWei']}"/>
+    </dataSource>
+    <panel type="grid" id="selectEmPanel" dataSource="em_ds" showOnLoad="false" multipleSelectionEnabled="true">
+        <title translatable="true">Em Info</title>
+        <action id="sure">
+            <title translatable="true">Sure</title>
+        </action>
+        <indexField table="em" name="em_id"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+        <field table="em" name="gangwei_id"/>
+    </panel>
+    <js file="asc-bj-dorm-assign-male-tab2.js"/>
+    <js file="asc-bj-dorm-commons.js"/>
+</view>

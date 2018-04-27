@@ -1,0 +1,4 @@
+修改数据库做的纪录：
+2014/6/9
+update afm_flds set ml_heading='建筑物用途' where table_name='bl' and field_name='use1';
+

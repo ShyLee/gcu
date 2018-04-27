@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<afmLocalizedStrings>
+  <locale name="zh_CN">
+    <string key1="com.archibus.app.common.bulkprint.BulkPrintService" key2="" key3="Printed PDF file(s)" value="已经打印的PDF"/>
+    <string key1="com.archibus.app.common.bulkprint.DocumentProcess" key2="" key3="Could not get InputStream from document field of docx/pdf type" value="从 docx/pdf  文档字段得不到 InputStream"/>
+    <string key1="com.archibus.app.common.bulkprint.PdfPrinter" key2="" key3="Could not merge the pdf file(s)." value="无法合并 pdf 文件"/>
+    <string key1="com.archibus.app.projectmgmt.SCurveHandlers" key2="" key3="Failed to retrieve data records" value="读取数据失败"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.AbstractReservableDataSource" key2="" key3="No reservation date" value="无预订日期"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.AbstractReservableDataSource" key2="" key3="Reservations should be in the future." value="预订应该发生在未来"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.AbstractReservableDataSource" key2="" key3="No reservation start time" value="预订没有开始时间"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.AbstractReservationDataSource" key2="" key3="The reservation cannot be cancelled." value="预订不能取消"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.AbstractReservationDataSource" key2="" key3="The reservation cannot be modified." value="预订不能修改"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.ResourceAllocationDataSource" key2="" key3="The reservation cannot be cancelled, not found" value="预订不能取消，没找到详细信息"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.ResourceAllocationDataSource" key2="" key3="The reservation cannot be cancelled, cancel days expired" value="预订不能取消，已经过了可取消的日期"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.ResourceAllocationDataSource" key2="" key3="The reservation cannot be cancelled, cancel time expired" value="预订不能取消，已经过了可取消的时间"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.ResourceAllocationDataSource" key2="" key3="The reservation cannot be modified, not found" value="预订不能修改，没找到详细信息"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.ResourceAllocationDataSource" key2="" key3="The reservation cannot be modified, announce days expired" value="预订不能修改，已经过了可修改日期"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.ResourceAllocationDataSource" key2="" key3="The reservation cannot be modified, announce time expired" value="预订不能修改，已经过了可修改的时间。"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.RoomAllocationDataSource" key2="" key3="The reservation cannot be cancelled." value="预订不能取消"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.RoomAllocationDataSource" key2="" key3="The reservation cannot be modified." value="预订不能修改"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.RoomArrangementDataSource" key2="" key3="No rooms in reservation" value="预订中无房间号"/>
+    <string key1="com.archibus.app.reservation.dao.datasource.RoomArrangementDataSource" key2="" key3="Building code is required" value="需要输入大厦名"/>
+    <string key1="com.archibus.app.reservation.domain.recurrence.IntervalPatternHelper" key2="" key3="Invalid recurrence pattern: neither the day of the month nor the day of the week are set" value="无效的循环方式:既不按月又不按星期"/>
+    <string key1="com.archibus.app.reservation.domain.recurrence.Recurrence" key2="" key3="Recurrence type required in XML string" value="循环类型在xml语句"/>
+    <string key1="com.archibus.app.reservation.domain.TimePeriod" key2="" key3="Start date is after end date" value="开始日期晚于结束日期"/>
+    <string key1="com.archibus.app.reservation.domain.TimePeriod" key2="" key3="Start time is after end time" value="开始时间晚于结束时间"/>
+    <string key1="com.archibus.app.reservation.service.EmployeeService" key2="" key3="User is not an employee" value="用户不是员工"/>
+    <string key1="com.archibus.app.reservation.service.EmployeeService" key2="" key3="Employee has no location" value="员工无所在办公室信息"/>
+    <string key1="com.archibus.app.reservation.service.ReservationRemoteServiceImpl" key2="" key3="No employee found with the email [{0}]." value="email [{0}] 没有对应员工"/>
+    <string key1="com.archibus.app.reservation.service.ReservationService" key2="" key3="The reservation must be a room reservation" value="必须是房间预订"/>
+    <string key1="com.archibus.app.reservation.service.ReservationService" key2="" key3="Recurrence is not defined." value="循环尚未定义"/>
+    <string key1="com.archibus.app.reservation.service.ReservationService" key2="" key3="Room reservation has no room allocated." value="房间预订没有房间分配"/>
+    <string key1="com.archibus.app.reservation.service.ReservationService" key2="" key3="All reservations for this recurring appointment must be cancelled before booking again." value="该循环预订涉及的所有预订都要取消，然后才能重新预订。"/>
+    <string key1="com.archibus.app.reservation.service.ReservationService" key2="" key3="The room is not available." value="房间不可用."/>
+    <string key1="com.archibus.app.reservation.service.ReservationService" key2="" key3="This is no room reservation." value="这不是一个房间预订."/>
+    <string key1="com.archibus.app.reservation.util.DataSourceUtils" key2="" key3="No reservation date available" value="没有可用的预订日期"/>
+    <string key1="com.archibus.app.solution.common.fileaccess.FileAccessProviderFileSystem" key2="" key3="File=[{0}/{1}] is missing. Please contact your system administrator." value="文件 = [{0}/{1}] 缺失. 请联系系统管理员."/>
+    <string key1="com.archibus.app.solution.common.fileaccess.FtpTemplate" key2="" key3="Operation with FTP server failed." value="无法使用 FTP 服务器."/>
+    <string key1="com.archibus.app.solution.common.security.providers.dao.PasswordChangerImpl" key2="" key3="Your old password does not match our records." value="您的旧密码与我们的记录不符合."/>
+    <string key1="com.archibus.app.solution.common.security.providers.dao.PasswordManagerImpl" key2="" key3="The supplied user ID does not match our records." value="用户 ID 不在纪录中."/>
+    <string key1="com.archibus.app.solution.common.security.providers.dao.PasswordManagerImpl" key2="" key3="The supplied user ID does not match our records." value="用户 ID 不在纪录中."/>
+    <string key1="com.archibus.app.solution.common.security.providers.dao.PasswordPatternValidatorImpl" key2="" key3="Password must have minimum length: {0}" value="口令最短长度: {0}"/>
+    <string key1="com.archibus.app.solution.common.security.providers.dao.PasswordPatternValidatorImpl" key2="" key3="Password must include numbers" value="密码必须包含数字"/>
+    <string key1="com.archibus.app.solution.common.security.providers.dao.PasswordPatternValidatorImpl" key2="" key3="Password must include punctuation" value="密码必须包含标点符号"/>
+    <string key1="com.archibus.app.solution.common.view.taghandler.viewexamples.MultiFormSimpleTag" key2="" key3="Select Value" value="选择值"/>
+    <string key1="com.archibus.app.solution.localization.LocalizationWrite" key2="" key3="Localization Kit - : [{0}]" value="本地化工具 - : [{0}]"/>
+    <string key1="com.archibus.app.solution.logiccookbook.LogicExampleHandlers" key2="" key3="Could not perform requested operation with work order [{0}]." value="无法执行命令 [{0}] 的操作."/>
+    <string key1="com.archibus.config.ContextImpl" key2="" key3="Find file by the file path=[{0}]" value="按文件路径 [{0}] 查找文件"/>
+    <string key1="com.archibus.config.ProjectImpl" key2="" key3="Please contact your system administrator. You have no activities assigned." value="请联系系统管理员，当前用户无可用模块。"/>
+    <string key1="com.archibus.config.ProjectImpl" key2="" key3="Your account has been assigned this activity for which your site does not have a license: [{0}] - Please contact your administrator to remove this activity." value="你的账户被分配给了这个模块, 但是本地系统没有使用权文件: [{0}] - 请联系你的系统员, 从你的账户里删除这个模块."/>
+    <string key1="com.archibus.config.ProjectLoader" key2="" key3="Invalid parameter of activity license=[{0}]" value="无效的使用权参数 =[{0}]"/>
+    <string key1="com.archibus.controls.GanttService" key2="" key3="Unspecified" value="未指明"/>
+    <string key1="com.archibus.dao.jdbc.DocumentDaoImpl" key2="" key3="Files with names longer than [{0}] characters are not allowed for check-in." value="文件名超过 [{0}] 字符不能使用。"/>
+    <string key1="com.archibus.dao.jdbc.DocumentDaoImpl" key2="" key3="Files with [{0}] extension are not allowed for check-in." value="不允许签入扩展名为 [{0}] 的文件。"/>
+    <string key1="com.archibus.datasource.data.DataSet1D" key2="" key3="(no value)" value="(未定义)"/>
+    <string key1="com.archibus.datasource.data.DataSet1D" key2="" key3="N/A" value="N/A"/>
+    <string key1="com.archibus.datasource.data.DataSet2D" key2="" key3="(no value)" value="(未定义)"/>
+    <string key1="com.archibus.datasource.DataSourceImpl" key2="" key3="The view field [{0}.{1}] is not defined in ARCHIBUS schema." value="视图字段 [{0}.{1}] 没有在 ARCHIBUS schema 中定义."/>
+    <string key1="com.archibus.db.DbConnectionImpl" key2="" key3="Could not commit ([{0}])" value="无法执行 ([{0}])"/>
+    <string key1="com.archibus.db.DbConnectionImpl" key2="" key3="Could not commit/close: ([{0}])" value="无法执行/关闭: ([{0}])"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="The value entered is larger than specified precision allowed for this field" value="所输入的数值精度大于定义的值"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="The check-in file might be empty." value="读入的文件可能是空的"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="Error while processing request." value="处理请求时出错"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="Another table has records that validate on this one.  You must change the value of these dependent records before changing the value of the current record. See the server error for the dependent table name." value="这个记录是由另一个表中的记录来验证的。如果要更改这个记录，你要先更改其验证记录的值。请查看服务器端的错误信息，找到相关的验证表。"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="A value for one of the fields, [{0}] is not correct.  The value must exist in the validating table, the [{1}] table" value="字段的其中一值,  [{0}]  不正确.  其值必须出现在核实表-  [{1}]  表中."/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="This record is locked by another user or program.  This other user or program has changed the record but has not committed the changes." value="此记录由另一用户或程序锁定。其它用户或程序已更改了记录，但尚未进行确认。"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="A value is required for the field: [{0}], a field whose value cannot be NULL, in the table: [{1}]" value="字段: [{0}] 需要有值, 表:  [{1}] 定义其不能为空"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="A value is required for a field whose value cannot be NULL in the table: [{0}]" value="表: [{0}] 的有些字段不能为空"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="Another record already exists with the same identifying value as this record -- the primary key for this record is not unique within the [{0}] table." value="另一记录经已存在并有着相同标识值 -- 这记录的主键在 [{0}] 表中不唯一."/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="An error occured when attempting to execute a stored procedure" value="当试图执行存储的流程时发生错误"/>
+    <string key1="com.archibus.db.HandlerSqlException" key2="" key3="This can be caused by a Division by zero error." value="这可能是由一个零误差分割"/>
+    <string key1="com.archibus.db.QueryDefLoader" key2="" key3="You don&apos;t have permission for field=[{0}] in table=[{1}]" value="您对表 [{1}] 中的字段 [{0}] 没有权限"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="No records updated, update failed for SQL=[{0}]" value="未更新记录，由于 SQL 为 [{0}]，更新失败"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="Value of primary key field [{0}] is not present." value="基本键字段 [{0}] 的值不存在。"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="No permission to edit the primary key field [{0}] of the table [{1}]." value="无权进行编辑主键字段 [{0}] ，表名  [{1}]."/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="Record not found." value="没有发现记录"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="No records updated, update failed for SQL=[{0}]" value="未更新记录，由于 SQL 为 [{0}]，更新失败"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="The specified field values correspond to more than one record." value="指定的字段值对应多个记录。"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="A value for one of the fields, [{0}] is not correct.  The value must exist in the validating table, the [{1}] table." value="字段的其中一值,  [{0}]  不正确.  其值必须出现在核实表-  [{1}]  表中."/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="A value for one of the fields, [{0}] is not correct.  The value must not be empty and exist in the validating table, the [{1}] table." value="字段的其中一值,  [{0}]  不正确.  其值不能为空, 必须出现在核实表-  [{1}]  表中."/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="Find view field=[{0}] in query" value="在查询中查找视图字段 [{0}]"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="No fields to update" value="没有要更新的字段"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="Value of primary key field=[{0}] is not present." value="基本键字段= [{0}] 的值不存在"/>
+    <string key1="com.archibus.db.RecordPersistenceImpl" key2="" key3="Check if old record has all key values" value="检查旧记录是否包含所有键值"/>
+    <string key1="com.archibus.db.RecordPersistenceImplDT" key2="" key3="A value for one of the fields, [{0}] is not correct.  The value must exist in the validating table, the [{1}] table." value="字段的其中一值,  [{0}]  不正确.  其值必须出现在核实表-  [{1}]  表中."/>
+    <string key1="com.archibus.db.RecordPersistenceImplDT" key2="" key3="A value for one of the fields, [{0}] is not correct.  The value must not be empty and exist in the validating table, the [{1}] table." value="字段的其中一值,  [{0}]  不正确.  其值不能为空, 必须出现在核实表-  [{1}]  表中."/>
+    <string key1="com.archibus.db.RecordPersistenceImplDT" key2="" key3="No fields to update" value="没有要更新的字段"/>
+    <string key1="com.archibus.db.RecordPersistenceImplDT" key2="" key3="The enumeration value [{0}] for field [{1}] does not exist in ARCHIBUS schema." value="字段[{1}]的枚举值[{0}]在 ARCHIBUS的架构中不存在。"/>
+    <string key1="com.archibus.docmanager.Document" key2="" key3="The system manager has removed all previous versions of this document from the server. Please notify your system manager. Use &apos;Delete Document&apos; button to clear the document storage." value="系统管理员已从服务器中删除此文档的所有早期版本。 请通知您的系统管理员。 可使用“删除文档”按钮清除文档储存。"/>
+    <string key1="com.archibus.docmanager.Document" key2="" key3="This file was locked by: [{0}], on: [{1}], at: [{2}]. Break the lock to delete or check in the file." value="此文件已被 [{0}] 锁定，日期: [{1}]，时间: [{2}]。 可解除锁定以删除或签入此文件。"/>
+    <string key1="com.archibus.docmanager.DocumentArchiveUtil" key2="" key3="Archiving failed" value="归档失败"/>
+    <string key1="com.archibus.docmanager.DocumentArchiveUtil" key2="" key3="Archiving was successfully executed!" value="归档完成!"/>
+    <string key1="com.archibus.docmanager.DocumentArchiveUtil" key2="" key3="Un-Archiving failed" value="取消存档失败"/>
+    <string key1="com.archibus.docmanager.DocumentArchiveUtil" key2="" key3="Un-Archiving was successfully executed!" value="取消存档成功执行！"/>
+    <string key1="com.archibus.docmanager.DocumentHandlers" key2="" key3="Files with [{0}] extension are not allowed for check-in." value="不允许签入扩展名为 [{0}] 的文件。"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalBudgetingService" key2="" key3="Failed to retrieve data records" value="读取数据失败"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="project_type is required!" value="project_type 是必需的！"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Project approved" value="已批准的项目"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Project [{0}] has been rejected." value="已拒项目 [{0}]."/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Project rejected" value="已拒的项目"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Project [{0}] already exists." value="项目 [{0}] 已存在。"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Thank you for submitting a project request." value="谢谢您递交项目请求."/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="A project has been placed in your queue to be routed for approval." value="项目已经排到你的工作队列, 请抓紧审批."/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Requested project" value="已请求的项目"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Please indicate your approval by clicking in the URL below and selecting from the action options that appear next to your name" value="请单击下面的 URL 并从您姓名旁显示的任务选项中进行选择，以指示您的审批"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Project [{0}] routed for approval." value="已路由变动项目 [{0}] 以待审批."/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Approval required" value="需要审批"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.CapitalProjectsHandler" key2="" key3="Project [{0}] has been approved by [{1}]" value="项目 [{0}] 已经得到 [{1}] 的批准"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.MsProjectHelper" key2="" key3="Export Failed: The value [{0}] of field [Duration - Est. Design (Days)] for Action Item ID [{1}] cannot be a negative number. Please modify the value in the database and try to export again." value="输出失败: 字段数据 [{0}]  [时期 - 估计设计 (天)]  Action Item ID [{1}] 不能是负值. 请修改数据库中的值再试."/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3="Bid status for work package: [{0}]" value="分包 [{0}] 的投标状态"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3="This is an automated email. Please to not reply to this email address. Your bid has been accepted for work package: [{0}]  Please contact [{1}] as soon as possible to formalize a contract." value="这是一封自动电邮。 请勿回复此电邮地址。 \n\n已接受您对分包 [{0}] 所做的投标。\n\n请尽快与 [{1}] 联系，以订立正式合同."/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3="Bid status for work package: [{0}]" value="分包 [{0}] 的投标状态"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3="This is an automated email. Please to not reply to this email address. Your bid has been rejected for work package: [{0}]" value="这是一封自动电邮。 请勿回复此电邮地址。 \n\n已拒绝您对分包 [{0}] 所做的投标"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3="Change Order Approved for project: [{0}] and work_pkg: [{1}]" value="已批准项目 [{0}] 和分包 [{1}] 的更改工单"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3=" Action: [{0}] ï¿½ [{1}]  Has been approved for project: [{2}] and work_pkg: [{3}] which is assigned to vendor:  For details click on the following link:" value="任务: [{0}] ï¿½ [{1}] 已经被批准的项目: [{2}] 和 work_pkg: [{3}] 已经指派给经销商:  详情请点击下面的链接:"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3="Pending action" value="等待中的任务"/>
+    <string key1="com.archibus.eventhandler.CapitalProjects.ProjectManagementHandler" key2="" key3="Action #[{0}] ï¿½ [{1}] for project: [{2}] is scheduled to commence tomorrow. Please click on this link to see details:" value="任务 #[{0}] ï¿½ [{1}] 项目: [{2}] 列入明天的排程. 请点击链接查看详情:"/>
+    <string key1="com.archibus.eventhandler.ChartDataHandler" key2="" key3="(no value)" value="(未定义)"/>
+    <string key1="com.archibus.eventhandler.ChartDataHandler" key2="" key3="N/A" value="N/A"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Material Description:" value="材料说明:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Number of Fittings:" value="配件数量:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Friability:" value="易碎性:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Homogeneous Area ID:" value="同类面积的 ID:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Hazard Rank:" value="有害物等级:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Hazard Rating:" value="有害物分级:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Status:" value="状态:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Material Code:" value="材料编码:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Hazardous?:" value="有害?:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Labeled?:" value="标记吗?:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Location Notes:" value="地点备注:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Affected Locations:" value="受影响地点:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Location of Material:" value="材料地点:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Number of Pipes:" value="通道数:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Quantity:" value="数量:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Latitude:" value="纬度:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Location Detail:" value="地点详情:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Location Types:" value="地点类型:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Longitude:" value="经度:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Hazardous Substance:" value="有害物质:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Recommended Action:" value="已推荐的模块:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Hazard Response:" value="有害物响应:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Abatement Reason:" value="减排原因:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Units:" value="单位:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Condition Value:" value="状态值:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Classification I:" value="分类一:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Classification II:" value="分类二:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Classification III:" value="分类三:"/>
+    <string key1="com.archibus.eventhandler.clean.CleanBuildingMessages" key2="" key3="Material Condition:" value="材料状况:"/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceEventHelperTest" key2="" key3="Delete Notifications Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceEventHelperTest" key2="" key3="Delete Events Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceLocationsHelperTest" key2="" key3="Method Running Normal." value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceLocationsHelperTest" key2="" key3="Method Running Error." value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Create Notifications Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Fill Fail" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Create Notifications Fail" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Assign Notify Template Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Assign Notify Template  Fail" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Assign Notify Templates Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Assign Notify Templates Fail" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Save Notifications Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Save Fail" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceNotifyHelperTest" key2="" key3="Fill Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceSqlHelperTest" key2="" key3="Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.ComplianceSqlHelperTest" key2="" key3="Fail" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.LocationHierarchyTest" key2="" key3="Success" value=""/>
+    <string key1="com.archibus.eventhandler.compliance.LocationHierarchyTest" key2="" key3="Fail" value=""/>
+    <string key1="com.archibus.eventhandler.dashboarddefinition.DashboardWizardHandlers" key2="" key3="DashboardWizard - saveFile - IOException : [{0}]" value="智能面板工具 - 存储文件 - IO错误 : [{0}]"/>
+    <string key1="com.archibus.eventhandler.dashboarddefinition.DashboardWizardHandlers" key2="" key3="DashboardWizard - readFile - ParserConfigurationException : [{0}]" value="智能面板工具 - 读文件 - 解析配置错 : [{0}]"/>
+    <string key1="com.archibus.eventhandler.dashboarddefinition.DashboardWizardHandlers" key2="" key3="DashboardWizard - readFile - SAXException : [{0}]" value="智能面板工具 - 读文件 - SAXException : [{0}]"/>
+    <string key1="com.archibus.eventhandler.dashboarddefinition.DashboardWizardHandlers" key2="" key3="DashboardWizard - readFile - IOException : [{0}]" value="智能面板工具 - 读文件 - IO错误 : [{0}]"/>
+    <string key1="com.archibus.eventhandler.dashboarddefinition.DashboardWizardHandlers" key2="" key3="DashboardWizard - saveFile - IOException : [{0}]" value="智能面板工具 - 存储文件 - IO错误 : [{0}]"/>
+    <string key1="com.archibus.eventhandler.ehs.EnvironmentalHealthSafetyService" key2="" key3="Assign Medical Monitoring to Employee" value="为员工安排医疗监督"/>
+    <string key1="com.archibus.eventhandler.ehs.EnvironmentalHealthSafetyService" key2="" key3="Assign PPE to Employee" value="为员工指定 PPE"/>
+    <string key1="com.archibus.eventhandler.ehs.EnvironmentalHealthSafetyService" key2="" key3="Assign Trainings to Employee" value="为员工安排培训"/>
+    <string key1="com.archibus.eventhandler.ehs.EnvironmentalHealthSafetyService" key2="" key3="Reschedule Training Programs" value="重新安排培训计划"/>
+    <string key1="com.archibus.eventhandler.ehs.EnvironmentalHealthSafetyService" key2="" key3="Record was successfully saved" value="成功保存记录"/>
+    <string key1="com.archibus.eventhandler.energy.FetchWeatherStationData" key2="" key3="The weather station data connection cannot be established, or has timed out. Please try again." value="天气预报的数据连接无法创建，或者超时。请再试一遍。"/>
+    <string key1="com.archibus.eventhandler.energy.FetchWeatherStationData" key2="" key3="Error attempting to parse weather station data" value="解析气象站数据错误"/>
+    <string key1="com.archibus.eventhandler.energy.FetchWeatherStationData" key2="" key3="Unable to find file:" value="无法找到文件:"/>
+    <string key1="com.archibus.eventhandler.energy.FetchWeatherStationData" key2="" key3="Error reading file" value="读取文件错误"/>
+    <string key1="com.archibus.eventhandler.energy.FetchWeatherStationData" key2="" key3="Error closing File" value="关闭文件错误"/>
+    <string key1="com.archibus.eventhandler.energy.FetchWeatherStationData" key2="" key3="Unable to parse date value:" value="无法解析日期值:"/>
+    <string key1="com.archibus.eventhandler.energy.PopulateDegreeDaysService" key2="" key3="Invalid regression parameter." value="无效的返回参数."/>
+    <string key1="com.archibus.eventhandler.energy.PopulateDegreeDaysService" key2="" key3="Inadequate data for regression, count of service periods provided is less than 3." value="返回数据无效, 提供的服务周期数小于 3."/>
+    <string key1="com.archibus.eventhandler.energy.PopulateDegreeDaysService" key2="" key3="Invalid regression parameter: mode =" value="无效的返回参数: 模型 ="/>
+    <string key1="com.archibus.eventhandler.energy.PopulateDegreeDaysService" key2="" key3="Invalid regression parameter: mode =" value="无效的返回参数: 模型 ="/>
+    <string key1="com.archibus.eventhandler.energy.PopulateServicePeriodsService" key2="" key3="Error attempting to parse date service start and date service end." value="解析服务起始日期和结束日期错误."/>
+    <string key1="com.archibus.eventhandler.energy.RegressionUtilService" key2="" key3="Inadequate data for regression, series size is less than 9 records long" value="返回的数据知不正确, 连续值小于 9记录长度"/>
+    <string key1="com.archibus.eventhandler.energy.RegressionUtilService" key2="" key3="Invalid regression parameter" value="无效的返回参数"/>
+    <string key1="com.archibus.eventhandler.energy.RegressionUtilService" key2="" key3="Missing" value="遗失"/>
+    <string key1="com.archibus.eventhandler.energy.RegressionUtilService" key2="" key3="Inadequate data for regression, series size is less than 9 records long" value="返回的数据知不正确, 连续值小于 9记录长度"/>
+    <string key1="com.archibus.eventhandler.energy.RegressionUtilService" key2="" key3="Invalid period length, number of dates is less than 1" value="无效的期限长度, 天数少于 1"/>
+    <string key1="com.archibus.eventhandler.energy.RegressionUtilService" key2="" key3="Invalid regression parameter" value="无效的返回参数"/>
+    <string key1="com.archibus.eventhandler.energy.UpdateWeatherStationAllList" key2="" key3="Could not read from FTP:" value="无法从FTP读取:"/>
+    <string key1="com.archibus.eventhandler.energy.UpdateWeatherStationAllList" key2="" key3="Error processing weather stations all list. getWeatherStationAllData()" value="错误进程气象站多有列表 . getWeatherStationAllData()"/>
+    <string key1="com.archibus.eventhandler.green.footprint.Footprint" key2="" key3="Calculating totals..." value="计算合计..."/>
+    <string key1="com.archibus.eventhandler.green.footprint.Footprint" key2="" key3="Saving data..." value="存储数据..."/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintHandler" key2="" key3="Summarizing Emissions" value="排放描述"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintHandler" key2="" key3="Calculate Emissions" value="计算排放"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintHandler" key2="" key3="Export Energy Star Data" value="导出能源之星数据"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintHandler" key2="" key3="Error when export energy star data for" value="导出能源之星数据出错"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintHandler" key2="" key3="Export Energy Star Data for" value="输出能源之星数据"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintHandler" key2="" key3="Energy Star Data for" value="节能标兵授予"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Scope 1 Emissions" value="范围 1 排放"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Liquid Waste" value="液体废弃物"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Employee Road Transportation" value="员工道路交通"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Employee Rail Transportation" value="员工铁路交通"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Employee Air Transportation" value="员工空中交通"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Purchased Materials" value="购买的材料"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Contractor-Owned Vehicles" value="签约车辆"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Outsourced Activities" value="外包的工作"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Off-site Servers" value="远端服务器"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Other Emissions" value="其他排放"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Other" value="其它"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Stationary Fuel Combustion" value="固定燃料燃烧"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Company Air Transportation" value="公司空运"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Company Road Transportation" value="公司道路运输"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Refrigeration &amp; A/C" value="制冷 &amp; 空调"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Scope 2 Emissions" value="范围 2 排放"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Purchased Electricity" value="购电"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Scope 3 Emissions" value="范围 3 排放"/>
+    <string key1="com.archibus.eventhandler.green.footprint.FootprintReporting" key2="" key3="Solid Waste" value="固体废弃物"/>
+    <string key1="com.archibus.eventhandler.green.GbConstants" key2="" key3="One or more expected carbon footprint factors are not defined.  Please supply missing factor values to ensure accurate totals." value="有些需要的碳足迹系数没有定义。 请提供缺失的系数值，确保数据准确。"/>
+    <string key1="com.archibus.eventhandler.green.GbConstants" key2="" key3="Setup record not found for Building Code &apos;{0}&apos;, Calculation Year  {1} and Scenario Code &apos;{2}&apos;." value="未找到设置记录的大厦 ’{0}’, 计算年份  {1} 和设定编码 ’{2}’."/>
+    <string key1="com.archibus.eventhandler.green.GbConstants" key2="" key3="Calculating Emissions ..." value="正在计算排放 ..."/>
+    <string key1="com.archibus.eventhandler.helpdesk.ActivityHandler" key2="" key3="License for On Demand Work required to create request type SERVICE DESK - MAINTENANCE" value="应急维修请求类型必须是 SERVICE DESK - MAINTENANCE"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="Cannot cancel service request with other status then &apos;REQUESTED&apos; or &apos;APPROVED&apos;" value="除了’REQUESTED’或者 ’APPROVED’，不能取消其它状态的服务请求"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="Supervisor and Work Team missing in SLA for autodispatch" value="SLAs中的自动分派选项中缺少主管和工作组"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="Employee or vendor missing in SLA for autoaccept" value="没有员工或服务商，SLAs无法自动受理"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="Invalid request type [{0}]" value="无效的请求类型 [{0}]"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="No employee in context found" value="找不到对应的员工"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="no activity_log_id in context" value="文中没有activity_log_id"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="Request has been reviewed for fields {0}" value="请求已经为字段{0}审批"/>
+    <string key1="com.archibus.eventhandler.helpdesk.RequestHandler" key2="" key3="Step ended by Service Desk Manager" value="服务台经理已经结束该步骤"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="created" value="创建"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The location is" value="位置是"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Approved" value="批准"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The booking ID is" value="预订 ID 是"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="status" value="状态"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Approved" value="批准"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The booking ID is" value="预订 ID 是"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="employee" value="员工"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The visitor is" value="访客是"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The visitor is" value="访客是"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The employee is" value="人员是"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="approved" value="批准"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The location is" value="位置是"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Recurring Booking" value="定期预定"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Starting on" value="开始于"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Regular Booking" value="日常预订"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Starting on" value="开始于"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Recurring  / Regular Booking" value="定期  / 日常预订"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Starting on" value="开始于"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Your pending Hotel bookings" value="你的为解决的酒店预订"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The following Hotel booking is pending approval, but the approval window has expired.  Please review it." value="以下是尚未批准的酒店预订, 但是审批已过期.  请查看."/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Booking ID" value="预定 ID"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="canceled" value="取消"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Employee" value="员工"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Location" value="地点"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Start Date" value="开始日期"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="End Date" value="结束日期"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Day Part" value="白天部分"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Status" value="状态"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="rejected" value="已拒"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="A Hotel booking has been" value="一个酒店预订已经"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="Below are the booking details" value="以下是预定详情"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="There are requested bookings that need your review and approval" value="一些预订等待你的查阅和批准"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="\r\n" value="\r\n"/>
+    <string key1="com.archibus.eventhandler.hoteling.HotelingHandler" key2="" key3="The employee is" value="人员是"/>
+    <string key1="com.archibus.eventhandler.Moves.MoveDataTransfer" key2="" key3="WARNING: The enumeration value [{0}] for field [{1}] does not exist in ARCHIBUS schema, thus the default enum value has been inserted or updated." value="警告: 枚举值 [{0}]对于字段 [{1}]不存在于 ARCHIBUS 架构中, 因此默认已插入或者更新枚举值."/>
+    <string key1="com.archibus.eventhandler.Moves.MovePaginatedReportGenerator" key2="" key3="Group Move" value="组变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovePaginatedReportGenerator" key2="" key3="Group Moves" value="按组变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovePaginatedReportGenerator" key2="" key3="Individual Move" value="个人搬动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovePaginatedReportGenerator" key2="" key3="Individual Move" value="个人搬动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovePaginatedReportGenerator" key2="" key3="Move Scenario" value="变动细节"/>
+    <string key1="com.archibus.eventhandler.Moves.MovePaginatedReportGenerator" key2="" key3="Move Scenario" value="变动细节"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="[ARCHIBUS - Move Management]" value="[ARCHIBUS - 变动管理]"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Building for Action Item [{0}] is invalid or is missing" value="建筑任务条目 [{0}] 无效或者遗失"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Group move [{0}] already exists." value="组别变动 [{0}] 已存在。"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Thank you for submitting a move request. We will notify you via email upon the Approval, Issuing and Closing of this move request." value="谢谢您递交变动请求。 在审批、发出和关闭此变动请求时，我们将通过电邮通知您."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="A move request has been submitted with you as the contact." value="已递交您作为联系人的变动请求."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Requested move" value="请求的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Thank you for submitting a move request. We will notify you via email upon the Approval, Issuing and Closing of this move request." value="谢谢您递交变动请求。 在审批、发出和关闭此变动请求时，我们将通过电邮通知您."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="A move request has been submitted with you as the contact." value="已递交您作为联系人的变动请求."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Requested group move" value="请求的组变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Please indicate your approval by clicking in the URL below and selecting from the action options that appear next to your name." value="请单击下面的 URL 并从您姓名旁显示的行动选项中进行选择，以指示您的审批."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move [{0}]  routed for approval." value="已路由变动 [{0}] 以待审批."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Group move [{0}] already includes a move for Employee [{1}]" value="组别变动 [{0}] 已包含职员 [{1}] 的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Approve request" value="批准请求"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move Routed For Approval" value="已路由以待审批的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Please indicate your approval by clicking in the URL below and selecting from the action options that appear next to your name." value="请单击下面的 URL 并从您姓名旁显示的行动选项中进行选择，以指示您的审批."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move project [{0}] routed for approval." value="已路由变动项目 [{0}] 以待审批."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move Routed For Approval" value="已路由以待审批的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move approval required" value="变动审批是必需的"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move [{0}] has been approved." value="已批准变动 [{0}]."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Approved move" value="已批准的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move [{0}] has been approved." value="已批准变动 [{0}]."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Approved move" value="已批准的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Group move [{0}] already includes a move for Item [{1}]" value="组别变动 [{0}] 已包含事项 [{1}] 的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move has been approved for project: [{0}]" value="已批准项目 [{0}] 的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Approved group move" value="审核组变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move has been approved for project: [{0}]" value="已批准项目 [{0}] 的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Approved move" value="已批准的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="This move has been rejected. Click the link below to view the move details" value="已拒绝此变动。 请单击以下链接，查看变动细节"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move rejected" value="已拒的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move for project [{0}] has been rejected." value="已拒项目 [{0}] 的变动."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Reject move" value="拒绝变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move Request" value="已拒绝的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Requested move withdrawn" value="已撤消的请求变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Group move [{0}] already includes a move for Room [{1}]" value="组别变动 [{0}] 已包含房间 [{1}] 的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move Request [{0}] has been withdrawn." value="已撤消变动请求 [{0}]."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Requested move withdrawn" value="已撤消的请求变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move [{0}] has been issued." value="已发出变动 [{0}]."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Issue move" value="发出变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move for project [{0}] has been issued." value="已发出项目 [{0}] 的变动."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Issued move" value="已发出的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Issue move" value="发出变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Please make sure to mark all actions as COMPLETED AND VERIFIED prior to closing this move." value="请确保在关闭此变动之前将所有行动标记为“已完成并已验证”。"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move request closed for move: [{0}]" value="已关闭变动 [{0}] 的变动请求"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move closed" value="已关闭的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="The department and locations entered do not match any employees" value="输入的部门和位置不符合任何职员"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Please make sure to mark all moves as Completed-Verified, Approved-Cancelled or Issued-Stopped prior to closing this Project." value="在关闭项目以前，相关的所有搬动的状态为 Completed-Verified, Approved-Cancelled 或 Issued-Stopped."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Please make sure to mark all actions as COMPLETED AND VERIFIED, REJECTED or CANCELLED prior to closing this Project." value="请确认选择了的所有action的状态 COMPLETED AND VERIFIED, REJECTED 或 CANCELLED， 然后才可以关闭项目."/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move closed for project: [{0}]" value="已关闭项目 [{0}] 的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Move closed" value="已关闭的变动"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Generated Service Request [{0}] cannot be submitted due to system error" value="创建服务提交[{0}]无法提交由于系统错误"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="The department contact [{0}] is invalid" value="部门联系人 [{0}] 无效"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="The activity type [{0}] is invalid" value="应用 [{0}] 没有权限"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Scenario [{0}] for Project [{1}] already exists" value="方案 [{0}] 对于项目 [{1}] 已经存在"/>
+    <string key1="com.archibus.eventhandler.Moves.MovesHandler" key2="" key3="Requestor for Action Item [{0}] is invalid or is missing" value="任务条目 [{0}] 的请求人无效或者遗失"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.ScheduleHandler" key2="" key3="No wr_id in context found" value="没有找到相关wr_id"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.ScheduleHandler" key2="" key3="No wr_id in context found" value="没有找到相关wr_id"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.WorkRequestHandler" key2="" key3="Cancel Failed: Only Work Requests not yet issued can be cancelled." value="取消失败：工作请求没有发布，不能取消。"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.WorkRequestHandler" key2="" key3="Cancel Failed: Only Work Requests not yet issued can be cancelled." value="取消失败：工作请求没有发布，不能取消。"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.WorkRequestHandler" key2="" key3="Close Failed: Only Completed Work Requests can be closed." value="关闭失败：仅完成的工作请求能被关闭"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.WorkRequestHandler" key2="" key3="Error parsing records JSON object" value="错误解析 JSON object"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.WorkRequestHandler" key2="" key3="Not all work requests of work order {0} were selected. The selected work requests of this work order are not issued." value="不是所有工单{0}的工作请求能被选择.该所选工单的工作请求尚未发布."/>
+    <string key1="com.archibus.eventhandler.ondemandwork.WorkRequestHandler" key2="" key3="Work Request Code missing in context" value="文中缺少工作请求编码"/>
+    <string key1="com.archibus.eventhandler.ondemandwork.WorkRequestHandler" key2="" key3="No supervisor or work team to notify" value="无法通知主管或工作组"/>
+    <string key1="com.archibus.eventhandler.prevmaint.ForecastDatesGenerator" key2="" key3="Generate Schedule Dates" value="生成工单日期"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmScheduleGenerator" key2="" key3="Generate Schedule Dates" value="生成工单日期"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="PREVENTIVE MAINT" value="定期检修"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="New Work Requests have been assigned to you.  Please login and navigate to Building Operations / Preventive Maintenance / Craftsperson for more detail." value="已经为您指派了新的工作请求. 请登录并到大厦选项/定期维护/技工界面获取更多信息."/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="New Work Requests generated and assigned" value="新创建和分配的工作请求"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="New Work Requests have been generated and assigned.  Please login and navigate to Building Operations / Preventive Maintenance / Supervisor for more detail." value="已经为您指派了新的工作请求. 请登录并到大厦选项/定期维护/技工界面获取更多信息."/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="Preventive Maintenance for" value="定期维护"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="for" value="为"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="PM Schedule" value="定期维护排程"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="work orders generated." value="工单已生成"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="No work order generated." value="没有生成工单"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="View Generated Work Orders and Work Requests" value="查看已生成工单和工作请求"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="Record" value="记录"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PmWorkOrderGenerator" key2="" key3="New Work Requests assigned" value="新指派的工作请求"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PreventiveMaintenanceCommonHandler" key2="" key3="Work Order" value="工单"/>
+    <string key1="com.archibus.eventhandler.prevmaint.PreventiveMaintenanceCommonHandler" key2="" key3="Work Order Details" value="工单细节"/>
+    <string key1="com.archibus.eventhandler.report.HighlightHandler" key2="" key3="Unable to find the drawing for the specified floor in ARCHIBUS table." value="ARCHIBUS 表中没有找到相应的图名."/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsResourcesHandler" key2="" key3="Room reservation for this date deleted" value="为已删除日期房间预订"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsResourcesHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsResourcesHandler" key2="" key3="Resource unavailable" value="资源无法获得"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsResourcesHandler" key2="" key3="Requested quantity unavailable" value="请求数量无法获得"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsResourcesHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Room arrangement unavailable" value="房间安排无效"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Resource unavailable because of time limits" value="资源无法获得因为时间限制"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Resource not allowed in this room" value="资源不能给与这间房间"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Timeslot changed to room reservation" value="房间预订时间变更"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Resolved" value="已解决"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Resource unavailable in new timeslot" value="资源无法在新时间段中获得"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Resource unavailable in new timeslot" value="资源无法在新时间段中获得"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.reservations.ReservationsRoomHandler" key2="" key3="Deleted" value="删除的"/>
+    <string key1="com.archibus.eventhandler.rplm.RepmGridXLSBuilder" key2="" key3="Average" value="平均"/>
+    <string key1="com.archibus.eventhandler.rplm.RepmGridXLSBuilder" key2="" key3="Min" value="最小"/>
+    <string key1="com.archibus.eventhandler.rplm.RepmGridXLSBuilder" key2="" key3="Max" value="最大"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Tax Amount" value="纳税额"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Expense" value="费用"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Month" value="月"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Quarter" value="季度"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Q1" value="Q1"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Q2" value="Q2"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Q3" value="Q3"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Q4" value="Q4"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Build Code" value="制作码"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Property Code" value="不动产"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Account Code" value="账户编码"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Cost Category" value="成本科目"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Yearly Totals:" value="每年总计:"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Monthly Totals:" value="月统计:"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Quarterly Totals:" value="季度统计:"/>
+    <string key1="com.archibus.eventhandler.rplm.XLSReport" key2="" key3="Income" value="收入"/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreement" key2="" key3="No SLA Request parameters found for type [{0}] AND ordering seq [{1}]" value="没有为类型[{0}]和排序次序[{1}]找到SLAs请求参数"/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreement" key2="" key3="No matching SLA found for [{0}]" value="没有匹配的SLAs赋予 [{0}]"/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreement" key2="" key3="No matching root element &apos;states&apos; in XML helper rules field" value="在XML的帮助规则字段中，没有匹配‘states’的根元素"/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreement" key2="" key3="Illegal parameter for table [{0}] for assignee, only em, cf and vn" value="对应代理人的表[{0}]参数非法，只能是表em,cf,vn。"/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreementHandler" key2="" key3="Step Manager missing" value="缺少步骤管理员"/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreementHandler" key2="" key3="Parameter dir or record missing" value="参数列表或记录丢失"/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreementHandler" key2="" key3="You cannot move the rule with the highest ordering sequence up." value="你不能向上移动最高指令序列."/>
+    <string key1="com.archibus.eventhandler.sla.ServiceLevelAgreementHandler" key2="" key3="You cannot move the rule with the lowest ordering sequence down." value="你不能向下移动最低指令序列."/>
+    <string key1="com.archibus.eventhandler.steps.Acceptance" key2="" key3="Acceptance record not found" value="没有找到同意记录"/>
+    <string key1="com.archibus.eventhandler.steps.Acceptance" key2="" key3="No employee or vendor found for this acceptance step" value="没有找到同意步骤需要的员工或服务商"/>
+    <string key1="com.archibus.eventhandler.steps.Acceptance" key2="" key3="No employee or vendor found for this acceptance step" value="没有找到同意步骤需要的员工或服务商"/>
+    <string key1="com.archibus.eventhandler.steps.Action" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.Action" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.Action" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.Approval" key2="" key3="No employees found for role [{0}]" value="没有员工属于这个角色 [{0}]"/>
+    <string key1="com.archibus.eventhandler.steps.Approval" key2="" key3="No approvals for this request" value="没有审批人对应这个请求"/>
+    <string key1="com.archibus.eventhandler.steps.AutoRule" key2="" key3="No activity defined when running auto rules !" value="自动运行规则时，没有对应活动 !"/>
+    <string key1="com.archibus.eventhandler.steps.AutoRule" key2="" key3="No method found for status [{0}]" value="没有方法赋予状态 [{0}]"/>
+    <string key1="com.archibus.eventhandler.steps.Dispatch" key2="" key3="No supervisor or work team found to dispatch the request to" value="没有主管或没有工作组来指派工作请求"/>
+    <string key1="com.archibus.eventhandler.steps.Notification" key2="" key3="Cannot create step record without primary key value" value="没有主键值不能创建步骤记录"/>
+    <string key1="com.archibus.eventhandler.steps.Notification" key2="" key3="No employees found for role [{0}]" value="没有员工属于这个角色 [{0}]"/>
+    <string key1="com.archibus.eventhandler.steps.Notification" key2="" key3="No employee, vendor, craftsperson or role to send notification" value="没有员工，供应商，技工或角色需要发送通知"/>
+    <string key1="com.archibus.eventhandler.steps.StepHandler" key2="" key3="No workflow table linked with this activity" value="没有工作流表和此模块链接"/>
+    <string key1="com.archibus.eventhandler.steps.StepHandler" key2="" key3="No workflow table linked with this activity" value="没有工作流表和此模块链接"/>
+    <string key1="com.archibus.eventhandler.steps.StepHandler" key2="" key3="Step record not found" value="没有找到步骤纪录"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Step performed by Service Desk Manager" value="服务台经理执行步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Step performed by substitute of Service Desk Manager" value="代班经理执行步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="No activity defined executing step [{0}]" value="执行步骤[{0}]时，没有对应的活动"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Step not found where [{0}]" value="在 [{0}]没有找到相关步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="No user found for [{0}]" value="没有为[{0}]找到用户"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Illegal user {0} for step {1} database userName={2} and id={3}" value="对应步骤{1}，数据库中userName={2}，id={3}的用户{0}非法"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Step performed by substitute of" value="代班执行步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepImpl" key2="" key3="Step performed by substitute of" value="代班执行步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Step already ended" value="步骤已经结束"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Step already ended" value="步骤已经结束"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Unknown step" value="未知步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="No step type defined" value="没有定义步骤类型"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="ClassNotFoundException, unknown step type [{0}], [{1}]" value="ClassNotFoundException, 步骤类型 [{0}], [{1}] 未知"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Initiation Error, unknown step type [{0}], [{1}]" value="初始化错误，未知步骤类型[{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Illegal Access, unknown step type [{0}], [{1}]" value="非法存取,未知步骤类型[{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Unknown step" value="未知步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Step already ended for id [{0}]" value="步骤 [{0}] 已经结束"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Unknown step for id [{0}]" value="对于 id [{0}] 步骤未知"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Step already ended" value="步骤已经结束"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Unknown step" value="未知步骤"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Illegal current step" value="当前步骤错误"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Step already ended" value="步骤已经结束"/>
+    <string key1="com.archibus.eventhandler.steps.StepManagerImpl" key2="" key3="Unknown step" value="未知步骤"/>
+    <string key1="com.archibus.eventhandler.steps.Survey" key2="" key3="No SurveyRole found for [{0}]" value="没有为[{0}]找到测量角色"/>
+    <string key1="com.archibus.eventhandler.steps.Survey" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.Verification" key2="" key3="No VerificationRole found for [{0}]" value="没有为[{0}]找到验证角色"/>
+    <string key1="com.archibus.eventhandler.steps.Verification" key2="" key3="Illegal action" value="非法操作"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="ClassNotFoundException, unknown step manager for activity [{0}], [{1}]" value="ClassNotFoundException, 未知步骤管理员 [{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="Initiation Error, unknown step manager for activity [{0}], [{1}]" value="初始化错误，未知步骤管理员活动[{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="Illegal Access, unknown step manager for activity [{0}], [{1}]" value="非法存取,未知步骤管理员对应活动[{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="Step manager &apos;[{0}]&apos; for activity [{1}], [{2}]" value="项目[{1}], [{2}]的步骤管理员 ’[{0}]’"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="ClassNotFoundException, unknown status manager for activity [{0}], [{1}]" value="ClassNotFoundException, 未知身份管理员 [{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="Initiation Error, unknown status manager for activity [{0}], [{1}]" value="初始化错误，未知状态管理员活动[{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="Illegal Access, unknown status manager for activity [{0}], [{1}]" value="非法存取,未知状态管理员对应活动[{0}], [{1}]"/>
+    <string key1="com.archibus.eventhandler.steps.WorkflowFactory" key2="" key3="Status manager &apos;[{0}]&apos; for activity [{1}], [{2}]" value="项目 [{1}], [{2}]的状态管理员 ’[{0}]’"/>
+    <string key1="com.archibus.eventhandler.viewdefinition.ViewDefinitionHandlers" key2="" key3="Favorite was successfully saved" value="保存个人常用"/>
+    <string key1="com.archibus.eventhandler.viewdefinition.ViewDefinitionHandlers" key2="" key3="Favorite was successfully removed" value="删除个人常用"/>
+    <string key1="com.archibus.eventhandler.ViewHandlers" key2="" key3="Record was successfully saved" value="成功保存记录"/>
+    <string key1="com.archibus.eventhandler.ViewHandlers" key2="" key3="Up" value="上移"/>
+    <string key1="com.archibus.eventhandler.ViewHandlers" key2="" key3="Top" value="顶部"/>
+    <string key1="com.archibus.eventhandler.ViewHandlers" key2="" key3="All" value="全部"/>
+    <string key1="com.archibus.eventhandler.waste.WasteCommon" key2="" key3="Selected Container Labels generated" value="选择生成容器标签"/>
+    <string key1="com.archibus.eventhandler.waste.WasteLabelHazardous" key2="" key3="HAZARDOUS WASTE, SOLID, N.O.S. and NA3077" value="有害废弃物, 固体, N.O.S. 和 NA3077"/>
+    <string key1="com.archibus.eventhandler.waste.WasteLabelHazardous" key2="" key3="HAZARDOUS WASTE, LIQUID, N.O.S.and NA3082" value="有害废弃物, 液体, N.O.S. 和 NA3082"/>
+    <string key1="com.archibus.eventhandler.waste.WasteLabelImpl" key2="" key3="Could not generate Label docx:" value="无法生成docx标签:"/>
+    <string key1="com.archibus.eventhandler.waste.WasteUtility" key2="" key3="Convert date Error" value="转换数据错误"/>
+    <string key1="com.archibus.eventhandler.WorkflowRuleHandlers" key2="" key3="Class Name" value="类名"/>
+    <string key1="com.archibus.eventhandler.WorkflowRuleHandlers" key2="" key3="Method Name" value="方法名称"/>
+    <string key1="com.archibus.eventhandler.WorkflowRuleHandlers" key2="" key3="name" value="颜色名称"/>
+    <string key1="com.archibus.eventhandler.WorkflowRuleHandlers" key2="" key3="name" value="颜色名称"/>
+    <string key1="com.archibus.eventhandler.WorkflowRuleHandlers" key2="" key3="name" value="颜色名称"/>
+    <string key1="com.archibus.ext.datatransfer.DataTransferIn" key2="" key3="WARNING: The enumeration value [{0}] for field [{1}] does not exist in ARCHIBUS schema, thus the default enum value has been inserted or updated." value="警告: 枚举值 [{0}]对于字段 [{1}]不存在于 ARCHIBUS 架构中, 因此默认已插入或者更新枚举值."/>
+    <string key1="com.archibus.ext.datatransfer.DataTransferIn" key2="" key3="You do not have the permission to perform bulk edit operations." value="你没有权限进行批量编辑"/>
+    <string key1="com.archibus.ext.drawing.highlight.HighlightGeneratorHelperBase" key2="" key3="The enterprise graphics file is not available:[{0}]" value="找不到图片:[{0}]"/>
+    <string key1="com.archibus.ext.drawing.highlight.HighlightGeneratorHelperBase" key2="" key3="Input file does not exist -" value="输入文件不存在 -"/>
+    <string key1="com.archibus.ext.drawing.highlight.HighlightGeneratorLegendHelper" key2="" key3="An error occurs when close the legend file [{0}]." value="错误关闭 legend 文件 [{0}]."/>
+    <string key1="com.archibus.ext.drawing.highlight.HighlightGeneratorLegendHelper" key2="" key3="An error occurs when reading the legend file [{0}]." value="错误读取 legend 文件 [{0}]."/>
+    <string key1="com.archibus.ext.drawing.highlight.HighlightGeneratorLegendHelper" key2="" key3="An error occurs when reading the legend json string." value="错误读取 legend json 字串."/>
+    <string key1="com.archibus.ext.drawing.highlight.HighlightGeneratorLegendHelper" key2="" key3="An error occurs when parsing the legend json string [{0}]." value="错误解析 legend json 字串 [{0}]."/>
+    <string key1="com.archibus.ext.drawing.highlight.PatternParser" key2="" key3="Unable to locate the hatch pattern file [{0}] for drawing highlight." value="无法找到填充文件 [{0}] ."/>
+    <string key1="com.archibus.ext.drawing.highlight.PatternParser" key2="" key3="An error occurs when reading the hatch pattern file [{0}]." value="错误读取填充文件 [{0}]."/>
+    <string key1="com.archibus.ext.drawing.highlight.PatternParser" key2="" key3="Incorrect number format when reading the hatch pattern file [{0}]." value="填充文件  [{0}] 数据格式错."/>
+    <string key1="com.archibus.ext.importexport.common.TransferFields" key2="" key3="Error in Data Transfer Manager: The table name you provided is empty." value="数据传输管理错误: 提供的表是空表."/>
+    <string key1="com.archibus.ext.importexport.common.TransferFields" key2="" key3="Error in Data Transfer Manager: The table name {[%s]} you provided is invalid." value="在数据传输管理器上的错误: 您提供的表名{[%s]}是无效的."/>
+    <string key1="com.archibus.ext.importexport.common.TransferFields" key2="" key3="Unable to load the tableDef object for table {[%s]}." value="无法装入表格 {[%s]}  的tableDef object."/>
+    <string key1="com.archibus.ext.importexport.common.TransferFields" key2="" key3="The field name [{0}] does not exist in table [{1}]." value="在表[{1}]中不存在字段名 [{0}]."/>
+    <string key1="com.archibus.ext.importexport.common.TransferFields" key2="" key3="The protected field name [{0}] does not exist in ARCHIBUS schema." value="在 ARCHIBUS 模块中不存在受保护的字段名称 [{0}] ."/>
+    <string key1="com.archibus.ext.report.docx.DocxUtility" key2="" key3="Files are too large to merge. Please either merge the partial files in Microsoft Word, or print the partial files separately." value="文件太长无法合并. 请在Microsoft Word 中合并, 或分别打印。"/>
+    <string key1="com.archibus.ext.report.docx.DocxUtility" key2="" key3="Files are too large to merge. Please either append the files in Microsoft Word, or print the partial files separately." value="文件太长无法合并. 请在Microsoft Word 中合并, 或分别打印。"/>
+    <string key1="com.archibus.ext.report.docx.DrawingPanelBuilder" key2="" key3="No table with drawing highlight dataSource=[{0}] has a drawing name field in its database schema." value="数据源 [{0}] 中 table 在其 database schema 中没有图形名称字段."/>
+    <string key1="com.archibus.ext.report.docx.PrintRestriction" key2="" key3="Restriction in Effect" value="执行中的规范"/>
+    <string key1="com.archibus.ext.report.docx.Report" key2="" key3="Page" value="页"/>
+    <string key1="com.archibus.ext.report.docx.Report" key2="" key3="of" value="的"/>
+    <string key1="com.archibus.ext.report.docx.Report" key2="" key3="Powered by ARCHIBUS" value="由 ARCHIBUS 推动"/>
+    <string key1="com.archibus.ext.report.docx.ReportBuilder" key2="" key3="The report is too large to produce. Please set a restriction filter on your data and print it again." value="报表太大了无法创建. 请设置查询条件重新打印."/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Equals" value="等于"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Is Not Null" value="不为空"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Is any of" value="任意"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Is none of" value="不像"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="and" value="和"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="or" value="OR"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="AND" value="和"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="OR" value="OR"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Not equal to" value="不等于"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Less than" value="小于"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Less than or equal to" value="小于等于"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Greater than" value="大于"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Greater than or equal to" value="大于等于"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Like" value="相关"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Not Like" value="不相关"/>
+    <string key1="com.archibus.ext.report.LocalizedClauseOperations" key2="" key3="Null" value="空"/>
+    <string key1="com.archibus.ext.report.ReportBuilderJob" key2="" key3="Fail to export a paginated report with view name [%s]" value="无法将视图 [%s] 输出到分页表"/>
+    <string key1="com.archibus.ext.report.ReportBuilderJob" key2="" key3="Fail to export a DOCX report with a view name [%s] and a data source id [%s]" value="无法将视图 [%s] 中数据 [%s] 生成的交叉表输出到 DOCX"/>
+    <string key1="com.archibus.ext.report.ReportBuilderJob" key2="" key3="Fail to export a Crosstab XLS report with a view name [%s] and a data source id [%s]" value="无法将视图 [%s] 中数据 [%s] 生成的交叉表输出到XLS"/>
+    <string key1="com.archibus.ext.report.ReportBuilderJob" key2="" key3="Fail to export a Grid XLS report with a view name [%s] and a data source id [%s]" value="无法将视图 [%s] 中数据 [%s] 生成的交叉表输出到 XLS"/>
+    <string key1="com.archibus.ext.report.ReportBuilderJob" key2="" key3="Fail to export a DOCX report for a chart" value="无法将图表输出到 DOCX"/>
+    <string key1="com.archibus.ext.report.xls.BuilderBase" key2="" key3="Total" value="合计"/>
+    <string key1="com.archibus.ext.report.xls.ReportBuilder" key2="" key3="Total" value="合计"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Not found - {0}% Completed" value="作业未找到 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Created - {0}% Completed" value="创建作业 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Started - {0}% Completed" value="作业已开始 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Complete - {0}%" value="工作完成进度 - {0}%"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Stop Requested - {0}% Completed" value="作业按要求停止 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Stop Acknowledged - {0}% Completed" value="作业被迫停止 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Stopped - {0}% Completed" value="作业停止 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Terminated - {0}% Completed" value="作业终止 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.JobStatus" key2="" key3="Job Failed - {0}% Completed" value="作业失败 - {0}% 已完成"/>
+    <string key1="com.archibus.jobmanager.WorkflowRulesContainerImpl" key2="" key3="Your account does not belong to the security group required to run this rule: [{0}]" value="你的账户没有权限运行这个程序: [{0}]"/>
+    <string key1="com.archibus.jobmanager.WorkflowRulesContainerImpl" key2="" key3="This rule is not active at your site: [{0}]" value="您的街区这个规则还没有激活：[{0}]"/>
+    <string key1="com.archibus.jobmanager.WorkflowRulesContainerImpl" key2="" key3="Your account does not have the license level needed (Level 3 – Analysis) required to run this rule: [{0}]" value="你的账户没有授权等级 (Level 3 – Analysis) 不能运行这个程序: [{0}]"/>
+    <string key1="com.archibus.model.config.Currency" key2="" key3="Invalid currency code: {0}" value="无效货币编码: {0}"/>
+    <string key1="com.archibus.model.config.UnitsTitleFactory" key2="" key3="m²" value="m²"/>
+    <string key1="com.archibus.model.config.UnitsTitleFactory" key2="" key3="M" value="M"/>
+    <string key1="com.archibus.model.config.UnitsTitleFactory" key2="" key3="ft²" value="ft²"/>
+    <string key1="com.archibus.model.config.UnitsTitleFactory" key2="" key3="ft" value="ft"/>
+    <string key1="com.archibus.model.licensing.LicenseCounterImpl" key2="" key3="Your installation has run out of licenses for this program or activity: [{0}] - Please try again later or contact your administrator concerning additional licenses." value="你的安装没有足够的许可证执行此功能或模块: [{0}] - 请重试或联络系统管理员"/>
+    <string key1="com.archibus.model.licensing.LicenseManagerImpl" key2="" key3="Your installation has more named users assigned to this program than there are named-user licenses:  [{0}] - Please contact your administrator concerning additional licenses." value="你的系统分配了太多的用户, 超多了授权文件的用户数:  [{0}] - 请联系你的系统员考虑增加用户数."/>
+    <string key1="com.archibus.model.licensing.LicenseManagerLoader" key2="" key3="This time-limited version of ARCHIBUS expired on {0}." value="试用版本到期日为{0}."/>
+    <string key1="com.archibus.model.licensing.processor.CheckActivityToDomainReassignment" key2="" key3="The program is stopping because ARCHIBUS stock domains have been reassigned in a manner inconsistent with this site’s product license" value="程序停止, 可能安装的 ARCHIBUS 软件和软件使用权不一致."/>
+    <string key1="com.archibus.model.licensing.processor.CheckViewRenderingRequest" key2="" key3="Your account does not have license level [{0}] required to load view [{1}]" value="你的账户没有授权等级 [{0}] 不能装入视图 [{1}]"/>
+    <string key1="com.archibus.model.licensing.processor.CheckViewRenderingRequest" key2="" key3="The program will not load view [{1}] as it belongs to a domain or activity not licensed at this site" value="程序将不会装入视图 [{1}] , 可能是本地没有该模块的软件使用权"/>
+    <string key1="com.archibus.model.licensing.ViewLicenseLevelInterceptor" key2="" key3="Your account does not have license level [{0}] required to load view [{1}]" value="你的账户没有授权等级 [{0}] 不能装入视图 [{1}]"/>
+    <string key1="com.archibus.model.view.datasource.processor.DataSourceDefLoader" key2="" key3="Loading DataSource definition with id=[{0}]." value="装入数据原定义 [{0}]."/>
+    <string key1="com.archibus.model.view.datasource.processor.DataSourceDefLoader" key2="" key3="Main table not found." value="主表没有找到"/>
+    <string key1="com.archibus.model.view.datasource.processor.DataSourceDefLoader" key2="" key3="Field [{0}] with groupBy=&apos;true&apos; attribute can not be in the non-grouping DataSource." value="字段 [{0}] 的属性 groupBy=’true’ ，不能用在部分组的数据源。"/>
+    <string key1="com.archibus.model.view.datasource.processor.DataSourceDefLoader" key2="" key3="Field [{0}] can not be in the grouping DataSource. Fields in grouping datasource must be virtual or have groupBy=&apos;true&apos; attribute." value="分组的数据源不能包括字段 [{0}] 。 分组数据源的字段其属性 groupBy=’true’ ，或者是 virtual 的"/>
+    <string key1="com.archibus.model.view.datasource.processor.DataSourceDefLoader" key2="" key3="Unsupported RelativeOperation=[{0}]" value="不支持的相关操作 [{0}]"/>
+    <string key1="com.archibus.model.view.datasource.processor.DataSourceDefLoader" key2="" key3="Unsupported Operation=[{0}]" value="不支持的操作 [{0}]"/>
+    <string key1="com.archibus.model.view.form.processor.AnalysisViewDefGenerator" key2="" key3="Count" value="计数"/>
+    <string key1="com.archibus.model.view.form.processor.AnalysisViewDefGenerator" key2="" key3="Sum" value="总计"/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="Report definition contains [{0}] parent panels. Maximum of 2 parent panels is allowed." value="报表定义包含 [{0}] 个父级面板. 最多只能有 2 个父级面板"/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="No panels in data role and no drawing panels." value="没有图形面板。"/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="Report definition contains [{0}] legend panels. Maximum of 1 legend panels is allowed." value="报表定义包含 [{0}] 个图例面板. 最多只能有 1 个图例面板"/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="highlightDataSource is required attribute for the drawing panel [{0}]." value="图形面板 [{0}] 必须要有highlightDataSource 属性."/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="Data source with id=[{0}] is not defined in the view. Panel with id=[{1}] references this data source." value="视图中的数据源 [{0}] 没有定义. 面板 [{1}] 需要引用这个数据源."/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="Unsupported panel format=[{0}]." value="不支持的面板格式 [{0}]."/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="Panel field=[{0}] is a virtual field, but data source=[{1}] already has field with the same name." value="面板字段 [{0}] 是一个 virtual 字段, 但是数据源 [{1}] 已经有同名字段了。"/>
+    <string key1="com.archibus.model.view.report.panel.PanelDefLoader" key2="" key3="Panel field references data source field=[{0}], which is not defined in data source=[{1}]." value="面板字段引用的数据源字段 [{0}] 没有在数据源 [{1}] 中定义."/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefImplicitGenerator" key2="" key3="Generate implicit objects for report definition=[{0}]" value="为报表定义 [{0}] 生成内含的 objects"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefImplicitGenerator" key2="" key3="Overall {0}" value="总计 {0}"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefLoader" key2="" key3="Loading report definition from filePath=[{0}]." value="从文件中装入报表定义 [{0}]."/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefLoader" key2="" key3="Loading report definition [{0}] from XML document" value="装入报表定义 {0} xml"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefLoader" key2="" key3="No &apos;report&apos; element in the view file." value="视图文件中没有 ’report’ 元素."/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefLoader" key2="" key3="No &apos;view&apos; element in the view file." value="视图文件中没有 ’view’ 元素."/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefLoader" key2="" key3="Version=[{0}] of the view does not match required version=[{1}]" value="视图版本 [{0}] 不是需要的版本 [{1}]"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefMerger" key2="" key3="Merge report definition with schema info for UserSession=[{0}]" value="为 UserSession=[{0}] 合并报表定义和 schema 信息"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefMerger" key2="" key3="DataSource=[{0}] of legend panel=[{1}] does not have drawing name field." value="数据源 [{0}] 不包含图形名称，图例面板 [{1}] 无法调用。"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefMerger" key2="" key3="Legend panel=[{0}] must have datasource." value="图例面板 [{0}] 必须定义数据源."/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefMerger" key2="" key3="Panel=[{0}] has only memo fields." value="面板 [{0}] 只有 memo 字段。"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefValidator" key2="" key3="Validate report definition=[{0}]" value="验证报表定义 [{0}]"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefValidator" key2="" key3="No visible fields in panel=[{0}]" value="面板 [{0}] 中没有定义可见的字段"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefValidator" key2="" key3="No restriction parameters in parent panel=[{0}]" value="父面板[{0}] 中没有约束参数"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefValidator" key2="" key3="No matching parameter in child datasource=[{0}]" value="子数据源 [{0}] 无匹配的参数"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefValidator" key2="" key3="No restriction in child datasource=[{0}]" value="子数据源 [{0}] 没有约束"/>
+    <string key1="com.archibus.model.view.report.processor.ReportDefValidator" key2="" key3="No parsed restriction with value=[{0}] in child datasource=[{1}] with" value="解析的约束 value=[{0}] 不在子数据源 [{1}] 中"/>
+    <string key1="com.archibus.schema.FieldJavaTypeBaseImpl" key2="" key3="Format field value=[{0}] using format=[{1}]" value="设置使用格式 [{1}] 的字段值 [{0}] 的格式"/>
+    <string key1="com.archibus.schema.FieldJavaTypeBaseImpl" key2="" key3="Parse field value=[{0}] using format=[{1}]" value="解析使用格式 [{1}] 的字段值 [{0}]"/>
+    <string key1="com.archibus.security.UserAccountLoader" key2="" key3="Could not find user account information for user: [{0}] - Please check the spelling of the user name." value="未能为用户找到用户信息: [{0}] - 请检查用户名称"/>
+    <string key1="com.archibus.security.UserAccountLoaderImpl" key2="" key3="User account [{0}] has no security groups assigned. Please contact your administrator." value="用户 [{0}] 没有安全组. 请联系系统管理员."/>
+    <string key1="com.archibus.security.UserRoleLoaderImpl" key2="" key3="Role [{0}] has no security groups assigned. Please contact your administrator." value="角色[{0}]没有被分配安全群组。请联系你的管理员。"/>
+    <string key1="com.archibus.service.addinmanager.AddInManagerServiceImpl" key2="" key3="Invalid password.  If you are a registered ARCHIBUS Developer Network member, please email your business development contact at ARCHIBUS for the password to this license generator." value="无效口令. 如果你注册了 ARCHIBUS 开发者网络, 请发送邮件到你的 ARCHIBUS 联络人员咨询使用权事宜."/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Building" value="大厦"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Rolled up total from" value="累计合计自"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="To Date Due:" value="预订的结束日期:"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Buildings" value="大厦"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="From Date Due:" value="预订的开始日期:"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Lease" value="租赁"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Leases" value="租约"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="of" value="的"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Properties" value="属性"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Property" value="性质"/>
+    <string key1="com.archibus.service.cost.CostMessages" key2="" key3="Prorated portion from" value="分配比例自"/>
+    <string key1="com.archibus.service.cost.CostService" key2="" key3="Preparing cash flow projection" value="为资金流预测做准备"/>
+    <string key1="com.archibus.service.cost.CreateCostProjection" key2="" key3="Processing actual costs" value="处理实际发生成本"/>
+    <string key1="com.archibus.service.cost.CreateCostProjection" key2="" key3="Processing recurring costs" value="处理周期性成本"/>
+    <string key1="com.archibus.service.cost.CreateCostProjection" key2="" key3="Processing scheduled costs" value="正在处理预期成本"/>
+    <string key1="com.archibus.service.cost.CurrencyAndVat" key2="" key3="System Administrator is required to provide valid Conversion Factor for source units {0} and destination units {1} for both Exchange Rate Types (Budget and Payment) in AFM Conversions (afm_conversions) table." value="系统管理员需要为在AFM转换表中的源单位{0}和目标单位{1}的两种转换率类型(预算型和支付型)提供转换因子."/>
+    <string key1="com.archibus.service.cost.CurrencyAndVat" key2="" key3="Unable to find VAT percent value, the Cost Category is not defined." value="找不到增值税的百分比值，成本类别没有定义。"/>
+    <string key1="com.archibus.service.cost.CurrencyAndVat" key2="" key3="Unable to find VAT percent value, the User Country is not defined." value="找不到增值税的百分比值，使用国没有定义。"/>
+    <string key1="com.archibus.service.cost.CurrencyAndVat" key2="" key3="The system didn&apos;t find the VAT Percentage value for provided User Country and Cost Category. A value of 0.00 will be used instead." value="该系统没有找到VAT的百分比值提供国家用户和成本类别。将被用来代替价值为0.00。"/>
+    <string key1="com.archibus.service.cost.CurrencyAndVat" key2="" key3="You must run &amp;quot;Updates to Legacy Costs&amp;quot; from &amp;quot;Define Exchange Rates&amp;quot; or contact an Administrator." value=""/>
+    <string key1="com.archibus.service.cost.SummarizeCosts" key2="" key3="Processing costs" value="处理费用"/>
+    <string key1="com.archibus.service.cost.SummarizeCosts" key2="" key3="Perform Proration and Update Lease Areas" value="按比例分配并更新租赁面积"/>
+    <string key1="com.archibus.service.cost.SummarizeCosts" key2="" key3="Update Building and Property Area Totals" value="更新大厦和不动产面积总数"/>
+    <string key1="com.archibus.service.graphics.GraphicsService" key2="" key3="Read Folder Content" value="读文件加内容"/>
+    <string key1="com.archibus.service.graphics.GraphicsService" key2="" key3="Deleting Files" value="删除文件"/>
+    <string key1="com.archibus.service.interceptor.ExceptionHandlerImpl" key2="" key3="Your password has expired." value="你的口令已经到期."/>
+    <string key1="com.archibus.service.interceptor.ExceptionHandlerImpl" key2="" key3="Too many failed login attempts. Your account is locked. Request that your system administrator unlocks your account." value="尝试登陆太多次，你的账号被锁住了。请系统管理员解锁。"/>
+    <string key1="com.archibus.service.interceptor.ExceptionHandlerImpl" key2="" key3="Your account has configuration problem. Please contact your administrator." value="你的账号有配置问题. 请联系系统管理员."/>
+    <string key1="com.archibus.service.interceptor.ExceptionHandlerImpl" key2="" key3="The user ID and password you entered don&apos;t match our records." value="你输入用户帐号和口令与系统记录不符"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Arabic (Saudi Arabia)" value="阿拉伯语 (沙特阿拉伯)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="French (Canada)" value="法语(加拿大)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="French (France)" value="法语(法国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="German" value="德语"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="German (Germany)" value="德语 (德国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Hebrew (Israel)" value="希伯来语 (以色列)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Italian" value="意大利语"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Italian (Italy)" value="意大利语 (意大利)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Japanese (Japan)" value="日语 (日本)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Korean (South Korea)" value="朝鲜语 (韩国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Norwegian (Norway)" value="挪威语 (挪威)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Chinese (China)" value="中文(简体)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Portuguese (Brazil)" value="葡萄牙语 (巴西)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Spanish" value="西班牙语"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Spanish (Spain)" value="西文 (西班牙)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Estonian" value="爱沙尼亚语"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Estonian (Estonia)" value="爱沙尼亚语 (爱沙尼亚)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Spanish (Spain)" value="西文 (西班牙)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (United States)" value="英语(美国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (United Kingdom)" value="英语(英国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Italian (Italy)" value="意大利语 (意大利)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Dutch (Netherlands)" value="荷兰语 (荷兰)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Chinese (Taiwan)" value="中文(繁体)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Chinese (Taiwan)" value="中文(繁体)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Chinese (China)" value="中文(简体)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="French (Canada)" value="法语(加拿大)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (Australia)" value="英语(澳大利亚)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="German (Germany)" value="德语 (德国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="French (France)" value="法语(法国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (Canada)" value="英语(加拿大)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Dutch" value="荷兰语"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="Dutch (Netherlands)" value="荷兰语 (荷兰)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (Australia)" value="英语(澳大利亚)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (Canada)" value="英语(加拿大)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (United Kingdom)" value="英语(英国)"/>
+    <string key1="com.archibus.service.remoting.SecurityServiceImpl" key2="" key3="English (United States)" value="英语(美国)"/>
+    <string key1="com.archibus.service.remoting.SmartClientViewServiceImpl" key2="" key3="User does not have permission to edit field {0}.{1}" value="用户没有权限编辑字段 {0}.{1}"/>
+    <string key1="com.archibus.service.remoting.SmartClientViewServiceImpl" key2="" key3="A view named {0} already exists. You cannot save a second view with the same name" value="视图 {0} 已经存在. 第二个视图不能使用相同的名字"/>
+    <string key1="com.archibus.service.space.LeaseAreaUpdateTest" key2="" key3="Table Name is" value=""/>
+    <string key1="com.archibus.servlet.utility.FileTransfer" key2="" key3="The file is empty!" value="该文件为空！"/>
+    <string key1="com.archibus.servlet.utility.FileTransfer" key2="" key3="The size of the file is larger than allowed: [{0} Kb]." value="该文件的大小大于允许的大小: [{0} Kb]。"/>
+    <string key1="com.archibus.servletx.controller.DialogParameters" key2="" key3="Message" value="消息"/>
+    <string key1="com.archibus.servletx.controller.ErrorDialogParameters" key2="" key3="Error Message" value="错误消息"/>
+    <string key1="com.archibus.servletx.controller.ExceptionHandlerRendering" key2="" key3="The system has logged you out.  Please log in again, or close your browser to exit." value="系统已经退出. 请重新登陆，或者关闭浏览器退出。"/>
+    <string key1="com.archibus.servletx.controller.SecurityControllerImpl" key2="" key3="Your WebCentral session has expired, and for reasons of security and resource use the system has logged you out. Please log in again, or close your browser to exit." value="你的 WebCentral 进程结束了, 鉴于安全和节约资源的考虑, 系统结束您的登录. 请重新登录或退出浏览器."/>
+    <string key1="com.archibus.utility.EnumTemplate" key2="" key3="Invalid value=[{0}] for enumeration type=[{1}]" value="无效的数值 [{0}] 不符合枚举类型 [{1}]"/>
+    <string key1="com.archibus.utility.ExceptionBase" key2="" key3="Operation failed: {0}" value="操作失败: {0}"/>
+    <string key1="com.archibus.utility.ExceptionHandlerBase" key2="" key3="The system has logged you out. Please log in again, or close your browser to exit." value="系统已经退出. 请重新登陆，或者关闭浏览器退出。"/>
+    <string key1="com.archibus.utility.FileUtil" key2="" key3="Saving file=[{0}]" value="保存文件 [{0}]"/>
+    <string key1="com.archibus.utility.MailMessage" key2="" key3="Invalid address: empty" value="无效地址: 空"/>
+    <string key1="com.archibus.utility.MailMessage" key2="" key3="Invalid address, does not contain &quot;@&quot;: [{0}]. [{1}]" value="无效地址，没有保含 &quot;@&quot;: [{0}]. [{1}]"/>
+    <string key1="com.archibus.utility.MailSender" key2="" key3="Invalid address list: [{0}]. [{1}]" value="无效地址列表: [{0}]. [{1}]"/>
+    <string key1="com.archibus.view.analysis.MdxConfiguration" key2="" key3="Count" value="计数"/>
+    <string key1="com.archibus.view.analysis.MdxConfiguration" key2="" key3="Total" value="合计"/>
+    <string key1="com.archibus.view.analysis.MdxConfiguration" key2="" key3="N/A" value="N/A"/>
+    <string key1="com.archibus.view.tablegroup.datasource.DataSourceUpdateImpl" key2="" key3="The old record(s) is missing, unable to update" value="缺少旧记录，无法更新"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Browse for Document" value="浏览文件"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Show Document" value="显示文档"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Check In New Document" value="载入新文档"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Check In New Version" value="签入新版本"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Check Out Document" value="检验文档"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Lock or Unlock Document" value="锁定或取消锁定文档"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Delete Document" value="删除文档"/>
+    <string key1="com.archibus.view.taghandler.FieldActionsSupport" key2="" key3="Select Value" value="选择值"/>
+    <string key1="com.archibus.view.taghandler.PanelSimpleTag" key2="" key3="Setting column attribute to value=[{0}]: value must be an integer &gt; 0!" value="设置列属性为=[{0}]: 值必须  &gt; 0 的整数!"/>
+    <string key1="com.archibus.view.taghandler.PanelSimpleTag" key2="" key3="Calendar" value="日历"/>
+    <string key1="com.archibus.view.taghandler.PanelSimpleTag" key2="" key3="Upload a document" value="日历"/>
+    <string key1="com.archibus.view.taghandler.ViewSimpleTag" key2="" key3="*Demo*" value="*演示*"/>
+    <string key1="com.archibus.view.taghandler.render.field.FieldRendererDate" key2="" key3="Calendar" value="日历"/>
+    <string key1="com.archibus.view.taghandler.render.field.FieldRendererDocument" key2=""  key3="Upload a document" value="上传文档"/>
+    <string key1="com.archibus.view.taghandler.ViewSimpleTag" key2="" key3="**For demonstration only. Not for production use.**" value="**只能用于演示目的. 不能用于生产目的.**"/>
+    <string key1="com.archibus.view.ViewLoader" key2="" key3="You do not have permission for this view" value="您对此视图没有权限"/>
+  </locale>
+</afmLocalizedStrings>

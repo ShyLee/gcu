@@ -1,0 +1,419 @@
+<view version="2.0">
+
+  <js file="ab-msds-def-locs.js"/>
+
+  <message name="valuesVary" translatable="true">VARIES</message>
+ 
+  <layout type="borderLayout" id="mainLayout">
+    <north initialSize="55%" split="true"/>
+    <center id="assignmentRegion" autoScroll="true"/>
+  </layout>
+
+  <layout type="borderLayout" id="nest_north" containingLayout="mainLayout" region="north">
+    <west id="msdsRegion" initialSize="50%" split="true"/>
+    <center id="locationRegion" autoScroll="true"/>
+  </layout>
+
+  <title translatable="true">Assign MSDS Locations</title>
+
+  <panel type="view" id="msdsDataSharedDataSourceView" file="ab-msds-data-ds.axvw"/>
+
+  <dataSource id="abRiskMsdsDefLocsLocationDS">
+    <sql dialect="generic">
+      SELECT
+      bl.ctry_id ${sql.as} ctry_id,
+      bl.state_id ${sql.as} state_id,
+      bl.site_id ${sql.as} site_id,
+	  bl.bl_id ${sql.as} bl_id,
+      fl.fl_id ${sql.as} fl_id,
+      rm.rm_id ${sql.as} rm_id,
+      rm.rm_type ${sql.as} rm_type,
+      rm.rm_use ${sql.as} rm_use,
+      null ${sql.as} eq_std,
+      null ${sql.as} eq_id
+      from bl left join fl on bl.bl_id = fl.bl_id
+              left join rm on rm.bl_id = fl.bl_id and rm.fl_id = fl.fl_id
+	  
+      union
+
+      select
+      bl.ctry_id ${sql.as} ctry_id,
+      bl.state_id ${sql.as} state_id,
+      bl.site_id ${sql.as} site_id,
+			bl.bl_id ${sql.as} bl_id,
+			fl.fl_id ${sql.as} fl_id,
+      rm.rm_id ${sql.as} rm_id,
+      rm.rm_type ${sql.as} rm_type,
+      rm.rm_use ${sql.as} rm_use,
+      eq.eq_std ${sql.as} eq_std,
+      eq.eq_id ${sql.as} eq_id
+			from eq left join bl on eq.bl_id = bl.bl_id 
+                    left join fl on eq.bl_id=fl.bl_id and eq.fl_id=fl.fl_id
+                    left join rm on eq.bl_id=rm.bl_id and eq.fl_id=rm.fl_id and eq.rm_id=rm.rm_id
+			where eq.bl_id is not null
+            
+      union
+      
+      select
+      bl.ctry_id ${sql.as} ctry_id,
+      bl.state_id ${sql.as} state_id,
+      bl.site_id ${sql.as} site_id,
+	  bl.bl_id ${sql.as} bl_id,
+      fl.fl_id ${sql.as} fl_id,
+      null ${sql.as} rm_id,
+      null ${sql.as} rm_type,
+      null ${sql.as} rm_use,
+      null ${sql.as} eq_std,
+      null ${sql.as} eq_id
+      from bl left join fl on bl.bl_id = fl.bl_id
+              left join rm on rm.bl_id = fl.bl_id and rm.fl_id = fl.fl_id
+              where rm.rm_id is not null 
+		     
+      union
+      
+      select
+      bl.ctry_id ${sql.as} ctry_id,
+      bl.state_id ${sql.as} state_id,
+      bl.site_id ${sql.as} site_id,
+      bl.bl_id ${sql.as} bl_id,
+      null ${sql.as} fl_id,
+      null ${sql.as} rm_id,
+      null ${sql.as} rm_type,
+      null ${sql.as} rm_use,
+      null ${sql.as} eq_std,
+      null ${sql.as} eq_id
+      from bl left join fl on bl.bl_id = fl.bl_id
+              left join rm on rm.bl_id = fl.bl_id and rm.fl_id = fl.fl_id
+              where fl.fl_id is not null 	 
+    </sql>
+    <table name="rm" role="main"/>
+    <field name="site_id" dataType="text">
+      <title translatable="true">Site Code</title>
+    </field>
+    <field table="rm" name="bl_id"/>
+    <field table="rm" name="fl_id"/>
+    <field table="rm" name="rm_id"/>
+    <field name="eq_id" dataType="text">
+      <title translatable="true">Equipment Code</title>
+    </field>    
+    <field name="eq_std" dataType="text">
+      <title translatable="true">Equipment Standard</title>
+    </field>
+    <field table="rm" name="rm_type"/>
+    <field table="rm" name="rm_use"/>    
+  </dataSource>
+
+  <panel type="console" columns="2" id="abRiskMsdsDefLocsMsdsConsole" dataSource="abRiskMsdsDataDS" showOnLoad="false" hidden="true" newRecord="true">
+    <title translatable="true">MSDS Filter</title>
+    <action id="show">
+      <title translatable="true">Show</title>
+      <command type="callFunction" functionName="closeAbRiskMsdsDefLocsMsdsConsoleWindow" />
+    </action>
+    <action id="clear">
+      <title translatable="true">Clear</title>
+      <command type="clearPanel" panelId="abRiskMsdsDefLocsMsdsConsole"/>      
+      <command type="showPanel" panelId="abRiskMsdsDefLocsMsdsList"/>
+    </action>
+    <field table="msds_data" name="ghs_id"/>
+    <field table="msds_data" name="product_code"/>
+    <field table="msds_data" name="product_name" required="false"/>
+    <field table="msds_data" name="chemical_name"/>
+    <field table="msds_data" name="manufacturer_id" required="false">
+        <action>
+            <title translatable="false">...</title>
+            <tooltip translatable="true">Select Value</tooltip>
+            <command type="selectValue"
+                selectValueType="multiple" 
+                restriction="   company IN (SELECT DISTINCT(manufacturer_id) FROM msds_data  ) "
+                fieldNames="msds_data.manufacturer_id"
+                selectFieldNames="company.company"
+                visibleFieldNames="company.company, company.city_id, company.state_id, company.ctry_id, company.comments">
+            </command>
+        </action>
+    </field>
+    <field table="msds_data" name="distributor_id">
+        <action>
+            <title translatable="false">...</title>
+            <tooltip translatable="true">Select Value</tooltip>
+            <command type="selectValue"
+                selectValueType="multiple" 
+                restriction="   company IN (SELECT DISTINCT(distributor_id) FROM msds_data  ) "
+                fieldNames="msds_data.distributor_id"
+                selectFieldNames="company.company"
+                visibleFieldNames="company.company, company.city_id, company.state_id, company.ctry_id, company.comments">
+            </command>
+        </action>
+    </field>
+    <field table="msds_data" name="preparer_id">
+        <action>
+            <title translatable="false">...</title>
+            <tooltip translatable="true">Select Value</tooltip>
+            <command type="selectValue"
+                selectValueType="multiple" 
+                restriction="   company IN (SELECT DISTINCT(preparer_id) FROM msds_data  ) "
+                fieldNames="msds_data.preparer_id"
+                selectFieldNames="company.company"
+                visibleFieldNames="company.company, company.city_id, company.state_id, company.ctry_id, company.comments">
+            </command>
+        </action>
+    </field>
+  </panel>
+
+  <panel type="grid" id="abRiskMsdsDefLocsMsdsList" multipleSelectionEnabled="true" dataSource="abRiskMsdsDataDS" layoutRegion="msdsRegion" showIndexAndFilterOnLoad="true">
+    <title translatable="true">Select MSDS</title>
+    <action id="assign">
+      <title translatable="true">Assign to Selected Locations</title>
+    </action>
+    <action id="filter" imageName="/schema/ab-system/graphics/ab-filter-run.gif">
+      <tooltip>Filter</tooltip>
+    </action>
+    <field table="msds_data" name="ghs_id"/>
+    <field table="msds_data" name="manufacturer_id"/>
+    <field table="msds_data" name="product_name"/>
+    <field table="msds_data" name="chemical_name"/>
+    <field table="msds_data" name="product_code"/>
+    <field table="msds_data" name="description"/>
+  </panel>
+
+  <panel type="console" columns="2" id="abRiskMsdsDefLocsLocationConsole" dataSource="abRiskMsdsDefLocsLocationDS" showOnLoad="false" hidden="true" newRecord="true">
+    <title translatable="true">Location Filter</title>
+    <action id="show">
+      <title translatable="true">Show</title>
+      <command type="showPanel" panelId="abRiskMsdsDefLocsLocationList" />
+      <command type="callFunction" functionName="closeAbRiskMsdsDefLocsLocationConsoleWindow" />
+    </action>
+    <action id="clear">
+      <title translatable="true">Clear</title>
+      <command type="clearPanel" panelId="abRiskMsdsDefLocsLocationConsole"/>
+      <command type="showPanel" panelId="abRiskMsdsDefLocsLocationList"/>
+    </action>
+    <field name="ctry_id" dataType="text" required="false" selectValueType="multiple">
+      <title translatable="true">Country Code</title>
+      <action>
+        <command type="selectValue" fieldNames="rm.ctry_id" selectFieldNames="bl.ctry_id" visibleFieldNames="bl.ctry_id" applyFilter="true" selectValueType="multiple">
+        </command>
+      </action>
+    </field>
+    <field/>
+    <field name="site_id"  dataType="text" required="false" selectValueType="multiple">
+      <title translatable="true">Site Code</title>
+      <action>
+        <command type="selectValue" fieldNames="rm.ctry_id,rm.site_id" selectFieldNames="bl.ctry_id,site.site_id" visibleFieldNames="bl.ctry_id,site.site_id" applyFilter="true" selectValueType="multiple">
+        </command>
+      </action>
+    </field>
+    <field table="rm" name="bl_id" selectValueType="multiple" required="false">
+      <action>
+        <command type="selectValue" fieldNames="rm.ctry_id,rm.site_id,rm.bl_id" selectFieldNames="bl.ctry_id,bl.site_id,bl.bl_id" visibleFieldNames="bl.site_id,bl.bl_id,bl.name" applyFilter="true" selectValueType="multiple">
+        </command>
+      </action>
+    </field>
+    <field table="rm" name="fl_id" selectValueType="multiple" required="false">
+      <action>
+        <command type="selectValue" fieldNames="rm.ctry_id,rm.site_id,rm.bl_id,rm.fl_id" selectFieldNames="bl.ctry_id,bl.site_id,bl.bl_id,fl.fl_id" visibleFieldNames="bl.site_id,bl.bl_id,fl.fl_id" applyFilter="true" selectValueType="multiple">
+        </command>
+      </action>
+    </field>
+    <field table="rm" name="rm_id" selectValueType="multiple" required="false">
+      <action>
+        <command type="selectValue" fieldNames="rm.ctry_id,rm.site_id,rm.bl_id,rm.fl_id,rm.rm_id" selectFieldNames="bl.ctry_id,bl.site_id,bl.bl_id,fl.fl_id,rm.rm_id" visibleFieldNames="bl.site_id,bl.bl_id,rm.fl_id,rm.rm_id" applyFilter="true" selectValueType="multiple">
+        </command>
+      </action>
+    </field>  
+    <field table="rm" name="rm_type" selectValueType="multiple" required="false"/>
+    <field table="rm" name="rm_use" selectValueType="multiple" required="false"/>
+    <field name="eq_std" required="false" dataType="text" selectValueType="multiple">
+      <title translatable="true">Equipment Standard</title>
+      <action>
+        <command type="selectValue" fieldNames="rm.eq_std" selectFieldNames="eq.eq_std" visibleFieldNames="eq.eq_std" applyFilter="true" selectValueType="multiple">
+        </command>
+      </action>
+    </field>
+    <field name="eq_id" required="false" dataType="text" selectValueType="multiple">
+      <title translatable="true">Equipment Code</title>
+      <action>
+        <command type="selectValue" fieldNames="rm.eq_id" selectFieldNames="eq.eq_id" visibleFieldNames="eq.eq_id,eq.eq_std" applyFilter="true" selectValueType="multiple">
+        </command>
+      </action>
+    </field>
+  </panel>
+
+  <panel type="grid" id="abRiskMsdsDefLocsLocationList" multipleSelectionEnabled="true" dataSource="abRiskMsdsDefLocsLocationDS" layoutRegion="locationRegion" showIndexAndFilterOnLoad="true">
+    <title translatable="true">Select Locations</title>
+    <action id="assignmentshow">
+       <title translatable="true">Show Assignments at Selected Locations</title>
+       <command type="showPanel" panelId="abRiskMsdsDefLocsAssignmentList" applyParentRestriction="true"/>
+    </action>
+    <action id="filter" imageName="/schema/ab-system/graphics/ab-filter-run.gif">
+      <tooltip>Filter</tooltip>
+    </action>
+    <sortField table="rm" name="site_id" ascending="true"/>
+    <sortField table="rm" name="bl_id" ascending="true"/>
+    <sortField table="rm" name="fl_id" ascending="true"/>
+    <sortField table="rm" name="rm_id" ascending="true"/>
+  </panel>
+
+  <dataSource id="abRiskMsdsDefLocsAssignmentDS">
+    <table name="msds_location" role="main"/>
+    <table name="msds_data" role="standard"/>
+    <field table="msds_data" name="manufacturer_id" required="false"/>
+    <field table="msds_data" name="product_name" required="false"/>
+    <field table="msds_location" name="quantity"/>
+    <field table="msds_location" name="container_cat"/>
+    <field table="msds_location" name="quantity_units_type"/>
+    <field table="msds_location" name="container_type"/>
+    <field table="msds_location" name="quantity_units"/>
+    <field table="msds_location" name="num_containers"/>
+    <field table="msds_location" name="evacuation_radius"/>
+    <field table="msds_location" name="temperature"/>
+    <field table="msds_location" name="evacuation_radius_units"/>
+    <field table="msds_location" name="temperature_units"/>
+    <field table="msds_location" name="evacuation_radius_units_type"/>
+    <field table="msds_location" name="pressure"/>
+    <field table="msds_location" name="date_updated"/>
+    <field table="msds_location" name="pressure_units"/>
+    <field table="msds_location" name="description"/>
+    <field table="msds_location" name="msds_id" hidden="true"/>
+    <field table="msds_location" name="bl_id" hidden="true"/>
+    <field table="msds_location" name="fl_id" hidden="true"/>
+    <field table="msds_location" name="rm_id" hidden="true"/>
+    <field table="msds_location" name="auto_number" hidden="true"/>
+    <field table="msds_location" name="site_id" hidden="true"/>
+    <field table="msds_location" name="eq_id" hidden="true"/>
+    <field table="msds_location" name="pressure_units_type"/>
+    <field table="msds_location" name="date_start" hidden="true"/>
+    <field table="msds_location" name="date_end" hidden="true"/>
+  </dataSource>
+
+  <panel type="form" columns="2" id="abRiskMsdsDefLocsAssignmentForm" dataSource="abRiskMsdsDefLocsAssignmentDS" showOnLoad="false" hidden="true">
+    <title translatable="true">Define MSDS Location Details</title>
+    <action id="update">
+      <title translatable="true">Apply to Selected Location Assignments</title>
+      <command type="callFunction" functionName="applyToSelectedAssignments" />
+      <command type="showPanel" panelId="abRiskMsdsDefLocsAssignmentList" applyParentRestriction="false"/>
+    </action>
+    <action id="cancel">
+      <title translatable="true">Cancel</title>
+      <command type="closeDialog"/>
+    </action>
+    <instructions translatable="true">[b]Caution:[/b] Existing values for one or more fields vary among the selected records.  If you choose to Apply to Selected Location Assignments, the application will save values from this window to all selected records.  Click Cancel to exit this window and modify the selection if desired.</instructions>
+    <field table="msds_data" name="manufacturer_id" required="false" readOnly="true"/>
+    <field table="msds_data" name="product_name" required="false" readOnly="true"/>
+    <field table="msds_location" name="quantity"/>
+    <field table="msds_location" name="container_cat">
+      <action>
+        		<command type="selectValue" 
+				 fieldNames="msds_location.container_cat" 
+				 selectFieldNames="hazard_container_cat.container_cat" 
+				 visibleFieldNames="hazard_container_cat.container_cat,hazard_container_cat.description" 
+				 restriction="hazard_container_cat.activity_id='AbRiskMSDS'" 
+				 >
+        </command>
+      </action>
+    </field>
+    <field table="msds_location" name="quantity_units_type">
+      <action>
+        		<command type="selectValue" 
+				 fieldNames="msds_location.quantity_units_type" 
+				 selectFieldNames="bill_type.bill_type_id" 
+				 visibleFieldNames="bill_type.bill_type_id" 
+				 restriction="bill_type.bill_type_id='MSDS - VOLUME' OR bill_type.bill_type_id='MSDS - MASS'" 
+				 >
+        </command>
+      </action>
+    </field>
+    <field table="msds_location" name="container_type">
+      <action>
+        		<command type="selectValue"
+        		 applyFilter="true"        		 
+				 fieldNames="msds_location.container_cat,msds_location.container_type" 
+				 selectFieldNames="hazard_container_type.container_cat, hazard_container_type.container_type" 
+				 visibleFieldNames="hazard_container_type.container_cat, hazard_container_type.container_type" 
+				 restriction="EXISTS(SELECT 1 FROM hazard_container_cat WHERE hazard_container_cat.container_cat= hazard_container_type.container_cat AND hazard_container_cat.activity_id='AbRiskMSDS')" 
+				 >
+        </command>
+      </action>
+    </field>
+    <field table="msds_location" name="quantity_units">
+      <action>
+        		<command type="selectValue"
+        		 applyFilter="true" 
+				 fieldNames="msds_location.quantity_units,msds_location.quantity_units_type" 
+				 selectFieldNames="bill_unit.bill_unit_id,bill_unit.bill_type_id" 
+				 visibleFieldNames="bill_unit.bill_type_id,bill_unit.bill_unit_id" 
+				 restriction="EXISTS(SELECT 1 FROM bill_type WHERE bill_type.bill_type_id=bill_unit.bill_type_id AND (bill_unit.bill_type_id='MSDS - VOLUME' OR bill_unit.bill_type_id='MSDS - MASS'))" 
+				 >
+        </command>
+      </action>
+    </field>
+    <field table="msds_location" name="num_containers"/>
+    <field table="msds_location" name="evacuation_radius"/>
+    <field table="msds_location" name="temperature"/>
+    <field table="msds_location" name="evacuation_radius_units">
+      <action>
+        		<command type="selectValue" 
+				 fieldNames="msds_location.evacuation_radius_units,msds_location.evacuation_radius_units_type" 
+				 selectFieldNames="bill_unit.bill_unit_id,bill_unit.bill_type_id" 
+				 visibleFieldNames="bill_unit.bill_type_id,bill_unit.bill_unit_id" 
+				 restriction="bill_unit.bill_type_id='MSDS - DISTANCE'" 
+				 >
+          <title>Evacuation Radius Units</title>
+        </command>
+      </action>
+    </field>
+    <field table="msds_location" name="temperature_units"/>
+    <field table="msds_location" name="evacuation_radius_units_type" hidden="true"/>
+    <field table="msds_location" name="pressure"/>
+    <field table="msds_location" name="date_start"/>
+    <field table="msds_location" name="pressure_units">
+      <action>
+        		<command type="selectValue" 
+				 fieldNames="msds_location.pressure_units,msds_location.pressure_units_type" 
+				 selectFieldNames="bill_unit.bill_unit_id,bill_unit.bill_type_id" 
+				 visibleFieldNames="bill_unit.bill_type_id,bill_unit.bill_unit_id" 
+				 restriction="bill_unit.bill_type_id='MSDS - PRESSURE'" 
+				 >
+          <title>Pressure Units</title>
+        </command>
+      </action>
+    </field>
+    <field table="msds_location" name="date_end"/>
+    <field table="msds_location" name="date_updated"/>
+    <field/>
+    <field table="msds_location" name="description" colspan="2"/>
+    <field table="msds_location" name="pressure_units_type" hidden="true"/>
+    <field table="msds_location" name="auto_number" hidden="true"/>
+  </panel>
+
+  <panel type="grid" multipleSelectionEnabled="true" showOnLoad="false" id="abRiskMsdsDefLocsAssignmentList" dataSource="abRiskMsdsDefLocsAssignmentDS" layoutRegion="assignmentRegion">
+    <title translatable="true">MSDS Location Assignments</title>
+        <action id="editselected">
+            <title translatable="true">Edit Selected Details</title>
+        </action>
+    <action id="unassign">
+      <title translatable="true">Unassign Selected</title>
+    </action>
+		<field table="msds_location" name="bl_id"/>			
+		<field table="msds_location" name="fl_id"/>
+		<field table="msds_location" name="rm_id"/>
+		<field table="msds_location" name="eq_id"/>
+        <field table="msds_data" name="product_name"/>
+        <field table="msds_location" name="quantity"/>
+		<field table="msds_location" name="quantity_units"/>
+        <field table="msds_location" name="container_cat"/>
+		<field table="msds_location" name="container_type"/>
+		<field table="msds_location" name="date_updated"/>
+        <field table="msds_location" name="auto_number" hidden="true"/>
+        <field table="msds_data" name="manufacturer_id" hidden="true"/>        
+        <field table="msds_location" name="quantity_units_type" hidden="true"/>        
+        <field table="msds_location" name="num_containers" hidden="true"/>
+        <field table="msds_location" name="evacuation_radius" hidden="true"/>
+        <field table="msds_location" name="temperature" hidden="true"/>
+        <field table="msds_location" name="evacuation_radius_units" hidden="true"/>
+        <field table="msds_location" name="temperature_units" hidden="true"/>
+        <field table="msds_location" name="evacuation_radius_units_type" hidden="true"/>
+        <field table="msds_location" name="pressure" hidden="true"/>        
+        <field table="msds_location" name="description" hidden="true"/>
+  </panel>
+  
+</view>

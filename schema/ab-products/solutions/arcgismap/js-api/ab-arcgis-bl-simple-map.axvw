@@ -1,0 +1,47 @@
+<!-- simple map show buildings  -->
+
+<view version="2.0" docType="html4/strict">
+  <title>Example: Simple Map </title>
+  <js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+  <js file="ab-arcgis-map.js"/>
+  <js file="ab-arcgis-bl-simple-map.js"/>
+  <css file="ab-arcgis-map.css"/>
+  <css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css" />
+
+  <dataSource id="bl_ds">
+    <table name="bl" role="main"/>
+    <field name="bl_id" table="bl"/>
+    <field name="address1" table="bl"/>
+    <field name="city_id" table="bl"/>
+    <field name="state_id" table="bl"/>
+    <field name="ctry_id" table="bl"/>
+    <field name="lat" table="bl"/>
+    <field name="lon" table="bl"/>
+  </dataSource>
+
+  <panel type="html" id="mapPanel">
+    <title translatable="true">Map</title>
+    <html>    
+		<div id="map" style="width:100%; height:800px;"> </div>
+      	<div id="meta">
+		<div id="metaCloseButton"></div>
+		<h3>Map Navigation (Mouse) :</h3>
+		<ul>
+			<li>Click + Drag to Pan</li>
+			<li>Shift + Click to Recenter</li>
+			<li>Double-Click to Center and Zoom In</li>
+			<li>Shift + Click + Drag to Zoom Window</li>
+			<li>Mouse Scroll Forward to Zoom In</li>
+			<li>Mouse Scroll Backward to Zoom Out</li>			
+		</ul>
+		<h3>Map Navigation (Keyboard) :</h3>
+		<ul>
+			<li>Arrow Keys to Pan</li>
+			<li>+ Key to Zoom In</li>			
+			<li>- Key to Zoom Out</li>
+		</ul>
+		</div>
+    </html>
+  </panel>
+  
+</view>

@@ -1,0 +1,37 @@
+<!-- Add details view of the reserved room -->
+<view version="2.0">
+    <message translatable="true" name="selectRoomAndTimeError">You must select a Room and a time period to validate this step</message>
+    <message translatable="true" name="timeSelectedNotAvailable">The selected time period for this reservation is occupied;please change the time or date period</message>
+    <message translatable="true" name="selectTimeError">The start time must be earlier than the end time</message>
+    
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <dataSource id="ds_ab-rr-reserve-rm-adddetails_form_reserve_rm">
+        <table name="reserve_rm" role="main"/>
+        <field table="reserve_rm" name="time_start"/>
+        <field table="reserve_rm" name="time_end"/>
+        <field table="reserve_rm" name="comments"/>
+        <restriction type="sql" sql="rmres_id IS NULL"/>
+    </dataSource>
+    
+    <panel id="addReservDetailsPanel" type="form" columns="2" dataSource="ds_ab-rr-reserve-rm-adddetails_form_reserve_rm">
+        <title translatable="true">Add Reservation Details</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+			<command type="closeDialog"/>
+        </action>
+		
+        <field table="reserve_rm" name="time_start" readOnly="false" required="false"/>
+        <field table="reserve_rm" name="time_end" readOnly="false" required="false"/>
+        <field table="reserve_rm" name="comments" colspan="2" readOnly="false" required="false"/>
+    </panel>
+    
+    <!-- JS functions specific to this pop-up -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-reserve-rm-adddetails.js"/>
+</view>

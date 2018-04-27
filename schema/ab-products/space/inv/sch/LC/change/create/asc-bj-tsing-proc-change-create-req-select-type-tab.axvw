@@ -1,0 +1,144 @@
+<view version="2.0">
+   
+     <layout id="main">
+        <north id="requestPosition" initialSize="15%" split="true"/>
+        <center  id="gridPosition" />
+     </layout>
+      <layout id="centerLayout"  containingLayout="main" region="center">
+        <north  id="searchWest" split="true" initialSize="30%"></north>
+         <center  id="xieyiNorth"/>
+    </layout>
+	 <message name="messageConfirmUndo" translatable="true">Are you sure undo this request [{0}] ?</message>
+   
+	<dataSource id="activityTypeDs">
+		<table name="activitytype" role="main" />
+		<field name="activity_type" table="activitytype" />
+		<field name="prob_type" table="activitytype" />
+		<field name="description" table="activitytype" />
+		<field name="group_name" table="activitytype" />	
+		<parameter name="activityType" dataType="text" value=""/>
+        <restriction type="sql" 
+        sql="activity_type=${parameters['activityType']} AND (group_name IS not  NULL and
+        EXISTS (SELECT group_name FROM afm_groupsforroles WHERE role_name = 
+        (SELECT role_name FROM afm_users WHERE user_name=${sql.literal(user.name)}) 
+        AND activitytype.group_name LIKE afm_groupsforroles.group_name))" />
+    </dataSource>
+    
+    <panel type="grid" controlType="reportGrid" id="ascBjUsmsProcAsgnCreateReqSelectTypeTabGrid" showOnLoad="true" dataSource="activityTypeDs" layoutRegion="requestPosition">
+        <title translatable="true">Request Types</title>
+        
+        <field controlType="button"  width="100"  id="select">
+            <title translatable="true">Select</title>
+<!--             <command type="callFunction" functionName="selectNextTab(this.restriction['activitytype.activity_type'])"/> -->
+        </field>
+        <field name="activity_type" table="activitytype" width="150"/>
+        <field name="prob_type" table="activitytype"/>
+        <field name="description" table="activitytype">
+            <title translatable="true">Work Flow</title>
+        </field>
+    </panel>
+    
+    <dataSource id="ascBjUsmsProcAsgnReviewReqSelectTabDS1">
+        <table name="activity_log" role="main"/>
+        <table name="activity_log_hactivity_log" role="standard"/>
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_log_id" table="activity_log_hactivity_log"/>
+        <field name="status" table="activity_log_hactivity_log"/>
+        <field name="requestor" table="activity_log_hactivity_log"/>
+
+        <field name="prob_type" table="activity_log_hactivity_log"/>
+        <field name="activity_type" table="activity_log_hactivity_log"/>
+        <field name="date_requested" table="activity_log_hactivity_log"/>
+        <field name="description" table="activity_log_hactivity_log"/>
+        <parameter name="activityType" dataType="text" value=""/>
+        <restriction type="sql" sql="activity_log_hactivity_log.requestor = '${user.name}'   AND activity_log_hactivity_log.activity_type= ${parameters['activityType']}"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnReviewReqSelectTabGrid" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnReviewReqSelectTabDS1" layoutRegion="searchWest" showOnLoad="true">
+        <title translatable="true">Requests</title>
+        
+        <sortField table="activity_log_hactivity_log" name="date_requested" ascending="false"/>
+        <field name="activity_log_id" table="activity_log" />
+        <field name="activity_log_id" table="activity_log_hactivity_log" width="100">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log_hactivity_log" />
+        <field name="requestor" table="activity_log_hactivity_log" />
+        <field name="status" table="activity_log_hactivity_log"/>
+        <field name="date_requested" table="activity_log_hactivity_log"/>
+        <field name="description" table="activity_log_hactivity_log"/>
+    </panel>
+	
+ 
+	<dataSource id="editActivityLogDS">
+	    <table name="activity_log" role="main"/>      
+        <table name="activity_log_step_waiting" role="standard"/>      
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>        
+        <field name="prob_type" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="user_name"/>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log_step_waiting" name="step_type"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>
+        <parameter name="activityType" dataType="text" value=""/>
+        <restriction type="sql"
+         sql="activity_log.activity_type= ${parameters['activityType']} AND activity_log.status ='CREATED'"/>
+
+	</dataSource>
+  
+   <panel type="grid" id="editGrid" controlType="reportGrid" dataSource="editActivityLogDS" layoutRegion="xieyiNorth" showOnLoad="true">
+        <title translatable="true">editList</title>       
+        <sortField table="activity_log" name="activity_log_id" ascending="false"/>
+        <!-- 点击进入审批页面 -->
+        <field controlType="button"  width="100" id="delete">        
+            <title translatable="true">delete</title>                      
+        </field>
+        <field controlType="button"  width="100" id="edit">        
+            <title translatable="true">edit</title>                      
+        </field>
+        <field name="activity_log_id" table="activity_log">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log">
+            <title translatable="true">Request Type</title>
+        </field>      
+        <field name="requestor" table="activity_log"/>     
+        <field name="status" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+    </panel>
+   
+   <dataSource id="tsRmTuChangeLogDS">
+      <table name="ts_rm_tu_change_log" role="main" />     
+      <field name="site_id" table="ts_rm_tu_change_log"/>
+      <field name="pr_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_name" table="ts_rm_tu_change_log"/>
+      <field name="fl_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_use" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat" table="ts_rm_tu_change_log"/>
+      <field name="rm_type" table="ts_rm_tu_change_log"/>
+      <field name="use_desc" table="ts_rm_tu_change_log"/>
+      <field name="rm_name" table="ts_rm_tu_change_log"/>
+      <field name="rm_use_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_type_after" table="ts_rm_tu_change_log"/>
+      <field name="use_desc_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_name_after" table="ts_rm_tu_change_log"/>
+      <field name="oper_dv_id" table="ts_rm_tu_change_log"/>
+      <field name="oper_em_id" table="ts_rm_tu_change_log"/>
+      <field name="oper_em_name" table="ts_rm_tu_change_log"/>
+      <field name="oper_date" table="ts_rm_tu_change_log"/>
+      <field name="activity_log_id" table="ts_rm_tu_change_log"/>
+            
+    </dataSource>
+	
+<js file="asc-bj-tsing-proc-change-create-req-select-type-tab.js"/>
+</view>

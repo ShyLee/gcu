@@ -1,0 +1,12 @@
+<view version="2.0">
+    <title translatable="true">Discipline And Award</title>
+    
+    <tabs id="createRequestTabs" tabRefreshPolicy="never">
+        <tab name="disciplineTab" selected="true" file="asc-bj-dorm-data-discipline.axvw">
+            <title translatable="true">Discipline</title>
+        </tab>
+        <tab name="awardTab" file="asc-bj-dorm-data-award.axvw">
+            <title translatable="true">Award</title>
+        </tab>
+    </tabs>
+</view>

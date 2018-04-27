@@ -1,0 +1,125 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="teacherGrid" initialSize="50%" split="true"/>
+        <center id="teacherForm" />
+    </layout>
+    
+	<message name="total" translatable="true">Total</message>
+	<message name="secondGridTitle" translatable="true">QuanXiaoJiaoZhiGongShiJiShiYongMianJi--{0}</message>
+	
+	
+	<!-- datasource for em-details report -->
+    <dataSource id="ds_asc-bj-usms-overall-em-rm-by-zhic-whole_grid_em">
+		<table name="em" role="main" />
+		<table name="rm" role="standard" />
+		<table name="dv" role="standard" />
+		<table name="dp" role="standard" />
+		<table name="sc_dinge_jibie" role="standard" />
+		<field table="em" name="em_id" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="em" name="name" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="em" name="sex" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="em" name="dv_id" hidden="true"/>
+		<field table="dv" name="name" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="em" name="bl_id" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="em" name="rm_id" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="rm" name="area" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="rm" name="count_em" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="sc_dinge_jibie" name="area" hidden="true" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field table="em" name="area_rm" controlType="link">
+				<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field name="zhan_count_rm" dataType="number" decimals="2" controlType="link">
+			<title translatable="true">ZhanYongFangJianShu</title>
+			<sql dialect="generic">
+    	          CASE WHEN rm.count_em=0 THEN 0 ELSE (1/rm.count_em) END 
+            </sql>
+            <command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		<field name="diff_area" dataType="number" decimals="2" controlType="link">
+			<title translatable="true">MianJiChaE</title>
+			<sql dialect="generic">
+    	          em.area_rm- sc_dinge_jibie.area
+            </sql>
+            	<command type="showPanel" panelId="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid"/>
+		</field>
+		
+	</dataSource>
+	
+	 <dataSource id="ds_asc-bj-usms-overall-em-rm-by-zhic-whole_form_em">
+		<table name="em" role="main" />
+		<table name="dv" role="standard" />
+		<table name="dp" role="standard" />
+		<field table="em" name="sex"/>
+	    <field table="em" name="name"/> 
+        <field table="em" name="em_id"/>
+        <field table="em" name="date_chusheng"/>
+        <field table="em" name="minzu"/>
+        <field table="em" name="zhic_id"/>
+		<field table="em" name="zhiw_id"/>
+        <field table="em" name="zhic_bz_id"/>
+        <field table="em" name="gangwei_id"/>
+        <field table="em" name="biaozhunshenfen_id"/>
+        <field table="em" name="gangweijibie_id"/>
+        <field table="em" name="zaigangzhuangtai_id"/>
+        <field table="em" name="email"/>
+        <field table="em" name="zhengzhimianmao"/>
+        <field table="em" name="phone"/>
+        <field table="em" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="em" name="phone_home"/>
+        <field table="em" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name"/>
+        <field table="em" name="bl_id"/>
+		<field table="em" name="fl_id"/>
+        <field table="em" name="em_photo"/>
+        <field table="em" name="rm_id"/>
+        <field table="em" name="dingejibie_id"/>
+		<field table="em" name="shanchang"/>
+		<field table="em" name="project_id" />
+		
+		<field table="em" name="date_join_work"/>
+		<field table="em" name="date_work_begin"/>
+        <field table="em" name="date_zhuanzheng"/>
+		<field table="em" name="identi_code"/>
+		<field table="em" name="xueli" />
+		
+	</dataSource>
+	
+	
+	<panel  type="grid"  id="ascBjUsmsOverallEmRmByZhicWhole_emGrid" dataSource="ds_asc-bj-usms-overall-em-rm-by-zhic-whole_grid_em" showOnLoad="true" layoutRegion="teacherGrid">
+        <title translatable="true">QuanXiaoJiaoZhiGongShiJiShiYongMianJi</title>
+		<sortField name="em_id" table="em" ascending="true" />
+    </panel>
+	
+
+    <panel type="columnReport"  columns="3" id="ascBjUsmsOverallEmRmByZhicWhole_zhicGrid" dataSource="ds_asc-bj-usms-overall-em-rm-by-zhic-whole_form_em" showOnLoad="false" layoutRegion="teacherForm">
+        <title translatable="true">AnZhiChengTongJiFenXiJiaoZhiGongShiJiShiYongMianJi</title>
+		
+    </panel>
+
+   
+    
+    <js file="asc-bj-usms-dash-em-rm-stat-teach-dialog.js"/>
+	<js file="asc-bj-usms-overall-common.js"/>
+</view>

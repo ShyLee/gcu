@@ -1,0 +1,62 @@
+<view version="2.0">
+    <js file="ab-proj-stat-projs-bud-console.js"/>
+
+    <dataSource id="projStatProjsBudConsole_ds">        
+        <table name="project" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="ctry" role="standard"/>
+        <table name="program" role="standard"/>
+        <field name="project_id" table="project"/>
+        <field name="project_name" table="project"/>
+        <field name="date_start" table="project"/>
+        <field name="date_end" table="project"/>
+        <field name="status" table="project"/>
+        <field name="date_completed" table="project"/>
+        <field name="program_id" table="project"/>
+        <field name="program_type" table="program"/>
+        <field name="project_type" table="project"/>        
+        <field name="cost_budget" table="project"/>
+        <field name="cost_paid" table="project"/>
+        <field name="project_num" table="project"/>
+        <field name="contact_id" table="project"/>
+        <field name="site_id" table="project"/>
+        <field name="geo_region_id" table="ctry"/>
+        <field name="bl_id" table="project"/>
+        <field name="ctry_id" table="bl"/>
+    </dataSource>
+    
+    <panel id="projStatProjsBudConsole_console" showOnLoad="true" type="console" columns="1"
+        dataSource="projStatProjsBudConsole_ds">
+        <title>Filter Console</title>
+        <action id="show">
+            <title>Show</title>
+        </action>
+        <action id="clear">
+            <title>Clear</title>
+        </action>
+   			<field>
+            <title>Total by</title>
+               <html>
+                  <select class="inputField_box" id="groupBy" name="groupBy">
+                  		<option value="year" selected="1"><span translatable="true">Year</span></option>
+                  		<option value="quarter"><span translatable="true">Quarter</span></option>
+                      <option value="month"><span translatable="true">Month</span></option>
+                  </select>
+               </html>
+        </field>  
+        <field>
+            <title translatable="true">Year</title>
+            <html>
+                <select class="inputField_box" id="year" name="year" onchange="yearListener()">
+                    <option value="All" selected="1"><span translatable="false"></span></option>
+                </select>
+            </html>
+        </field>
+        <field name="date_start" table="project" onchange="dateListener()">
+            <title>From Date</title>
+        </field>
+        <field name="date_end" table="project" onchange="dateListener()">
+            <title>To Date</title>
+        </field>
+    </panel>
+</view>

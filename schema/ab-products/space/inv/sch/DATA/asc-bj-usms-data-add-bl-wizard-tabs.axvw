@@ -1,0 +1,41 @@
+<view version="2.0">
+	<title translatable="true">Add New</title>
+	<js file="asc-bj-usms-data-add-bl-wizard-tabs.js"/>
+	<message name="title_building" translatable="true">Building</message>
+	<message name="label_action" translatable="true">Action:</message>
+	<message name="label_action_add" translatable="true">Add New</message>
+	<message name="label_action_edit" translatable="true">Edit Existing</message>
+	<message name="label_action_delete" translatable="true">Delete</message>
+	<message name="label_type_building" translatable="true">Building Name:</message>
+	<message name="label_type_land" translatable="true">Property Code:</message>
+	<message name="label_type_lease" translatable="true">Lease</message>
+	<message name="label_lease" translatable="true">Lease Code:</message>
+	<message name="itemType_building" translatable="true">Building</message>
+	<message name="itemType_land" translatable="true">Land</message>
+	<message name="itemType_structure" translatable="true">Structure</message>
+    
+    <tabs workflow="free" id="wizardTabs" tabRefreshPolicy="refreshOnLoad">
+		<!-- <event type="afterTabChange">
+		</event> -->
+		
+	    <tab name="wizardTabs_0" file="asc-bj-usms-data-bl-wizard-type-tab1.axvw" selected="true" useFrame="true">
+		    <title translatable="true">Action and Type</title>
+	    </tab>
+	
+	    <tab name="wizardTabs_1" file="asc-bj-usms-data-bl-wizard-structure-tab2.axvw" useFrame="true">
+		    <title translatable="true">Structure Information</title>
+	    </tab>
+	    <tab name="wizardTabs_2" file="asc-bj-usms-data-bl-wizard-build-tab3.axvw" useFrame="true">
+		    <title translatable="true">Build Information</title>
+	    </tab>
+	    <tab name="wizardTabs_3" file="asc-bj-usms-data-bl-wizard-ownership-tab4.axvw" useFrame="true">
+		    <title translatable="true">Ownership Information</title>
+	    </tab>
+		<tab name="wizardTabs_4" file="asc-bj-usms-data-bl-wizard-asset-tab5.axvw" useFrame="true">
+		    <title translatable="true">Assets Information</title>
+	    </tab>
+	  
+	  
+	</tabs>
+</view>
+

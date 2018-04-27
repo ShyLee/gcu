@@ -1,0 +1,25 @@
+<view version="2.0">
+	<dataSource id="abExReportGridRowActionDetails_ds_0">
+		<table name="project" role="main"/>
+		<table name="projecttype" role="standard"/>
+		<field name="project_id" table="project"/>
+		<field name="status" table="project"/>
+		<field name="date_start" table="project"/>
+		<field name="date_end" table="project"/>
+		<field name="requestor" table="project"/>
+		<field name="description" table="project"/>
+	</dataSource>
+
+	<panel type="grid" id="abExReportGridRowActionDetails_detailsPanel" dataSource="abExReportGridRowActionDetails_ds_0">
+		<title translatable="true">Details</title>
+		<field name="project_id" table="project"/>
+		<field name="status" table="project"/>
+		<field name="description" table="project"/>
+		<field name="date_start" table="project">
+			<title translatable="true">Start Date</title>
+		</field>
+		<field name="date_end" table="project">
+			<title translatable="true">End Date</title>
+		</field>
+	</panel>
+</view>

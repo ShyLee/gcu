@@ -1,0 +1,15 @@
+<view version="2.0">
+    
+    <panel id="projStatProjsSummInfo_info" type="html" dataSource="none" showOnLoad="true">
+        <html><h1 style="font-size:14px">Project Totals by Status</h1>
+        <p style="font-size:11px">Review project totals by status.  Select a Project Status to restrict projects shown in the chart and Progress Status Report.
+        <br/>- Show My Projects: Show only projects for which you are listed as a project team member or as the Project Manager, Requestor or Department Contact.  The Filter is applied to all panels on the page. 
+        <br/>- Filter all panels by Program, Type, Status, Person or Location using the Custom Filter console.
+        <br/></p>        
+        <ul style="font-size:11px">
+            <li><b>Count: </b>Number of projects.</li>
+            <li><b>Duration - Est. (Days) - Sum: </b>Sum of Project durations.  </li>
+            <li><b>Budgeted Cost - Sum: </b>Sum of Budgeted Project costs.  </li>
+        </ul></html>
+    </panel>
+</view>

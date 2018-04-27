@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <!-- UsernameSourcePreAuthenticatedProcessingFilter is a pre-authenticated filter which obtains username 
+        and other values supplied in the request (in headers, or in cookies, or in HttpServletRequest.getRemoteUser()), 
+        for use with SSO systems. Will create Authentication object (and attach it to the SecurityContextHolder), 
+        if such object does not exist yet. As with most pre-authenticated scenarios, it is essential that the 
+        external authentication system is set up correctly as this filter does no authentication whatsoever. 
+        All the protection is assumed to be provided externally and if this filter is included inappropriately 
+        in a configuration, it would be possible to assume the identity of a user merely by setting the correct 
+        header name. This also means it should not be used in combination with other Spring Security authentication 
+        mechanisms such as form login, as this would imply there was a means of bypassing the external system 
+        which would be risky. -->
+    <bean id="authenticationProcessingFilter"
+        class="org.springframework.security.ui.preauth.UsernameSourcePreAuthenticatedProcessingFilter"
+        p:authenticationManager-ref="authenticationManager" p:usernameSource-ref="usernameSource"
+        p:authenticationDetailsSource-ref="authenticationDetailsSource">
+    </bean>
+
+    <!-- All rendering and DWR remoting calls requests are intercepted by the SecurityFilter. Handles 
+        delayed exceptions; redirection. SecurityFilter has to be intercepted by the SecurityControllerInterceptor. 
+        SecurityFilter has to be preceded by the ContextFilter in the filter chain. -->
+    <bean id="securityFilter" class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="javax.servlet.Filter">
+        <property name="target">
+            <bean class="com.archibus.servletx.SecurityFilter"></bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityControllerInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- SecurityControllerInterceptor manages current UserSession in Context. SecurityControllerInterceptor 
+        prepares properties of the existing Context for a particular HTTP user session, including SecurityController, 
+        Project, UserAccount, UserSession. Manages lifecycle and persistence of the SecurityController. SecurityController 
+        handles authorization of requests: decides if user is allowed to see the requested JSP, depending on 
+        whether user is authenticated or not (and forwards to the correct JSP, if necessary). Has two main states: 
+        NotAuthenticated and Authenticated. NotAuthenticated has sub-states (wasLogout=true/false), used for 
+        error reporting. Supplies the model (from MVC) for the JSP, as part of the context: DialogParameters. 
+        Handles exceptions (happened outside of the controller, supplied as an argument). Listens to valueUnbound 
+        HttpSessionBindingEvent to detect HTTP session timeout. Handles login/logout. There is one instance of 
+        the SecurityController created for each HTTP request. SecurityController has State. The State is stored 
+        in HTTP session as an attribute, and retrieved/saved on each request. -->
+    <bean id="securityControllerInterceptor" class="com.archibus.service.interceptor.SecurityControllerInterceptor"
+        p:preauth="true" p:loginIfNot="${autoLogin}" p:userId="${autoLogin.userId}" p:password="${autoLogin.password}"
+        p:projectId="${autoLogin.projectId}">
+    </bean>
+
+    <!-- All CXF remoting call requests should be intercepted by the DummyFilter. DummyFilter does nothing; 
+        it's goal is to be intercepted by the SecurityControllerInterceptor. -->
+    <bean id="dummyFilter" class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="javax.servlet.Filter">
+        <property name="target">
+            <bean class="com.archibus.servletx.DummyFilter"></bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityControllerInterceptor</value>
+            </list>
+        </property>
+    </bean>
+</beans>

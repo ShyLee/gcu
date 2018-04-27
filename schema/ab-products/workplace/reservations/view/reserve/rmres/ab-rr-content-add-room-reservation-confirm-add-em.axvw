@@ -1,0 +1,40 @@
+<view version="2.0">
+	<title translatable="true">Internal Employee</title>
+
+	<message translatable="true" name="tooManyRows">Too many rows selected, it exceeds the number of the invitations</message>
+    
+	<dataSource id="emDs">
+		<table name="em" role="main" />
+
+		<field name="em_id" table="em" />
+		<field name="email" table="em" />
+		<field name="phone" table="em" />
+		<field name="bl_id" table="em" />
+		<field name="fl_id" table="em" />
+		<field name="dp_id" table="em" />
+		<field name="dv_id" table="em" />
+		<field name="em_std" table="em" />
+	</dataSource>
+
+	<!-- Trade grid list -->
+	<panel type="grid" id="em_list" showOnLoad="true" multipleSelectionEnabled="true" dataSource="emDs">
+		<title translatable="true">Employees</title>
+		<action>
+			<title translatable="true">Select</title>
+			<command type="callFunction" functionName="selectEmail('em_list', 'em.email')" />
+		</action>
+
+		<field name="em_id" table="em" />
+		<field name="email" table="em" />
+		<field name="phone" table="em" />
+		<field name="bl_id" table="em" />
+		<field name="fl_id" table="em" />
+		<field name="dp_id" table="em" />
+		<field name="dv_id" table="em" />
+		<field name="em_std" table="em" />
+		
+		<sortField name="em_id" table="em" ascending="true" />
+	</panel>
+	
+	<js file="ab-rr-content-add-room-reservation-confirm-add.js" />
+</view>

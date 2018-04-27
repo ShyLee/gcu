@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <!-- ========================= Filter definitions ========================= -->
+
+    <!-- 1. ContextInterceptor creates and assembles Context, including ConfigManager and Spring application 
+        context. Must be the first interceptor in the chain. 
+        2. ExceptionHandlingInterceptor handles exceptions: 
+        maps non-ARCHIBUS exceptions to user-friendly ExceptionBase, logs, translates, prepares value object 
+        for remoting, re-throws. Context is optional here. This interceptor should be configured to intercept 
+        the first filter in a chain, and any service, so that any exceptions thrown by any filter or servlet 
+        or service would be processed correctly. 
+        3. HttpSessionContextIntegrationFilter creates SecurityContext 
+        and populates it with information obtained from the HttpSession. This filter MUST be executed BEFORE 
+        any authentication processing mechanisms. Authentication processing mechanisms (eg BASIC, CAS processing 
+        filters etc) expect the SecurityContextHolder to contain a valid SecurityContext by the time they execute. -->
+    <bean id="httpSessionContextIntegrationFilter" class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="javax.servlet.Filter">
+        <property name="target">
+            <bean class="org.springframework.security.context.HttpSessionContextIntegrationFilter">
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>contextInterceptor</value>
+                <value>exceptionHandlingInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- All rendering and remote service call (DWR remoting) requests are intercepted by the ContextFilter. 
+        ContextFilter performs HTTP request/response - related operations with Context. ContextFilter continues 
+        assembling Context: it sets HTTP session, request and response in the context (the Context must already 
+        exist: it has to be created by the ContextInterceptor). ContextFilter also logs the HTTP request. ContextFilter 
+        has to be before any ARCHIBUS filters in the filter chain. -->
+    <bean id="contextFilter" class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="javax.servlet.Filter">
+        <property name="target">
+            <bean class="com.archibus.servletx.ContextFilter"/>
+        </property>
+        <property name="interceptorNames">
+            <list></list>
+        </property>
+    </bean>
+
+</beans>

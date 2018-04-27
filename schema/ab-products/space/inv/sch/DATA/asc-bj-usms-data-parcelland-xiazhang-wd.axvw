@@ -1,0 +1,66 @@
+<view version="2.0">
+
+
+	<dataSource id="ds_asc-bj-usms-data-parcelland-xiazhang-wd">
+		<table name="sc_parcelland_xz" role="main" />
+		
+		<field table="sc_parcelland_xz" name="land_code" />
+		<field table="sc_parcelland_xz" name="date_xiazhang" />
+		<field table="sc_parcelland_xz" name="status" />
+		<field table="sc_parcelland_xz" name="date_approved" />
+		<field table="sc_parcelland_xz" name="approved_by" />
+		<field table="sc_parcelland_xz" name="approved_dv" />
+		<field table="sc_parcelland_xz" name="approved_doc" />
+		<field table="sc_parcelland_xz" name="operator_xiazhang" />
+		<field table="sc_parcelland_xz" name="date_operate" />
+		<field table="sc_parcelland_xz" name="value_net"/>
+		<field table="sc_parcelland_xz" name="handle_modality"/>
+		<field table="sc_parcelland_xz" name="disposal_proceeds"/>
+		
+	</dataSource>
+
+	<panel type="form" id="ascBjUsmsDataParcellandXiazhangWdForm" columns="2"
+		dataSource="ds_asc-bj-usms-data-parcelland-xiazhang-wd" 
+		showOnLoad="true">
+		<title translatable="true"></title>
+		<action id="save" >
+			<title translatable="true">XiaZhang</title>
+		</action>
+	
+		<action id="cancel">
+			<title translatable="true">Cancel</title>
+			<command type="closeDialog" panelId="ascBjUsmsDataParcellandXiazhangWdForm"/>
+		</action>
+		<field table="sc_parcelland_xz" name="land_code" hidden="true"/>
+		<field table="sc_parcelland_xz" name="date_xiazhang" required="true"/>
+		<!-- <field table="sc_parcelland_xz" name="status" required="true"/> -->
+		<field table="sc_parcelland_xz" name="date_approved" required="true"/>
+		<field table="sc_parcelland_xz" name="approved_by" required="true">
+			<action>
+        		<title>...</title>
+        		<command type="selectValue" 
+        		   fieldNames="sc_parcelland_xz.approved_by,sc_parcelland_xz.approved_dv" 
+        		   selectFieldNames="em.em_id,dv.name" 
+        		   visibleFieldNames="em.em_id,em.name,dv.name"/>
+      		</action>
+		</field>
+		<field table="sc_parcelland_xz" name="approved_dv" required="true">
+			<action>
+        		<title>...</title>
+        		<command type="selectValue" 
+        		   fieldNames="sc_parcelland_xz.approved_by,sc_parcelland_xz.approved_dv" 
+        		   selectFieldNames="em.em_id,dv.name" 
+        		   visibleFieldNames="em.em_id,em.name,dv.name"/>
+      		</action>
+		</field>
+		<field table="sc_parcelland_xz" name="approved_doc" required="true"/>
+		<field table="sc_parcelland_xz" name="value_net" required="true"/>
+		<field table="sc_parcelland_xz" name="handle_modality" required="true"/>
+		<field name="operator_xiazhang" table="sc_parcelland_xz" readOnly="true" value="${user.name}"/>
+		<field table="sc_parcelland_xz" name="date_operate" readOnly="true"/>
+		<field table="sc_parcelland_xz" name="disposal_proceeds" required="true"/>
+		<field/>
+	</panel>
+	<js file="asc-bj-usms-data-parcelland-xiazhang-wd.js" />
+	<js file="ab-helpdesk-common-v2.js" />
+</view>

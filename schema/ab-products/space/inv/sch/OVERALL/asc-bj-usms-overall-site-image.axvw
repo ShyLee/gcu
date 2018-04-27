@@ -1,0 +1,24 @@
+<view version="2.0">
+	
+	<message name="noImage" translatable="true">Mei You Gai Xiao Qu Tu</message>
+	<!-- dataSource for site image -->
+    <dataSource id="ds_asc-bj-usms-overall-site-image_site">
+    	<table name="site" role="main"/>
+		
+		<!--basic info-->
+		<field table="site" name="site_id"/>
+		<field table="site" name="site_image"/>
+		
+	    <parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="site.site_id=${parameters['siteIdRes']}"/>
+    </dataSource>
+	
+	<panel type="form" id="sitePhotos" dataSource="ds_asc-bj-usms-overall-site-image_site">
+        <field table="site" name="site_id" hidden="true"/>
+		<field table="site" name="site_image" displayField="site_photo" hidden="true"/>
+		<!-- inline image display field -->
+		<field id="site_photo" controlType="image"  width="500" height="600"/>
+    </panel>
+    
+    <js file="asc-bj-usms-overall-site-image.js"/>
+</view>

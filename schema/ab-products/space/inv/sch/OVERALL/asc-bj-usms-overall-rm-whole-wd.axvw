@@ -1,0 +1,204 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="13%" split="true"/>
+        <center id="rmcatPosition"/>
+    </layout>
+    <message name="total" translatable="true">Total</message>
+	
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_asc-bj-usms-overall-rm-whole_grid_rm" type="grouping">
+    	<sql dialect="generic">
+    		SELECT rm.bl_id   ${sql.as} bl_id,
+			       rmcat.rmcat_name ${sql.as} rmcat_name,
+				   rmcat.description ${sql.as} rmcat_desc,
+			       rm.rm_cat  ${sql.as} rm_cat,
+				   count(rm.rm_id) ${sql.as} count_rm,
+                   CASE WHEN bl.gongtanlv =1 THEN 0 ELSE sum(rm.area)/(1-bl.gongtanlv) END ${sql.as} rmcat_bl_area_jianzhu,
+				   sum(rm.area)  ${sql.as} rmcat_bl_area_shiyong,
+				   rmcat.area_avg ${sql.as} area_avg 
+           FROM rm,bl,rmcat
+           WHERE rm.bl_id=bl.bl_id and  rm.rm_cat=rmcat.rm_cat and rm.rm_cat IS NOT NULL and bl.acc_type!='yxz' and bl.site_id is not null
+           GROUP BY rm.rm_cat, rmcat.rmcat_name, rmcat.area_avg,rmcat.description, rm.bl_id, bl.gongtanlv        
+        </sql>
+		<table name="rmcat" role="main" />
+		
+		<field table="rmcat" name="rmcat_name" groupBy="true" >
+			<title translatable="true">Lei Bie Bian Ma</title>
+        </field>
+		
+		<field table="rmcat" name="rm_cat" groupBy="true" >
+			<title translatable="true">Room Category</title>
+        </field>
+		
+		<field table="rmcat" name="rmcat_desc" groupBy="true" >
+			<title translatable="true">Description</title>
+        </field>
+		
+		<field name="total_count_rm" formula="SUM" dataType="number" 
+			baseField="rmcat.count_rm" decimals="0">
+			<title translatable="true">Room Count</title>
+		</field>
+		
+		<field name="total_area_jianzhu" formula="SUM" dataType="number" 
+			baseField="rmcat.rmcat_bl_area_jianzhu" decimals="2" >
+			<title translatable="true">Structure Area</title>
+		</field>
+		
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="rmcat.rmcat_bl_area_shiyong" decimals="2">
+			<title translatable="true">Usable Area</title>
+		</field>
+		
+		<field name="percent_area" formula="SUM" dataType="number"  
+		   baseField="rmcat.area_avg"  decimals="2">
+			<title translatable="true">Zhan Bi</title>
+		</field>
+		
+		<sortField name="rm_cat" table="rmcat" ascending="true" />
+	</dataSource>
+	
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_asc-bj-usms-overall-rm-whole_noServ_grid_rm" type="grouping">
+    	<sql dialect="generic">
+    		SELECT rm.bl_id   ${sql.as} bl_id,
+			       rmcat.rmcat_name ${sql.as} rmcat_name,
+				   rmcat.description ${sql.as} rmcat_desc,
+			       rm.rm_cat  ${sql.as} rm_cat,
+                   CASE WHEN bl.share_serv_rate =1 THEN 0 ELSE sum(rm.area)/(1-bl.share_serv_rate) END ${sql.as} rmcat_bl_area_jianzhu,
+				   sum(rm.area)  ${sql.as} rmcat_bl_area_shiyong,
+				   rmcat.area_avg ${sql.as} area_avg 
+           FROM rm,bl,rmcat
+           WHERE rm.bl_id=bl.bl_id and  rm.rm_cat=rmcat.rm_cat and rm.rm_cat IS NOT NULL 
+		    and bl.acc_type!='yxz' and bl.site_id is not null and rm.rm_cat != 'SERV'
+           GROUP BY rm.rm_cat, rmcat.rmcat_name, rmcat.area_avg,rmcat.description, rm.bl_id, bl.share_serv_rate    	    
+        </sql>
+		<table name="rmcat" role="main" />
+		
+		<field table="rmcat" name="rmcat_name" groupBy="true" >
+			
+        </field>
+		
+		<field table="rmcat" name="rm_cat" groupBy="true" >
+			<title translatable="true">Room Category</title>
+        </field>
+		
+		<field table="rmcat" name="rmcat_desc" groupBy="true" >
+			<title translatable="true">Description</title>
+        </field>
+		
+		<field name="total_area_jianzhu" formula="SUM" dataType="number" 
+			baseField="rmcat.rmcat_bl_area_jianzhu" decimals="2" >
+			<title translatable="true">Structure Area</title>
+		</field>
+		
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="rmcat.rmcat_bl_area_shiyong" decimals="2">
+			<title translatable="true">Usable Area</title>
+		</field>
+		
+		<field name="percent_area" formula="SUM" dataType="number"  
+		   baseField="rmcat.area_avg"  decimals="2">
+			<title translatable="true">Zhan Bi</title>
+		</field>
+		
+		<sortField name="rm_cat" table="rmcat" ascending="true" />
+	</dataSource>
+	
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-rm-whole_basic_school">
+    	<table name="sc_school" role="main"/>
+		
+		<!--basic info-->
+		<field table="sc_school" name="sch_name"/>
+		<field name="count_rmcat" dataType="number"  size="6" decimals="0">
+			<title translatable="true">Fang Wu Lei Bie shu</title>
+			<sql dialect="generic">
+    	          (SELECT count(*) FROM rmcat where exists( SELECT 1 FROM rm WHERE rm.rm_cat=rmcat.rm_cat))
+            </sql>
+		</field>
+    </dataSource>
+	
+	
+	<!-- whole school summary data-->
+    <panel type="columnReport" id="ascBjUsmsOverallRmWhole_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-rm-whole_basic_school" columns="3"  layoutRegion="sitePosition">
+    	<action id="fixedReport">
+			<title translatable="true">GuDingBaoBiao</title>
+		</action>
+		<!--row 1 -->
+		<field table="sc_school" name="sch_name">
+			<title translatable="true">Xiao Qu Name</title>
+		</field>
+		<field name="count_rmcat" dataType="number"  size="6" decimals="0">
+			<title translatable="true">Fang Wu Lei Bie shu</title>
+		</field>
+		<field/>
+    </panel>
+	
+    <tabs id="schWholeRmCatSumTabs"  layoutRegion="rmcatPosition">
+        <tab name="weiFenTan" selected="true">
+            <title translatable="true">weiFenTanServ</title>
+    		<panel type="grid" id="ascBjUsmsOverallRmWhole_rmcat1SumGrid" controlType="reportGrid" dataSource="ds_asc-bj-usms-overall-rm-whole_grid_rm">
+    			<title translatable="true">XueXiao SuoYou FangWu LeiBie</title>
+				<action id="exportXls">
+					<title translatable="true">XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallRmWhole_rmcat1SumGrid"/>
+				</action>
+				
+				<field name="rmcat_name"/>		
+				<field name="rm_cat"/>
+				<field name="rmcat_desc">
+					<title translatable="true">Description</title>
+        		</field>
+		
+				<field name="total_count_rm" dataType="number"	decimals="0">
+					<title translatable="true">Room Count</title>
+				</field>
+				
+				<field name="total_area_jianzhu" dataType="number"  decimals="2" >
+					<title translatable="true">Structure Area</title>
+				</field>
+		
+				<field name="total_area_shiyong" dataType="number" decimals="2">
+					<title translatable="true">Usable Area</title>
+				</field>
+				<field name="percent_area" dataType="number">
+					<title translatable="true">Zhan Bi</title>
+				</field>
+    		</panel>
+        </tab>
+		<tab name="yiFenTan" >
+            <title translatable="true">yiFenTanServ</title>
+    		<panel type="grid" id="ascBjUsmsOverallRmWhole_rmcat2SumGrid" controlType="reportGrid" dataSource="ds_asc-bj-usms-overall-rm-whole_noServ_grid_rm">
+    			<title translatable="true">XueXiao SuoYou FangWu LeiBie Chule Serv</title>
+				<action id="exportXls">
+					<title translatable="true">XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallRmWhole_rmcat2SumGrid"/>
+				</action>
+				<field name="rmcat_name"/>
+				<field name="rm_cat"/>
+				<field name="rmcat_desc">
+					<title translatable="true">Description</title>
+        		</field>
+				<field name="total_area_jianzhu" dataType="number"  decimals="2" >
+					<title translatable="true">Structure Area</title>
+				</field>
+		
+				<field name="total_area_shiyong" dataType="number" decimals="2">
+					<title translatable="true">Usable Area</title>
+				</field>
+				<field name="percent_area" dataType="number">
+					<title translatable="true">Zhan Bi</title>
+				</field>
+    		</panel>
+        </tab>
+    </tabs>
+	
+	
+    
+    <js file="asc-bj-usms-overall-rm-whole-wd.js"/>
+	<js file="asc-bj-usms-overall-common.js"/>
+</view>

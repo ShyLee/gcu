@@ -1,0 +1,69 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-approved-dialog.js"/>
+    <dataSource id="ascBjUsmsEqCheckMainDs">
+        <table name="eq_check_main" role="main"/>
+        <field table="eq_check_main" name="check_main_id"/>
+        <field table="eq_check_main" name="check_date_start"/>
+        <field table="eq_check_main" name="check_date_end"/>
+        <field table="eq_check_main" name="pub_person"/>
+        <field table="eq_check_main" name="is_done"/>
+        <field table="eq_check_main" name="check_name"/>
+        <field table="eq_check_main" name="res_option"/>
+        <field table="eq_check_main" name="check_option"/>
+        <field table="eq_check_main" name="check_doc"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqCheckReportDs">
+        <table name="eq_check_report" role="main"/>
+        <table name="em" role="standard"/>
+        <field table="eq_check_report" name="audit_date"/>
+        <field table="eq_check_report" name="audit_option"/>
+        <field table="eq_check_report" name="audit_person"/>
+        <field table="eq_check_report" name="audit_status"/>
+        <field table="eq_check_report" name="check_report_id"/>
+        <field table="eq_check_report" name="check_sum"/>
+        <field table="eq_check_report" name="check_main_id"/>
+        <field table="eq_check_report" name="check_date"/>
+        <field table="eq_check_report" name="check_person"/>
+        <field table="eq_check_report" name="check_person_name"/>
+        <field table="eq_check_report" name="dv_id"/>
+        <field table="eq_check_report" name="dvleader_option"/>
+        <field table="eq_check_report" name="storeman_option"/> 
+        <field table="eq_check_report" name="check_count"/>
+        <field table="eq_check_report" name="loss_count"/>
+        <field table="eq_check_report" name="pass_count"/>
+        <field table="eq_check_report" name="reject_count"/>
+    </dataSource>
+    
+    <panel type="form" id="eqCheckMainPanel" dataSource="ascBjUsmsEqCheckMainDs" columns="3">
+        <title translatable="true">eq_check_main</title>
+        <field table="eq_check_main" name="check_main_id" hidden="true"/>
+        <field table="eq_check_main" name="check_name" readOnly="true"/>
+        <field table="eq_check_main" name="check_date_start" readOnly="true"/>
+        <field table="eq_check_main" name="check_date_end" readOnly="true"/>
+        <field table="eq_check_main" name="pub_person" readOnly="true"/>
+        <field table="eq_check_main" name="is_done" readOnly="true"/>
+        
+        <field table="eq_check_main" name="check_doc" readOnly="true"/>
+        <field table="eq_check_main" name="res_option" readOnly="true" colspan="3"/>
+        <field table="eq_check_main" name="check_option" readOnly="true" colspan="3"/>
+        
+    </panel>
+    <panel type="form" id="eqCheckReportPanel" dataSource="ascBjUsmsEqCheckReportDs" columns="3">
+        <title translatable="true">eq Report Info</title>
+        <field table="eq_check_report" name="dv_id" readOnly="true"/>
+        <field table="eq_check_report" name="audit_date" hidden="true"/>
+        <field table="eq_check_report" name="audit_option" hidden="true"/>
+        <field table="eq_check_report" name="audit_person" hidden="true"/>
+        <field table="eq_check_report" name="audit_status" hidden="true"/>
+        <field table="eq_check_report" name="check_report_id" readOnly="true" hidden="true"/>
+        <field table="eq_check_report" name="check_sum" readOnly="true"/>
+        <field table="eq_check_report" name="check_main_id" readOnly="true" hidden="true"/>
+        <field table="eq_check_report" name="check_date" readOnly="true"/>
+        <field table="eq_check_report" name="check_person" readOnly="true" hidden="true"/>
+        <field table="eq_check_report" name="check_person_name" readOnly="true"/>
+        
+        <field table="eq_check_report" name="dvleader_option" readOnly="true" colspan="2"/>
+        <field table="eq_check_report" name="storeman_option" readOnly="true" colspan="3"/> 
+        
+    </panel>
+</view>

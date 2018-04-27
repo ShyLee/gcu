@@ -1,0 +1,39 @@
+<view version="2.0">
+            <js file="schema/ab-core/controls/progress/ab-progress.js"/>
+         
+            <js file="asc-bj-usms-house-common.js"/>
+            <js file="asc-bj-usms-eq-import.js" />      
+         <tabs id="importFileTabs" layoutRegion="importPanel">
+           
+            <tab name="importFileTabs_selection" useFrame="false" selected="true">
+              <title translatable="true">Import Files</title>
+                <panel type="html" id="selectionPanel" >
+                    <action id="import">
+                        <title translatable="true">Begin Import</title>
+                    </action>                    
+                    <html>
+                        <table id="selectionTable" class="panel">
+                          
+                            <tr id="in1">
+                                <td align="right">
+                                    <b translatable="true">Rent Excel</b>
+                                </td>
+                                <td>
+                                    <input type="file" id="inLocalFileBrow" name="filename" size="60">
+                                    </input>
+                                </td>
+                            </tr>
+                        </table>
+                    </html>
+                </panel>
+    
+            </tab>
+            <tab name="importFileTabs_progress" useFrame="false">
+                <title translatable="true">Import Progress</title>
+                <panel type="html" id="reportProgressPanel">
+           
+                </panel>
+            </tab>
+        </tabs>
+
+</view>

@@ -1,0 +1,211 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="12%" split="true"/>
+        <center />
+    </layout>
+	<layout id="nested_center" containingLayout="main" region="center">
+        <west  initialSize="50%" split="true"/>
+        <center />
+    </layout>
+	<layout id="nested_center_west" containingLayout="nested_center" region="west">
+        <center  id="teachDvChtPosition"/>
+        <south id="teachDvGridPosition" initialSize="39%" />
+    </layout>
+	<layout id="nested_center_center" containingLayout="nested_center" region="center">
+        <center  id="manageDvChtPosition"/>
+        <south id="manageDvGridPosition" initialSize="39%" />
+    </layout>
+    
+	<dataSource id="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" type="grouping">
+		<sql dialect="generic">
+    	   SELECT rm.bl_id  ${sql.as} bl_id,
+                      dv.dv_id ${sql.as} dv_id,
+					  dv.dv_code ${sql.as} dv_code,
+                      dv.bu_id ${sql.as} bu_id, 
+					  (SELECT count(em.em_id) FROM em WHERE em.dv_id=dv.dv_id) ${sql.as} count_em,
+					  dv.count_student ${sql.as} count_student,
+                      COUNT(rm.rm_id) ${sql.as} count_rm,
+                      SUM(rm.area) ${sql.as} dv_bl_area_shiyong,
+                      CASE WHEN bl.share_serv_rate =1 THEN 0 ELSE SUM(rm.area)/(1-bl.share_serv_rate) END ${sql.as} dv_bl_area_jianzhu
+                   FROM rm,bl,dv
+                   WHERE rm.bl_id=bl.bl_id and rm.dv_id=dv.dv_id  and bl.acc_type!='yxz' 
+				    and rm.dv_id IS NOT NULL and bl.site_id =${parameters['siteIdRes']}
+					and dv.bu_id in (select bu_id from bu where bu_class=${parameters['buClassRes']})
+                   GROUP BY rm.bl_id, dv.dv_id,dv.dv_code,dv.count_student,dv.bu_id, bl.share_serv_rate
+        UNION ALL
+              (
+                SELECT bl.bl_id ${sql.as} bl_id,
+                   bl.dv_use ${sql.as} dv_id,
+				   dv.dv_code ${sql.as} dv_code,
+                   dv.bu_id ${sql.as} bu_id,
+				   0 ${sql.as} count_em,
+				   0 ${sql.as} count_student,
+                   bl.count_rm_keyong ${sql.as} count_rm,
+                   bl.area_building_manual * (1-bl.share_serv_rate) ${sql.as} dv_bl_area_shiyong,
+                   bl.area_building_manual ${sql.as} dv_bl_area_jianzhu
+                FROM bl,dv
+                WHERE bl.dv_use=dv.dv_id  and bl.dv_use is not null and bl.acc_type != 'yxz' 
+				and bl.site_id =${parameters['siteIdRes']}
+				and dv.bu_id in (select bu_id from bu where bu_class=${parameters['buClassRes']})
+             )
+        UNION ALL (
+                SELECT br.bl_id ${sql.as} bl_id,
+                    dv.dv_id ${sql.as} dv_id,
+					dv.dv_code ${sql.as} dv_code,
+                    dv.bu_id ${sql.as} bu_id,
+					0 ${sql.as} count_em,
+					0 ${sql.as} count_student,
+                    br.count_rm ${sql.as} count_rm,
+                    br.area_shiyong ${sql.as} dv_bl_area_shiyong,
+                    br.area_jianzhu ${sql.as} dv_bl_area_jianzhu
+                 FROM bl,sc_bl_rmcat br,dv
+                 WHERE bl.bl_id = br.bl_id and br.dv_use=dv.dv_id and bl.dv_use is null 
+				  and bl.acc_type != 'yxz' and bl.site_id =${parameters['siteIdRes']}
+				  and dv.bu_id in (select bu_id from bu where bu_class=${parameters['buClassRes']})
+               ) 
+	   </sql>
+    	<table name="dv" role="main" />
+    	
+		<field table="dv" name="bu_id" dataType="text" groupBy="true" >
+			<title translatable="true">Division Type</title>
+        </field>
+		<field table="dv" name="dv_code" dataType="text" groupBy="true" />
+		<field table="dv" name="dv_id" dataType="text" groupBy="true" >
+			<title translatable="true">Division Name</title>
+        </field>
+		
+		<field name="total_count_em" formula="SUM" dataType="number"
+		  baseField="dv.count_em"  decimals="0">
+			<title translatable="true">Employee Count</title>
+        </field>
+		
+		<field name="total_count_student" formula="SUM" dataType="number"
+		  baseField="dv.count_student"  decimals="0">
+			<title translatable="true">Student Count</title>
+        </field>
+		
+		<field name="total_count_rm" formula="SUM" dataType="number" 
+			baseField="dv.count_rm" decimals="0">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="dv.dv_bl_area_shiyong" decimals="2">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		<field name="total_area_jianzhu" formula="SUM" dataType="number" 
+			baseField="dv.dv_bl_area_jianzhu" decimals="2" >
+			<title translatable="true">Total Structure Area</title>
+		</field>
+		
+		<parameter name="siteIdRes" dataType="text" value=""/>
+		<parameter name="buClassRes" dataType="text" value=""/>
+	</dataSource>
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-dept-occu-dash-main_basic_site">
+    	<table name="site" role="main"/>
+		
+		<!--basic info-->
+		<field table="site" name="name"/>
+		
+	    <parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="site.site_id=${parameters['siteIdRes']}"/>
+    </dataSource>
+	
+	<!-- base university info panel-->
+    <panel type="columnReport" id="ascBjUsmsOverallDeptOccuDashMain_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_basic_site" columns="3"  layoutRegion="sitePosition">
+    	<!-- row 1-->
+		<field table="site" name="name"/>
+		
+    </panel>
+	
+	<!-- The Teaching Divisions Chart Panel -->
+	<panel 	id="ascBjUsmsOverallDeptOccuDashMainTeachChtPie" 
+    		type="chart" 
+    		controlType="columnChart" 
+    		dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" 
+    		showLegendOnLoad="false"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillColor="0xff0000"
+    		fillType="solid"
+			layoutRegion="teachDvChtPosition">
+		<title translatable="true">XueXiaoSuoYouJiaoXueKeYanDanWei</title>
+        <groupingAxis dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" table="dv" field="dv_id" labelRotation="45">
+            <title translatable="true">Jiao Xue Dan Wei</title>
+        </groupingAxis>
+        <dataAxis dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" table="dv" field="total_area_shiyong" labelPosition="callout">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+	
+	<!-- The Management Divisions Chart Panel -->
+	<panel 	id="ascBjUsmsOverallDeptOccuDashMainMangeChtPie" 
+    		type="chart" 
+    		controlType="columnChart" 
+    		dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" 
+    		showLegendOnLoad="false"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillColor="0xff0000"
+    		fillType="solid"
+			layoutRegion="manageDvChtPosition">
+		<title translatable="true">XueXiaoSuoYouDangZhengGuanLiDanWei</title>
+        <groupingAxis dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" table="dv" field="dv_id"  labelRotation="45">
+            <title translatable="true">Dang Zheng Guan Li Dan Wei</title>
+        </groupingAxis>
+        <dataAxis dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" table="dv" field="total_area_shiyong" labelPosition="callout">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+	
+	<!-- The Teaching Divisions Summary Data -->
+    <panel type="grid" id="ascBjUsmsOverallDeptOccuDashMain_teachDvSumGrid" dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" layoutRegion="teachDvGridPosition">
+    	<title translatable="true">Dan Wei Lei Xing : Jiao Xue Ke Yan</title>
+		<sortField name="dv_code" table="dv" ascending="true" />
+		<field table="dv" name="dv_id" dataType="text">
+			<title translatable="true">Jiao Xue Ke Yan Dan Wei</title>
+		</field>	
+		<field table="dv" name="total_area_shiyong" dataType="number" decimals="2">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		<field table="dv" name="total_count_rm" dataType="number" decimals="0">
+			<title translatable="true">Room Count</title>
+        </field>
+		<field table="dv" name="total_count_em" dataType="number" decimals="0">
+			<title translatable="true">Employee Count</title>
+        </field>
+		<field table="dv" name="total_count_student" dataType="number" decimals="0">
+			<title translatable="true">Student Count</title>
+        </field>
+    </panel>
+	
+	<!-- The Management Divisions Summary Data -->
+    <panel type="grid" id="ascBjUsmsOverallDeptOccuDashMain_manageDvSumGrid" dataSource="ds_asc-bj-usms-overall-dept-occu-dash-main_grid_dv" layoutRegion="manageDvGridPosition">
+    	<title translatable="true">Dan Wei Lei Xing : Dang Zheng Guan Li</title>
+		<sortField name="dv_code" table="dv" ascending="true" />
+		<field table="dv" name="dv_id" dataType="text">
+			<title translatable="true">Dang Zheng Guan Li Dan Wei</title>
+		</field>
+		<field table="dv" name="total_area_shiyong" dataType="number" decimals="2">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		<field table="dv" name="total_count_rm" dataType="number" decimals="0">
+			<title translatable="true">Room Count</title>
+        </field>
+		<field table="dv" name="total_count_em" dataType="number" decimals="0">
+			<title translatable="true">Employee Count</title>
+        </field>
+    </panel>
+	
+    
+    <js file="asc-bj-usms-overall-dp-rm-occu-dash-main-wd.js"/>
+	<js file="asc-bj-usms-constant.js"/>
+</view>

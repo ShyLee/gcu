@@ -1,0 +1,125 @@
+<view version="2.0">
+    <js file="ab-proj-stat-docs.js"/>
+    
+    <dataSource id="projStatDocsDs1">
+        <table name="activity_log" role="main"/>
+        <field name="activity_log_id" table="activity_log" />
+        <field name="action_title" table="activity_log" />
+        <field name="status" table="activity_log" />              
+        <field name="activity_type" table="activity_log" />                
+        <field name="project_id" table="activity_log" />               
+        <field name="proj_phase" table="activity_log" />             
+        <field name="work_pkg_id" table="activity_log" />              
+        <field name="site_id" table="activity_log" />
+        <field name="bl_id" table="activity_log" />
+        <field name="fl_id" table="activity_log" />
+        <field name="rm_id" table="activity_log" />
+        <field name="location" table="activity_log" />
+        <field name="prob_type" table="activity_log" />
+        <field name="tr_id" table="activity_log" />
+        <field name="wbs_id" table="activity_log" />
+        <field name="eq_id" table="activity_log" />
+        <field name="date_requested" table="activity_log" />
+        <field name="date_required" table="activity_log" />
+        <field name="date_scheduled" table="activity_log" />             
+        <field name="duration" table="activity_log" />
+        <field name="hours_est_design" table="activity_log" />
+        <field name="cost_est_design_cap" table="activity_log" />
+        <field name="cost_est_design_exp" table="activity_log" />
+        <field name="approved_by" table="activity_log"  />
+        <field name="created_by" table="activity_log" />
+        <field name="doc" table="activity_log" />
+        <field name="description" table="activity_log" colspan="2" />
+        <restriction type="sql" sql="doc IS NOT NULL AND project_id IS NOT NULL"/> 
+    </dataSource>
+    
+    <panel type="grid" id="projStatDocsGrid" dataSource="projStatDocsDs1" showOnLoad="false">
+        <title>Project Documents</title>
+        <sortField name="wbs_id" table="activity_log" />
+        <sortField name="action_title" table="activity_log"/>
+        <sortField name="activity_log_id" table="activity_log" />
+        <action id="addNew">
+            <title>Add</title>
+            <command type="openDialog" viewName="ab-proj-stat-docs-add.axvw" newRecord="true"/>
+        </action> 
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="projStatDocsGrid"/>
+        </action>      
+        <field name="action_title" table="activity_log" controlType="link">
+        		<command type="openDialog" viewName="ab-proj-stat-docs-edit.axvw"/>
+        </field>
+        <field name="activity_type" table="activity_log" controlType="link">
+        		<command type="openDialog" viewName="ab-proj-stat-docs-edit.axvw"/>
+        </field>
+        <field name="doc" table="activity_log" controlType="link"/>
+        <field name="description" table="activity_log" colspan="2" controlType="link">
+        		<command type="openDialog" viewName="ab-proj-stat-docs-edit.axvw"/>
+        </field>
+        <field name="date_requested" table="activity_log" controlType="link">
+        		<title>Date Created</title>
+        		<command type="openDialog" viewName="ab-proj-stat-docs-edit.axvw"/>
+        </field>
+        <field name="proj_phase" table="activity_log" controlType="link">
+        		<command type="openDialog" viewName="ab-proj-stat-docs-edit.axvw"/>
+        </field>
+        <field name="work_pkg_id" table="activity_log" controlType="link">
+        		<title>Package</title>
+        		<command type="openDialog" viewName="ab-proj-stat-docs-edit.axvw"/>
+        </field>
+        <field name="project_id" table="activity_log" hidden="true"/>
+        <field name="activity_log_id" table="activity_log" hidden="true"/>
+    </panel> 
+    
+    <dataSource id="projStatDocsDs2">
+        <table name="work_pkg_bids" role="main"/>
+        <table name="project" role="standard"/>
+        <table name="work_pkgs" role="standard"/>
+        <field name="work_pkg_id" table="work_pkg_bids"/>
+        <field name="work_pkg_id" table="work_pkgs"/>
+        <field name="project_id" table="work_pkgs"/>
+        <field name="project_id" table="work_pkg_bids"/>
+        <field name="project_name" table="project"/>
+        <field name="vn_id" table="work_pkg_bids" />
+        <field name="status" table="work_pkg_bids"/>
+        <field name="cost_bid" table="work_pkg_bids"/>
+        <field name="cost_contract" table="work_pkg_bids"/>
+        <field name="bid_type" table="work_pkg_bids"/>
+        <field name="date_approved" table="work_pkg_bids"/>
+        <field name="approved_by" table="work_pkg_bids" /> 
+        <field name="date_contract_start" table="work_pkg_bids" />
+        <field name="date_contract_end" table="work_pkg_bids" />
+        <field name="unit_quantity" table="work_pkg_bids" />
+        <field name="not_to_exceed" table="work_pkg_bids" />
+        <field name="duration_bidded" table="work_pkg_bids" />
+        <field name="date_submitted" table="work_pkg_bids" />                                                      
+        <field name="date_updated" table="work_pkg_bids" />
+        <field name="time_updated" table="work_pkg_bids" />
+        <field name="doc_proposal" table="work_pkg_bids"  />
+        <field name="doc_contract" table="work_pkg_bids" />
+        <field name="contact_id" table="work_pkg_bids" />  
+        <field name="date_warranty_exp" table="work_pkg_bids" />
+        <field name="warranty_desc" table="work_pkg_bids" />
+        <field name="payment_terms" table="work_pkg_bids" />
+        <field name="comments" table="work_pkg_bids" />
+        <restriction type="sql" sql="work_pkg_bids.status IN ('Approved','Contract Signed','In Process','In Process-On Hold','Completed','Completed and Verified','Paid In Full')"/>          
+    </dataSource>
+    <panel type="grid" id="projStatDocs_contracts" dataSource="projStatDocsDs2" showOnLoad="false" >
+    		<title>Contracts</title>
+    		<field name="work_pkg_id" table="work_pkg_bids"/>
+        <field name="vn_id" table="work_pkg_bids" />
+        <field name="status" table="work_pkg_bids"/>
+        <field name="doc_proposal" table="work_pkg_bids"  />
+        <field name="doc_contract" table="work_pkg_bids" />
+        <field name="cost_bid" table="work_pkg_bids"/>
+        <field name="cost_contract" table="work_pkg_bids"/>
+        <field name="date_contract_start" table="work_pkg_bids" />
+        <field name="date_contract_end" table="work_pkg_bids" />        
+        <field name="contact_id" table="work_pkg_bids" />  
+    </panel>
+</view>
+    
+ 
+ 
+ 
+ 

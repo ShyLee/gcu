@@ -1,0 +1,20 @@
+<view version="2.0">
+	<dataSource id="blDs">
+		<table name="bl" role="main" />
+		<field table="bl" name="bl_id" />
+		<field table="bl" name="bldg_photo" />
+	</dataSource>
+	<panel type="form" id="buildingPhotos" dataSource="blDs"  showOnLoad="true">
+		<field table="bl" name="bl_id" hidden="true" />
+		<field table="bl" name="bldg_photo" displayField="bl_photo" hidden="true" />
+		
+		<field></field>
+		<field></field>
+		<field rowspan="3">
+			<html>
+				<img  id="building_photo" style="width:400px;height:140px"/>
+			</html>
+		</field>
+	</panel>
+	<js file="asc-bj-usms-bl-pracelland-summary-info-image-tab.js"/>
+</view>

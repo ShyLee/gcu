@@ -1,0 +1,67 @@
+<view version="2.0">
+	<js file="asc-bj-dorm-pro-reward-info-dialog.js"/>
+	<dataSource id="proAwardDs">
+		<table name="sc_stu_property_log" role="main"/>
+		<table name="sc_stu_property" role="standard"/>
+		<field table="sc_stu_property_log" name="id"/>
+		<field table="sc_stu_property" name="id"/>
+		<field table="sc_stu_property_log" name="pro_id"/>
+		<field table="sc_stu_property_log" name="pro_name"/>
+		<field table="sc_stu_property" name="pro_name"/>
+		<field table="sc_stu_property_log" name="pro_sex"/>
+		<field table="sc_stu_property" name="pro_sex"/>
+		<field table="sc_stu_property_log" name="identi_code"/>
+		<field table="sc_stu_property" name="identi_code"/>
+		<field table="sc_stu_property_log" name="pro_type"/>
+		<field table="sc_stu_property" name="pro_type"/>
+		<field table="sc_stu_property_log" name="reward_type"/>
+		<field table="sc_stu_property_log" name="yearmonth"/>
+		<field table="sc_stu_property_log" name="date_reward"/>
+		<field table="sc_stu_property_log" name="reward_cause"/>
+		<field table="sc_stu_property_log" name="Doc1"/>
+	</dataSource>
+	<dataSource id="proEmInfoDS">
+		<table name="sc_stu_property" role="main"/>
+		<field table="sc_stu_property" name="id"/>
+		<field table="sc_stu_property" name="pro_name"/>
+		<field table="sc_stu_property" name="identi_code"/>
+		<field table="sc_stu_property" name="pro_sex"/>
+		<field table="sc_stu_property" name="pro_type"/>
+	</dataSource>
+	
+	<panel id="dengJiForm" type="form"  dataSource="proAwardDs" columns="2" newRecord="true">
+		<title translatable="true">Award DengJi</title>
+		<action id="awardSave">
+			<title>Save</title>
+			<command type="callFunction" functionName="controller.saveAward()"/>
+<!-- 			<command type="showPanel" panelId="dengJiForm"/> -->
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel" panelId="dengJiForm"/>
+		</action>
+		<field table="sc_stu_property_log" name="pro_id" hidden="true"/>
+		<field table="sc_stu_property_log" name="pro_name" required="true">
+			<action>
+                    <title>...</title>
+                    <tooltip>Select Value</tooltip>
+                    <command type="selectValue" 
+                        fieldNames="sc_stu_property_log.pro_id,sc_stu_property_log.pro_name,sc_stu_property_log.identi_code,sc_stu_property_log.pro_sex,sc_stu_property_log.pro_type"
+                        selectFieldNames="sc_stu_property.id,sc_stu_property.pro_name,sc_stu_property.identi_code,sc_stu_property.pro_sex,sc_stu_property.pro_type" 
+                        visibleFieldNames="sc_stu_property.pro_name,sc_stu_property.identi_code,sc_stu_property.pro_sex,sc_stu_property.pro_type"    
+                        actionListener="showProInfo"
+                        applyFilter="false"
+                        showIndex="false"/>
+               </action>
+		</field>
+	
+		<field table="sc_stu_property_log" name="identi_code" readOnly="true" required="true"/>
+		<field table="sc_stu_property_log" name="pro_sex" readOnly="true" />
+		<field table="sc_stu_property_log" name="pro_type" readOnly="true" />
+		<field table="sc_stu_property_log" name="reward_type" required="true"/>
+		<field table="sc_stu_property_log" name="yearmonth" required="true"/>
+		<field table="sc_stu_property_log" name="date_reward" required="true"/>
+		<field/>
+		<field table="sc_stu_property_log" name="reward_cause" colspan="2"/>
+	</panel>
+</view>

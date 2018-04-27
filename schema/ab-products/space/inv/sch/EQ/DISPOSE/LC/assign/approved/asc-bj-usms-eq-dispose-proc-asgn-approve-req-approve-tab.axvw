@@ -1,0 +1,349 @@
+<view version="2.0">
+    
+    <js file="asc-bj-usms-eq-dispose-proc-asgn-approve-req-approve-tab.js"/>
+    <js file="asc-bj-usms-proc-common.js"/>
+    
+    <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabFormDS">
+        <table name="activity_log" role="main"/>                    
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="bl_id" table="activity_log"/>
+        <field name="doc1" table="activity_log"/>
+        <field name="doc2" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <field name="rtr_dip_id" table="activity_log"/>
+        <field  table="activity_log" name="comments"/>
+       
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnApproveReqApproveTabForm1" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabFormDS" showOnLoad="false">
+        
+        <title translatable="true">Requestor</title>
+        
+        <action id="back">
+            <title translatable="true">Back</title>
+			<command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onBack()"/>
+        </action>
+        
+        <action id="approve">
+            <title translatable="true">ShenPi</title>
+			<command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onShowApproveWindow()"/>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="false" readOnly="true">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="dv_id" table="activity_log" readOnly="true">
+           <title translatable="true">ShengQingDanWei</title>
+        </field>
+        <field id="activity_log.requestor_name">
+			<title translatable="true">ShenQingRen</title>
+        </field>
+        <field table="activity_log" name="requestor" readOnly="true" hidden="true"/>
+		<field table="activity_log" name="phone_requestor" readOnly="true"/>
+        <field name="date_required" table="activity_log" readOnly="true" hidden="true"/>
+		<field name="rtr_dip_id" table="activity_log" hidden="true"/>
+        <field name="status" table="activity_log" hidden="true"/>
+    </panel>
+    
+
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnApproveReqApproveTabDestricptionForm" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabFormDS" showOnLoad="false">
+        
+        <title translatable="true">Description</title>
+        <field name="activity_log_id" table="activity_log" hidden="true"/>
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log" readOnly="true">
+            <title translatable="true">Request Type</title>
+        </field>
+        <field/>
+        <field table="activity_log" name="description"
+         colspan="4" style="width: 100%; height: 80px;"
+         showSelectValueAction="false" readOnly="true"/>
+	
+        <field name="priority" table="activity_log" hidden="true"/>
+    </panel>
+    
+    <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabHistoryPanelDS">
+        <table name="helpdesk_step_log" role="main"/>
+		<table name="em" role="standard"/>
+		
+        <table name="afm_wf_steps" role="standard"/>
+        <field name="step_log_id" table="helpdesk_step_log"/>
+        <field name="user_name" table="helpdesk_step_log"/>
+        <field name="em_id" table="helpdesk_step_log"/>
+		<field name="name" table="em"/>
+        <field name="vn_id" table="helpdesk_step_log"/>
+        <field name="date_response" table="helpdesk_step_log"/>
+        <field name="time_response" table="helpdesk_step_log"/>
+        <field name="step" table="afm_wf_steps"/>
+        <field name="status" table="afm_wf_steps"/>
+        <field name="step_status_result" table="helpdesk_step_log"/>
+        <field name="comments" table="helpdesk_step_log"/>
+    </dataSource>
+    
+    
+    <dataSource id="dispose_DS">
+    	<table name="return_dispose" role="main"/>
+    	<field table="return_dispose" name="rtr_dip_id" hidden="true"/>
+    	<field table="return_dispose" name="rtr_dip_name" readOnly="true"/>
+        <field table="return_dispose" name="date_request" readOnly="true"/>
+        <field table="return_dispose" name="request_by" readOnly="true" hidden="true"/>
+        <field table="return_dispose" name="dv_id" readOnly="true"/>
+        <field table="return_dispose" name="data_type" hidden="true"/>
+        <field table="return_dispose" name="description" readOnly="true"/>
+        <field table="return_dispose" name="audit_status" readOnly="true"/>
+        <field table="return_dispose" name="rtr_doc" readOnly="true"/>
+        <field table="return_dispose" name="comments" readOnly="true" colspan="3"/>
+    </dataSource>
+
+    <dataSource id="eq_change_DS">
+    	<table name="eq_change" role="main"/>
+        <table name="eq" role="standard"/>
+    	<field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id" hidden="true"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="eq_std"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq_change" name="dv_id"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="dp_id_old"/>
+        <field table="eq_change" name="dl_id_old"/>
+        <field table="eq_change" name="date_change"/>
+        <field table="eq_change" name="operator"/>
+        <field table="eq_change" name="type_adjust"/>
+        <field table="eq_change" name="status"/>
+        <field table="eq_change" name="date_appraisal"/>
+        <field table="eq_change" name="cost_old" showTotals="true"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq_change" name="cost"/>
+        <field table="eq_change" name="audit_status"/>
+        <field table="eq_change" name="check_status"/>
+        <field table="eq_change" name="change_reason"/>
+        <field table="eq_change" name="eq_change_doc"/>
+    </dataSource>
+    <dataSource id="eqChangeStatusDs">
+        <table name="eq_change" role="main"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="id"/>
+        <field table="eq_change" name="status"/>
+    </dataSource>
+    <dataSource id="eqStatusDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="sch_status"/>
+    </dataSource>
+    <dataSource id="eqChangeCountDs" type="grouping">
+    
+        <table name="eq_change" role="main"/>
+        <field table="eq_change" name="rtr_dip_id" groupBy="true"/>
+        <field name="countEq" formula="count" baseField="eq_change.eq_id" dataType="integer">
+            <title>countEq</title>
+        </field>
+    </dataSource>
+    <panel type="form" id="returnDisposePanel" recordLimit="100" dataSource="dispose_DS"  showOnLoad="false" columns="3">
+		<title translatable="true">dispose info</title>
+        <action id="report">
+            <title translatable="true">report</title>
+        </action>
+        <action id="reportAttr">
+            <title translatable="true">rportAttr</title>
+        </action>
+    </panel>
+    
+    <panel type="grid" id="eqChangePanel" dataSource="eq_change_DS" showOnLoad="false"  showCounts="true">
+		<title translatable="true">eq change list</title>
+		<action id="export:XLS">
+            <title translatable="true">Excel</title>
+            <command type="exportPanel" outputType="xls" panelId="eqChangePanelPrint"/>
+        </action>
+        <indexField table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id" hidden="true"/>
+        <field id="dispose" controlType="button">
+            <title translatable="true">dispose</title>
+        </field>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name" id="eq_name" controlType="link"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="eq_std"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq" name="num_serial">
+            <title>S/N</title>
+        </field>
+        <field table="eq_change" name="dv_id" hidden="true"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="dp_id_old"/>
+        <field table="eq_change" name="dl_id_old"/> 
+        <field table="eq_change" name="date_change"/>
+        <field table="eq_change" name="operator"/>
+        <field table="eq_change" name="type_adjust"/>
+        <field table="eq_change" name="status"/>
+        <field table="eq_change" name="date_appraisal"/>
+        <field table="eq_change" name="cost_old" showTotals="true"/>
+        <field table="eq_change" name="cost"  hidden="true"/>
+        <field table="eq_change" name="audit_status" hidden="true"/>
+        <field table="eq_change" name="check_status" hidden="true"/>
+    </panel>
+  <panel type="grid" id="eqChangePanelPrint" dataSource="eq_change_DS" showOnLoad="false"  showCounts="true">
+        <title translatable="true">eq change list</title>
+       
+        <field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id" hidden="true"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="eq_std"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq" name="num_serial">
+            <title>S/N</title>
+        </field>
+        <field table="eq_change" name="dv_id" hidden="true"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="dp_id_old"/>
+        <field table="eq_change" name="dl_id_old"/> 
+        <field table="eq_change" name="date_change"/>
+        <field table="eq_change" name="operator"/>
+        <field table="eq_change" name="type_adjust"/>
+        <field table="eq_change" name="status"/>
+        <field table="eq_change" name="date_appraisal"/>
+        <field table="eq_change" name="cost_old" showTotals="true"/>
+        <field table="eq_change" name="cost"  hidden="true"/>
+        <field table="eq_change" name="audit_status" hidden="true"/>
+        <field table="eq_change" name="check_status" hidden="true"/>
+    </panel>
+    
+    <panel type="form" id="eqChangeFormPanel" dataSource="eq_change_DS" showOnLoad="false" columns="2">
+		<title translatable="true">eq change info</title>
+		<action id="save">
+			<title translatable="true">save</title>
+		</action>
+		<field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id" hidden="true"/>
+		<field table="eq_change" name="eq_id" readOnly="true"/>
+        <field table="eq_change" name="eq_name" readOnly="true"/>
+        <field table="eq_change" name="eq_type" readOnly="true"/>
+        <field table="eq_change" name="eq_std" readOnly="true"/>
+        <field table="eq_change" name="status"/>
+        <field table="eq_change" name="cost_old" readOnly="true"/>
+        <field table="eq_change" name="eq_change_doc" readOnly="true"/>
+        <field/>
+        <field table="eq_change" name="change_reason" readOnly="true" colspan='2'/>
+    </panel>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnApproveReqApproveTabHistoryPanel" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabHistoryPanelDS" showOnLoad="false">
+        <title translatable="true">History</title>
+        
+        <field name="step_log_id" table="helpdesk_step_log" hidden="true"/>
+        <field name="user_name" table="helpdesk_step_log" hidden="true"/>
+        <field name="name" table="em" hidden="true"/>
+        <field name="vn_id" table="helpdesk_step_log">
+            <title translatable="true">Step Responded By</title>
+        </field>
+        <field name="date_response" table="helpdesk_step_log">
+            <title translatable="true">On</title>
+        </field>
+        <field name="time_response" table="helpdesk_step_log" hidden="true"/>
+        <field name="step" table="afm_wf_steps">
+            <title translatable="true">Workflow Step</title>
+        </field>
+        <field name="status" table="afm_wf_steps">
+            <title translatable="true">Status</title>
+        </field>
+        <field name="step_status_result" table="helpdesk_step_log">
+            <title translatable="true">Step Status After</title>
+        </field>
+        <field name="comments" table="helpdesk_step_log">
+            <title translatable="true">Comments</title>
+        </field>
+    </panel>
+    
+    
+    
+    
+    <dataSource id="ascBjUsmsProcAsgnApproveReqApproveTabApproveFormDS">
+        <table name="activity_log" role="main"/>
+        <table name="activity_log_step_waiting" role="standard"/>
+        
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="approved_by"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log_step_waiting" name="comments"/>
+        <field table="activity_log_step_waiting" name="step_code"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>
+        <field table="activity_log_step_waiting" name="user_name"/>
+        <field table="activity_log_step_waiting" name="em_id"/>
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnApproveReqApproveTabApproveForm" dataSource="ascBjUsmsProcAsgnApproveReqApproveTabApproveFormDS" hidden="true" showOnLoad="false">
+        <title translatable="true">Approve Infomation</title>
+        
+        <action id="approve">
+            <title translatable="true">QueRen</title>
+        </action>
+        
+        <action id="reject">
+            <title translatable="true">Reject</title>
+        </action>
+        
+     
+        
+        <field colspan="2">
+            <title translatable="true">Comments</title>
+           
+            <html>
+                <span id="activity_log_step_waiting.comments.required_star" style="font-size: 10px; font-family: Verdana,Geneva,Arial,Helvetica,sans-serif; color: red;" name="activity_log_step_waiting.comments.required_star">*</span>
+                <textarea id="comments" cols="65" rows="5" maxlength="1000" minlength="1" onchange="afm_form_values_changed=true;"
+                 onfocus="window.temp=this.value;" name="comments"></textarea>
+            </html>
+        </field>
+        
+        <field table="activity_log_step_waiting" name="step"/>
+        
+        <field table="activity_log_step_waiting" name="step_code" hidden="true"/>
+        <field table="activity_log_step_waiting" name="activity_log_id" hidden="true"/>
+        <field table="activity_log" name="activity_log_id" hidden="true"/>
+        <field table="activity_log_step_waiting" name="step_log_id" hidden="true"/>
+        <field table="activity_log_step_waiting" name="user_name" hidden="true"/>
+        
+        <field table="activity_log_step_waiting" name="comments" hidden="true"/>
+        
+        <field table="activity_log" name="approved_by" hidden="true">
+            <title translatable="true">Forward To</title>
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.approved_by" selectFieldNames="em.em_id"
+                 visibleFieldNames="em.em_id,em.name,em.dv_id" showIndex="true"
+                 restriction="em.em_id in
+                        (select e.em_id from em e, afm_users a where a.user_name = e.em_id AND a.role_name = '${user.role}')">
+               
+                    <title translatable="true">Forward To</title>
+                </command>
+            </action>
+        </field>
+    </panel>
+    <dataSource id="sc_role_em_DS">
+    	<table name="sc_role_em" role="main"/>
+    	<field name="role" table="sc_role_em"/>
+    	<field name="em_id" table="sc_role_em"/>
+    </dataSource>
+    
+
+</view>

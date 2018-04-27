@@ -1,0 +1,48 @@
+<view version="2.0">
+	<title translatable="true">Eq Budget Import</title>
+	<js file="schema/ab-core/controls/progress/ab-progress.js"/>
+	<js file="asc-bj-usms-eq-budget-import.js" />
+
+
+	<tabs id="importFileTabs">
+		<tab name="importFileTabs_selection" useFrame="false"
+			selected="true">
+			<title translatable="true">File to Import</title>
+			<panel type="html" id="selectionPanel">
+				<action id="import">
+					<title translatable="true">Begin Import</title>
+				</action>
+				<html>
+					<table id="selectionTable" class="panel">
+						<tr>
+							<td></td>
+							<td align="left">
+								<b translatable="true">Import Message</b>
+							</td>
+						</tr>				
+						<tr id="in1">
+							<td align="right">
+								<b translatable="true">File to Import</b>
+							</td>
+							<td>
+								<input type="file" id="inLocalFileBrow"
+									name="filename" size="60">
+								</input>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+				</html>
+			</panel>
+		</tab>
+		<tab name="importFileTabs_progress" useFrame="false">
+			<title translatable="true">Import Progress</title>
+			<panel type="html" id="reportProgressPanel">
+				<action id="startOver">
+					<title translatable="true">Start Over</title>
+				</action>
+			</panel>
+		</tab>
+	</tabs>
+</view>

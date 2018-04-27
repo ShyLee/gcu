@@ -1,0 +1,78 @@
+<!--  
+	This view shows how to refresh the root node in Tree Control
+	By define a javascript function refreshNode() and embedded it into the tree control's command
+-->
+
+<view version="2.0">
+    <layout file="2panels.axvw" />
+	  <js file="ab-ex-simple-tree-with-refresh-node.js"/>
+	
+    <dataSource id="exSimpleTreeWithRefreshNode_dvDs">
+        <table name="dv" role="main"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="name"/>
+    </dataSource>
+
+    <dataSource id="exSimpleTreeWithRefreshNode_dpDs">
+        <table name="dp" role="main"/>
+        <field table="dp" name="dp_id"/>
+        <field table="dp" name="name"/>
+    </dataSource>
+
+    <!-- top-level panel -->
+    <panel type="tree" id="exSimpleTreeWithRefreshNode_dvTree" dataSource="exSimpleTreeWithRefreshNode_dvDs" region="west">
+        <!-- only top-level title will be displayed in the title bar -->
+        <title translatable="true">Select Division and Department</title>
+
+        <event type="onClickNode">
+            <command type="showPanel" panelId="exSimpleTreeWithRefreshNode_dvReport"/>
+            <command type="showPanel" panelId="exSimpleTreeWithRefreshNode_dpReport" show="false"/>
+            <command type="callFunction" functionName="refreshNode"/>
+        </event>
+
+        <!-- by default the panel displays all fields from the matching data source -->
+        <!-- visible fields can be customized here as for any other panel -->
+
+        <!-- second-level panel -->
+        <panel type="tree" id="exSimpleTreeWithRefreshNode_dpTree" dataSource="exSimpleTreeWithRefreshNode_dpDs">
+            <event type="onClickNode">
+                <command type="showPanel" panelId="exSimpleTreeWithRefreshNode_dvReport"/>
+                <command type="showPanel" panelId="exSimpleTreeWithRefreshNode_dpReport"/>
+                <command type="callFunction" functionName="refreshNode"/>
+        </event>
+        </panel>
+    </panel>
+
+    <dataSource id="exSimpleTreeWithRefreshNode_reportDs">
+        <table name="dp" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="name"/>
+        <field table="dv" name="count_em"/>
+        <field table="dv" name="bu_id"/>
+        <field name="dp_id" table="dp"/>
+        <field name="area_rm" table="dp"/>
+        <field name="area_comn_nocup" table="dp"/>
+        <field name="area_comn_ocup" table="dp"/>
+        <field name="count_em" table="dp"/>
+        <field name="area_avg_em" table="dp"/>
+    </dataSource>
+
+    <panel type="form" columns="1" formLabelWidth="25" id="exSimpleTreeWithRefreshNode_dvReport" dataSource="exSimpleTreeWithRefreshNode_reportDs" showOnLoad="false" region="center">
+        <title translatable="true">Division Details</title>
+        <field table="dv" name="dv_id" readOnly="true"/>
+        <field table="dv" name="name" readOnly="true"/>
+        <field table="dv" name="count_em" readOnly="true"/>
+        <field table="dv" name="bu_id" readOnly="true"/>
+    </panel>
+
+    <panel type="form" columns="1" formLabelWidth="25" id="exSimpleTreeWithRefreshNode_dpReport" dataSource="exSimpleTreeWithRefreshNode_reportDs" showOnLoad="false" region="center">
+        <title translatable="true">Department Details</title>
+        <field name="dp_id" table="dp" readOnly="true"/>
+        <field name="area_rm" table="dp" readOnly="true"/>
+        <field name="area_comn_nocup" table="dp" readOnly="true"/>
+        <field name="area_comn_ocup" table="dp" readOnly="true"/>
+        <field name="count_em" table="dp" readOnly="true"/>
+        <field name="area_avg_em" table="dp" readOnly="true"/>
+    </panel>
+</view>

@@ -1,0 +1,23 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+	
+    <dataSource id="ds_ab-rr-content-my-reservation-comments_form_reserve">
+        <table name="reserve" role="main"/>
+        <field name="comments" table="reserve"/>
+        <field name="res_id" table="reserve"/>
+    </dataSource>
+	
+    <panel type="form" id="addCommentPanel" columns="2" dataSource="ds_ab-rr-content-my-reservation-comments_form_reserve">
+        <title translatable="true">Comments</title>
+        <action id="close">
+        	<title translatable="true">Close</title>
+			<command type="closeDialog"/>
+		</action>
+        <field name="comments" table="reserve" colspan="2" style="height:200;width:655"></field>
+    </panel>
+	
+    <js file="ab-rr-content-my-reservation-comments.js"/>
+	
+</view>

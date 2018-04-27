@@ -1,0 +1,173 @@
+<view version="2.0">
+	<title>Eq View</title>
+    <js file="asc-bj-usms-add-view.js"/>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="85" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="servcont_id"/>
+        <field table="eq" name="date_in_service"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="csi_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="attachments_num"/>
+        <field table="eq" name="attachments_price"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="handling_em"/>
+        <field table="eq" name="sci_resh_id"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="approved"/>
+        <field table="eq" name="comments"/>
+        <field table="eq" name="approved_fiance"/>
+        <field table="eq" name="date_fin_approved"/>
+        <field table="eq" name="approved_by_fin"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="eq_photo"/>
+        <field table="eq" name="image_file"/>
+        <field table="eq" name="add_eq_id"/>
+        <field table="eq" name="is_assign"/>
+    </dataSource>
+    <dataSource id="ascBjAddEqDs">
+        <table name="add_eq" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="add_eq" name="add_eq_id" />
+        <field table="add_eq" name="type"/>
+        <field table="add_eq" name="budget_item_id" />
+        <field table="add_eq" name="budget_id" />
+        <field table="add_eq" name="buy_type" />
+        <field table="add_eq" name="csi_id" />
+        <field table="add_eq" name="eq_name"/>
+        <field table="add_eq" name="brand"/>
+        <field table="add_eq" name="vn_id"/>
+        <field table="add_eq" name="eq_std"/>
+        <field table="add_eq" name="eq_type"/>
+        <field table="add_eq" name="use"/>
+        <field table="add_eq" name="count" showTotals="true"/>
+        <field table="add_eq" name="status"/>
+        <field table="add_eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="add_eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="add_eq" name="price" showTotals="true"/>
+        <field table="add_eq" name="total_price" showTotals="true"/>
+        <field table="add_eq" name="units"/>
+        <field table="add_eq" name="date_request"/>
+        <field table="add_eq" name="date_purchased"/>
+        <field table="add_eq" name="supplier_agreement_id"/>
+        <field table="add_eq" name="date_in_service"/>
+        <field table="add_eq" name="date_acceptance" />
+        <field table="add_eq" name="warranty_id" />
+        <field table="add_eq" name="policy_id"/>
+        <field table="add_eq" name="ctry_name"/>
+        <field table="add_eq" name="ctry_id"/>
+        <field table="add_eq" name="contract_id"/>
+        <field table="add_eq" name="comments"/>
+        <field table="add_eq" name="doc_approved"/>
+        <field table="add_eq" name="doc_check"/>
+        <field table="add_eq" name="doc_contract"/>
+        <restriction type="sql" sql="add_eq.status!='0'"/>
+    </dataSource>
+    
+    <panel type="console" id="consoleForm" dataSource='ascBjAddEqDs' columns="3" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="btnFilter">
+            <title translatable="true">Filter</title>
+            <command type="callFunction" functionName="controller.showAddEqList()"/>
+        </action>
+        <action id="btnCancel">
+            <title translatable="true">Cancel</title>
+        </action>
+        <field table="add_eq" name="add_eq_id">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" 
+                    fieldNames="add_eq.add_eq_id"
+                    selectFieldNames="add_eq.add_eq_id" 
+                    visibleFieldNames="add_eq.add_eq_id,add_eq.eq_name"
+                    restriction="add_eq.status!='0'"
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="add_eq" name="dv_id">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" 
+                    fieldNames="add_eq.dv_id"
+                    selectFieldNames="add_eq.dv_id" 
+                    visibleFieldNames="add_eq.dv_id"
+                    restriction="add_eq.status!='0'"
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="add_eq" name="status"/>
+        <field table="add_eq" name="date_in_service" alias="add_eq.datePurchasedFrom">
+            <title translatable="true">dateInStorageFrom</title>
+        </field>
+        <field table="add_eq" name="date_in_service" alias="add_eq.datePurchasedTo">
+            <title translatable="true">To</title>
+        </field>
+    </panel>
+    <panel type="grid" id="eqListOfAddEqPanel" dataSource="ascBjUsmsEqDs" showOnLoad="false">
+        <title translatable="true">Eq List Of AddEq</title>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="add_eq_id" hidden="true"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+    </panel>
+    
+    <panel type="grid" id="gridForm" dataSource="ascBjAddEqDs" layout="mainLayout" region="center">
+        <title translatable="true">DV Add EQ List</title>
+        <action id="btnPrint">
+            <title translatable="true">XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="gridForm"/>
+        </action>
+        <field id="btnViewEqList" controlType="button" width="120">
+            <title translatable="true">View Eq</title>
+        </field>
+        <field table="add_eq" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" controlType="link"/>
+        <field table="dp" name="dp_name" controlType="link"/>
+        <field table="add_eq" name="add_eq_id" controlType="link"/>
+        <field table="add_eq" name="eq_name" controlType="link"/>
+        <field table="add_eq" name="count" showTotals="true" controlType="link"/>
+        <field table="add_eq" name="units" controlType="link"/>
+        <field table="add_eq" name="price" showTotals="true" controlType="link"/>
+        <field table="add_eq" name="total_price" showTotals="true" controlType="link"/>
+        <field table="add_eq" name="csi_id" />
+        <field table="add_eq" name="eq_std"/>
+        <field table="add_eq" name="eq_type"/>
+        <field table="add_eq" name="buy_type" />
+        <field table="add_eq" name="date_purchased"/>
+        <field table="add_eq" name="date_in_service"/>
+        <field table="add_eq" name="status" />
+        <field table="add_eq" name="date_request"/>
+        <sortField name="date_request" ascending="false"/>
+        <indexField name="buy_type" table="add_eq"/>
+    </panel>
+</view>

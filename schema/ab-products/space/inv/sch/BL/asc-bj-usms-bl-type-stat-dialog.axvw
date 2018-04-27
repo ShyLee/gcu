@@ -1,0 +1,125 @@
+<view version="2.0">
+	
+	<message name="rptPanelTitle" translatable="true">building : {0}</message>
+	<message name="total" translatable="true">Total</message>
+    <title translatable="true">Room Category Report by Building And Detailed Statement</title>
+    
+    <dataSource id="ds_ab-sc-rpt-rmcat-rmtype-by-bl_rm" >
+        <sql dialect="generic">
+            SELECT rm.bl_id  ${sql.as} bl_id,
+              0 ${sql.as} row_number,
+              rmcat.rmcat_name ${sql.as} rmcat_name,
+              rmcat.description ${sql.as} rmcat_desc,
+              rm.rm_cat ${sql.as} rm_cat,
+              rm.rm_type ${sql.as} rm_type,
+              COUNT(rm.rm_id) ${sql.as} count_rm,
+              CASE WHEN bl.gongtanlv =1 THEN 0 ELSE SUM(rm.area)/(1-bl.gongtanlv) END ${sql.as} rmcat_bl_area_jianzhu,
+              SUM(rm.area) ${sql.as} rmcat_bl_area_shiyong
+           FROM rm,bl,rmcat
+           WHERE rm.bl_id=bl.bl_id and rm.rm_cat=rmcat.rm_cat and rm.rm_cat IS NOT NULL and bl.site_id is not null
+           GROUP BY rm.rm_cat, rmcat.rmcat_name, rm.rm_type,rmcat.description, rmcat.tot_count, rm.bl_id, bl.gongtanlv
+   UNION ALL
+   (
+        SELECT bl.bl_id ${sql.as} bl_id,
+            0 ${sql.as} row_number,
+           rmcat.rmcat_name ${sql.as} rmcat_name,
+           rmcat.description ${sql.as} rmcat_desc,
+   bl.building_cat ${sql.as} rm_cat,
+   ${parameters['weiDingyiRes']} ${sql.as} rm_type,
+   bl.count_rm_keyong ${sql.as} count_rm,
+   bl.area_building_manual ${sql.as} rmcat_bl_area_jianzhu,
+   bl.area_rm ${sql.as} rmcat_bl_area_shiyong 
+        FROM bl,rmcat
+      WHERE bl.building_cat=rmcat.rm_cat and bl.building_cat is not null and bl.site_id is not null
+   )
+           UNION ALL (
+           SELECT br.bl_id ${sql.as} bl_id,
+           0 ${sql.as} row_number,
+           rmcat.rmcat_name ${sql.as} rmcat_name,
+           rmcat.description ${sql.as} rmcat_desc,
+           br.rm_cat ${sql.as} rm_cat,
+           ${parameters['weiDingyiRes']} ${sql.as} rm_type,
+           br.count_rm ${sql.as} count_rm,
+           br.area_jianzhu rmcat_bl_area_jianzhu,
+           br.area_shiyong rmcat_bl_area_shiyong 
+            FROM sc_bl_rmcat br,rmcat,bl
+      WHERE br.rm_cat=rmcat.rm_cat and br.bl_id=bl.bl_id  and bl.building_cat is null and bl.site_id is not null
+        ) 
+        
+        </sql>
+        <table name="rmcat" role="main"/>
+        
+        <field name="row_number" dataType="number" decimals="0" controlType="link">
+            <title translatable="true">Xu Hao</title>
+            <command type="callFunction" functionName="abScRptRmcatTypebyBl.linkToShow()"/>
+        </field>
+        <field name="rmcat_name" dataType="text" controlType="link">
+            <title translatable="true">Lei Bie Dai Ma</title>
+            <command type="callFunction" functionName="abScRptRmcatTypebyBl.linkToShow()"/>
+        </field>    
+        <field name="rm_cat" dataType="text" controlType="link">
+            <title translatable="true">fangwuleibie</title>
+            <command type="callFunction" functionName="abScRptRmcatTypebyBl.linkToShow()"/>
+        </field>    
+        
+        <field name="rm_type" dataType="text" controlType="link">
+            <title translatable="true">fangweileixing</title>
+            <command type="callFunction" functionName="abScRptRmcatTypebyBl.linkToShow()"/>
+        </field>    
+        <field name="count_rm"  dataType="number" decimals="0" controlType="link">
+            <title translatable="true">Room Count</title>
+            <command type="callFunction" functionName="abScRptRmcatTypebyBl.linkToShow()"/>
+        </field>    
+        
+        <field name="rmcat_bl_area_shiyong"  dataType="number" decimals="2" controlType="link">
+            <title translatable="true">Usable Area</title>
+            <command type="callFunction" functionName="abScRptRmcatTypebyBl.linkToShow()"/>
+        </field>
+        <field name="rmcat_bl_area_jianzhu"  dataType="number" decimals="2" controlType="link">
+            <title translatable="true">Structure Area</title>
+            <command type="callFunction" functionName="abScRptRmcatTypebyBl.linkToShow()"/>
+        </field>
+        
+        <sortField name="rmcat_name" table="rmcat" ascending="true"/>
+        <restriction type="sql" sql="rmcat.bl_id=${parameters['blIdRes']}"/>
+        <parameter name="blIdRes" dataType="text" value=""/>
+         
+        <parameter name="weiDingyiRes" dataType="text" value=""/>
+    </dataSource>
+    	
+    <!-- cross table report-->
+	<panel id="abScRmcatTypeRptPanel" type="grid" controlType="reportGrid"  dataSource="ds_ab-sc-rpt-rmcat-rmtype-by-bl_rm" showOnLoad="true" >
+        <title translatable="true">Divisions</title>
+    </panel>
+    
+    <!-- ds_ab-sc-rpt-rmcat-rm-by-bl_rm -->
+    <dataSource id="ds_ab-sc-rpt-rmcat-rm-by-bl_rm">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        
+        
+        <field table="rm" name="bl_id"  hidden="true"/>
+        <field table="bl" name="name" />
+        <field table="rm" name="rm_id" />
+        <field table="rm" name="fl_id" />
+        <field table="rm" name="area" showTotals="true"/>
+        <field table="rm" name="area_comn_rm" />
+        <field table="rm" name="rm_type" />
+        <field table="rm" name="rm_std" />
+        <field table="rm" name="name" />
+        <field table="rm" name="dv_id"/>
+                
+        <restriction type="sql" sql="rm.bl_id=${parameters['blIdRes']} and rm.rm_cat=${parameters['rmcatRes']}"/>
+        <parameter name="blIdRes" dataType="text" value=""/>
+        <parameter name="rmcatRes" dataType="text" value=""/>
+    </dataSource>
+        
+    <!-- cross table report-->
+    <panel id="abScRmcatRmRptPanel" type="grid"   dataSource="ds_ab-sc-rpt-rmcat-rm-by-bl_rm" showOnLoad="false"  >
+        <title translatable="true"></title>
+        <sortField name="rm_id" table="rm" ascending="true"/>
+    </panel>
+    
+    <js file="asc-bj-usms-bl-type-stat-dialog.js"/>
+    
+</view>

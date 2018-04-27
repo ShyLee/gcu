@@ -1,0 +1,13 @@
+<view version="2.0">
+    <title translatable="true">Relet</title>
+    
+    <tabs workflow="enforced" id="reletTabs" tabRefreshPolicy="refreshOnSelect">
+        <tab name="selectTab" selected="true" file="asc-bj-usms-house-relet-select-tab.axvw">
+            <title translatable="true">Select Request</title>
+        </tab>
+        
+        <tab name="detailsTab" file="asc-bj-usms-house-relet-details-tab.axvw">
+            <title translatable="true">Details</title>
+        </tab>
+    </tabs>
+</view>

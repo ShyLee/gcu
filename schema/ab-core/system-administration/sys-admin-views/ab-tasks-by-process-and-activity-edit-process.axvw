@@ -1,0 +1,39 @@
+<view version="2.0">
+    <title translatable="true">Edit Process Details</title>
+    
+    <dataSource id="abViewdefEditformDrilldown_ds_1">
+       	<table name="afm_processes" role="main"/>
+       	<field table="afm_processes" name="activity_id"/>
+       	<field table="afm_processes" name="process_id"/>
+	    <field table="afm_processes" name="display_order"/>
+	    <field table="afm_processes" name="title"/>
+	    <field table="afm_processes" name="process_type"/>
+	    <field table="afm_processes" name="license_level"/>
+    </dataSource>
+    
+    <panel type="form" id="editPanel" dataSource="abViewdefEditformDrilldown_ds_1" showOnLoad="true" columns="1">
+        <title translatable="true">Process</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="showPanel" panelId="bottomSelectionPanel" applyParentRestriction="false"/>
+            <command type="closeDialog"/>
+        </action>
+        <action id="delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="bottomSelectionPanel" applyParentRestriction="false"/>
+            <command type="closeDialog"/>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="closeDialog"/>
+        </action>
+        <field table="afm_processes" name="activity_id" readOnly="true"/>
+       	<field table="afm_processes" name="process_id"/>
+	    <field table="afm_processes" name="display_order"/>
+	    <field table="afm_processes" name="title"/>
+	    <field table="afm_processes" name="process_type"/>
+	    <field table="afm_processes" name="license_level"/>
+    </panel>
+</view>

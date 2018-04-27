@@ -1,0 +1,102 @@
+<view version="2.0">
+	<js file="ab-rplm-contacts.js"/>
+	<message name="confirm_delete_contact" translatable="true">Are you sure you want to remove this contact?</message>
+	<message name="error_delete" translatable="true">Could not delete selected contact.</message>
+	<message name="error_no_contact_selected" translatable="true">To perform this action you must select a contact.</message>
+	<message name="title_add_contact" translatable="true">Add New Contact</message>
+	<message name="title_edit_contact" translatable="true">Edit contact</message>
+	<message name="message_cancelconfirm" translatable="true">Are you sure you want to cancel?</message>
+	<message name="add_new" translatable="true">Add New Contact</message>
+	<message name="edit" translatable="true">Edit Contact</message>
+	<message name="msg_from" translatable="true">from</message>
+	<layout type="borderLayout" id="contactLayout">
+		<north split="false"/>
+		<west split="true" initialSize="25%"/>
+		<center autoScroll="true"/>
+	</layout>
+	
+	<panel type="html" id="panelContactAction" layout="contactLayout" >
+       <action id="back">
+	        <title translatable="true">Back</title>
+        </action>
+        <action id="continue">
+	        <title translatable="true">Continue</title>
+        </action>
+       <action id="finish">
+	        <title translatable="true">Finish</title>
+        </action>
+	</panel>
+	<dataSource id="dsTreeContactsType" type="grouping">
+		<table name="contact"/>
+		<field table="contact" name="contact_type" groupBy="true"/>
+		<sortField table="contact" name="contact_type" ascending="true"/>
+	</dataSource>
+	<dataSource id="dsTreeContacts">
+		<table name="contact"/>
+		<field table="contact" name="contact_id"/>
+		<field table="contact" name="contact_type"/>
+		<field table="contact" name="company"/>
+		<sortField table="contact" name="contact_id" ascending="true"/>
+	</dataSource>
+	<panel type="html" id="panelContactTree" layout="contactLayout" region="west">
+		<title translatable="true">Contact list</title>
+		<html>
+			<div id="contactTree"></div>
+		</html>
+	</panel>
+	<dataSource id="dsContactDetails">
+		<table name="contact"/>
+		<field table="contact" name="contact_id" readOnly="true"/>
+		<field table="contact" name="contact_type" readOnly="true"/>
+		<field table="contact" name="company" readOnly="true"/>
+		<field table="contact" name="city_id" readOnly="true"/>
+		<field table="contact" name="honorific" readOnly="true"/>
+		<field table="contact" name="state_id" readOnly="true"/>
+		<field table="contact" name="name_last" readOnly="true"/>
+		<field table="contact" name="zip" readOnly="true"/>
+		<field table="contact" name="name_first" readOnly="true"/>
+		<field table="contact" name="address1" readOnly="true"/>
+		<field table="contact" name="regn_id" readOnly="true"/>
+		<field table="contact" name="address2" readOnly="true"/>
+		<field table="contact" name="ctry_id" readOnly="true"/>
+		<field table="contact" name="phone" readOnly="true"/>
+		<field table="contact" name="cellular_number" readOnly="true"/>
+		<field table="contact" name="fax" readOnly="true"/>
+		<field table="contact" name="pager" readOnly="true"/>
+		<field table="contact" name="email" readOnly="true"/>
+		<field table="contact" name="status" readOnly="true"/>
+		<field table="contact" name="notes" readOnly="true"/>
+	</dataSource>
+	<panel type="form" id="formContactDetails" layout="contactLayout" region="center" showOnLoad="false" dataSource="dsContactDetails" columns="2">
+		<title translatable="true">Contact Details</title>
+       <action id="edit">
+	        <title translatable="true">Edit</title>
+        </action>
+       <action id="delete">
+	        <title translatable="true">Delete</title>
+        </action>
+       <action id="new">
+	        <title translatable="true">Add New</title>
+        </action>
+		<field table="contact" name="contact_id" readOnly="true"/>
+		<field table="contact" name="contact_type" readOnly="true"/>
+		<field table="contact" name="company" readOnly="true"/>
+		<field table="contact" name="city_id" readOnly="true"/>
+		<field table="contact" name="honorific" readOnly="true"/>
+		<field table="contact" name="state_id" readOnly="true"/>
+		<field table="contact" name="name_last" readOnly="true"/>
+		<field table="contact" name="zip" readOnly="true"/>
+		<field table="contact" name="name_first" readOnly="true"/>
+		<field table="contact" name="address1" readOnly="true"/>
+		<field table="contact" name="regn_id" readOnly="true"/>
+		<field table="contact" name="address2" readOnly="true"/>
+		<field table="contact" name="ctry_id" readOnly="true"/>
+		<field table="contact" name="phone" readOnly="true"/>
+		<field table="contact" name="cellular_number" readOnly="true"/>
+		<field table="contact" name="fax" readOnly="true"/>
+		<field table="contact" name="pager" readOnly="true"/>
+		<field table="contact" name="email" readOnly="true"/>
+		<field table="contact" name="notes" readOnly="true"/>
+		<field table="contact" name="status" readOnly="true"/>
+	</panel>
+</view>

@@ -1,0 +1,84 @@
+<view version="2.0">
+    <title translatable="true">Parcelland area and vaule change</title>
+    <message name="wrongNoSelectRow" translatable="true">please select one parcelland!</message>
+    <layout type="borderLayout" id="mainLayout">
+		<north id="consolePanel" autoScroll="true" split="true"
+			initialSize="90" />
+		<center id="gridPanel" autoScroll="true" />
+		
+	</layout>
+	
+	<dataSource id="parcellandDs">
+		<table name="sc_parcelland" role="main"/>
+		<field table="sc_parcelland" name="land_code" />
+		<field table="sc_parcelland" name="parcelland_address" />
+		<field table="sc_parcelland" name="assets_num"/>
+		<field table="sc_parcelland" name="assets_name"/>
+		<field table="sc_parcelland" name="atype_name" />
+		
+		<field table="sc_parcelland" name="use_dp"/>
+		<field table="sc_parcelland" name="area_tudi"/>
+		<field table="sc_parcelland" name="value_book"/>
+		
+		
+		<field table="sc_parcelland" name="accounted"/> 
+		
+		<restriction type="sql" sql="accounted='Y'"/>  
+	</dataSource>
+	
+	<panel id="tsParcellandConsole" type="console" dataSource="parcellandDs"
+		columns="2"  layoutRegion="consolePanel">
+		<title translatable="true">Filter</title>
+		
+		<action id="show">
+			<title translatable="true">Show</title>
+			<command type="showPanel" panelId="tsParcellandGrid"/>		
+		</action>
+		
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearForm" panelId="tsParcellandConsole"/>
+		</action>		
+		<field table="sc_parcelland" name="land_code" required="false">
+			<action>
+        		<title>...</title>
+        		<command type="selectValue" 
+        		   fieldNames="sc_parcelland.land_code,sc_parcelland.parcelland_address" 
+        		   selectFieldNames="sc_parcelland.land_code,sc_parcelland.parcelland_address" 
+        		   visibleFieldNames="sc_parcelland.land_code,sc_parcelland.parcelland_address"/>
+      		</action>
+		</field>
+		<field table="sc_parcelland" name="parcelland_address" required="false">
+			<action>
+        		<title>...</title>
+        		<command type="selectValue" 
+        		   fieldNames="sc_parcelland.land_code,sc_parcelland.parcelland_address" 
+        		   selectFieldNames="sc_parcelland.land_code,sc_parcelland.parcelland_address" 
+        		   visibleFieldNames="sc_parcelland.land_code,sc_parcelland.parcelland_address"/>
+      		</action>
+		</field>
+	</panel>
+	
+	<panel type="grid" id="tsParcellandGrid" multipleSelectionEnabled="true" showOnLoad="true" dataSource="parcellandDs" layoutRegion="gridPanel">
+		<title translatable="true">Parcelland List</title>
+	    <action id="change" >
+	        <title translatable="true">Change</title>
+	    </action>
+	    <action id="cheack" >
+	        <title translatable="true">CheackChangeHistory</title>
+	    </action>
+	   
+		  <field table="sc_parcelland" name="land_code" />
+		<field table="sc_parcelland" name="parcelland_address" />
+		<field table="sc_parcelland" name="assets_num"/>
+		<field table="sc_parcelland" name="assets_name"/>
+		<field table="sc_parcelland" name="atype_name" />
+		
+		<field table="sc_parcelland" name="use_dp"/>
+		<field table="sc_parcelland" name="area_tudi"/>
+		<field table="sc_parcelland" name="value_book"/>
+		
+	</panel>
+	
+   <js file="asc-bj-usms-data-parcelland-mngt-chg.js"/>
+</view>

@@ -1,0 +1,97 @@
+<view version="2.0">
+	
+	<message name="Post" translatable="true">Post</message>
+	<message name="Main" translatable="true">Main</message>
+    <message name="Detail" translatable="true">Detail</message>
+	<message name="formSaved" translatable="true">Form saved successfully.</message>
+	<message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+	<message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+	<message name="selectTreeNode" translatable="true">Please select Main.</message>
+	
+    <layout id="main">
+        <west id="selectedPosition" initialSize="30%" split="true"/>
+        <center id="centerPosition"/>
+    </layout>
+    
+    <dataSource id="sc_stu_disp_main_ds">
+        <table name="sc_stu_disp_main" role="main"/>
+        <field table="sc_stu_disp_main" name="disp_main"/>
+        <field table="sc_stu_disp_main" name="disp_name"/>
+		<field table="sc_stu_disp_main" name="comments"/>
+		<field table="sc_stu_disp_main" name="mark"/>
+		<restriction type="sql" sql="mark='2'"/>
+    </dataSource>
+	
+	<dataSource id="sc_stu_disp_detail_ds">
+        <table name="sc_stu_disp_detail" role="main"/>
+        <table name="sc_stu_disp_main" role="standard"/>
+        <field table="sc_stu_disp_main" name="disp_name"/>
+        <field table="sc_stu_disp_detail" name="disp_main"/>
+        <field table="sc_stu_disp_detail" name="disp_detail"/> 
+		<field table="sc_stu_disp_detail" name="comments"/>
+    </dataSource>
+    
+    <panel type="tree" id="dispMainTree" dataSource="sc_stu_disp_main_ds" layoutRegion="selectedPosition">
+        <title translatable="true">Select discipline</title>
+		<action id="addNew">
+            <title translatable="true">Add New</title>
+        </action>
+        <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="disciplineTabs" tabPageName="mainTab"/>
+                <command type="showPanel" panelId="disMainForm"/>
+                <command type="callFunction" functionName="onTreeviewClick"/>
+        </event>
+		
+		<panel type="tree" id="dispDetailTree" dataSource="sc_stu_disp_detail_ds">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="disciplineTabs" tabPageName="detailTab"/>
+                <command type="showPanel" panelId="disDetailForm"/>
+                <command type="callFunction" functionName="onTreeviewClick"/>
+            </event>
+			<field table="sc_stu_disp_detail" name="disp_detail"/> 
+        </panel>
+		<field table="sc_stu_disp_main" name="disp_main"/>
+    </panel>
+	
+	<tabs id="disciplineTabs" workflow="enforced" cssClass="wizard" layout="centerPosition" region="center">
+        <tab name="mainTab" selected="false">
+            <title translatable="true">Main</title>
+            <panel type="form" id="disMainForm" showOnLoad="false" dataSource="sc_stu_disp_main_ds" columns="1">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+					<field table="sc_stu_disp_main" name="mark" value="2" hidden="true"/>
+				    <field table="sc_stu_disp_main" name="disp_main" hidden="true"/>
+				    <field table="sc_stu_disp_main" name="disp_name" required="true">
+			    		<title>award name</title>
+			    	</field>
+					<field table="sc_stu_disp_main" name="comments"/>
+            </panel>
+        </tab>
+		
+		<tab name="detailTab" selected="false">
+            <title translatable="true">Detail</title>
+            <panel type="form" id="disDetailForm" showOnLoad="false" dataSource="sc_stu_disp_detail_ds" columns="1">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+			    	<field table="sc_stu_disp_detail" name="disp_main" hidden="true"/>
+			    	<field table="sc_stu_disp_main" name="disp_name" required="true">
+			    		<title>award name</title>
+			    	</field>
+			        <field table="sc_stu_disp_detail" name="disp_detail">
+			    		<title>award detail</title>
+			    	</field>
+					<field table="sc_stu_disp_detail" name="comments"/>
+            </panel>
+        </tab>
+    </tabs>
+    <js file="asc-bj-dorm-data-award.js"/>  
+    <js file="asc-bj-usms-def-common.js"/>
+</view>

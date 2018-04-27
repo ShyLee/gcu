@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+excluded=schema/ab-products/common/mobile/src//cordova*.js\:schema/ab-products/common/mobile/src//d3.*\:schema/ab-products/common/mobile/src//sencha-touch*.js\:schema/ab-products/common/mobile/src/Common/cordova//*\:schema/ab-products/common/mobile/src/touch//*
+globals=Ext\:true, Common\:true,Space\:true
+included=schema/ab-products/common/mobile/src//*.js
+options=camelcase\:true, bitwise\:true, laxbreak\:true, curly\:true, eqeqeq\:true, forin\:false, immed\:true, latedef\:true, newcap\:true, noarg\:true, noempty\:true, nonew\:true, quotmark\:false, undef\:false, unused\:false, strict\:false, trailing\:true, maxparams\:7, maxdepth\:3, maxstatements\:20, maxcomplexity\:10
+projectSpecificOptions=true

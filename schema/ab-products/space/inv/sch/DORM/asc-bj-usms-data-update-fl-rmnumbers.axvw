@@ -1,0 +1,22 @@
+<view version="2.0">
+	<title translatable="true">Pi Liang Updating Standard Room Number By Floor</title>
+	<dataSource id="rmNumbersDs">
+		<table name="rm" role="main"/>
+		<field name="rm_id" table="rm"/>
+		<field name="bl_id" table="rm"/>
+		<field name="fl_id" table="rm"/>
+		<field name="cap_em" table="rm"/>
+	</dataSource>
+	<panel id="rmNumPanel" type="form" dataSource="rmNumbersDs" multipleSelectionEnabled="true" showOnLoad="true">
+		<title translatable="true">Bed Number</title>
+		<action id="updatebyfloor">
+			<title translatable="true">repair</title>
+			<command type="callFunction" functionName="controller.updatebyfloor()"/>
+		</action>
+		<field name="cap_em" table="rm" required="true">
+			<title translatable="true">Bed number</title>
+		</field>
+	</panel>
+	<js file="asc-bj-usms-data-update-fl-rmnumbers.js"/>
+	
+</view>

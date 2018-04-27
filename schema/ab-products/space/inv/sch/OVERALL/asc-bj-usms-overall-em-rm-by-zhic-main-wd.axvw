@@ -1,0 +1,206 @@
+<view version="2.0">
+    <layout id="main">
+        <north id="sitePosition" initialSize="15%" split="true"/>
+        <center id="emSumPosition" initialSize="30%"/>
+		<south  id="emPosition" initialSize="55%" split="true"/>
+    </layout>
+    
+	<message name="total" translatable="true">Total</message>
+	<message name="secondGridTitle" translatable="true">QuanXiaoJiaoZhiGongShiJiShiYongMianJi--{0}</message>
+	
+	<!-- datasource for em-sum report -->
+    <dataSource id="ds_asc-bj-usms-overall-em-rm-by-zhic-main_rpt_em" type="grouping">
+		<table name="em" role="main" />
+		<table name="dv" role="standard" />
+		<table name="sc_zhic" role="standard" />
+		
+		<field table="dv" name="site_id" groupBy="true" hidden="true"/>
+		<field table="sc_zhic" name="zhic_id" groupBy="true" controlType="link">
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		<field table="sc_zhic" name="name" groupBy="true" hidden="true"/>
+		<field name="dinge_area" dataType="number" decimals="2" controlType="link">
+			<title translatable="true">DingeMianJi</title>
+			<sql dialect="generic">
+    	         ''
+            </sql>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		<field name="count_em" formula="COUNT" dataType="number" 
+			baseField="em.em_id" decimals="0" controlType="link">
+			<title translatable="true">ZongRenShu</title>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="em.area_rm" decimals="2" controlType="link">
+			<title translatable="true">ZongShiYongMianJi</title>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		<field name="avg_area_shiyong" formula="AVG" dataType="number" 
+			baseField="em.area_rm" decimals="2" controlType="link">
+			<title translatable="true">RenJunShiYongMianJi</title>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		<field name="avg_area_diff" dataType="number" decimals="2" controlType="link">
+			<title translatable="true">RenJunMianJiChaE</title>
+			<sql dialect="generic">
+    	         ''
+            </sql>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		<field name="total_count_rm" dataType="number" decimals="2" controlType="link">
+			<title translatable="true">ZongZhanYongFangJian</title>
+			<sql dialect="generic">
+    	          SUM(1/(SELECT rm.count_em FROM rm WHERE em.bl_id=rm.bl_id and em.fl_id=rm.fl_id and em.rm_id=rm.rm_id)) 
+            </sql>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		<field name="avg_count_rm" dataType="number" decimals="2" controlType="link">
+			<title translatable="true">RenJunFangJianShu</title>
+			<sql dialect="generic">
+    	          SUM(1/(SELECT rm.count_em FROM rm WHERE em.bl_id=rm.bl_id and em.fl_id=rm.fl_id and em.rm_id=rm.rm_id))/COUNT(em.em_id) 
+            </sql>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+				
+		<parameter name="jiaoshouRes" dataType="text" value=""/>
+		<parameter name="fujiaoshouRes" dataType="text" value=""/>
+		<parameter name="jiangshiRes" dataType="text" value=""/>
+		<parameter name="zhujiaoRes" dataType="text" value=""/>
+		<parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="sc_zhic.zhic_id IN (${parameters['jiaoshouRes']},${parameters['fujiaoshouRes']},${parameters['jiangshiRes']},${parameters['zhujiaoRes']}) and dv.site_id=${parameters['siteIdRes']}"/>
+	</dataSource>
+	
+	<!-- datasource for em-details report -->
+    <dataSource id="ds_asc-bj-usms-overall-em-rm-by-zhic-main_grid_em">
+		<table name="em" role="main" />
+		<table name="rm" role="standard" />
+		<table name="dv" role="standard" />
+		
+		<field table="dv" name="site_id" hidden="true"/>
+		<field table="em" name="name"/>	
+		<field table="em" name="sex"/>
+		<field table="em" name="dv_id"/>
+		<field table="em" name="bl_id"/>
+		<field table="em" name="rm_id"/>
+		<field table="rm" name="area_manual"/>
+		<field table="rm" name="count_em"/>
+		<field table="em" name="area_rm"/>
+		<field name="zhan_count_rm" dataType="number" decimals="2">
+			<title translatable="true">ZhanYongFangJianShu</title>
+			<sql dialect="generic">
+    	          (1/rm.count_em) 
+            </sql>
+		</field>
+				
+		<parameter name="zhicRes" dataType="text" value=""/>
+		<parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="dv.site_id=${parameters['siteIdRes']} and em.zhic_id =${parameters['zhicRes']}"/>
+	</dataSource>
+	
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-em-rm-by-zhic-main_basic_site">
+    	<table name="site" role="main"/>
+		
+		<!--basic info-->
+		<field table="site" name="name"/>
+		<field table="site" name="address"/>
+		<field table="site" name="site_id"/>
+		<field table="site" name="telephone"/>
+		<field table="site" name="youbian"/>
+		
+	    <parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="site.site_id=${parameters['siteIdRes']}"/>
+    </dataSource>
+	
+	<!-- dataSource for site summary panel -->
+    <dataSource id="ds_asc-bj-usms-overall-em-rm-by-zhic-main_sum_site" type="grouping">
+    	<table name="em" role="main"/>
+		<table name="dv" role="standard"/>
+		
+		<field table="dv" name="site_id" groupBy="true"/>
+		<field name="count_em" formula="COUNT" dataType="number" 
+			baseField="em.em_id" decimals="0" >
+			<title translatable="true">JiaoZhiGongZongRenShu</title>
+		</field>
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="em.area_rm" decimals="2" >
+			<title translatable="true">JiaoZhiGongZongShiYongMianJi</title>
+		</field>
+		<field name="jiaoshou_count" dataType="number" decimals="0" >
+			<title translatable="true">QiZhongJiaoShouRenShu</title>
+			<sql dialect="generic">
+    	          (SELECT count(*) FROM em WHERE zhic_id=${parameters['jiaoshouRes']})
+            </sql>
+		</field>
+		<field name="jiaoshou_zhanbi" dataType="number" decimals="2" >
+			<title translatable="true">RenShuZhanBi</title>
+			<sql dialect="generic">
+				CASE WHEN COUNT(em.em_id)=0 THEN 0 ELSE (SELECT COUNT(*) FROM em WHERE zhic_id=${parameters['jiaoshouRes']})/COUNT(em.em_id) END
+            </sql>
+		</field>
+		<field name="jiaoshou_area" dataType="number" decimals="2" >
+			<title translatable="true">JiaoShouZongShiYongMianJi</title>
+			<sql dialect="generic">
+				(SELECT SUM(em.area_rm) FROM em WHERE zhic_id=${parameters['jiaoshouRes']})
+            </sql>
+		</field>
+		<field name="jiaoshou_area_zhanbi" dataType="number" decimals="2" >
+			<title translatable="true">MianJiZhanBi</title>
+			<sql dialect="generic">
+				CASE WHEN SUM(em.area_rm)=0 THEN 0 ELSE (SELECT SUM(em.area_rm) FROM em WHERE zhic_id=${parameters['jiaoshouRes']})/SUM(em.area_rm) END
+            </sql>
+		</field>
+    
+		<parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="dv.site_id=${parameters['siteIdRes']}"/>
+		<parameter name="jiaoshouRes" dataType="text" value=""/>
+    </dataSource>
+	
+	<!-- base university info panel-->
+    <panel type="columnReport" id="ascBjUsmsOverallEmRmByZhicMain_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-em-rm-by-zhic-main_basic_site" columns="2"  layoutRegion="sitePosition">
+		<field table="site" name="name"/>
+		<field table="site" name="address"/>
+    </panel>
+	
+	<!-- main school summary data-->
+    <panel type="columnReport" id="ascBjUsmsOverallEmRmByZhicMain_siteSumGrid" dataSource="ds_asc-bj-usms-overall-em-rm-by-zhic-main_sum_site" columns="4"  layoutRegion="sitePosition">
+    	<!--first row-->
+    	<field name="count_em" dataType="number" decimals="0" >
+			<title translatable="true">JiaoZhiGongZongRenShu</title>
+		</field>
+		<field/>
+		<field name="total_area_shiyong" dataType="number" decimals="2" >
+			<title translatable="true">JiaoZhiGongZongShiYongMianJi</title>
+		</field>
+		<field/>
+		
+		<!--second row-->
+		<field name="jiaoshou_count" dataType="number" decimals="0" >
+			<title translatable="true">QiZhongJiaoShouRenShu</title>
+		</field>
+		<field name="jiaoshou_zhanbi" dataType="number" decimals="2" >
+			<title translatable="true">RenShuZhanBi</title>
+		</field>
+		<field name="jiaoshou_area" dataType="number" decimals="2" >
+			<title translatable="true">JiaoShouZongShiYongMianJi</title>
+		</field>
+		<field name="jiaoshou_area_zhanbi" dataType="number" decimals="2" >
+			<title translatable="true">MianJiZhanBi</title>
+		</field>
+    </panel>
+	
+    <panel type="grid" controlType="reportGrid" id="ascBjUsmsOverallEmRmByZhicMain_zhicGrid" dataSource="ds_asc-bj-usms-overall-em-rm-by-zhic-main_rpt_em" layoutRegion="emSumPosition">
+        <title translatable="true">AnZhiChengTongJiFenXiJiaoZhiGongShiJiShiYongMianJi</title>
+		<sortField name="name" table="sc_zhic" ascending="true" />
+    </panel>
+	
+    <panel type="grid" controlType="reportGrid" id="ascBjUsmsOverallEmRmByZhicMain_emGrid" dataSource="ds_asc-bj-usms-overall-em-rm-by-zhic-main_grid_em" showOnLoad="false" layoutRegion="emPosition">
+        <title translatable="true">QuanXiaoJiaoZhiGongShiJiShiYongMianJi</title>
+		<sortField name="em_id" table="em" ascending="true" />
+    </panel>
+    
+    <js file="asc-bj-usms-overall-em-rm-by-zhic-main-wd.js"/>
+	<js file="asc-bj-usms-overall-common.js"/>
+</view>

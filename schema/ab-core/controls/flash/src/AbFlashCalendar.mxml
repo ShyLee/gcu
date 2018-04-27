@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+    xmlns:ilog="http://www.ilog.com/2007/ilog/flex"
+    layout="vertical"
+    initialize="myInitialize();" 
+    creationComplete="myCreationComplete();"
+    >
+	<mx:Script>
+		<![CDATA[
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// This class depends on the following external JavaScript functions:
+		//
+		//		getLocalizedString_calendar_JS(input): to get localized version of the following fields:
+		//			"prev", "next", "today", "by day", "by workweek", "by week", "by month".
+		//
+		//		getData_JS(panelId, start, end): to get the current data as a JSON object.
+		//	
+		//		calendarItemClick_JS(primaryKey): to handle the click event on a calendar item
+		//
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// This class depends on the following parameter:
+		//
+		//		panelId: the panelId that can be used later as parameter to "getData_JS" to get data
+		//
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// This class exports the following functions to JavaScript:
+		//
+		//		SetDate(date:String): to set date
+		//
+		//		SetMode(mode:String): set mode to one of "day", "workweek", "week", "month"
+		//
+		//		RefreshData(): to refresh calendar data with a JSON array, where each array element has:
+		//			"startTime", "endTime", "summary", and "primaryKey".
+		//
+		////////////////////////////////////////////////////////////////////////////////////////////
+		
+		// some imports		
+        import ilog.calendar.CalendarEvent;
+        import ilog.calendar.CalendarItem;
+        //import flash.utils.Dictionary;
+		import com.adobe.serialization.json.JSON;
+		import mx.controls.Alert;
+		import mx.events.PropertyChangeEvent;
+    	import mx.events.CollectionEventKind;
+    	import mx.events.CollectionEvent
+		
+		// mydata is an array that stores the calendar data
+		[Bindable]
+		public var mydata:Array = [];
+		
+		public var colors:Object = null;
+		private var panelId:String = "";
+		
+		// fixed coloring
+		private var colorsAll:Array = [
+			0xFF9999,
+			0x99FF99,
+			0xFF99FF,
+			0xCCFF66,
+			0xCC66FF,
+			0xFFCC66,
+			0xFF66CC,
+			0x66FFCC,
+			0x66CCFF,
+			0xEEEEEE,
+			0xCCCCCC,
+			0x999999,
+			0xCC99CC,
+			0x99CCCC,
+			0xCCCC99,
+			0xDDCC77,
+			0xCCDD77,
+			0x77DDCC,
+			0x77CCDD,
+			0xDD77CC,
+			0xCC77DD,
+			0xF1F1AA,
+			0xF1AAF1,
+			0xAAF1F1,
+			0xAAAAF1,
+			0xAAF1AA,
+			0xF1AAAA
+		];
+
+		// Can be called by JavaScript
+		// Set date
+		public function SetDate(sDate:String, isRetrieveData:Boolean=true):void {
+			try {
+				if (sDate==null || sDate=="null")
+					calendar.date = new Date();
+				else
+					calendar.date = new Date(sDate);
+			}
+			catch (e:Error) {
+				calendar.date = new Date();
+			}
+			dateField.selectedDate = calendar.date;	
+			if (isRetrieveData) RefreshData();
+		} 
+		
+		// Can be called by JavaScript
+		// Set mode
+		public function SetMode(mode:String):void {
+			switch (mode) {
+				case "day":
+					byDay.selected = true;
+					break;
+				case "workweek":
+					byWorkWeek.selected = true;
+					break;
+				case "week":
+					byWeek.selected = true;
+					break;
+				case "month":
+					byMonth.selected = true;
+					break;
+				default:
+					mode = "month";
+					byMonth.selected = true;
+					break;
+			}
+			calendar.mode = mode;
+		} 
+
+		// Can be called by JavaScript
+		// Refresh the data		
+		public function RefreshData():void {
+			try {
+				// get data from JavaScript
+				var data:String = ExternalInterface.call("getData_JS", panelId, 
+					ConvertDateForJS(calendar.date, -2), 
+					ConvertDateForJS(calendar.date, 2) );
+					
+				// sanity check
+				if (data==null || data=="null" || data=="") {
+					return;
+				}
+					
+				// make sure colors do not switch
+				var colorIndex:int = 0;
+				
+				// empty data
+				this.mydata = [];
+				this.colors = new Object();
+
+				// loop through data to refresh
+				var arrData:Array = (JSON.decode(data) as Array);
+				
+				for (var i:int=0; i<arrData.length; ++i) {
+					this.mydata.push({
+						'startTime':arrData[i]['startTime'], 
+						'endTime':arrData[i]['endTime'], 
+						'summary':arrData[i]['summary'], 
+						'status':arrData[i]['primaryKey']
+						});
+					colors[arrData[i]['primaryKey']] = colorsAll[colorIndex++]; //Math.round( Math.random()*0xFFFFFF );
+					if (colorIndex>=colorsAll.length) colorIndex=0;
+				}
+				
+				calendar.dataProvider.refresh();
+			}
+			catch (e: Error) {
+				Alert.show( "[RefreshData (" + data + ")] " + e.toString(), "ERROR" );
+			}
+		}
+
+		// the function for initialize
+		private function myInitialize(): void {
+			// export functions for JS to call
+			ExternalInterface.addCallback("RefreshData", RefreshData);
+			ExternalInterface.addCallback("SetMode", SetMode);
+			ExternalInterface.addCallback("SetDate", SetDate);
+			ExternalInterface.addCallback("setControlProperty",setControlProperty);
+			ExternalInterface.addCallback("setStyleProperty",setStyleProperty);
+
+			// record the parameter panelId for later usage to call getData_JS()
+			panelId = Application.application.parameters.panelId;
+			
+			// localize necessary strings (see comments at the top of this file)
+			prev.label 		 = ExternalInterface.call("getLocalizedString_calendar_JS", "prev");
+			next.label 		 = ExternalInterface.call("getLocalizedString_calendar_JS", "next");
+			today.label 	 = ExternalInterface.call("getLocalizedString_calendar_JS", "today");
+			byDay.label 	 = ExternalInterface.call("getLocalizedString_calendar_JS", "by day");
+			byWorkWeek.label = ExternalInterface.call("getLocalizedString_calendar_JS", "by workweek");
+			byWeek.label 	 = ExternalInterface.call("getLocalizedString_calendar_JS", "by week");
+			byMonth.label 	 = ExternalInterface.call("getLocalizedString_calendar_JS", "by month");
+			
+			// initialize date & mode
+			SetDate(Application.application.parameters.date, false);
+			SetMode(Application.application.parameters.mode);
+		}	
+		
+		 /**
+         * Sets control property specified by name.
+         * Can be called from JS code to set properties not supported in AXVW format.
+         */     
+        public function setControlProperty(propertyName:String, propertyValue:Object):void {
+            this.calendar[propertyName] = propertyValue;
+        }
+        
+        /**
+         * Sets style property specified by name.
+         * Can be called from JS code to set properties not supported in AXVW format.
+         */  
+        public function setStyleProperty(propertyName:String, propertyValue:Object):void {
+        	this.calendar.setStyle(propertyName,propertyValue);
+        }
+        
+		// the function to get a date in the format of "2009/12/20"
+		// Parameter: monthAdjust: 0=no adjust;  1=next month;  -1=prev month
+		private function ConvertDateForJS(date:Date, monthAdjust:int): String {
+			var year:int = date.getFullYear();
+			var month:int = date.getMonth()+1 + monthAdjust;
+			if (month<=0) {
+				month+=12;
+				year--;
+			}
+			else if (month>=13) {
+				month-=12;
+				year++;
+			}
+			var newDate:Date = new Date(year, month, 0); 
+			return year + "/" + month + "/" + newDate.getDate();
+		}
+		
+		// the function for creationComplete 
+		private function myCreationComplete(): void {
+		}		
+		
+		// callback function when the dateField has changed
+		private function DateFieldChangeCallback(): void {
+			calendar.date = dateField.selectedDate;
+			RefreshData();
+		}
+		
+		// callback function when the mode has changed
+		private function ModeChangeCallback(s:String): void {
+			calendar.mode = s;
+		}
+		
+		// callback function when the "today" button is clicked
+		private function todayClickCallback(): void {
+			calendar.date = new Date();
+			dateField.selectedDate = calendar.date;
+			RefreshData();
+		}
+
+		private function prevRangeCallback(): void {
+			RefreshData();
+			calendar.previousRange();
+		}
+
+		private function nextRangeCallback(): void {
+			RefreshData();
+			calendar.nextRange();
+		}
+
+		// callback function when the visible time range has changed
+        private function visibleTimeRangeChange(event:CalendarEvent):void {
+        	dateField.selectedDate = calendar.date;
+        	SetMode(calendar.mode);
+        	if (calendar.mode=="day")
+        		visibleTimeRange.text = calendar.date.toLocaleDateString();
+        	else
+        		visibleTimeRange.text = event.startDate.toLocaleDateString() + " -- " + event.endDate.toLocaleDateString();
+         }
+        
+        private function itemClick(event:CalendarEvent):void {
+        	try {
+        		ExternalInterface.call("calendarItemClick_JS", event.item.status);
+        	}
+        	catch (e: Error){
+        	}
+        }
+
+		// return a color from the list of colors
+		private function itemColorFunction(calItem:CalendarItem):Object {        
+    	    return colors[calItem.status];
+    	}
+		]]>
+	</mx:Script>
+	<mx:Label id="visibleTimeRange" fontSize="16" fontWeight="bold"/>
+
+    <mx:HBox>	
+	    <mx:Button id="prev" label="prev" click="prevRangeCallback()" />
+    	<mx:Button id="next" label="next" click="nextRangeCallback()" />
+    	<mx:Button id="today" label="today" click="todayClickCallback()" />
+    	<mx:DateField id="dateField" editable="true" change="DateFieldChangeCallback()" width="111"/>
+		<mx:HBox borderStyle="solid">
+	    	<mx:RadioButton id="byDay" label="by day" change='ModeChangeCallback("day")' selected="true"/>
+    		<mx:RadioButton id="byWorkWeek" label="by workweek" change='ModeChangeCallback("workweek")'/>
+    		<mx:RadioButton id="byWeek" label="by week" change='ModeChangeCallback("week")'/>
+    		<mx:RadioButton id="byMonth" label="by month" change='ModeChangeCallback("month")'/>
+    	</mx:HBox>
+     </mx:HBox>
+
+	<ilog:Calendar width="100%" height="100%" id="calendar" dataProvider="{mydata}" 
+		itemColorFunction="{itemColorFunction}"
+		visibleTimeRangeChange="visibleTimeRangeChange(event)" itemClick="itemClick(event)">
+		<ilog:itemLabelRenderer>
+     		 <mx:Component>
+       			 <ilog:CalendarItemLabelRenderer useBorder="true"/> 
+      		</mx:Component>
+    	</ilog:itemLabelRenderer>
+	</ilog:Calendar>
+</mx:Application>

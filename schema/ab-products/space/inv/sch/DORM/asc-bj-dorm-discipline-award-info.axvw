@@ -1,0 +1,162 @@
+<view version="2.0">
+
+	<layout type="borderLayout" id="mainLayout">
+		<north id="northPosition" initialSize="120" split="true" />
+		<center id="centerPosition"/>
+		<south id="southPosition" initialSize="50%" split = "true"/>
+	</layout>
+	<title translatable="true">Student Award And Discipline</title>
+
+	<dataSource id="stu_disp_ds">
+		<table name="sc_stu_disp_log" role="main"/>
+		<table name="dv" role="standard"/>
+		<table name="sc_stu_profession" role="standard"/>
+		<field table="sc_stu_disp_log" name="id"/>
+		<field table="sc_stu_disp_log" name="stu_no"/>
+		<field table="sc_stu_disp_log" name="stu_name"/>
+		<field table="sc_stu_disp_log" name="stu_sex"/>
+		<field table="sc_stu_disp_log" name="stu_in_year"/>
+		<field table="sc_stu_disp_log" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="sc_stu_disp_log" name="pro_id"/>
+		<field table="sc_stu_profession" name="pro_name"/>
+		<field table="sc_stu_disp_log" name="mark"/>
+		<field table="sc_stu_disp_log" name="disp_main"/>
+		<field table="sc_stu_disp_log" name="disp_detail"/>
+		<field table="sc_stu_disp_log" name="comments"/>
+		<field table="sc_stu_disp_log" name="date_disp"/>
+		<sortField table="sc_stu_disp_log" name="id" ascending="false"/>
+	</dataSource>
+	
+	<dataSource id="stu_disp_total_ds">
+		<sql dialect="generic">
+   			select a.dv_id ,dv.dv_name as dvName,
+            	sum(case a.mark when '1' then 1 else 0 end)  disp,
+            	sum(case a.mark when '2' then 1 else 0 end) award,
+            	sum(case a.mark when '1' then 1 else 0 end)+sum(case a.mark when '2' then 1 else 0 end) total
+            from sc_stu_disp_log a,dv 
+            where a.dv_id =dv.dv_id  
+     				and ${parameters['stuYear']}
+           			and ${parameters['dispDetail']}
+           			and ( ${parameters['dateDispForm']} and ${parameters['dateDispTo']}
+               			)       	
+            group by a.dv_id, dv.dv_name 
+		</sql>
+		<table name="sc_stu_disp_log" role="main"/>
+		<field table="sc_stu_disp_log" name="dv_id" dataType="text"/>
+		<field table="sc_stu_disp_log" name="dvName" dataType="text"/>
+		<field table="sc_stu_disp_log" name="award"  dataType="text"/>
+		<field table="sc_stu_disp_log" name="disp" dataType="text"/>
+		<field table="sc_stu_disp_log" name="total" dataType="text"/>
+		
+		<parameter name="stuYear" dataType="verbatim" value="1=1"/>
+		<parameter name="dispDetail" dataType="verbatim" value="1=1"/>
+		<parameter name="dateDispForm" dataType="verbatim" value="1=1"/>
+		<parameter name="dateDispTo" dataType="verbatim" value="1=1"/>
+	</dataSource>
+	
+	<panel type="console"  id="consoleDispPanel" dataSource="stu_disp_ds" layoutRegion="northPosition" columns="2">
+		<title translatable="true">Filter</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+			<command type="showPanel" panelId="gridInfoDispPanel"/>
+			<command type="callFunction" functionName="checkoutDispController.showTotal()"/>
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel" panelId="consoleDispPanel"/>
+		</action>
+		<field table="sc_stu_disp_log" name="stu_in_year"/>
+<!-- 		<field table="sc_stu_disp_log" name="mark"/> -->
+		<field table="sc_stu_disp_log" name="disp_detail"/>
+		
+<!-- 		<field table="sc_stu_disp_log" name="dv_id" hidden="true"/> -->
+<!-- 		<field table="dv" name="dv_name" required="false"> -->
+<!-- 			<title>Dv Name</title> -->
+<!-- 			<action> -->
+<!--         		<title translatable="false">...</title> -->
+<!-- 				<command type="selectValue" -->
+<!-- 					fieldNames="sc_stu_disp_log.dv_id,dv.dv_name" -->
+<!-- 					selectFieldNames="dv.dv_id,dv.dv_name" -->
+<!-- 					visibleFieldNames="dv.dv_id,dv.dv_name"/> -->
+<!--         	</action> -->
+<!-- 		</field> -->
+<!-- 		<field table="sc_stu_disp_log" name="stu_no" required="false"> -->
+<!-- 			<action> -->
+<!--         		<title translatable="false">...</title> -->
+<!-- 				<command type="selectValue" -->
+<!-- 					fieldNames="sc_stu_disp_log.stu_no,sc_stu_disp_log.stu_name" -->
+<!-- 					selectFieldNames="sc_stu_disp_log.stu_no,sc_stu_disp_log.stu_name" -->
+<!-- 					visibleFieldNames="sc_stu_disp_log.stu_no,sc_stu_disp_log.stu_name"/> -->
+<!--         	</action> -->
+<!-- 		</field> -->
+<!-- 		<field table="sc_stu_disp_log" name="stu_name"/> -->
+		<field table="sc_stu_disp_log" name="date_disp"  alias="sc_stu_disp_log.date_from" op="&gt;=">
+			<title translatable="true">dateFrom</title>
+		</field>
+		<field table="sc_stu_disp_log" name="date_disp"  alias="sc_stu_disp_log.date_to" op="&lt;=">
+			<title translatable="true">dateTo</title>
+		</field>
+	</panel>
+	
+	<panel type="grid"  id="gridTotalDispPanel" dataSource="stu_disp_total_ds" layoutRegion="centerPosition">
+		<title translatable="true">Total</title>
+	    <action id="dispStatistic">
+			<title translatable="true">DispStatistic</title>
+		</action>
+	    <action id="dispRecordStatistic">
+			<title translatable="true">DispRecordStatistic</title>
+		</action>
+		<!--生成报表 -->
+		<action id="dormAndStu">
+			<title>export ireport</title>
+		</action>
+		<action id="export">
+			<title translatable="true">Export Excel</title>
+			<command type="exportPanel" panelId="gridTotalDispPanel" outputType="xls"/>
+		</action>
+		<sortField table="sc_stu_disp_log" name="dv_id"/>
+		<field table="sc_stu_disp_log" name="dv_id" hidden="true"/>
+		<field table="sc_stu_disp_log" name="dvName" dataType="text">
+		<title translatable="true">Dv Name</title>
+		</field>
+		<field table="sc_stu_disp_log" name="award"  dataType="text" controlType="link">
+			<title translatable="true">Award Count</title>
+        	<command type="callFunction" functionName="checkoutDispController.showAwardDetail()"/>
+		</field>
+		<field table="sc_stu_disp_log" name="disp" dataType="text" controlType="link">
+			<title translatable="true">Disp Count</title>
+        	<command type="callFunction" functionName="checkoutDispController.showDispDetail()"/>
+		</field>
+		<field table="sc_stu_disp_log" name="total" dataType="text" controlType="link">
+			<title translatable="true">Sum</title>
+        	<command type="callFunction" functionName="checkoutDispController.showAllDetail()"/>
+		</field>
+	</panel>
+	
+	<panel type="grid"  id="gridInfoDispPanel" dataSource="stu_disp_ds" layoutRegion="southPosition">
+		<title translatable="true">Info</title>
+		<action id="export">
+			<title translatable="true">Export Excel</title>
+			<command type="exportPanel" panelId="gridInfoDispPanel" outputType="xls"/>
+		</action>
+		<indexField table="sc_stu_disp_log" name="stu_no"/>
+		<field table="sc_stu_disp_log" name="id" hidden="true"/>
+		<field table="sc_stu_disp_log" name="stu_in_year"/>
+		<field table="sc_stu_disp_log" name="stu_no"/>
+		<field table="sc_stu_disp_log" name="stu_name"/>
+		<field table="sc_stu_disp_log" name="stu_sex"/>
+		<field table="sc_stu_disp_log" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name">
+			<title>Dv Name</title>
+		</field>
+		<field table="sc_stu_disp_log" name="pro_id" hidden="true"/>
+		<field table="sc_stu_profession" name="pro_name"/>
+		<field table="sc_stu_disp_log" name="mark"/>
+		<field table="sc_stu_disp_log" name="disp_main" hidden="true"/>
+		<field table="sc_stu_disp_log" name="disp_detail"/>
+		<field table="sc_stu_disp_log" name="date_disp"/>
+		<field table="sc_stu_disp_log" name="comments"/>
+	</panel>
+	<js file="asc-bj-dorm-discipline-award-info.js"/>
+</view>

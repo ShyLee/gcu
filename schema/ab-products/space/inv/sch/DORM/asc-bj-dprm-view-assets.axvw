@@ -1,0 +1,262 @@
+<view version="2.0">
+	<title translatable="true">xueshengsushe</title>
+    <layout id="main">
+        <north id="ConsolePositon" initialSize="80" split="false"/>
+        <center/>
+    </layout>
+
+    <layout id="nested_center" containingLayout="main" region="center">
+        <west id="BlPositon" initialSize="25%" split="true"/>
+        <center id="DwgPosition"/>
+    </layout>
+            
+    <message name="drawingPanelTitle" translatable="true">Select rm2</message>
+  
+	<dataSource id="ds_console">
+		<table name="dv" role="main" />
+		<table name="bl" role="standard" />
+		<field table="dv" name="dv_name"/>
+		<field table="dv" name="dv_id"/>
+		<field table="dv" name="bu_id"/>
+        <field table="bl" name="name"/>
+	 </dataSource>
+
+     <dataSource id="ds_stuAssign">
+        <table name="sc_stu_log" role="main"/>
+        <field table="sc_stu_log" name="stu_no"/>
+		<field table="sc_stu_log" name="stu_name"/>
+		<field table="sc_stu_log" name="stu_sex"/>
+        <field table="sc_stu_log" name="dv_id"/>
+        <field table="sc_stu_log" name="pro_id"/>
+        <field table="sc_stu_log" name="stu_in_year"/>
+        <field table="sc_stu_log" name="mark"/>
+        <field table="sc_stu_log" name="date_checkin"/>
+        <field table="sc_stu_log" name="date_checkout"/>
+        <field table="sc_stu_log" name="bl_id"/>
+        <field table="sc_stu_log" name="fl_id"/>
+        <field table="sc_stu_log" name="rm_id"/>
+        <field table="sc_stu_log" name="checkout_cause"/>
+        <restriction type="sql" sql="sc_stu_log.rm_id is not null"/>
+    </dataSource>
+ 
+    <dataSource id="bl_ds">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <sortField name="bl_id" table="bl" ascending="true"/>
+        <parameter name="blName" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="1=1 AND EXISTS (SELECT 1 FROM rm left join rmcat on rmcat.rm_cat=rm.rm_cat 
+									WHERE rm.dwgname IS NOT NULL  AND rm.bl_id=bl.bl_id and rmcat.supercat!='VERT' and rmcat.rm_cat='301')
+									and ${parameters['blName']}"/>
+    </dataSource>
+    
+    <dataSource id="fl_ds">
+        <sql dialect="generic">
+            SELECT
+            rm.bl_id ${sql.as} bl_id,
+            rm.fl_id ${sql.as} fl_id,
+            rm.dwgname ${sql.as} dwgname
+            FROM rm WHERE rm.dwgname IS NOT NULL
+            GROUP BY rm.bl_id,rm.fl_id,rm.dwgname
+        </sql>
+        <table name="fl" role="main"/>
+        <table name="bl" role="standard"/>
+        <field name="fl_id"/>
+		<field name="bl_id" hidden="true"/>
+        <field name="dwgname" hidden="true"/>
+        <sortField name="fl_id" table="fl" ascending="true"/>
+        <parameter name="dvName" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="1=1 and fl.fl_id in (select distinct rm.fl_id from rm, dv, bl
+									where rm.dv_id = dv.dv_id and ${parameters['dvName']})"/>
+    </dataSource>
+
+    <!--高亮图纸  数据源-->    
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_drawing_availRm" type="DrawingControlHighlight">
+            <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_type" hidden="true" />
+        <field table="dp" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" legendKey="true"/>
+        <field table="dp" name="dp_name"/>
+        <field table="dp" name="dp_id" hidden="true"/>
+        <field table="dp" name="hpattern_acad"/>
+        <field table="rmcat" name="occupiable"/>
+        <restriction type="sql" sql="rmcat.supercat!='VERT'"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmLabel">
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="dwgname" hidden="true"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="stu_in_year"/>
+        <field table="dv" name="name"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em" dataType="integer">
+            <sql dialect="generic">
+			 ( SELECT COUNT(*) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id ) 
+            </sql>
+		</field>
+        <field table="rm" name="stu_names" dataType="string">
+            <sql dialect="generic">
+			 ( SELECT LISTAGG(stu_name, ',') WITHIN GROUP(ORDER BY stu_name) FROM sc_student WHERE sc_student.bl_id = rm.bl_id AND sc_student.fl_id = rm.fl_id AND sc_student.rm_id = rm.rm_id group by rm.bl_id, rm.fl_id, rm.rm_id ) 
+            </sql>
+		</field>
+        <field table="rmcat" name="rmcat_name" hidden="true"/>
+        <field table="rmtype" name="rmtype_name"/>
+    </dataSource>
+            
+    <dataSource id="site_ds">
+        <table name="site" role="main"/>
+        <field table="site" name="site_id" hidden="true"/>
+        <field table="site" name="name"/>
+        <sortField name="site_id" table="site" ascending="true"/>
+    </dataSource>
+           
+    <panel type="console" id="ConsoleForm" dataSource="ds_console" columns="3"  layoutRegion="ConsolePositon">
+    	<title translatable="true">Filter</title>
+        <action id="showTree">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+        <field table="dv" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name">
+			<title translatable="true">suoshuyuanxi</title>
+			<action>
+				<title translatable="true">...</title>
+				<command type="selectValue" 
+				         fieldNames="dv.dv_name"
+					     selectFieldNames="dv.name" 
+					     visibleFieldNames="dv.dv_id,dv.name"
+					     restriction="dv.bu_id='02'">
+				</command>
+			</action>
+		</field>
+		<field table="bl" name="name">
+			<title translatable="true">sushe</title>
+			<action>
+				<title>...</title>
+				<command type="selectValue" 
+				         fieldNames="bl.name"
+					     selectFieldNames="bl.name" 
+					     visibleFieldNames="bl.bl_id,bl.name"
+					     restriction="bl.bl_id in(select bl_id from rm where rm.rm_cat='301')">
+				</command>
+			</action>
+		</field>
+    </panel>
+      
+    <panel type="tree" id="BlTree" dataSource="site_ds" layoutRegion="BlPositon">
+        <title translatable="true">Select SuShe</title>
+        <event type="onClickNode">
+	        	<command type="callFunction" functionName="onTreeSiteClick"/>
+	    </event>
+        <panel type="tree" id="FlTree" dataSource="bl_ds">
+        	<event type="onClickNode">
+	        	<command type="callFunction" functionName="onTreeBlClick"/>
+	        </event>
+        </panel>
+        <panel type="tree" id="FlTree" dataSource="fl_ds">
+	        <event type="onClickNode">
+	        	<command type="callFunction" functionName="onTreeClick"/>
+	        </event>
+    	    <field table="fl" name="fl_id" />
+    	    <field table="fl" name="dwgname" hidden="true"/>
+        </panel>
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="name" />
+    </panel>
+    <panel type="drawing" id="abSpAsgnEmToRm_drawingPanel" layoutRegion="DwgPosition" multiple="false" selectionMode="1" assignMode="2" showOnLoad="false"
+     	highlightDataSource="ds_ab-sp-asgn-em-to-rm_drawing_availRm" 
+     	labelsDataSource="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmLabel"
+	 	legendPanel="abSpAsgnEmToRm_legendGrid" >
+     	<title translatable="true">Select rm</title>
+     	<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpAsgnEmToRm_drawingPanel"/>
+		</action>
+<!--      	<action id="showDwgView"> -->
+<!-- 			<title translatable="true">ShowDwg</title> -->
+<!-- 		</action> -->
+    </panel>
+
+    <dataSource id="ds_ab-sp-asgn-em-to-rm_legend" distinct="true">
+        <table name="rm" role="main"/>
+    </dataSource>
+    
+    <dataSource id="bl_stu_ds">
+       <sql dialect="generic">
+           select rm.bl_id  ${sql.as} bl_id,bl.name  ${sql.as} bl_name,rm.fl_id  ${sql.as} fl_id, rm.rm_id  ${sql.as} rm_id,
+           a.stu_in_year  ${sql.as} stu_in_year,a.stu_no  ${sql.as} stu_no,a.stu_name  ${sql.as} stu_name, a.dv_name  ${sql.as} dv_name,rm.dv_id
+		     from (select sc_student.bl_id,
+		                  sc_student.fl_id,
+		                  sc_student.rm_id,
+		                  sc_student.dv_id,
+		                  dv.dv_name,
+		                  sc_student.stu_no,
+		                  sc_student.stu_name,
+		                  sc_student.stu_in_year
+		             from sc_student, dv
+		            where sc_student.dv_id = dv.dv_id
+		              and sc_student.bl_id is not null) a,
+		          rm,bl
+		    where rm.bl_id = a.bl_id(+)
+		      and rm.fl_id = a.fl_id(+)
+		      and rm.rm_id = a.rm_id(+)
+		      and rm.bl_id=bl.bl_id
+		      and rm.rm_cat = '301'
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id" dataType="text"/>
+        <field table="rm" name="bl_name" dataType="text"/>
+        <field table="rm" name="fl_id" dataType="text"/>
+        <field table="rm" name="rm_id" dataType="text"/>
+        <field table="rm" name="stu_in_year" dataType="text"/>
+        <field table="rm" name="stu_no" dataType="text"/>
+        <field table="rm" name="stu_name" dataType="text"/>
+        <field table="rm" name="dv_id" dataType="text"/>
+        <field table="rm" name="dv_name" dataType="text"/>
+        <sortField table="rm" name="bl_id" ascending="true"/>
+        <sortField table="rm" name="fl_id" ascending="true"/>
+        <sortField table="rm" name="rm_id" ascending="true"/>
+    </dataSource>
+    <panel type="grid" id="blStuPanel" dataSource="bl_stu_ds" showOnLoad="false">
+    	<title></title>
+    	<action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="blStuPanel"/>
+        </action>
+    	<indexField table="rm" name="rm_id"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="bl_name">
+        	<title>Bl Name</title>
+        </field>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="stu_in_year"/>
+        <field table="rm" name="stu_no">
+        	<title>Stu No</title>
+        </field>
+        <field table="rm" name="stu_name">
+        	<title>Stu Name</title>
+        </field>
+        <field table="rm" name="dv_name">
+        	<title>Dv Name</title>
+        </field>
+    </panel>
+    <js file="asc-bj-dprm-view-assets.js"/>
+    <js file="asc-bj-dorm-commons.js"/>
+</view>

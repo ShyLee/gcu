@@ -1,0 +1,186 @@
+<view version="2.0">
+    <title translatable="true">View Vacant Rooms by Building</title>
+	<message name="total" translatable="true">Total</message>
+    
+     <layout type="borderLayout" id="mainLayout">
+        <north autoScroll="true" split="true" initialSize="90"/>
+        <center autoScroll="true"/>
+    </layout>
+    
+    <layout id="nested_center" containingLayout="mainLayout" region="center">
+        <west id="treePosition" initialSize="20%" split="true"/>
+        <center id="rptPosition"/>
+    </layout>
+	
+    <message name="noSite" translatable="true">No Site</message>
+	<message name="treeTitle" translatable="true">Xiao Qu : {0}</message>
+	<message name="rptPanelTitle" translatable="true">Jian Zhu Wu : {0}</message>
+	<message name="err_selectBl" translatable="true">Please select building</message>
+    
+	<!-- dataSource for site tree -->
+    <dataSource id="ds_ab-sc-vw-vacant-area-by-bl_tree_site">
+        <table name="site" role="main"/>
+        <field table="site" name="site_id" dataType="text"/>
+        <field table="site" name="name" dataType="text"/>
+        <sortField table="site" name="site_id" ascending="true"/>
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="siteId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<restriction type="sql" sql="site.site_id ${parameters['siteId']} AND site_id in (SELECT site_id FROM property WHERE pr_id ${parameters['prId']} AND pr_id in (SELECT pr_id from bl where bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']}))"/>
+    </dataSource>
+	
+    <dataSource id="ds_ab-sc-vw-vacant-area-by-bl_tree_pr">
+        <table name="property" role="main"/>
+        <field table="property" name="site_id" dataType="text"/>
+        <field table="property" name="pr_id" dataType="text"/>
+        <field table="property" name="name" dataType="text"/>
+        <field table="property" name="qty_no_bldgs_calc" dataType="text"/>
+        <sortField table="property" name="pr_id" ascending="true"/>
+        <parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		
+		<restriction type="sql" sql="property.pr_id ${parameters['prId']} AND pr_id in (SELECT pr_id from bl where bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']})"/>
+    </dataSource>   
+	
+    
+	<!-- dataSource for building tree -->
+    <dataSource id="ds_ab-sc-vw-vacant-area-by-bl_tree_bl">
+        <table name="bl" role="main"/>
+        <field table="bl" name="site_id" dataType="text"/>
+		<field table="bl" name="pr_id" dataType="text"/>
+        <field table="bl" name="bl_id" dataType="text"/>
+        <field table="bl" name="name" dataType="text"/>
+        <sortField table="bl" name="bl_id" ascending="true"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		
+		<restriction type="sql" sql="bl.bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']} AND bl.acc_type != 'yxz'"/>
+    </dataSource>
+	
+	<!-- dataSource for room -->
+    <dataSource id="ds_ab-sc-vw-vacant-area-by-bl_grid_rm">
+        <table name="rm" role="main"/>
+		<table name="bl" role="standard"/>
+		<table name="rmcat" role="standard"/>
+		<table name="rmtype" role="standard"/>
+		<table name="dv" role="standard"/>
+		<table name="dp" role="standard"/>
+		
+		<field table="rm" name="rm_id"/>
+		<field table="rm" name="bl_id"/>
+		<field table="rm" name="fl_id"/>
+		<field table="rm" name="area" showTotals="true"/>
+		<field table="rm" name="area_manual"/>
+		<field table="rm" name="area_comn_rm"/>
+		<field table="rm" name="rm_cat"/>
+		<field table="rmcat" name="rmcat_name"/>
+		<field table="rm" name="rm_type"/>
+		<field table="rmtype" name="rmtype_name"/>
+		<field table="rm" name="name"/>
+		<field table="rm" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="dp" name="dp_name"/>
+		<field table="bl" name="name"/>
+		<field table="bl" name="pr_id"/>
+		<field table="bl" name="site_id"/>
+		<parameter name="locRes" dataType="verbatim" value="1=1"/>
+<!-- 		<parameter name="rmcatRes" dataType="text" value=""/> -->
+<!-- 		<restriction type="sql" sql="${parameters['locRes']} and rm.rm_cat=${parameters['rmcatRes']}"/> -->
+		<restriction type="sql" sql="${parameters['locRes']} and ( rm.dv_id is null or rm.dv_id='WU')"/>
+    </dataSource>
+	
+     <dataSource id="ds_ab-sp-def-loc_console_bl_fl">
+        <table name="bl" role="main"/>
+        <table name="property" role="standard"/>
+        <field table="property" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+        <field table="bl" name="bl_id"/>
+		<field table="bl" name="use1"/>
+    </dataSource>
+    
+    <panel type="console" columns="4" id="sbfFilterPanel" labelsPosition="top" dataSource="ds_ab-sp-def-loc_console_bl_fl" layout="mainLayout" region="north">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="sbfFilterPanel"/>
+        </action>
+        <field table="property" name="site_id"/>
+        <field table="bl" name="pr_id">
+        	<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" fieldNames="bl.pr_id,property.site_id"
+					selectFieldNames="property.pr_id,property.site_id" 
+					visibleFieldNames="property.site_id,property.pr_id,property.name" 
+					filterFieldNames="property.site_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>	
+        <field table="bl" name="bl_id">
+            <action>
+                <title translatable="true">...</title>
+                <command type="selectValue"
+                    fieldNames="bl.bl_id,bl.pr_id,property.site_id" 
+                    selectFieldNames="bl.bl_id,bl.pr_id,bl.site_id"
+                    visibleFieldNames="bl.site_id,bl.pr_id,bl.bl_id,bl.name"
+                    restriction="bl.acc_type!='yxz'" >
+                    <title>Building</title>
+                </command>
+            </action>
+        </field>  
+		<field table="bl" name="use1"/>  
+    </panel>
+    
+    
+	<!-- tree panel -->
+    <panel type="tree" id="abScVwVacantArea_SiteTree" dataSource="ds_ab-sc-vw-vacant-area-by-bl_tree_site" layoutRegion="treePosition">
+        <title translatable="true">Xiao Qu</title>
+          <event type="onClickNode">
+                <command type="callFunction" functionName="onSiteTreeClick"/>
+           </event>
+        <panel type="tree" id="abScVwVacantArea_PrTree" dataSource="ds_ab-sc-vw-vacant-area-by-bl_tree_pr">
+        	<event type="onClickNode">
+                <command type="callFunction" functionName="onPrTreeClick"/>
+            </event>
+            <field table="property" name="pr_id"/>
+        </panel>   
+        <panel type="tree" id="abScVwVacantArea_BlTree" dataSource="ds_ab-sc-vw-vacant-area-by-bl_tree_bl">
+        	<event type="onClickNode">
+                <command type="callFunction" functionName="onBlTreeClick"/>
+            </event>
+            <field table="bl" name="bl_id"  hidden="true"/>
+            <field table="bl" name="name"/>
+        </panel>
+    </panel>
+    
+	
+    <panel type="grid" id="abScVwVacantAreaRptPanel" dataSource="ds_ab-sc-vw-vacant-area-by-bl_grid_rm" showOnLoad="false" layoutRegion="rptPosition">
+        <title translatable="true">Jian Zhu Wu</title>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="abScVwVacantAreaRptPanel"/>
+        </action>
+        <sortField table="rm" name="rm_id" ascending="true"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+		<field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+		<field table="rm" name="name"/>
+		<field table="rm" name="area" showTotals="true"/>
+		<field table="rm" name="rm_cat" hidden="true"/>
+		<field table="rmcat" name="rmcat_name"/>
+		<field table="rm" name="rm_type" hidden="true"/>
+		<field table="rmtype" name="rmtype_name"/>
+		<field table="rm" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name"/>
+		<field table="dp" name="dp_name"/>
+		<indexField table="rm" name="bl_id"/>
+    </panel>
+    
+    <js file="asc-bj-usms-bl-empty-list-wd.js"/>
+</view>

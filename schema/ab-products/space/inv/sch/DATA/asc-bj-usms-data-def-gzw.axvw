@@ -1,0 +1,340 @@
+ <view version="2.0">
+ 	<css>.prominentLabel {font-weight: bold; font-size: 15px important; text-align: right; white-space: normal;} </css>
+	
+    <message name="noImage" translatable="true">Image not exist</message>
+    <message name="site" translatable="true">Site</message>
+    <message name="building" translatable="true">Building</message>
+    <message name="floor" translatable="true">Floor</message>
+    <message name="room" translatable="true">Room</message>
+    <message name="errorSelectBuilding" translatable="true">Please select building.</message>
+    <message name="errorSelectFloor" translatable="true">Please select floor.</message>
+    <message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+    <message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+    <message name="formSaved" translatable="true">Form saved successfully.</message>
+    <message name="noSite" translatable="true">No Site</message>
+	<message name="okMessage" translatable="true">GengXinChengGong!</message>
+	
+    <layout type="borderLayout" id="mainLayout">
+        <north id="consolePanel" autoScroll="true" split="true" initialSize="90"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout type="borderLayout" id="centerLayout" containingLayout="mainLayout" region="center">
+        <west id="treePostion" autoScroll="true" split="true" initialSize="32%"/>
+        <center id="editPostion" autoScroll="true"/>
+    </layout>
+    
+    <title translatable="true">DefineGZW</title>
+    
+	<dataSource id="ds_asc-bj-usms-data-def-loc_console_bl">
+		<table name="sc_gzw" role="main"/>
+        <field table="sc_gzw" name="site_id"/>
+		<field table="sc_gzw" name="pr_id"/>
+        <field table="sc_gzw" name="bl_id"/>
+    </dataSource>
+    
+    <panel type="console" columns="3" id="sbfFilterPanel" dataSource="ds_asc-bj-usms-data-def-loc_console_bl" layoutRegion="consolePanel">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="sbfFilterPanel"/>
+        </action>
+        
+        <field table="sc_gzw" name="site_id"/>
+		<field table="sc_gzw" name="pr_id">
+            <action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" fieldNames="sc_gzw.pr_id,sc_gzw.site_id"
+					selectFieldNames="property.pr_id,property.site_id" 
+					visibleFieldNames="property.site_id,property.pr_id,property.name" 
+					filterFieldNames="sc_gzw.site_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>
+        <field table="sc_gzw" name="bl_id">
+        	<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        		fieldNames="sc_gzw.bl_id,sc_gzw.pr_id,sc_gzw.site_id"
+					selectFieldNames="sc_gzw.bl_id,sc_gzw.pr_id,sc_gzw.site_id" 
+					visibleFieldNames="sc_gzw.site_id,sc_gzw.pr_id,sc_gzw.name" 
+					filterFieldNames="sc_gzw.site_id,sc_gzw.pr_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>
+    </panel>
+	
+    <dataSource id="ds_ab-sp-def-loc-rm_tree_site">
+        <table name="site" role="main"/>
+        <field table="site" name="site_id"/>
+        <field table="site" name="name"/>
+        <sortField table="site" name="site_id" ascending="true"/>
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="siteId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blType" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+		<restriction type="sql" sql="site.site_id ${parameters['siteId']}  "/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_form_site">
+        <table name="site" role="main"/>
+        <field table="site" name="name"/>
+        <field table="site" name="site_id"/>
+        <field table="site" name="city_id"/>
+        <field table="site" name="youbian"/>
+        <field table="site" name="address"/>
+        
+        
+        <field table="site" name="notes"/>
+        
+        <field table="site" name="telephone"/>
+        <field table="site" name="guihuayongdi"/>
+        <field table="site" name="jianzhuyongdi"/>
+        <field table="site" name="count_student_plan"/>
+        <field table="site" name="count_student_actual"/>
+        <field table="site" name="count_teacher_actual"/>
+        <field table="site" name="count_teacher_plan"/>
+        <field table="site" name="no_bldgs"/>
+        <field table="site" name="area_land_occu"/>
+		<field table="site" name="isMainCampus"/>
+		<field table="site" name="site_image"/>
+    </dataSource>
+    
+	<dataSource id="ds_ab-sp-def-loc-rm_tree_pr">
+        <table name="property" role="main"/>
+        <field table="property" name="site_id"/>
+        <field table="property" name="pr_id"/>
+        <field table="property" name="name"/>
+		<field table="property" name="qty_no_bldgs_calc"/>
+        <sortField table="property" name="name" ascending="true"/>
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blType" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+		
+		<restriction type="sql" sql="property.pr_id ${parameters['prId']}  "/>
+	</dataSource>	
+	
+	<dataSource id="ds_ab-sp-def-loc-rm_form_pr">
+		<table name="property" role="main"/>
+		<field table="property" name="site_id"/>
+        <field table="property" name="name"/>
+        <field table="property" name="other_name"/>
+        <field table="property" name="pr_id"/>
+        <field table="property" name="qty_no_bldgs"/>
+        <field table="property" name="qty_no_bldgs_calc"/>
+        <field table="property" name="use1"/>
+	</dataSource>	
+			
+    <dataSource id="ds_ab-sp-def-loc-rm_tree_bl">
+        <table name="sc_gzw" role="main"/>
+        <field table="sc_gzw" name="pr_id"/>
+        <field table="sc_gzw" name="site_id"/>
+        <field table="sc_gzw" name="bl_id"/>
+        <field table="sc_gzw" name="name"/>
+        <sortField table="sc_gzw" name="name" ascending="true"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blType" dataType="verbatim" value="IS NOT NULL"/>
+		
+		<restriction type="sql" sql="sc_gzw.bl_id ${parameters['blId']} "/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-def-loc-rm_form_bl">
+        <table name="sc_gzw" role="main"/>
+        <field table="sc_gzw" name="bl_id"/>
+        <field table="sc_gzw" name="name"/>
+        <field table="sc_gzw" name="date_receipt"/>
+        <field table="sc_gzw" name="atype_code"/>
+        <field table="sc_gzw" name="area_building_manual"/>
+        <field table="sc_gzw" name="date_acquire"/>
+        <field table="sc_gzw" name="guzhuwu_unit"/>
+        <field table="sc_gzw" name="ownship_shape"/>
+        <field table="sc_gzw" name="land_photo"/>
+        <field table="sc_gzw" name="quanszh"/>
+        <field table="sc_gzw" name="date_fazheng"/>
+        <field table="sc_gzw" name="value_type"/>
+        <field table="sc_gzw" name="value_market"/>
+        <field table="sc_gzw" name="value_fiscal_alloc"/>
+        <field table="sc_gzw" name="czxjy_funds"/>
+        <field table="sc_gzw" name="srcid"/>
+        <field table="sc_gzw" name="area_ziyong"/>
+        <field table="sc_gzw" name="use_status"/>
+        <field table="sc_gzw" name="zhejiu_status"/>
+        <field table="sc_gzw" name="parcelland_address"/>
+        <field table="sc_gzw" name="operator"/>
+        <field table="sc_gzw" name="site_id"/>
+        <field table="sc_gzw" name="pr_id"/>
+        
+    </dataSource>
+    
+	
+	<dataSource id="ds_ab-sp-def-loc-rm_form_rm_photo">
+        <table name="sc_rmphotodoc" role="main"/>
+        <field table="sc_rmphotodoc" name="blflrm"/>
+        <field table="sc_rmphotodoc" name="rm_photo"/>
+    </dataSource>
+    
+    <panel type="tree" id="site_tree" dataSource="ds_ab-sp-def-loc-rm_tree_site" layoutRegion="treePostion">
+        <title translatable="true">Select Sites, Buildings</title>
+        <action id="addNew">
+            <title translatable="true">Add New</title>
+        </action>
+        <event type="onClickNode">
+            <command type="callFunction" functionName="onClickSiteNode"/>
+        </event>
+		<panel type="tree" id="pr_tree" dataSource="ds_ab-sp-def-loc-rm_tree_pr" recordLimit="0">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="sbfDetailTabs" tabPageName="prTab"/>
+                <command type="callFunction" functionName="onClickTreeNode"/>
+            </event>
+            <field table="property" name="pr_id" dataType="text"/>
+            <field table="property" name="name" dataType="text"/>
+        </panel>
+        <panel type="tree" id="bl_tree" dataSource="ds_ab-sp-def-loc-rm_tree_bl" recordLimit="0">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="sbfDetailTabs" tabPageName="blTab"/>
+                <command type="callFunction" functionName="onClickTreeNode"/>
+            </event>
+            <field table="sc_gzw" name="bl_id" dataType="text"/>
+            <field table="sc_gzw" name="name" dataType="text"/>
+        </panel>
+        <field table="site" name="site_id" dataType="text"/>
+        <field table="site" name="name" dataType="text"/>
+    </panel>
+    
+    <tabs id="sbfDetailTabs" workflow="enforced" cssClass="wizard" layoutRegion="editPostion">
+        <tab name="siteTab" selected="true">
+            <title translatable="true">Site</title>
+            <panel type="form" id="site_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_site" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+                <field table="site" name="name"/>
+                <field table="site" name="site_id"/>
+				
+                <field table="site" name="city_id" hidden="true"/>
+				<field table="site" name="address"/>
+				<field table="site" name="area_land_occu"/>
+				
+                <field table="site" name="youbian"/>
+				<field table="site" name="isMainCampus"/>
+                <field table="site" name="telephone" hidden="true"/>
+				
+                <field table="site" name="guihuayongdi"/>
+                <field table="site" name="jianzhuyongdi"/>
+				
+                <field id="plancount" labelClass="prominentLabel">
+                    <title translatable="true">Plan Count</title>
+                </field>
+                <field id="actualcount" labelClass="prominentLabel">
+                    <title translatable="true">Actual Count</title>
+                </field>
+				
+                <field table="site" name="count_student_plan"/>
+                <field table="site" name="count_student_actual"/>
+				
+				<field table="site" name="count_teacher_plan"/>
+                <field table="site" name="count_teacher_actual"/>
+               
+                <field table="site" name="no_bldgs" hidden="true"/>
+                
+                
+				<field table="site" name="notes" rowspan="3" colspan="2"/>
+				<field table="site" name="site_image" displayField="image_field"/>
+				<field id="image_field" controlType="image" rowspan="13" width="250px"/>
+            </panel>
+        </tab>
+		<tab name="prTab" selected="false">
+            <title translatable="true">PianQu</title>
+            <panel type="form" id="pr_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_pr" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+                <field table="property" name="site_id"/>
+				<field table="property" name="pr_id"/>
+				
+                <field table="property" name="name"/>
+                <field table="property" name="other_name"/>
+				
+                <field table="property" name="qty_no_bldgs_calc" hidden="true"/>
+                <field table="property" name="use1" hidden="true"/>
+            </panel>
+        </tab>
+        <tab name="blTab" selected="false">
+            <title translatable="true">Building</title>
+            <panel type="form" id="bl_detail" showOnLoad="false" dataSource="ds_ab-sp-def-loc-rm_form_bl" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                    <command type="saveForm" />
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+                <field table="sc_gzw" name="bl_id"/>
+		        <field table="sc_gzw" name="name"/>
+		        <field table="sc_gzw" name="site_id"/>
+                <field table="sc_gzw" name="pr_id"/>    
+                            
+                <field table="sc_gzw" name="atype_code">
+                <action> 
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" 
+                    fieldNames="sc_gzw.atype_code,sc_atyp.atype_name"
+                    selectFieldNames="sc_atyp.atype_code,sc_atyp.atype_name" 
+                    visibleFieldNames="sc_atyp.atype_code,sc_atyp.atype_name" 
+                    showIndex="true"/>
+                </action>
+                </field>
+                
+                <field table="sc_gzw" name="parcelland_address"/>
+                <field table="sc_gzw" name="date_receipt"/>
+                <field table="sc_gzw" name="date_fazheng"/>
+                <field table="sc_gzw" name="date_acquire"/>
+		        <field table="sc_gzw" name="guzhuwu_unit"/>
+                
+                <field table="sc_gzw" name="area_building_manual"/>
+                <field table="sc_gzw" name="area_ziyong"/>
+                <field table="sc_gzw" name="use_status"/>
+                
+                <field table="sc_gzw" name="srcid"/>
+                <field table="sc_gzw" name="quanszh"/>
+		        <field table="sc_gzw" name="ownship_shape"/>
+                <field table="sc_gzw" name="land_photo"/>
+                <field table="sc_gzw" name="value_fiscal_alloc"/>
+                <field table="sc_gzw" name="value_market"/>
+		        <field table="sc_gzw" name="value_type"/>
+                <field table="sc_gzw" name="zhejiu_status"/>
+                
+		        <field table="sc_gzw" name="operator"/>
+            </panel>
+        </tab>
+         
+              
+    </tabs>
+	    <dataSource id="checkFutureRmpctDS">
+        <table name="rmpct" role="main"/>
+        <field table="rmpct" name="bl_id"/>
+        <field table="rmpct" name="fl_id"/>
+        <field table="rmpct" name="rm_id"/>
+        <field table="rmpct" name="primary_rm"/>
+        <restriction type="sql" sql="rmpct.primary_rm =1 and rmpct.date_start &gt; ${sql.currentDate}"/>
+    </dataSource>
+    <js file="asc-bj-usms-data-def-gzw.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+</view>
+

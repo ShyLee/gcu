@@ -1,0 +1,16 @@
+<view version="2.0">
+    <title translatable="true">Create Booking</title>
+    <tabs workflow="free" id="tabsFrame">
+        <tab name="searchBooking" file="ab-ht-booking-create-search.axvw" selected="true">
+            <title translatable="true">Search for Seats</title>
+        </tab>
+        <tab name="selectBooking" file="ab-ht-booking-create-select.axvw">
+            <title translatable="true">Select Seats</title>
+        </tab>
+        <tab name="confirmBooking" file="ab-ht-booking-create-confirm.axvw">
+            <title translatable="true">Confirmation</title>
+        </tab>
+    </tabs>
+    
+    <js file="ab-ht-booking-create.js"/>
+</view>

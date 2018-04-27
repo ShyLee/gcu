@@ -1,0 +1,178 @@
+<view version="2.0">
+	<dataSource id="rmCheck">		
+		<table name="rm" role="main" />
+		<field table="rm" name="bl_id"/>
+		<field table="rm" name="fl_id"/>
+		<field table="rm" name="rm_id"/>
+		<field table="rm" name="rm_type"/>
+		<field table="rm" name="rm_cat"/>
+		<field table="rm" name="rm_use"/>
+		<field table="rm" name="dv_id"/>
+		<field table="rm" name="area"/>
+		<field table="rm" name="area_manual"/>
+	</dataSource>
+
+	<dataSource id="CADCheck">
+		<sql dialect="generic">  
+        		(select count(distinct rm.dwgname) as countdwg,rm.bl_id,rm.fl_id from rm,fl 
+        		 where rm.bl_id = fl.bl_id and rm.fl_id=fl.fl_id 
+        		 having count(distinct rm.dwgname) > 1 
+        		 group by rm.bl_id,rm.fl_id)           
+        </sql>
+        <table name="rm" role="main"/>
+		<field table="rm" name="countdwg" dataType="number" decimals="0">
+			<title translatable="true">wrong CAD</title>
+		</field>
+		<field table="rm" name="bl_id"/>
+		<field table="rm" name="fl_id"/>
+	</dataSource>
+
+	<dataSource id="blCheck">
+		<table name="bl" role="main"/>
+		<field table="bl" name="bl_id" />
+		<field table="bl" name="name" />
+		<field table="bl" name="area_rm" />
+		<field table="bl" name="area_building_manual" />
+		<field table="bl" name="building_cat" />
+		<field table="bl" name="dv_use" />
+		<field table="bl" name="date_building_end" />
+		<field table="bl" name="date_use" />
+	</dataSource>
+	
+	<dataSource id="emRmCheck">
+		<sql dialect="generic">
+			(select rm.bl_id,rm.dv_id as rm_dv,rm.rm_id,em.em_id,em.name,em.dv_id as em_dv from em,rm where em.bl_id=rm.bl_id and em.fl_id=rm.fl_id and em.rm_id=rm.rm_id and em.dv_id != rm.dv_id)
+			
+		</sql>
+		<table name="em" role="main"/>	
+		<field table="em" name="em_id" dataType="string"/>
+		<field table="em" name="name" dataType="string"/>
+		<field table="em" name="em_dv" dataType="string">
+			<title translatable="true">em dv_id</title>
+		</field>
+		<field table="em" name="rm_dv" dataType="string">
+			<title translatable="true">rm dv_id</title>
+		</field>
+		<field table="em" name="bl_id" dataType="string"/>
+		<field table="em" name="rm_id" dataType="string"/>
+	</dataSource>
+	
+	<dataSource id="emCheck">
+		<table name="em" role="main"/>
+		<field table="em" name="em_id"/>
+		<field table="em" name="dv_id"/>
+		<field table="em" name="email"/>
+	</dataSource>
+	
+	<dataSource id="dvCheck">
+		<table name="dv" role="main"/>
+		<field table="dv" name="dv_id"/>
+		<field table="dv" name="area_rm"/>
+		<field table="dv" name="area_jianzhu"/>
+		<field table="dv" name="head"/>
+		<field table="dv" name="count_em"/>
+	</dataSource>
+	
+	<dataSource id="usersCheck">
+		<sql dialect="generic">
+			(select user_name,role_name,email from afm_users where  afm_users.email in (select afm_users.email from afm_users group by afm_users.email having count(afm_users.user_name)>1) and afm_users.user_name not in ('AFM','SYSTEM','GUEST'))
+		</sql>
+		<table name="afm_users" role="main"/>
+		<field table="afm_users" name="user_name"/>
+		<field table="afm_users" name="role_name"/>
+		<field table="afm_users" name="email"/>
+	</dataSource>
+	
+	<tabs workflow="free" id="tabs">
+		<tab name="TabsPage1" selected="true">
+			<title translatable="true">check room</title>			
+			<panel type="html" id="rmButtonPanel">
+				<title translatable="true">choose check info</title>
+				<html>
+				<select id='checkSelectRm' name="checkSelectRm" class="inputField_box"   onchange="checkRm()">
+					<option value="checkRmType"><span translatable="true">checkRmType</span></option>
+					<option value="checkRmUse"><span translatable="true">checkRmUse</span></option>
+					<option value="checkRmArea"><span translatable="true">checkRmArea</span></option>
+					<option value="checkRmST"><span translatable="true">checkRmST</span></option>
+					<option value="checkRmDv"><span translatable="true">checkRmDv</span></option>
+					<option value="checkRmDv1"><span translatable="true">checkRmDv1</span></option>
+					<option value="checkRmName"><span translatable="true">checkRmName</span></option>
+					<option value="checkCAD"><span translatable="true">checkCAD</span></option>
+				</select>
+				<span id="rmSql" name="rmSql"></span>
+				</html>				
+			</panel>
+			<panel type="grid" id="rmCheckPanel" dataSource="rmCheck" showOnLoad="false" >
+				
+			</panel>
+			<panel type="grid" id="CADCheckPanel" dataSource="CADCheck" showOnLoad="false">
+			</panel>
+		</tab>
+		<tab name="TabsPage2">
+			<title translatable="true">check building</title>
+			<panel type="html" id="blButtonPanel">
+				<title translatable="true">choose check info</title>
+				<html>
+				<select id='checkSelectBl' name="checkSelectBl" class="inputField_box"   onchange="checkBl()">
+					<option value="checkBlRmArea"><span translatable="true">checkBlRmArea</span></option>
+					<option value="checkBlArea"><span translatable="true">checkBlArea</span></option>
+					<option value="checkBlDv"><span translatable="true">checkBlDv</span></option>
+					<option value="checkBlDBE"><span translatable="true">checkBlDBE</span></option>
+					<option value="checkBlRm"><span translatable="true">checkBlRm</span></option>
+				</select>
+				<span id="blSql" name="blSql"></span>
+				</html>
+			</panel>
+			<panel type="grid" id="blCheckPanel" dataSource="blCheck" showOnLoad="false">			
+			</panel>
+		</tab>
+		<tab name="TabsPage3">
+			<title translatable="true">check em</title>			
+			<panel type="html" id="emButtonPanel">
+				<title translatable="true">choose check info</title>
+				<html>
+				<select id='checkSelectEm' name="checkSelectEm" class="inputField_box"   onchange="checkEm()">
+					<option value="checkEmDv"><span translatable="true">checkEmDv</span></option>
+					<option value="checkEmEmail"><span translatable="true">checkEmEmail</span></option>
+					<option value="checkEmRm"><span translatable="true">checkEmRm</span></option>
+				</select>
+				<span id="emSql" name="emSql"></span>
+				</html>
+			</panel>
+			<panel type="grid" id="emRmCheckPanel" dataSource="emRmCheck" showOnLoad="false">
+			</panel>
+			<panel type="grid" id="emCheckPanel" dataSource="emCheck" showOnLoad="false"></panel>
+		</tab>
+		<tab name="TabsPage4">
+			<title translatable="true">check dv</title>
+			<panel type="html" id="dvButtonPanel">
+				<title translatable="true">choose check info</title>
+				<html>
+				<select id='checkSelectDv' name="checkSelectDv" class="inputField_box"   onchange="checkDv()">
+					<option value="checkDvArea"><span translatable="true">checkDvArea</span></option>
+					<option value="checkDvHead"><span translatable="true">checkDvHead</span></option>
+					<!--option value="checkDvEm"><span translatable="true">checkDvEm</span></option-->
+				</select>
+				<span id="dvSql" name="dvSql"></span>
+				</html>
+			</panel>
+			<panel type="grid" id="dvCheckPanel" dataSource="dvCheck" showOnLoad="false"></panel>
+		</tab>
+		<tab name="TabsPage5">
+			<panel type="html" id="usersButtonPanel">
+				<title translatable="true">choose check info</title>
+				<html>
+				<select id='checkSelectUsers' name="checkSelectUsers" class="inputField_box"   onchange="checkUsers()">
+					<option value=""><span translatable="true"></span></option>
+					<option value="check users"><span translatable="true">check users</span></option>
+				</select>
+				<span id="usersSql" name="usersSql"></span>
+				</html>
+			</panel>
+			<title translatable="true">check users</title>
+			<panel type="grid" id="usersCheckPanel" dataSource="usersCheck" showOnLoad="false">
+			</panel>
+		</tab>
+	</tabs>
+	<js file="asc-bj-usms-data-check-wd.js"/>
+</view>

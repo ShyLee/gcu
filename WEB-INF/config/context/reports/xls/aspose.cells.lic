@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<License>
+  <Data>
+    <LicensedTo>Archibus, Inc.</LicensedTo>
+    <LicenseType>Developer OEM</LicenseType>
+    <LicenseNote>Limited to 1 developer.</LicenseNote>
+    <OrderID>120424103600</OrderID>
+    <OEM>This is a redistributable license</OEM>
+    <Products>
+      <Product>Aspose.Cells for Java</Product>
+    </Products>
+    <EditionType>Enterprise</EditionType>
+    <SerialNumber>11a13f4b-ac54-4ef1-8127-1c8c1b42d969</SerialNumber>
+    <SubscriptionExpiry>20130522</SubscriptionExpiry>
+    <LicenseVersion>2.2</LicenseVersion>
+  </Data>
+  <Signature>nzuh3jstZi5O03zXO+7LiKGdBuhtAZhIc2f/kQFA6d7sZSloQuULeadWNLRGpmdxfDcr7XvyMMj6Kn2Zy4FKawdukfLZIjFXbJJ45T9pywHQxP7ZR66IWbrDi6jXVf0Dzq5Bvm8MIOi0KOtKEwcoUd2bCtjZ2lfxUTxWFdCJ0Zw=</Signature>
+</License>

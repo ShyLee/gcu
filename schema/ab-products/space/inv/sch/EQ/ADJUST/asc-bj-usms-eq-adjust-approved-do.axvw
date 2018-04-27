@@ -1,0 +1,107 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-adjust-approved-do.js"/>
+    <dataSource id="ascBjUsmsEmDs">
+        <table name="em" role="main"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="date_change"/>
+        <field table="eq" name="sch_status"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqAdjustApprovedEqChangeDs">
+        <table name="eq_change" role="main"/>
+        <table name="em" role="standard"/>
+        <field table="eq_change" name="id"/>
+        <field table="eq_change" name="audit_status"/>
+        <field table="eq_change" name="check_status"/>
+        <field table="eq_change" name="bl_id"/>
+        <field table="eq_change" name="bl_id_old"/>
+        <field table="eq_change" name="price"/>
+        <field table="eq_change" name="cost"/>
+        <field table="eq_change" name="cost_old"/>
+        <field table="eq_change" name="date_appraisal"/>
+        <field table="eq_change" name="date_check"/>
+        <field table="eq_change" name="date_change"/>
+        <field table="eq_change" name="dv_id"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="em_id"/>
+        <field table="eq_change" name="em_id_old"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_std"/>
+        <field table="eq_change" name="csi_id"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="fl_id"/>
+        <field table="eq_change" name="fl_id_old"/>
+        <field table="eq_change" name="operator"/>
+        <field table="eq_change" name="person_appraisal"/>
+        <field table="eq_change" name="person_check"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+        <field table="eq_change" name="rm_id"/>
+        <field table="eq_change" name="rm_id_old"/>
+        <field table="eq_change" name="status"/>
+        <field table="eq_change" name="type_adjust"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="appraisal_option"/>
+        <field table="eq_change" name="check_option"/>
+        <field table="eq_change" name="comments"/>
+        <restriction type="sql" sql="audit_status='0' and type_adjust='1'"/>
+    </dataSource>
+    <panel type="form" id="formPanel" dataSource="ascBjUsmsEqAdjustApprovedEqChangeDs" columns="2">
+        <title translatable="true" >Eq Info</title>
+        <action id="btnXNTZD">
+            <title translatable="true">Print XNTZD</title>
+        </action>
+        <action id="btnUpload" hidden="true">
+            <title translatable="true">Upload XNTZD</title>
+        </action>
+        <action id="btnOKAdjust">
+            <title translatable="true">DoAdjust</title>
+        </action>
+        <action id="btnBack">
+            <title translatable="true">Back</title>
+        </action>
+        
+        <field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="eq_id" readOnly="true"/>
+        <field table="eq_change" name="eq_name" readOnly="true"/>
+        <field table="eq_change" name="eq_std" readOnly="true"/>
+        <field table="eq_change" name="eq_type" readOnly="true"/>
+        <field table="eq_change" name="date_appraisal" hidden="true"/>
+        
+        <field table="eq_change" name="dv_id_old" readOnly="true"/>
+        <field table="eq_change" name="dv_id" required="true"/>
+        <field table="eq_change" name="bl_id_old" readOnly="true"/>
+        <field table="eq_change" name="bl_id" />
+        
+        <field table="eq_change" name="cost_old" readOnly="true"/>
+        <field table="eq_change" name="cost" required="true"/>
+        <field table="eq_change" name="type_use_old" readOnly="true"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq_change" name="date_change" hidden="true"/>   
+        <field table="eq_change" name="operator" hidden="true"/>
+        <field table="eq_change" name="type_adjust" hidden="true"/>
+        <field table="eq_change" name="person_check" readOnly="true" hidden="true"/>
+        <field table="em" name="name" required="false">
+            <title translatable="true">CheckPerson</title>
+        </field>
+        <field table="eq_change" name="date_check" readOnly="true"/>
+        <field table="eq_change" name="check_status" readOnly="true" hidden="true"/>
+        <field table="eq_change" name="comments" colspan="2" readOnly="true"/>
+        <field table="eq_change" name="check_option" colspan="2" readOnly="true"/>
+        <field table="eq_change" name="appraisal_option" colspan="2" required="true"/>
+    </panel>
+</view>

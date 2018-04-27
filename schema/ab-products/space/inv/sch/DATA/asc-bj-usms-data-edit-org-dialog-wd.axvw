@@ -1,0 +1,98 @@
+<view version="2.0">
+    
+    
+    <title translatable="true">Edit Division</title>
+    
+    <dataSource id="abScDefDivisionFormDs">
+        <table name="dv" role="main"/>
+        <table name="em" role="standard"/>
+        
+        <field table="em" name="name"/>
+        <field table="dv" name="bu_id"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dv" name="description"/>
+        <field table="dv" name="count_em"/>
+        <field table="dv" name="head"/>
+        <field table="dv" name="count_teacher"/>
+        <field table="dv" name="count_ganbu"/>
+        <field table="dv" name="hpattern_acad"/>
+        <field table="dv" name="count_gongren"/>
+        <field table="dv" name="count_zhuanji"/>
+        <field table="dv" name="area_conference"/>
+        <field table="dv" name="count_bosh"/>
+        <field table="dv" name="area_project_rm"/>
+        <field table="dv" name="count_student"/>
+        <field table="dv" name="area_student_paper_rm"/>
+        <field table="dv" name="area_comn_rm"/>
+        <field table="dv" name="count_bos"/>
+        <field table="dv" name="area_other_rm"/>
+        <field table="dv" name="count_shuos"/>
+        <field table="dv" name="ac_id"/>
+        <field table="dv" name="count_benk"/>
+        <field table="dv" name="count_liuxues"/>
+        <field table="dv" name="k_xueshenglunwen"/>
+        <field table="dv" name="site_id"/>
+    </dataSource>
+    
+    <panel type="form" id="dv_detail" showOnLoad="true" dataSource="abScDefDivisionFormDs" columns="2">
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        
+        <field table="dv" name="bu_id"/>
+        <field table="dv" name="dv_id"/>
+        
+        <field table="dv" name="dv_name"/>
+        
+        <field table="dv" name="head">
+            <action>
+                <title translatable="true">...</title>
+                <command type="selectValue"
+                 fieldNames="dv.head,em.name"
+                 selectFieldNames="em.em_id,em.name"
+                 visibleFieldNames="em.em_id,em.name,em.dv_id"
+                 actionListener="afterSelectEmployee">
+                    <title>JiaoZhiGong</title>
+                </command>
+            </action>
+        </field>
+		
+		<field table="dv" name="count_em"/>
+        <field table="em" name="name" required="false">
+        	<title translatable="true">Head Name</title>
+        </field>	
+        
+        <field labelClass="labelFieldset" colspan="2">
+		     <title>Include:</title>
+		</field>
+        
+        <field table="dv" name="count_teacher"/>
+        <field table="dv" name="count_ganbu">
+            <title translatable="true">guanli</title>
+        </field>
+        
+        <field table="dv" name="count_gongren"/>
+        <field table="dv" name="count_zhuanji"/>
+        <field table="dv" name="count_bosh" hidden="true"/>
+        
+        <field table="dv" name="count_student"/>
+        <field/>
+        
+        <field labelClass="labelFieldset" colspan="2">
+		     <title>Include:</title>
+		</field>
+        
+        <field table="dv" name="count_benk"/>
+        <field table="dv" name="count_shuos"/>
+		
+        <field table="dv" name="count_bos"/>
+        <field table="dv" name="count_liuxues"/>
+		
+        <field table="dv" name="description" colspan='2'/>
+        
+    </panel>
+    
+    <js file="asc-bj-usms-data-edit-org-dialog-wd.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+</view>

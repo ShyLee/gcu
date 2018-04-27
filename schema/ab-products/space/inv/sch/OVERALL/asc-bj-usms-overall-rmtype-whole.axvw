@@ -1,0 +1,109 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="13%" split="true"/>
+        <center id="rmTypePosition"/>
+    </layout>
+    <message name="total" translatable="true">Total</message>
+    	
+	<!-- datasource for rmType report -->
+    <dataSource id="ds_asc-bj-usms-overall-rmType-whole_grid_rmType">
+    	<sql dialect="generic">
+    		SELECT 
+			       rmtype.rmtype_name,
+                   SUM(rmtype.tot_count) AS count_rm,
+                   SUM(rmtype.area_jianzhu) AS total_area_jianzhu,
+                   SUM(rmtype.area) AS total_area_shiyong 
+            FROM  rmtype
+			where rmtype.area>0
+            GROUP BY '1',rmtype.rmtype_name
+        </sql>
+		<table name="rmtype" role="main" />
+		
+<!-- 		<field table="rmtype" name="xuhao" > -->
+<!-- 			<title translatable="true">Xu Hao</title> -->
+<!--         </field> -->
+		
+<!-- 		<field table="rmtype" name="rm_type" > -->
+<!-- 			<title translatable="true">Room Type</title> -->
+<!--         </field> -->
+        <field table="rmtype" name="rmtype_name"/>
+		<field name="count_rm" dataType="number" decimals="0">
+			<title translatable="true">Room Count</title>
+		</field>
+		
+		
+		<field name="total_area_jianzhu" dataType="number" decimals="2" >
+			<title translatable="true">Structure Area</title>
+		</field>
+		
+		<field name="total_area_shiyong" dataType="number" decimals="2">
+			<title translatable="true">Usable Area</title>
+		</field>
+		
+		
+		<sortField name="rm_type" table="rmtype" ascending="true" />
+	</dataSource>
+	
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-rmtype-whole_basic_school">
+    	<table name="sc_school" role="main"/>
+		
+		<!--basic info-->
+		<field table="sc_school" name="sch_name"/>
+		<field name="count_rmtype" dataType="number"  size="6" decimals="0">
+			<title translatable="true">Fang Wu Lei Xing shu</title>
+			<sql dialect="generic">
+    	          (SELECT count( distinct rm_type) FROM rmtype where exists( SELECT 1 FROM rm WHERE rm.rm_type=rmtype.rm_type) and rmtype.area>0)
+            </sql>
+		</field>
+    </dataSource>
+	
+	<!-- base university info panel-->
+    <panel type="columnReport" id="ascBjUsmsOverallRmtypeWhole_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-rmtype-whole_basic_school" columns="3"  layoutRegion="sitePosition">
+    
+		<!--basic info-->
+		<field table="sc_school" name="sch_name">
+			<title translatable="true">Xiao Qu Name</title>
+		</field>	 
+		<field name="count_rmtype" dataType="number"  size="6" decimals="0">
+			<title translatable="true">Fang Wu Lei Xing shu</title>
+		</field>
+		<field></field>
+		
+    </panel>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallRmtypeWhole_blGrid" dataSource="ds_asc-bj-usms-overall-rmType-whole_grid_rmType" layoutRegion="rmTypePosition">
+        <title translatable="true">XueXiao SuoYou FangWuLeiXing</title>
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallRmtypeWhole_blGrid"/>
+		</action>
+<!-- 		<field table="rmtype" name="xuhao"  dataType="text"> -->
+<!-- 			<title translatable="true">Xu Hao</title> -->
+<!--         </field> -->
+		
+<!-- 		<field table="rmtype" name="rm_type" dataType="text"> -->
+<!-- 			<title translatable="true">Room Type</title> -->
+<!--         </field> -->
+		<field table="rmtype" name="rmtype_name" dataType="text"/>
+		<field table="rmtype" name="count_rm" dataType="number" decimals="0">
+			<title translatable="true">Room Count</title>
+        </field>
+		<field name="total_area_jianzhu" dataType="number" decimals="2" >
+			<title translatable="true">Structure Area</title>
+		</field>
+		
+		<field name="total_area_shiyong" dataType="number" decimals="2">
+			<title translatable="true">Usable Area</title>
+		</field>
+		
+    </panel>
+    
+    <js file="asc-bj-usms-overall-rmtype-whole.js"/>
+	<js file="asc-bj-usms-overall-common.js"/>
+</view>

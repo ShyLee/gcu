@@ -1,0 +1,41 @@
+<view version="2.0">
+	<title>Others Room Alert</title>
+    <dataSource id="sc_stu_other_ds">
+        <table name="sc_stu_other" role="main"/>
+        <field table="sc_stu_other" name="id"/>
+        <field table="sc_stu_other" name="pro_name"/>
+        <field table="sc_stu_other" name="identi_code"/>
+        <field table="sc_stu_other" name="checkin_cause"/>
+        <field table="sc_stu_other" name="checkin_count"/>
+        <field table="sc_stu_other" name="date_checkin"/>
+        <field table="sc_stu_other" name="date_checkout"/>
+    </dataSource>
+    
+    <panel type="html" id="color">
+         <title>Legend</title>
+         <html>
+             <table width="600" height="25" border="0" cellpadding="10px" cellspacing="10px">
+                 <tr>
+                     <td width="100" style="background-color:green"></td><td width="200"><span id="idd1"></span></td><td></td>
+                     <td width="100" style="background-color:yellow"></td><td width="200"><span id="idd2"></span></td><td></td>
+                     <td width="100" style="background-color:red"></td><td width="200"><span id="idd3"></span></td><td></td>
+                 </tr>
+             </table>
+         </html>
+    </panel>
+    
+     <panel type="grid"  id="alertListPanel" dataSource="sc_stu_other_ds"  controlType="reportGrid">
+        <title>Others List</title>
+        <sortField table="sc_stu_other" name="id" ascending="true"/>
+        <field table="sc_stu_other" name="id" hidden="true"/>
+        <field table="sc_stu_other" name="date_checkin"/>
+        <field table="sc_stu_other" name="date_checkout"/>
+        <field table="sc_stu_other" name="pro_name"/>
+        <field table="sc_stu_other" name="identi_code"/>
+        <field table="sc_stu_other" name="checkin_cause"/>
+        <field table="sc_stu_other" name="checkin_count"/>
+    </panel>
+    <js file="asc-bj-dorm-others-vw-alert.js"/>
+</view>
+
+

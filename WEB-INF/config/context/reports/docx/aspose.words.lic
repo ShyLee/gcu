@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<License>
+  <Data>
+    <LicensedTo>Archibus, Inc.</LicensedTo>
+    <LicenseType>Developer OEM</LicenseType>
+    <LicenseNote>Limited to 1 developer.</LicenseNote>
+    <OrderID>120424103600</OrderID>
+    <OEM>This is a redistributable license</OEM>
+    <Products>
+      <Product>Aspose.Words for Java</Product>
+    </Products>
+    <EditionType>Enterprise</EditionType>
+    <SerialNumber>e428a973-fa23-4957-b69f-26489a434548</SerialNumber>
+    <SubscriptionExpiry>20130522</SubscriptionExpiry>
+    <LicenseVersion>2.2</LicenseVersion>
+  </Data>
+  <Signature>NNIim30DfDZkgx80eRopEa6UizyhPNq8r8cHbnG3YdaJPW5RAIGCeNFaiO2AAo07qJ+p6G+VT2KQRmG5UJXldB+C2g+dnxfjpavOY6LRJOQUSUaVNQHAb6E5XOYCOM9FjCd9+3bdzTDErIN6jrrSUJBRLu45uk18uEXtSIIql8w=</Signature>
+</License>

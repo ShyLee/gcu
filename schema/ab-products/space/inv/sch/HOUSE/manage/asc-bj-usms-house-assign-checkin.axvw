@@ -1,0 +1,346 @@
+<view version="2.0">
+    <title>Assign</title>
+    <layout type="boarderLayout" id="mainLayout">
+        <west id="treePosition" autoScroll="true" split="true" initialSize="15%"/>
+        <center id="zzfDetailPosition" autoScroll="true"/>
+    </layout>
+    
+    <dataSource id="treeBlDS">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <parameter name="rmType" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="bl.acc_type != 'yxz' and bl_id in 
+        (select bl_id from rm where ${parameters['rmType']} and count_house_kz &gt; 0)"/>
+    </dataSource>
+    <dataSource id="treeFlDS">
+        <table name="fl" role="main"/>
+        <field table="fl" name="bl_id"/>
+        <field table="fl" name="fl_id"/>
+        <parameter name="rmType" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="bl_id||fl_id in 
+        (select bl_id||fl_id from rm where ${parameters['rmType']} and count_house_kz &gt; 0)"/>
+    </dataSource>
+    <dataSource id="treeRmDS">
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <parameter name="rmType" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql=" ${parameters['rmType']} and count_house_kz &gt; 0"/>
+    </dataSource>
+    
+    <dataSource id="sc_zzfcardDataSource">
+        <table name="sc_zzfcard" role="main"/>
+<!--         申请信息 -->
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="date_register" />
+        <field table="sc_zzfcard" name="apply_reason" />
+        <field table="sc_zzfcard" name="apply_beizhu" />
+<!--         人员信息 -->
+        <field table="sc_zzfcard" name="card_type"/>
+        <field table="sc_zzfcard" name="is_em" />
+        <field table="sc_zzfcard" name="em_id" />
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" />
+        <field table="sc_zzfcard" name="sex"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="phone_home"/>
+        <field table="sc_zzfcard" name="email"/>
+        <field table="sc_zzfcard" name="dv_id"/>
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="date_work_begin"/>
+        <field table="sc_zzfcard" name="xueli" />
+        <field table="sc_zzfcard" name="zhiw_id" />
+        <field table="sc_zzfcard" name="zhic_id" />
+        <field table="sc_zzfcard" name="marriage_stat" />
+        <field table="sc_zzfcard" name="is_working_parents" />
+        <field table="sc_zzfcard" name="po_em_id" />
+        <field table="sc_zzfcard" name="po_name"/>
+        <field table="sc_zzfcard" name="po_identi_code" />
+        <field table="sc_zzfcard" name="po_dv_id"/>
+        <field table="sc_zzfcard" name="po_dv_name"/>
+        <field table="sc_zzfcard" name="curr_addr"/>
+<!--         房间信息 -->
+        <field table="sc_zzfcard" name="site_id" />
+        <field table="sc_zzfcard" name="pr_id" />
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="sc_zzfcard" name="unit_code"/>
+        <field table="sc_zzfcard" name="fl_id" />
+        <field table="sc_zzfcard" name="rm_id" />
+        <field table="sc_zzfcard" name="rm_cat"/>
+        <field table="sc_zzfcard" name="rmcat_name"/>
+        <field table="sc_zzfcard" name="rm_type"/>
+        <field table="sc_zzfcard" name="rmtype_name"/>
+        <field table="sc_zzfcard" name="is_left"/>
+        <field table="sc_zzfcard" name="is_low_high"/>
+        <field table="sc_zzfcard" name="huxing"/>
+        <field table="sc_zzfcard" name="chaoxiang"/>
+        <field table="sc_zzfcard" name="area"/>
+        <field table="sc_zzfcard" name="area_comn_rm"/>
+        <field table="sc_zzfcard" name="area_lease"/>
+        <field table="sc_zzfcard" name="eq_desc"/>
+        <field table="sc_zzfcard" name="weixiu_log"/>
+<!--         合同信息 -->
+        <field table="sc_zzfcard" name="lease_id"/>
+        <field table="sc_zzfcard" name="htqx"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="payment_to"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="is_day_first"/>
+        <field table="sc_zzfcard" name="rent_rate"/>
+        <field table="sc_zzfcard" name="cash_deposit"/>
+        <field table="sc_zzfcard" name="rent_type"/>
+        <field table="sc_zzfcard" name="rent_level"/>
+        <field table="sc_zzfcard" name="curr_rent_rate"/>
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="rent_pay_id"/>
+        <field table="sc_zzfcard" name="rent_pay_people"/>
+        <field table="sc_zzfcard" name="cash_clean"/>
+        <field table="sc_zzfcard" name="clean_people_id"/>
+        <field table="sc_zzfcard" name="clean_pay_people"/>
+        <field table="sc_zzfcard" name="sponsor"/>
+        <field table="sc_zzfcard" name="sponsor_name"/>
+        <field table="sc_zzfcard" name="sponsor_dv" />
+        <field table="sc_zzfcard" name="dv_owner" />
+<!--     	入住登记信息 -->
+        <field table="sc_zzfcard" name="doc1"/>
+        <field table="sc_zzfcard" name="doc2"/>
+        <field table="sc_zzfcard" name="doc_lease" />
+        <field table="sc_zzfcard" name="rmsrc_situation"/>
+        <field table="sc_zzfcard" name="key_checkin"/>
+        <field table="sc_zzfcard" name="comment_checkin"/>
+<!--         后台必须信息 -->
+        <field table="sc_zzfcard" name="date_created" />
+        <field table="sc_zzfcard" name="date_payrent_last" />
+        <field table="sc_zzfcard" name="card_status" />
+<!--         缴费信息 -->
+        <field table="sc_zzfcard" name="all_payoff"/>
+        <field table="sc_zzfcard" name="actual_payoff"/>
+<!--         退房信息 -->
+        <field table="sc_zzfcard" name="eq_desc_chkout" />
+        <field table="sc_zzfcard" name="cause_checkout" />
+        <field table="sc_zzfcard" name="date_checkout_actual" />
+        <field table="sc_zzfcard" name="is_refund" />
+        <field table="sc_zzfcard" name="amount_months" />
+<!--         续租信息 -->
+
+    </dataSource>
+    
+    <dataSource id="rmDetail">
+        <table name="rm" role="main"/>
+        <talbe name="bl" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <field table="bl" name="site_id"/>
+        <field table="bl" name="pr_id"/>
+        <field table="rm" name="unit_code"/>
+        <field table="rm" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="is_left"/>
+        <field table="rm" name="is_low_high"/>
+        <field table="rm" name="huxing"/>
+        <field table="rm" name="chaoxiang"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="area_lease"/>
+        <field table="rm" name="count_house_all"/>
+        <field table="rm" name="count_house_kz"/>
+        <field table="rm" name="count_house_yz"/>
+        <field table="rm" name="eq_desc"/>
+        <field table="rm" name="weixiu_log"/>
+        <field table="rm" name="address"/>
+    </dataSource>
+    
+    <panel type="tree" id="bl_tree" dataSource="treeBlDS" layoutRegion="treePosition">
+        <title translatable="true">Xuanze Fangjian</title>
+        <panel type="tree" id="fl_tree" dataSource="treeFlDs">
+            <field table="fl" name="bl_id" hidden="true"/>
+            <field table="fl" name="fl_id"/>
+        </panel>
+        <panel type="tree" id="rm_tree" dataSource="treeRmDs">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="zzfEmpoyeeController.onClickRmNode()"/>
+            </event>
+            <field table="rm" name="bl_id" hidden="true"/>
+            <field table="rm" name="fl_id" hidden="true"/>
+            <field table="rm" name="rm_id"/>
+        </panel>
+    </panel>
+    
+    <panel id="emInfoPanel" type="form" columns="3" showOnLoad="true" dataSource="sc_zzfcardDataSource" layoutRegion="zzfDetailPosition">
+        <title translatable="true">Applicant Info</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="printProtocol">
+            <title translatable="true">IReport</title>
+        </action>
+        <action id="printProtocolSafe">
+            <title translatable="true">Print Safe</title>
+        </action>
+        <action id="back" hidden="true">
+            <title translatable="true">Back</title>
+            <command type="callFunction" functionName="zzfEmpoyeeController.onBack()"/>
+        </action>
+        <field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="card_type"/>
+        <field table="sc_zzfcard" name="is_em" />
+        <field table="sc_zzfcard" name="em_id">
+        	<action id="selectEm">
+                <title translatable="false">...</title>
+                <tooltip translatable="true">Select Value</tooltip>
+                <command type="selectValue"
+                    fieldNames="sc_zzfcard.em_id,sc_zzfcard.em_name,sc_zzfcard.identi_code,sc_zzfcard.sex,sc_zzfcard.phone,sc_zzfcard.email,sc_zzfcard.dv_id,sc_zzfcard.date_work_begin,sc_zzfcard.xueli,sc_zzfcard.zhiw_id,sc_zzfcard.zhic_id,sc_zzfcard.marriage_stat,sc_zzfcard.is_working_parents"
+                    selectFieldNames="em.em_id,em.name,em.identi_code,em.sex,em.phone,em.email,em.dv_id,em.date_work_begin,em.xueli,em.zhiw_id,em.zhic_id,em.married,em.is_working_parents"
+                    visibleFieldNames="em.em_id,em.name,em.identi_code,em.sex,em.phone,em.email,em.dv_id,em.date_work_begin,em.xueli,em.zhiw_id,em.zhic_id,em.married,em.is_working_parents"
+                    applyFilter="false"
+                    actionListener="afterSelectEmInfo"/>
+            </action>
+        </field>
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" required="true"/>
+        <field table="sc_zzfcard" name="sex"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="phone_home"/>
+        <field table="sc_zzfcard" name="email"/>
+        <field table="sc_zzfcard" name="dv_id"/>
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="date_work_begin"/>
+        <field table="sc_zzfcard" name="xueli" />
+        <field table="sc_zzfcard" name="zhiw_id" />
+        <field table="sc_zzfcard" name="zhic_id" />
+        <field table="sc_zzfcard" name="marriage_stat" />
+        <field table="sc_zzfcard" name="is_working_parents" />
+        <field table="sc_zzfcard" name="po_em_id" />
+        <field table="sc_zzfcard" name="po_name"/>
+        <field table="sc_zzfcard" name="po_identi_code" />
+        <field table="sc_zzfcard" name="po_dv_id"/>
+        <field table="sc_zzfcard" name="po_dv_name"/>
+        <field table="sc_zzfcard" name="curr_addr"/>
+        
+    </panel>
+    
+    <panel id="rmInfoPanel" type="form" columns="3" showOnLoad="true" dataSource="rmDetail" layoutRegion="zzfDetailPosition" newRecord="true">
+        <title translatable="true">Room Info</title>
+        <field table="bl" name="site_id" hidden="true"/>
+        <field table="bl" name="pr_id" hidden="true"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" readOnly="true"/>
+        <field table="rm" name="unit_code" readOnly="true"/>
+        <field table="rm" name="fl_id" readOnly="true"/>
+        <field table="rm" name="rm_id" readOnly="true"/>
+        <field table="rm" name="rm_cat" hidden="true"/>
+        <field table="rmcat" name="rmcat_name" readOnly="true"/>
+        <field table="rm" name="rm_type" hidden="true"/>
+        <field table="rmtype" name="rmtype_name" readOnly="true"/>
+        <field table="rm" name="is_left" readOnly="true"/>
+        <field table="rm" name="is_low_high" readOnly="true"/>
+        <field table="rm" name="huxing" readOnly="true"/>
+        <field table="rm" name="chaoxiang" readOnly="true"/>
+        <field table="rm" name="area" readOnly="true"/>
+        <field table="rm" name="area_comn_rm" readOnly="true"/>
+        <field table="rm" name="area_lease" readOnly="true"/>
+        <field table="rm" name="count_house_all" readOnly="true"/>
+        <field table="rm" name="count_house_kz" readOnly="true"/>
+        <field table="rm" name="count_house_yz" readOnly="true"/>
+        <field table="rm" name="eq_desc" readOnly="true" width="75"/>
+        <field table="rm" name="weixiu_log" readOnly="true" width="75"/>
+    </panel>
+    
+    <panel id="leaseInfoPanel" type="form" columns="3" showOnLoad="true" dataSource="sc_zzfcardDataSource" layoutRegion="zzfDetailPosition" newRecord="true">
+        <title translatable="true">Register Info</title>
+        <field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="lease_id" readOnly="true"/>
+        <field>
+            <title translatable="true">Deadline</title>
+            <html>
+                <input type="text" id="checkout" style="width:75px;height:20px;text-align:center;" value="1" onchange="zzfEmpoyeeController.changeCheckin()">
+                    <select>
+                        <option value="year" translatable="true">Year</option>
+                    </select>
+                </input>
+            </html>
+        </field>
+        <field table="sc_zzfcard" name="htqx" hidden="true"/>
+        <field table="sc_zzfcard" name="date_checkin" onchange="zzfEmpoyeeController.changeCheckin()"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_first_pay"/>
+        <field table="sc_zzfcard" name="dv_owner"/>
+        <field table="sc_zzfcard" name="payment_to" onchange="zzfEmpoyeeController.changePaymentTo()"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="is_day_first" onchange="zzfEmpoyeeController.changeIsNotChangZu()"/>
+        <field table="sc_zzfcard" name="rent_rate" readOnly="true"/>
+        <field table="sc_zzfcard" name="cash_deposit"/>
+        <field table="sc_zzfcard" name="rent_type" readOnly="true"/>
+        <field table="sc_zzfcard" name="rent_level">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                    fieldNames="sc_zzfcard.rent_type,sc_zzfcard.rent_level,sc_zzfcard.curr_rent_rate"
+                    selectFieldNames="sc_zzfrentstd.rent_type,sc_zzfrentstd.rent_level,sc_zzfrentstd.price"
+                    visibleFieldNames="sc_zzfrentstd.rent_type,sc_zzfrentstd.rent_level,sc_zzfrentstd.price,sc_zzfrentstd.unit_rent"
+                    applyFilter="false"
+                    actionListener="autoCalcMonthRent"></command>
+            </action>
+        </field>
+        <field table="sc_zzfcard" name="curr_rent_rate">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 	fieldNames="sc_zzfcard.rent_type,sc_zzfcard.rent_level,sc_zzfcard.curr_rent_rate"
+                 	selectFieldNames="sc_zzfrentstd.rent_type,sc_zzfrentstd.rent_level,sc_zzfrentstd.price"
+                 	visibleFieldNames="sc_zzfrentstd.rent_type,sc_zzfrentstd.rent_level,sc_zzfrentstd.price,sc_zzfrentstd.unit_rent"
+                 	applyFilter="false"
+                 	actionListener="autoCalcMonthRent"></command>
+            </action>
+        </field>
+        <field table="sc_zzfcard" name="area_lease" readOnly="true"/>
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="rent_pay_id"/>
+        <field table="sc_zzfcard" name="rent_pay_people"/>
+        <field table="sc_zzfcard" name="cash_clean"/>
+        <field table="sc_zzfcard" name="clean_people_id"/>
+        <field table="sc_zzfcard" name="clean_pay_people"/>
+        <field table="sc_zzfcard" name="sponsor">
+        	<action>
+                <title>...</title>
+                <command type="selectValue"
+                 	fieldNames="sc_zzfcard.sponsor,sc_zzfcard.sponsor_name,sc_zzfcard.sponsor_dv"
+                 	selectFieldNames="em.em_id,em.name,dv.name"
+                 	visibleFieldNames="em.em_id,em.name,dv.name"
+                 ></command>
+            </action>
+        </field>
+        <field table="sc_zzfcard" name="sponsor_name"/>
+        <field table="sc_zzfcard" name="sponsor_dv" />
+        
+    </panel>
+    
+    <panel id="checkInPanel" type="form" columns="2" dataSource="sc_zzfcardDataSource" layoutRegion="zzfDetailPosition">
+    	<title>Register Info</title>
+        <field name="card_id" table="sc_zzfcard" hidden="true"/>
+        <field table="sc_zzfcard" name="doc1"/>
+        <field table="sc_zzfcard" name="doc2"/>
+        <field table="sc_zzfcard" name="doc_lease" />
+        <field/>
+        <field table="sc_zzfcard" name="key_checkin" width="210"/>
+<!--         <field table="sc_zzfcard" name="rmsrc_situation" width="210" hidden="true"/> -->
+        <field>
+        </field>
+        <field table="sc_zzfcard" name="comment_checkin" width="210"/>
+    </panel>
+    
+    <js file="asc-bj-usms-house-assign-checkin.js"/>
+    <js file="asc-bj-usms-house-constant.js"/>
+    <js file="calc-date-time.js"/>
+    
+</view>

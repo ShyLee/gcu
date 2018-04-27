@@ -1,0 +1,15 @@
+<view version="2.0">
+    <title translatable="true">Asign EM To Room</title>
+    
+    <tabs workflow="enforced" id="reviewRequestTabs" tabRefreshPolicy="never">
+        <tab name="selectLcTab" file="asc-bj-hhu-house-asgn-em-to-rm-select-tab.axvw" selected="true">
+            <title translatable="true">Select Tab</title>
+        </tab>
+        <tab name="selectEm" file="asc-bj-hhu-house-asgn-em-to-rm-select-em-tab.axvw">
+            <title translatable="true">Select EM Tab</title>
+        </tab> 
+        <tab name="asgnEmToRm" file="asc-bj-hhu-house-asgn-em-to-rm-tab.axvw">
+            <title translatable="true">Asgn Tab</title>
+        </tab> 
+    </tabs>
+</view>

@@ -1,0 +1,113 @@
+<view version="2.0">
+   <layout id="main" type="border">
+        <north id="consoleRegion" initialSize="80" split="true"/>
+        <center/>
+    </layout>
+    <layout id="nested_center" containingLayout="main" region="center">
+        <north id="gridRequestRegion" initialSize="30%" split="true"/>
+        <center id="requestApprovedRegion"/>
+    </layout>
+    <js file="asc-bj-usms-proc-asgn-approve-req-select-tab.js"/>
+    <js file="asc-bj-usms-lc-constant.js"/>
+    
+    <dataSource id="ascBjUsmsProcAsgnApproveReqSelectTabDS">
+        <table name="activity_log" role="main"/>
+        <table name="activity_log_step_waiting" role="standard"/>        
+        
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="status" />
+        <field table="activity_log" name="requestor"/>
+        <field table="activity_log" name="requestor_name"/>
+        <field table="activity_log" name="prob_type"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="date_requested"/>
+        <field table="activity_log" name="description"/>
+        <field table="activity_log" name="option1"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="user_name"/>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log_step_waiting" name="step_type"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>
+        <parameter name="activityType" dataType="verbatim" value="1=1"/>
+        <restriction type="sql"
+         sql="${parameters['activityType']} AND activity_log.status = activity_log_step_waiting.status  AND (activity_log_step_waiting.user_name = '${user.name}' OR  activity_log_step_waiting.em_id = '${user.name}') AND activity_log_step_waiting.step_type IN ('approval','review')"/>
+    </dataSource>
+    
+    <panel type="console" columns="3" id="ascBjUsmsProcAsgnApproveReqSelectTabConsole" dataSource="ascBjUsmsProcAsgnApproveReqSelectTabDS" layoutRegion="consoleRegion">
+        <title translatable="true">Filter</title>
+        
+        <action id="filter">
+            <title translatable="true">Show</title>
+            <command type="showPanel" panelId="ascBjUsmsProcAsgnApproveReqSelectTabGrid"/>
+            <command type="callFunction" functionName="refeshGrid" />
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="ascBjUsmsProcAsgnApproveReqSelectTabConsole"/>
+        </action>
+        
+        <field table="activity_log" name="date_requested" readOnly="false" alias="activity_log.date_requested.from" required="false" op="&gt;=">
+            <title translatable="true">Date Requested From</title>
+        </field>
+        <field table="activity_log" name="date_requested" readOnly="false" alias="activity_log.date_requested.to" required="false" op="&lt;=">
+            <title translatable="true">Date Requested To</title>
+        </field>
+    </panel>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnApproveReqSelectTabGrid" showOnLoad="false" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnApproveReqSelectTabDS" layoutRegion="gridRequestRegion">
+        <title translatable="true">Requests</title>
+        
+        <sortField table="activity_log" name="activity_log_id" ascending="false"/>
+        
+        <field controlType="button">
+            <title translatable="true">Select</title>
+            <command type="callFunction" functionName="selectNextTab"/>
+        </field>
+        <field name="activity_log_id" table="activity_log">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="prob_type" hidden="true"/>
+        <field table="activity_log_step_waiting" name="step" hidden="true"/>
+        <field table="activity_log" name="requestor_name" />
+        <field table="activity_log" name="status"/>
+        <field table="activity_log" name="option1"/>
+        <field table="activity_log" name="date_requested"/>
+        <field table="activity_log" name="description"/>
+    </panel>
+   
+    <dataSource id="ascBjUsmsProcAsgnReviewReqSelectTabDS">
+        <table name="activity_log_hactivity_log" role="main"/>
+        
+        <field table="activity_log_hactivity_log" name="activity_log_id" />
+        <field table="activity_log_hactivity_log" name="option1"/>
+        <field table="activity_log_hactivity_log" name="status"/>
+        <field table="activity_log_hactivity_log" name="requestor"/>
+        <field table="activity_log_hactivity_log" name="requestor_name"/>
+        <field table="activity_log_hactivity_log" name="prob_type"/>
+        <field table="activity_log_hactivity_log" name="activity_type"/>
+        <field table="activity_log_hactivity_log" name="date_requested"/>
+        <field table="activity_log_hactivity_log" name="description"/>
+        <field table="activity_log_hactivity_log" name="comments"/>
+        <parameter name="actyType" dataType="verbatim" value="1=1"/>
+        <restriction type="sql" sql="activity_log_hactivity_log.activity_log_id in ( select distinct pkey_value from helpdesk_step_log where user_name='${user.name}' AND step_status_result in ('rejected','approved'))  AND  ${parameters['actyType']}"/>
+    </dataSource>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnReviewReqSelectTabGrid" showOnLoad="false" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnReviewReqSelectTabDS" layoutRegion="requestApprovedRegion">
+        <title translatable="true">Approved</title>
+        
+        <sortField table="activity_log_hactivity_log" name="date_requested" ascending="false"/>
+       
+        <field table="activity_log_hactivity_log" name="activity_log_id"  width="100">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field table="activity_log_hactivity_log" name="activity_type"/>
+        <field table="activity_log_hactivity_log" name="prob_type" hidden="true"/>
+        <field table="activity_log_hactivity_log" name="requestor_name"/>
+        <field table="activity_log_hactivity_log" name="status"/>
+        <field table="activity_log_hactivity_log" name="option1"/>
+        <field table="activity_log_hactivity_log" name="date_requested"/>
+        <field table="activity_log_hactivity_log" name="description"/>
+        <field table="activity_log_hactivity_log" name="comments"/>
+    </panel>
+</view>

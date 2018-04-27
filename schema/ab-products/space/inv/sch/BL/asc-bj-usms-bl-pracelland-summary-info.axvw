@@ -1,0 +1,17 @@
+<view  version="2.0">
+    <title translatable="true">Bulding FC Info</title>
+    <!-- the tabs of  building info -->
+   <tabs id="abScBlInfoTabs" workflow="free">
+   		<!--  建筑物基本西西呢  file="asc-bj-usms-bl-summary-info-wd-basic-tab.axvw" -->
+        <tab name="buldingBasicInfo" selected="true" file="asc-bj-usms-bl-pracelland-summary-info-basic-tab.axvw">
+            <title translatable="true">Bulding Basic Info</title>
+        </tab>
+        <tab name="fcAssetInfo" file="asc-bj-usms-bl-pracelland-summary-info-fc-asset-tab.axvw">
+        	<title translatable="true">FC Asset Info</title>
+        </tab>
+        <tab name="buildingImageInfo" file="asc-bj-usms-bl-pracelland-summary-info-image-tab.axvw">
+        	<title translatable="true">Building Image Info</title>
+        </tab>
+    </tabs>
+    <js file="asc-bj-usms-bl-pracelland-summary-info.js"/>
+</view>

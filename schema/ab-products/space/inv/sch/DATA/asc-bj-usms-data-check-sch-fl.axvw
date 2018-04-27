@@ -1,0 +1,161 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+		<north id="north_main" initialSize="1" split="true"/>
+        <center />
+	</layout>
+	<layout id="nested_center" containingLayout="mainLayout" region="center">
+		<east id="nested_east"  initialSize="1"/>
+        <center id="nested_center" />
+    </layout>
+	<dataSource id="falseDataSource">
+		<sql dialect="generic">
+		SELECT bl_id,option2,fl_id,name,area_gross_ext,area_gross_int,
+		area_gp,area_remain,area_usable,count_rm,
+		option1
+		from(
+			select bl.bl_id as bl_id,
+			bl.name as option2,
+			fl.fl_id as fl_id,
+			fl.name as name,
+			fl.area_gross_ext as area_gross_ext,
+			fl.area_gross_int as area_gross_int,
+			fl.area_gp as area_gp,
+			fl.area_remain as area_remain,
+			fl.area_usable as area_usable,
+			fl.count_rm as count_rm,
+			${parameters['errorinfo1']} as option1
+			from fl,bl
+			where fl.bl_id is null
+			union
+			select bl.bl_id as bl_id,
+			bl.name as option2,
+			fl.fl_id as fl_id,
+			fl.name as name,
+			fl.area_gross_ext as area_gross_ext,
+			fl.area_gross_int as area_gross_int,
+			fl.area_gp as area_gp,
+			fl.area_remain as area_remain,
+			fl.area_usable as area_usable,
+			fl.count_rm as count_rm,
+			${parameters['errorinfo2']} as option1
+			from fl,bl
+			where bl.bl_id =fl.bl_id
+			and fl.area_gp_dp &gt; fl.area_gp
+			union
+			(
+			select bl.bl_id as bl_id,
+			bl.name as option2,
+			fl.fl_id as fl_id,
+			fl.name as name,
+			fl.area_gross_ext as area_gross_ext,
+			fl.area_gross_int as area_gross_int,
+			fl.area_gp as area_gp,
+			fl.area_remain as area_remain,
+			fl.area_usable as area_usable,
+			fl.count_rm as count_rm,
+			${parameters['errorinfo3']} as option1
+			from fl,bl
+			where bl.bl_id =fl.bl_id
+			and fl.area_usable &lt; '0'
+			)
+			union
+			(
+			select bl.bl_id as bl_id,
+			bl.name as option2,
+			fl.fl_id as fl_id,
+			fl.name as name,
+			fl.area_gross_ext as area_gross_ext,
+			fl.area_gross_int as area_gross_int,
+			fl.area_gp as area_gp,
+			fl.area_remain as area_remain,
+			fl.area_usable as area_usable,
+			fl.count_rm as count_rm,
+			${parameters['errorinfo4']} as option1
+			from fl,bl
+			where bl.bl_id =fl.bl_id
+			and fl.area_gp &lt; '0'
+			)
+			union
+			(
+			select bl.bl_id as bl_id,
+			bl.name as option2,
+			fl.fl_id as fl_id,
+			fl.name as name,
+			fl.area_gross_ext as area_gross_ext,
+			fl.area_gross_int as area_gross_int,
+			fl.area_gp as area_gp,
+			fl.area_remain as area_remain,
+			fl.area_usable as area_usable,
+			fl.count_rm as count_rm,
+			${parameters['errorinfo5']} as option1
+			from fl,bl
+			where bl.bl_id =fl.bl_id
+			and fl.count_rm &lt; '0'
+			)
+		)
+		</sql>
+		<table name="fl" role="main" />
+		<field name="bl_id" table="fl" dataType="text" />
+		<field name="option2" table="fl" dataType="text" />
+		<field name="fl_id" table="fl" dataType="text" />
+		<field name="name" table="fl" dataType="text" />
+		<field name="area_gross_ext" table="fl" dataType="text" />
+		<field name="area_gross_int" table="fl" dataType="text" />
+		<field name="area_gp" table="fl" dataType="text" />
+		<field name="area_remain" table="fl" dataType="text" />
+		<field name="area_usable" table="fl" dataType="text" />
+		<field name="count_rm" table="fl" dataType="text" />
+		<field name="option1" table="fl" dataType="text" />
+
+		<parameter name="errorinfo1" dataType="text" value="" />
+		<parameter name="errorinfo2" dataType="text" value="" />
+		<parameter name="errorinfo3" dataType="text" value="" />
+		<parameter name="errorinfo4" dataType="text" value="" />
+		<parameter name="errorinfo5" dataType="text" value="" />
+	</dataSource>
+	<panel type="grid" id="falseDataPanel" dataSource="falseDataSource" showOnLoad="true" layoutRegion="nested_center">
+		<title translatable="true">False Data List</title>
+		<action id="exportXLS">
+                    <title translatable="true">XLS</title>
+                    <command type="exportPanel" outputType="xls" panelId="falseDataPanel"/>
+        </action>
+		<field controlType="button">
+			<title translatable="true">Edit</title>
+			<command type="callFunction" functionName="checkFalseCommonController.edit()" />
+		</field>
+		<field name="bl_id" table="fl" dataType="text" />
+		<field name="option2" table="fl" dataType="text" >
+			<title translatable="true">xiao qu ming chen</title>
+		</field>
+		<field name="fl_id" table="fl" dataType="text" />
+		<field name="name" table="fl" dataType="text" />
+		<field name="area_gross_ext" table="fl" dataType="text" />
+		<field name="area_gross_int" table="fl" dataType="text" />
+		<field name="area_gp" table="fl" dataType="text" />
+		<field name="area_remain" table="fl" dataType="text" />
+		<field name="area_usable" table="fl" dataType="text" />
+		<field name="count_rm" table="fl" dataType="text" />
+		<field name="option1" table="fl" dataType="text" >
+			<title translatable="true">ERRORTYPE</title>
+		</field>
+
+	</panel>
+	<panel type="form" id="editPanel" dataSource="falseDataSource" showOnLoad="false" columns="2" layoutRegion="nested_east">
+		<title translatable="true">edit datiles</title>
+		<action id="save">
+			<title translatable="true">save</title>
+		</action>
+		<!-- 这里编辑代码 -->
+		<field name="bl_id" table="fl" dataType="text" />
+		<field name="option2" table="fl" dataType="text" />
+		<field name="fl_id" table="fl" dataType="text" />
+		<field name="name" table="fl" dataType="text" />
+		<field name="area_gross_ext" table="fl" dataType="text" />
+		<field name="area_gross_int" table="fl" dataType="text" />
+		<field name="area_gp" table="fl" dataType="text" />
+		<field name="area_remain" table="fl" dataType="text" />
+		<field name="area_usable" table="fl" dataType="text" />
+		<field name="count_rm" table="fl" dataType="text" />
+	</panel>
+	<js file="asc-bj-usms-data-check-sch-fl.js" />
+</view>

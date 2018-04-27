@@ -1,0 +1,32 @@
+<view version="2.0">
+	<js file="asc_bj_ts_file_show.js" />
+    <title translatable="true">file upload demo</title>
+	<css>
+		img{margin:0 5;}
+	</css>
+	<dataSource id="ts_doc_center_ds">
+		<table name="ts_doc_center" role="main"/>
+		<field table="ts_doc_center" name="target_id"/>
+		<field table="ts_doc_center" name="table_name"/>
+		<field table="ts_doc_center" name="doc_id"/>
+        <field table="ts_doc_center" name="doc_name"/>
+		 <field table="ts_doc_center" name="doc_encode"/>
+        <field table="ts_doc_center" name="doc_type"/>
+		<field table="ts_doc_center" name="doc_uploader"/>
+		<field table="ts_doc_center" name="doc_download"/>
+		<field table="ts_doc_center" name="file_type"/>
+		<field table="ts_doc_center" name="doc_desc"/>
+	</dataSource>
+    <panel type="grid" id="fileupload" dataSource="ts_doc_center_ds">
+    		<field table="ts_doc_center" name="doc_id" hidden="true"/>	     
+		 <field table="ts_doc_center" name="target_id"/>
+		 <field table="ts_doc_center" name="table_name"/>
+        <field table="ts_doc_center" name="doc_name"/>
+		 <field table="ts_doc_center" name="doc_encode"/>
+        <field table="ts_doc_center" name="doc_type"/>
+		<field table="ts_doc_center" name="doc_uploader"/>
+		<field table="ts_doc_center" name="doc_download"/>
+		<field table="ts_doc_center" name="file_type"/>
+		<field table="ts_doc_center" name="doc_desc"/>
+    </panel>
+</view>

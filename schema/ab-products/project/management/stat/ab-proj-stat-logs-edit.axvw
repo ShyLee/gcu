@@ -1,0 +1,45 @@
+<view version="2.0">
+    <js file="ab-proj-stat-logs-edit.js"/>
+    <message name="selectActionTitle">Action Item ID</message>
+    
+    <dataSource id="projStatLogsEditDs0">
+        <table name="ls_comm" role="main"/>
+        <table name="activity_log" role="standard"/>
+        <field name="comm_id" table="ls_comm" />
+        <field name="project_id" table="ls_comm"/>
+        <field name="date_of_comm" table="ls_comm" />
+        <field name="time_of_comm" table="ls_comm" />        
+        <field name="comm_type" table="ls_comm" />
+        <field name="contact_id" table="ls_comm"/>
+        <field name="priority" table="ls_comm" />
+        <field name="recorded_by" table="ls_comm"/>
+        <field name="action_title" table="activity_log"/>
+        <field name="activity_log_id" table="ls_comm" />
+        <field name="doc" table="ls_comm"/>        
+        <field name="summary" table="ls_comm" /> 
+        <field name="description" table="ls_comm"/>
+        <field name="auto_number" table="ls_comm" hidden="true"/>
+    </dataSource>
+
+    <panel type="columnReport" id="projStatLogsEditForm" dataSource="projStatLogsEditDs0">
+        <title>Communications Log Details</title>
+        <action id="cancel">
+            <title>Close</title>
+            <command type="closeDialog"/>
+        </action>
+        <field name="project_id" table="ls_comm" readOnly="true" />
+        <field name="comm_id" table="ls_comm" />
+        <field name="comm_type" table="ls_comm" />
+        <field name="contact_id" table="ls_comm" />
+        <field name="activity_log_id" table="ls_comm" />
+        <field name="doc" table="ls_comm" />
+        <field name="priority" table="ls_comm" />
+        <field name="date_of_comm" table="ls_comm" />
+        <field name="time_of_comm" table="ls_comm" />
+        <field name="recorded_by" table="ls_comm" readOnly="true"/>       
+        <field name="summary" table="ls_comm" /> 
+        <field name="description" table="ls_comm" colspan="2"/>
+        <field name="auto_number" table="ls_comm" hidden="true" />
+    </panel>
+</view>
+    

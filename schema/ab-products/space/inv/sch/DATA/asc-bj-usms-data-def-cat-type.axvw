@@ -1,0 +1,310 @@
+  <view version="2.0">
+	<message name="noBusinessUnit" translatable="true">No Room DaLei</message>
+	<message name="roomUse" translatable="true">Room DaLei</message>
+    <message name="roomCategory" translatable="true">Room Category</message>
+    <message name="roomType" translatable="true">Room Type</message>
+	<message name="roomUse4" translatable="true">room use detail</message>
+    <message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+    <message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+    <message name="formSaved" translatable="true">Form saved successfully.</message>
+    <message name="selectTreeNode" translatable="true">Please select Room Category.</message>
+	
+	<layout type="borderLayout" id="mainLayout">
+        <north id="consolePanel" autoScroll="true" split="true" initialSize="90"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout type="borderLayout" id="centerLayout" containingLayout="mainLayout" region="center">
+        <west id="treePostion" autoScroll="true" split="true" initialSize="35%"/>
+        <center id="editPostion" autoScroll="true"/>
+    </layout>
+	
+    <title translatable="true">Define Room Categories and Types</title>
+    
+	<dataSource id="ds_asc-bj-usms-data-def-cat-type_console_cat_type">
+		 <table name="rmuse" role="main"/>
+        <table name="rmtype" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rmuse" name="rm_use"/>
+        <field table="rmuse" name="rmuse_name"/>
+        <field table="rmcat" name="rm_cat"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+    </dataSource>
+    
+    <panel type="console" columns="3" id="sbfFilterPanel" labelsPosition="top" dataSource="ds_asc-bj-usms-data-def-cat-type_console_cat_type" layoutRegion="consolePanel">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="sbfFilterPanel"/>
+        </action>
+        
+        <field table="rmuse" name="rm_use" hidden="true"/> 
+		<field table="rmuse" name="rmuse_name">
+			<action>
+				<title>...</title>
+				<tooltip>Select Value</tooltip>
+				<command type="selectValue"
+					fieldNames="rmuse.rm_use,rmuse.rmuse_name"
+					selectFieldNames="rmuse.rm_use,rmuse.rmuse_name" 
+					visibleFieldNames="rmuse.rm_use,rmuse.rmuse_name" 
+					showIndex="false"/> 
+			</action>
+		</field>	
+		
+		<field table="rmcat" name="rm_cat" hidden="true"/>	
+		<field table="rmcat" name="rmcat_name">
+			<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        		fieldNames="rmcat.rm_cat,rmcat.rmcat_name,rmuse.rm_use,rmuse.rmuse_name"
+					selectFieldNames="rmcat.rm_cat,rmcat.rmcat_name,rmuse.rm_use,rmuse.rmuse_name" 
+					visibleFieldNames="rmuse.rmuse_name,rmcat.rmcat_name" 
+					showIndex="false"/>
+	    	</action>
+		</field>	
+        <field table="rmtype" name="rm_type" hidden="true"/>
+		<field table="rmtype" name="rmtype_name">
+			<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        		fieldNames="rmtype.rm_type,rmtype.rmtype_name,rmcat.rm_cat,rmcat.rmcat_name"
+					selectFieldNames="rmtype.rm_type,rmtype.rmtype_name,rmcat.rm_cat,rmcat.rmcat_name" 
+					visibleFieldNames="rmcat.rmcat_name,rmtype.rmtype_name" 
+					showIndex="false"/>
+	    	</action>
+		</field>	
+    </panel>
+	
+	<dataSource id="abScDefRmuseTreeDs">
+        <table name="rmuse" role="main"/>
+        <field table="rmuse" name="rm_use"/>
+        <field table="rmuse"  name="rmuse_name" />
+        <parameter name="rmcat" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="rmtype" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="rmuse" dataType="verbatim" value=" IS NOT NULL "/>
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+		<restriction type="sql" sql="rmuse.rm_use ${parameters['rmuse']} ${parameters['orand']} rm_use in (SELECT rm_use FROM rmcat WHERE rm_cat ${parameters['rmcat']} AND rm_cat in (SELECT rm_cat from rmtype where rm_type ${parameters['rmtype']}))"/>
+    </dataSource>
+	
+	<dataSource id="abScDefRmuseFormDs">
+        <table name="rmuse" role="main"/>
+        <field table="rmuse" name="rm_use"/>
+        <field table="rmuse" name="rmuse_name"/>
+        <field table="rmuse" name="description"/>
+    </dataSource>
+	
+    <dataSource id="abScDefRmcatRmuseTreeDs">
+        <table name="rmcat" role="main"/>
+        <field table="rmcat" name="rm_use" dataType="text"/>
+        <field table="rmcat" name="rm_cat" dataType="text"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <parameter name="rmcat" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="rmtype" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+		<restriction type="sql" sql="rmcat.rm_cat ${parameters['rmcat']} ${parameters['orand']} rm_cat in (SELECT rm_cat from rmtype where rm_type ${parameters['rmtype']})"/>
+    </dataSource>
+	
+	<dataSource id="abScDefRmcatRmuseFormDs">
+        <table name="rmcat" role="main"/>
+        <table name="rmuse" role="standard"/>
+        <field table="rmuse" name="rmuse_name"/>
+        <field table="rmcat" name="rm_use"/>
+	<field table="rmcat" name="rm_cat"/>
+	<field table="rmcat" name="rmcat_name"/>
+        <field table="rmcat" name="description"/>
+	<field table="rmcat" name="used_in_calcs"/>
+	<field table="rmcat" name="hpattern_acad"/>
+	<field table="rmcat" name="cost_sqft"/>
+    </dataSource>
+	
+    <dataSource id="abScDefRmcatRmtypeTreeDs">
+        <table name="rmtype" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rmcat" name="rm_use"/>
+        <field table="rmtype" name="rm_cat"/>
+        <field table="rmtype" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <sortField table="rmtype" name="rm_type" ascending="true"/>
+        <parameter name="rmtype" dataType="verbatim" value="IS NOT NULL"/>
+		
+		<restriction type="sql" sql="rmtype.rm_type ${parameters['rmtype']}"/>
+    </dataSource>
+	
+    <dataSource id="abScDefRmcatRmtypeFormDs">
+        <table name="rmtype" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rm_cat"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rmtype" name="rm_type"/>
+		<field table="rmtype" name="rmtype_bu"/>  
+        <field table="rmtype" name="description"/>
+		<field table="rmtype" name="hpattern_acad"/>
+		<field table="rmtype" name="cost_sqft"/>
+    </dataSource>
+	
+    <panel type="tree" id="rmuse_tree" dataSource="abScDefRmuseTreeDs" layoutRegion="treePostion">
+        <title translatable="true">Select Room Categories or Types</title>
+        <action id="addNew">
+            <title translatable="true">Add New</title>
+        </action>
+        <event type="onClickNode">
+            <command type="selectTabPage" tabPanelId="abScDefRmcatRmtypeTabs" tabPageName="rmuseTab"/>
+            <command type="callFunction" functionName="onClickRmuseTreeNode"/>
+        </event>
+        	
+		<panel type="tree" id="rmcat_tree" dataSource="abScDefRmcatRmuseTreeDs">
+            <event type="onClickNode">
+            <command type="selectTabPage" tabPanelId="abScDefRmcatRmtypeTabs" tabPageName="cateTab"/>
+            <command type="callFunction" functionName="onClickTreeNode"/>
+        	</event>
+            <field table="rmcat" name="rm_cat" hidden="true"/>
+        	<field table="rmcat" name="rmcat_name" hidden="true"/>
+        </panel>
+        
+        <panel type="tree" id="rmtype_tree" dataSource="abScDefRmcatRmtypeTreeDs">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="abScDefRmcatRmtypeTabs" tabPageName="typeTab"/>
+                <command type="callFunction" functionName="onClickTreeNode"/>
+            </event>
+	    <field table="rmtype" name="rm_type" />
+            <field table="rmtype" name="rmtype_name" />
+        </panel>
+		
+        <field table="rmuse" name="rm_use"/>
+        <field table="rmuse"  name="rmuse_name" />
+    </panel>
+    
+    <tabs id="abScDefRmcatRmtypeTabs" workflow="enforced" cssClass="wizard" layoutRegion="editPostion">
+    	<tab name="rmuseTab" selected="true">
+            <title translatable="true">Fangwudalei</title>
+            <panel type="form" id="abScDefRmuseForm" showOnLoad="false" dataSource="abScDefRmuseFormDs" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+				 </action>
+				<action id="cancel">
+            		<title translatable="true">Cancel</title>
+            		<command type="showPanel" panelId="abScDefRmuseForm" show="false"/>
+        		</action>
+				<field table="rmuse" name="rm_use"/>
+				<field table="rmuse" name="rmuse_name" required="true"/>
+		        <field table="rmuse" name="description"/>
+            </panel>
+        </tab>
+        <tab name="cateTab" selected="false">
+            <title translatable="true">Room Category</title>
+            <panel type="form" id="abScDefRmcatRmuseForm" showOnLoad="false" dataSource="abScDefRmcatRmuseFormDs" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+				 </action>
+				<action id="cancel">
+            		<title translatable="true">Cancel</title>
+            		<command type="showPanel" panelId="abScDefRmcatRmuseForm" show="false"/>
+        		</action>
+<!-- 				<field table="rmcat" name="rm_use"/> -->
+				
+				<field name="rm_use"     table="rmcat" required="true" hidden="true">
+		  		</field>
+		        <field name="rmuse_name"     table="rmuse" readOnly="false" >
+		        	<action> 
+			        	<title>...</title>
+			        	<tooltip>Select Value</tooltip>
+			        	<command type="selectValue" 
+			        	    fieldNames="rmcat.rm_use,rmuse.rmuse_name"
+							selectFieldNames="rmuse.rm_use,rmuse.rmuse_name" 
+							visibleFieldNames="rmuse.rm_use,rmuse.rmuse_name"
+							showIndex="true"/>
+			    	</action>
+		        </field>
+        
+        
+				<field table="rmcat" name="rm_cat"/>
+				<field table="rmcat" name="rmcat_name"  required="true"/>
+		        <field table="rmcat" name="description"/>
+				<field table="rmcat" name="used_in_calcs" hidden="true"/>
+				<field table="rmcat" name="hpattern_acad" readOnly="false">
+					<action>
+                		<command type="callFunction" functionName="setPattern"/>
+            		</action>
+				</field>
+				<field table="rmcat" name="cost_sqft" hidden="true"/>
+            </panel>
+        </tab>
+        <tab name="typeTab" selected="false">
+            <title translatable="true">Room Type</title>
+            <panel type="form" id="abScDefRmcatRmtypeForm" showOnLoad="false" dataSource="abScDefRmcatRmtypeFormDs" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+				 </action>
+				<action id="cancel">
+            		<title translatable="true">Cancel</title>
+            		<command type="showPanel" panelId="abScDefRmcatRmtypeForm" show="false"/>
+        		</action>
+
+  				<field table="rmtype" name="rm_cat" required="true" hidden="true"> 
+		  		</field>
+		        <field table="rmcat" name="rmcat_name" required="true" readOnly="false">
+		        	<action> 
+			        	<title>...</title>
+			        	<tooltip>Select Value</tooltip>
+			        	<command type="selectValue" 
+			        	    fieldNames="rmtype.rm_cat,rmcat.rmcat_name"
+							selectFieldNames="rmcat.rm_cat,rmcat.rmcat_name" 
+							visibleFieldNames="rmcat.rm_cat,rmcat.rmcat_name" 
+							showIndex="true"/>
+			    	</action>
+		        </field>
+ 
+		        <field table="rmtype" name="rm_type"/>
+				<field table="rmtype" name="rmtype_name"  required="true"/> 
+		        <field table="rmtype" name="description"/>
+				<field table="rmtype" name="hpattern_acad" readOnly="false">
+					<action>
+                		<command type="callFunction" functionName="selectPattern"/>
+            		</action>
+				</field>
+				
+				<field table="rmtype" name="rmtype_bu"/>  
+				<field table="rmtype" name="cost_sqft" hidden="true"/>
+            </panel>
+        </tab>
+		<!--siji
+		<tab name="use4tab" selected="false" hidden="true">
+			<title translatable="true">room use detail</title>
+			<panel type="form" id="abScDefRmcatTsRmuse4FormDsForm" showOnLoad="false" dataSource="abScDefRmcatTsRmuse4FormDs" columns="2">
+				<action id="save">
+					<title translatable="true">Save</title>
+					
+				</action>
+				<action id="delete">
+                    <title translatable="true">Delete</title>
+				 </action>
+				<action id="cancel">
+            		<title translatable="true">Cancel</title>
+            		<command type="showPanel" panelId="abScDefRmcatTsRmuse4FormDsForm" show="false"/>
+        		</action>
+				<field table="ts_rmuse4" name="rm_cat" readOnly="true"/>
+				<field table="ts_rmuse4" name="rm_type" readOnly="true"/>
+				<field table="ts_rmuse4" name="rm_use4"/>
+				<field table="ts_rmuse4" name="use4_desc"/>
+			</panel>	
+		</tab>-->
+    </tabs>
+    <js file="asc-bj-usms-data-def-cat-type.js"/>
+	<js file="asc-bj-usms-def-common.js"/>
+</view>

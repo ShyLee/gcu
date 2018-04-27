@@ -1,0 +1,45 @@
+<view version="2.0">
+	<title>Event Listeners for Row Click</title>
+
+    <js file="ab-ex-report-grid-row-action.js"/>
+
+	<dataSource id="abExReportGridRowAction_ds_0">
+		<table name="project" role="main"/>
+		<field name="project_id" table="project"/>
+		<field name="status" table="project"/>
+		<field name="date_start" table="project"/>
+		<field name="date_end" table="project"/>
+		<field name="requestor" table="project"/>
+		<field name="description" table="project"/>
+		<restriction type="parsed">
+			<clause name="description" table="project" relop="AND" op="!=" value="" />
+		</restriction>
+	</dataSource>
+
+    <layout>
+        <north initialSize="50%" split="true"/>
+        <center />
+    </layout>
+
+    <panel type="grid" id="abExReportGridRowAction_detailsPanel" dataSource="abExReportGridRowAction_ds_0" region="north">
+        <title>Event Listener in AXVW</title>
+		<event type="onClickItem">
+			<tooltip>Click to view details.</tooltip>
+			<command type="openDialog" viewName="ab-ex-report-grid-row-action-details.axvw"/>
+		</event>
+		<field name="project_id" table="project"/>
+		<field name="description" table="project"/>
+		<field name="status" table="project"/>
+		<field name="date_start" table="project"/>
+		<field name="date_end" table="project"/>
+	</panel>
+
+    <panel type="grid" id="abExReportGridRowAction_detailsPanel2" dataSource="abExReportGridRowAction_ds_0" region="center">
+        <title>Event Listener in JS (auto-wired)</title>
+        <field name="project_id" table="project"/>
+        <field name="description" table="project"/>
+        <field name="status" table="project"/>
+        <field name="date_start" table="project"/>
+        <field name="date_end" table="project"/>
+    </panel>
+</view>

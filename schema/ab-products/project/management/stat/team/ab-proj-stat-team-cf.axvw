@@ -1,0 +1,59 @@
+<view version="2.0">
+	  <js file="ab-proj-stat-team-cf.js"/>
+	  
+    <dataSource id="projStatTeam_dsCf">
+    		<table name="cf"/>
+    		<field name="cf_id"/>
+    		<field name="name"/>
+    		<field name="email"/>
+    		<field name="tr_id"/>
+    		<field name="in_house"/>
+    		<field name="reports_to"/>
+    		<field name="std_hours_avail"/>
+    		<field name="work_team_id"/>
+    		<field name="position"/>
+    		<field name="date_contract_exp"/>
+    		<field name="rate_hourly"/>
+    		<field name="rate_over"/>
+    		<field name="rate_double"/>  		
+    </dataSource>
+
+    <panel type="form" id="projStatTeam_addCf" dataSource="projStatTeam_dsCf" showOnLoad="true" columns="3" newRecord="true">
+    		<title>Add New Craftsperson</title>
+    		<action id="save">
+    				<title>Save</title>
+    		</action>
+    		<action>
+    				<title>Cancel</title>
+    				<command type="closeDialog"/>
+    		</action>
+    		<field name="cf_id"/>
+    		<field name="reports_to"/>
+    		<field name="date_contract_exp"/>
+    		<field name="name"/>
+    		<field name="std_hours_avail"/>
+    		<field name="rate_hourly"/>
+    		<field name="email"/>
+    		<field name="work_team_id"/>
+    		<field name="rate_over"/>
+    		<field name="tr_id"/>
+    		<field name="position"/>
+    		<field name="rate_double"/>
+    		<field name="in_house"/>
+    		<field/>
+    		
+    </panel>    
+
+    <panel type="grid" id="projStatTeam_cf" multipleSelectionEnabled="true" dataSource="projStatTeam_dsCf" showOnLoad="true">
+    		<title>Select from Existing Craftpersons</title>
+    		<action id="select">
+    				<title>Select</title>
+    		</action>
+    </panel>
+   
+</view>
+    
+ 
+ 
+ 
+ 

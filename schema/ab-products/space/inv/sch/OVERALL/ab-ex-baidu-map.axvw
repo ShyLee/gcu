@@ -1,0 +1,85 @@
+
+<!-- Custom HTML View that displays Badu Map -->
+<view version="2.0">
+    <title translatable="true">Custom HTML Component Example - Baidu Map Integration for Firefox</title>
+
+    <!-- Include Yahoo Map API -->
+    <js url="http://api.map.baidu.com/api?v=1.2"/>
+
+    <!-- Include custom JS code to initialize the map -->
+    <js file="ab-ex-baidu-map.js"/>
+    
+	<layout type="borderLayout" id="mainLayout">
+        <west id="treeGrid" autoScroll="true" split="true" initialSize="30%"/>
+        <center id="mapPanel" autoScroll="true"/>
+    </layout>
+	
+    <!-- datasource for rmcat report -->
+	<dataSource id="sc_parcelland_ds">
+		<table name="sc_parcelland" role="main" />
+		<field table="sc_parcelland" name="land_code"/>
+		<field table="sc_parcelland" name="parcelland_address" />
+		<field table="sc_parcelland" name="bl_area_total" />
+		<field table="sc_parcelland" name="bl_count_total" />
+		<field table="sc_parcelland" name="certificate" /> 
+		<field table="sc_parcelland" name="contacts" />
+		<field table="sc_parcelland" name="description" />
+		<field table="sc_parcelland" name="dv_buId" />
+		<field table="sc_parcelland" name="dv_id" />
+		<field table="sc_parcelland" name="have_certificate" />
+		<field table="sc_parcelland" name="area_land" />
+		<field table="sc_parcelland" name="land_cat" />
+		<field table="sc_parcelland" name="land_properties" />
+		<field table="sc_parcelland" name="land_type" />
+		<field table="sc_parcelland" name="manage_buId" />
+		<field table="sc_parcelland" name="manage_dp" />
+		<field table="sc_parcelland" name="province" />
+		<field table="sc_parcelland" name="status" />
+		<field table="sc_parcelland" name="center_point" />
+		<field table="sc_parcelland" name="points" />
+		<field table="sc_parcelland" name="border_to" />
+        <restriction type="sql" sql="points is not null"/>
+	</dataSource>
+    <!-- Custom HTML content used to display a map -->
+    <panel type="html" id="yahooMap_mapPanel" layoutRegion="mapPanel">
+        <title>Location Map</title>
+        <html>
+            <div id="mapContainer" style="height:600px;width:800px;"/>
+        </html>
+    </panel>
+	
+	<panel type="grid" id="parcellandGrid"
+		dataSource="sc_parcelland_ds" layoutRegion="treeGrid">
+		<title translatable="true">XueXiao SuoYou ZongDi</title>
+		<sortField name="parcelland_address" table="sc_parcelland" ascending="true" />
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls"
+				panelId="parcellandGrid" />
+		</action>
+		<field id="showBlList" controlType="button">
+			<title translatable="true">BLList</title>
+		</field>
+		<field id="showOnMap" controlType="button">
+			<title translatable="true">Map</title>
+		</field>
+		<field table="sc_parcelland" name="land_code"/>
+		<field table="sc_parcelland" name="area_land" />
+		<field table="sc_parcelland" name="parcelland_address"/>
+		<field table="sc_parcelland" name="bl_area_total" />
+		<field table="sc_parcelland" name="certificate" />
+		<field table="sc_parcelland" name="dv_id" />
+		<field table="sc_parcelland" name="dv_buId" />
+		<field table="sc_parcelland" name="manage_dp" />
+		<field table="sc_parcelland" name="manage_buId" />
+		<field table="sc_parcelland" name="province" />
+		<field table="sc_parcelland" name="land_cat" />
+		<field table="sc_parcelland" name="land_type" />
+		<field table="sc_parcelland" name="land_properties" />
+		<field table="sc_parcelland" name="status" />
+		<field table="sc_parcelland" name="have_certificate" />
+		<field table="sc_parcelland" name="bl_count_total" />
+		<field table="sc_parcelland" name="border_to" />
+		<field table="sc_parcelland" name="description"/>
+	</panel>
+</view>

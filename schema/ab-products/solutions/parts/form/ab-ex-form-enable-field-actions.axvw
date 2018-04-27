@@ -1,0 +1,38 @@
+
+<!-- Form with field that have actions enabled or disabled seperately-->
+
+<view version="2.0">
+
+    <js file="ab-ex-form-enable-field-actions.js"/>
+
+    <title translatable="true">Form with field that have actions enabled or disabled separately</title>
+    
+    <message name="fieldActionEnabled" translatable="true">The select value button is enabled</message>
+    <message name="fieldActionDisabled" translatable="true">The select value button is disabled</message>
+
+    <dataSource id="abExFormEnableFieldActions_ds">
+        <table name="activity_log" role="main"/>
+        <field table="activity_log" name="location_id"/>
+    </dataSource>
+    
+    <panel type="form" id="abExFormEnableFieldActions_form" dataSource="abExFormEnableFieldActions_ds">
+		<title translatable="true">Enable or Disable Field Action</title>
+        <action id="enableFieldActions">
+            <title translatable="true">Enable Field Actions</title>
+        </action>
+        <action id="disableFieldActions">
+            <title translatable="true">Disable Field Actions</title>
+        </action>
+        
+        <field table="activity_log" name="location_id">
+			<action>
+                <command type="selectValue"  
+                    selectValueType="multiple"
+                    fieldNames="activity_log.location_id"  
+                    selectFieldNames=" compliance_locations.location_id"
+                    visibleFieldNames="compliance_locations.ctry_id,compliance_locations.geo_region_id">
+                </command>
+			</action>
+		</field>
+    </panel>
+</view>

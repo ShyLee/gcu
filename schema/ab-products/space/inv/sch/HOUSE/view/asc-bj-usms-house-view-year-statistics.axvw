@@ -1,0 +1,99 @@
+<view version="2.0">
+	<title translatable="true">House Amount Count</title>
+	<layout type="borderLayout" id="mainLayout">
+		<north id="selectSite" autoScroll="true" split="true" initialSize="10%"/>
+		<center autoScroll="true"/>
+	</layout>
+	<layout id="standardLayout" containingLayout="mainLayout" region="center">
+		<west id="listSite" initialSize="50%" split="true"/>
+		<center id="feeChartSite"  autoScroll="true"/>
+	</layout>
+	
+	<dataSource id="yearProtocolFeeDs"> 
+	    
+	     <sql dialect="generic">
+			   
+			 select  y.year year, y.month month,nvl(y.rmcount,0) rm_count,nvl(t.sumhouse,0) house_value,nvl(t.sumfinance,0) finance_value,nvl(t.total_fee,0) pay_value,nvl(y.sum_area,0) sum_area_total ,NVL(y.emNum,0) em_count
+			 
+			 from 
+
+					(select to_char(date_checkin, 'yyyy' ) year,to_char(date_checkin, 'MM' ) month ,count(distinct bl_id||'~'||fl_id||'~'||rm_id) rmcount,sum(area_lease) sum_area,count(card_id) emNum from sc_zzfcard where card_status ='yrz'  
+					group by to_char(date_checkin, 'yyyy' ), to_char(date_checkin, 'MM' ) ) y 
+					full join 
+					(select x.year,x.month,x.sumhouse,z.sumfinance, x.sumhouse+z.sumfinance total_fee from
+					(select to_char(date_created,'yyyy') year,to_char(date_created, 'MM' ) month ,sum(actual_rent) sumhouse from sc_zzfrent where payment_to ='house' group by to_char(date_created,'yyyy'), to_char(date_created, 'MM' )) x
+					full join 
+					(select  year, month ,sum(actual_payoff) sumfinance from sc_zzfrent_details where card_id in (select card_id from sc_zzfcard where payment_to ='finance') group by year, month) z
+					on  x.year=z.year and x.month = z.month) t on y.year = t.year and y.month = t.month
+			where y.year = ${parameters['year']}
+         </sql>
+		<table name="sc_zzfrent" role="main"/>
+	    <field table="sc_zzfrent" name="year" dataType="text" hidden="true">
+	    	<title translatable="true">Year And Month</title>
+	    </field>
+	     <field table="sc_zzfrent" name="month" dataType="text">
+	    	<title translatable="true">Month</title>
+	    </field>
+	    <field table="sc_zzfrent" name="pay_value" dataType="number" decimals="2" currency="${user.userCurrency.code}">      
+	        <title>Total Should Pay</title> 
+	    </field> 
+	    <field table="sc_zzfrent" name="finance_value" dataType="number" decimals="2" currency="${user.userCurrency.code}">      
+	        <title>Total finance Pay</title> 
+	    </field> 
+	    <field table="sc_zzfrent" name="house_value" dataType="number" decimals="2" currency="${user.userCurrency.code}">
+		   <title translatable="true">Total house Pay</title>
+       </field>
+       <field table="sc_zzfrent" name="rm_count" dataType="number" decimals="0">
+		   <title translatable="true">Room Counts</title>
+       </field>
+        <field table="sc_zzfrent" name="em_count" dataType="number" decimals="0">
+		   <title translatable="true">People Nums</title>
+       </field>
+        <field table="sc_zzfrent" name="sum_area_total" dataType="number" decimals="2" hidden="true">
+		   <title translatable="true">Total Area</title>
+       </field>
+	   <parameter name="year" dataType="verbatim" value="2014"/>
+	   <sortField table="sc_zzfrent" name="month" ascending="true"/>
+	</dataSource>
+
+    
+	<panel type="console" id="consolePanel"  dataSource="none" layoutRegion="selectSite">
+		<title translatable="true">Select</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+		</action>
+		<field>
+			<title translatable="true">year</title>
+			<html>
+				<input type="text" id="year" name="year" value=""/>
+			</html>
+		</field>
+	</panel>
+	<panel type="grid" id="feeGrid"  dataSource="yearProtocolFeeDs"  layoutRegion="listSite">
+		<title translatable="true">Fees item</title>
+		<action type="menu" imageName="/schema/ab-core/graphics/icons/view/ab-arcgis-layers-16.png">
+             <title></title>
+             <action>
+                 <title>Export</title>
+                 <command type="exportPanel" outputType="xls" panelId="feeGrid"/>
+             </action>
+         </action>
+	</panel>
+	<panel type="chart" id="feeChart" dataSource="yearProtocolFeeDs" layoutRegion="feeChartSite"
+		controlType="columnChart">
+		 <groupingAxis table="sc_zzfrent" field="month"  labelRotation="45">
+            <title translatable="true">month</title>
+        </groupingAxis>
+		
+		<dataAxis  table="sc_zzfrent" field="pay_value" labelPosition="inside">
+			 <title>Total Should Pay</title> 
+		</dataAxis>
+		<dataAxis  table="sc_zzfrent" field="finance_value" labelPosition="inside">
+			<title>Total finance Pay</title> 
+		</dataAxis>
+		<dataAxis  table="sc_zzfrent" field="house_value" labelPosition="inside">
+			<title translatable="true">Total house Pay</title>
+		</dataAxis>
+	</panel>
+	<js file="asc-bj-usms-house-view-year-statistics.js"/>
+</view>

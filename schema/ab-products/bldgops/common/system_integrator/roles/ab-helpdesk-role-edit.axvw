@@ -1,0 +1,29 @@
+<view version="2.0">
+    <title translatable="true">View and Edit Service Desk Roles</title>
+    
+    <dataSource id="ds_ab-helpdesk-role-edit_form_roles">
+        <table name="helpdesk_roles" role="main"/>
+        <field name="role" table="helpdesk_roles"/>
+        <field name="class" table="helpdesk_roles"/>
+        <field name="method" table="helpdesk_roles"/>
+        <field name="step_type" table="helpdesk_roles"/>
+        <sortField name="role" table="helpdesk_roles" ascending="true"/>
+    </dataSource>
+	
+    <panel type="form" id="panel_roles" columns="2" dataSource="ds_ab-helpdesk-role-edit_form_roles">
+        <title translatable="true">Service Desk Role</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="selectTabPage" tabPageName="select"/>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="selectTabPage" tabPageName="select"/>
+        </action>
+        <field name="role" table="helpdesk_roles"/>
+        <field name="step_type" table="helpdesk_roles"/>
+        <field name="class" table="helpdesk_roles"/>
+        <field name="method" table="helpdesk_roles"/>
+    </panel>
+</view>

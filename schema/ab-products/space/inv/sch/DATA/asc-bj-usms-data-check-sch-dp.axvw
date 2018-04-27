@@ -1,0 +1,193 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+		<north id="north_main" initialSize="1" split="true"/>
+        <center />
+	</layout>
+	<layout id="nested_center" containingLayout="mainLayout" region="center">
+		<east id="nested_east"  initialSize="1"/>
+        <center id="nested_center" />
+    </layout>
+	<dataSource id="falseDataSource">
+		<sql dialect="generic">
+		SELECT dv_id,dv_name,bu_id,area_rm,area_comn_ocup,
+		area_ocup,area_gp,area_dinge_total,area_jianzhu,
+		area_rm_net,area_comn_serv,count_rm,option2
+		from(
+			select dv.dv_id as dv_id,
+				dv.dv_name as dv_name,
+				dv.bu_id as bu_id,
+				dv.area_rm as area_rm,
+				dv.area_comn_ocup as area_comn_ocup,
+				dv.area_ocup as area_ocup,
+				dv.area_gp as area_gp,
+				dv.area_dinge_total as area_dinge_total,
+				dv.area_jianzhu as area_jianzhu,
+				dv.area_rm_net as area_rm_net,
+				dv.area_comn_serv as area_comn_serv,
+				dv.count_rm as count_rm,
+				${parameters['errorinfo1']} as option2
+				from dv
+				where dv.area_ocup &gt; area_jianzhu
+			union
+			(
+			select dv.dv_id as dv_id,
+				dv.dv_name as dv_name,
+				dv.bu_id as bu_id,
+				dv.area_rm as area_rm,
+				dv.area_comn_ocup as area_comn_ocup,
+				dv.area_ocup as area_ocup,
+				dv.area_gp as area_gp,
+				dv.area_dinge_total as area_dinge_total,
+				dv.area_jianzhu as area_jianzhu,
+				dv.area_rm_net as area_rm_net,
+				dv.area_comn_serv as area_comn_serv,
+				dv.count_rm as count_rm,
+				${parameters['errorinfo2']} as option2
+				from dv
+				where dv.area_rm &gt; dv.area_jianzhu
+			)
+			union
+			(
+			select dv.dv_id as dv_id,
+				dv.dv_name as dv_name,
+				dv.bu_id as bu_id,
+				dv.area_rm as area_rm,
+				dv.area_comn_ocup as area_comn_ocup,
+				dv.area_ocup as area_ocup,
+				dv.area_gp as area_gp,
+				dv.area_dinge_total as area_dinge_total,
+				dv.area_jianzhu as area_jianzhu,
+				dv.area_rm_net as area_rm_net,
+				dv.area_comn_serv as area_comn_serv,
+				dv.count_rm as count_rm,
+				${parameters['errorinfo3']} as option2
+				from dv
+				where dv.area_rm_net &gt; dv.area_rm
+			)
+			union
+			(
+			select dv.dv_id as dv_id,
+				dv.dv_name as dv_name,
+				dv.bu_id as bu_id,
+				dv.area_rm as area_rm,
+				dv.area_comn_ocup as area_comn_ocup,
+				dv.area_ocup as area_ocup,
+				dv.area_gp as area_gp,
+				dv.area_dinge_total as area_dinge_total,
+				dv.area_jianzhu as area_jianzhu,
+				dv.area_rm_net as area_rm_net,
+				dv.area_comn_serv as area_comn_serv,
+				dv.count_rm as count_rm,
+				${parameters['errorinfo4']} as option2
+				from dv
+				where dv.area_dinge_total &gt; dv.area_jianzhu
+			)
+			union
+			(
+			select dv.dv_id as dv_id,
+				dv.dv_name as dv_name,
+				dv.bu_id as bu_id,
+				dv.area_rm as area_rm,
+				dv.area_comn_ocup as area_comn_ocup,
+				dv.area_ocup as area_ocup,
+				dv.area_gp as area_gp,
+				dv.area_dinge_total as area_dinge_total,
+				dv.area_jianzhu as area_jianzhu,
+				dv.area_rm_net as area_rm_net,
+				dv.area_comn_serv as area_comn_serv,
+				dv.count_rm as count_rm,
+				${parameters['errorinfo5']} as option2
+				from dv
+				where dv.count_rm &lt; '0'
+			)
+			union(
+			select dv.dv_id as dv_id,
+				dv.dv_name as dv_name,
+				dv.bu_id as bu_id,
+				dv.area_rm as area_rm,
+				dv.area_comn_ocup as area_comn_ocup,
+				dv.area_ocup as area_ocup,
+				dv.area_gp as area_gp,
+				dv.area_dinge_total as area_dinge_total,
+				dv.area_jianzhu as area_jianzhu,
+				dv.area_rm_net as area_rm_net,
+				dv.area_comn_serv as area_comn_serv,
+				dv.count_rm as count_rm,
+				${parameters['errorinfo6']} as option2
+				from dv
+				where dv.bu_id is null
+			)
+			)
+		</sql>
+		<table name="dv" role="main" />
+		<sortField name="dv_id" table="dv" ascending="true"/>
+		<field name="dv_id" table="dv" dataType="text" />
+		<field name="dv_name" table="dv" dataType="text" />
+		<field name="bu_id" table="dv" dataType="text" />
+		<field name="area_rm" table="dv" dataType="text" />
+		<field name="area_comn_ocup" table="dv" dataType="text" />
+		<field name="area_ocup" table="dv" dataType="text" />
+		<field name="area_gp" table="dv" dataType="text" />
+		<field name="area_dinge_total" table="dv" dataType="text" />
+		<field name="area_jianzhu" table="dv" dataType="text" />
+		<field name="area_rm_net" table="dv" dataType="text" />
+		<field name="area_comn_serv" table="dv" dataType="text" />
+		<field name="count_rm" table="dv" dataType="text" />
+		<field name="option2" table="dv" dataType="text">
+			<title translatable="true">ERRORTYPE</title>
+		</field>
+		
+		<parameter name="errorinfo1"  dataType="text" value=""/>
+        <parameter name="errorinfo2"  dataType="text" value=""/>
+        <parameter name="errorinfo3"  dataType="text" value=""/>
+        <parameter name="errorinfo4"  dataType="text" value=""/>
+        <parameter name="errorinfo5"  dataType="text" value=""/>
+        <parameter name="errorinfo6"  dataType="text" value=""/>
+	</dataSource>
+	<panel type="grid"  id="falseDataPanel" dataSource="falseDataSource" showOnLoad="true" layoutRegion="nested_center">
+        <title translatable="true">False Data List</title>
+        <action id="exportXLS">
+                    <title translatable="true">XLS</title>
+                    <command type="exportPanel" outputType="xls" panelId="falseDataPanel"/>
+        </action>
+        <field controlType="button">
+            <title translatable="true">Edit</title>
+            <command type="callFunction" functionName="checkFalseController.edit()"/>
+        </field>
+        <indexField name="dv_id" table="dv"/>
+        <field name="dv_id" table="dv" dataType="text" />
+        <field name="dv_name" table="dv" dataType="text" />
+		<field name="bu_id" table="dv" dataType="text" />
+		<field name="area_rm" table="dv" dataType="text" />
+		<field name="area_comn_ocup" table="dv" dataType="text" />
+		<field name="area_ocup" table="dv" dataType="text" />
+		<field name="area_gp" table="dv" dataType="text" />
+		<field name="area_dinge_total" table="dv" dataType="text" />
+		<field name="area_jianzhu" table="dv" dataType="text" />
+		<field name="area_rm_net" table="dv" dataType="text" />
+		<field name="area_comn_serv" table="dv" dataType="text" />
+		<field name="count_rm" table="dv" dataType="text" />
+		<field name="option2" table="dv" dataType="text" />
+		
+		
+    </panel>
+    <panel type="form" id="editPanel" dataSource="falseDataSource" showOnLoad="false" columns="2" layoutRegion="nested_east">
+        <title translatable="true">edit datiles</title>
+        <action id="save">
+            <title translatable="true">save</title>
+        </action>
+        <field name="dv_id" table="dv" dataType="text" />
+        <field name="dv_name" table="dv" dataType="text" />
+		<field name="bu_id" table="dv" dataType="text" />
+		<field name="area_rm" table="dv" dataType="text" />
+		<field name="area_comn_ocup" table="dv" dataType="text" />
+		<field name="area_ocup" table="dv" dataType="text" />
+		<field name="area_gp" table="dv" dataType="text" />
+		<field name="area_dinge_total" table="dv" dataType="text" />
+		<field name="area_jianzhu" table="dv" dataType="text" />
+		<field name="area_rm_net" table="dv" dataType="text" />
+		<field name="area_comn_serv" table="dv" dataType="text" />
+		<field name="count_rm" table="dv" dataType="text" />
+    </panel>
+    <js file="asc-bj-usms-data-check-sch-dp.js"/>
+</view>

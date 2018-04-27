@@ -1,0 +1,525 @@
+<view version="2.0" type="dashboard">
+    <message name="total" translatable="true">Total</message>
+    <message name="rmcatGridTitleDv" translatable="true">Room Category : {0}</message>
+	<message name="rmcatGridTitle" translatable="true">Room Category List</message>
+	<message name="rmListDialogTitle" translatable="true">Room List : {0}</message>
+    
+    <layout id="main">
+        <west initialSize="20%" split="true"/>
+        <center />
+    </layout>
+    <layout id="nested_west" containingLayout="main" region="west">
+        <north id="teachDvPosition" initialSize="60%" split="true"/>
+        <center id="manageDvPosition"/>
+    </layout>
+	<layout id="nested_center" containingLayout="main" region="center">
+        <north id="rmcatPosition" initialSize="25%" split="true"/>
+        <center id="charPosition"/>
+    </layout>
+    
+    <dataSource id="ds_dash_leader_grid_dv">
+        <table name="dv" role="main"/>
+        
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="count_em"/>
+        <field table="dv" name="count_student"/>
+        <field table="dv" name="area_rm">
+            <title translatable="true">Total Usable Area</title>
+        </field>
+        
+        <field table="dv" name="area_jianzhu"/>
+        <field table="dv" name="count_em_adjust"/>
+        <field table="dv" name="area_avg_em"/>
+        <sortField name="area_rm" table="dv" ascending="false"/>
+        <parameter name="buClassRes" dataType="text" value=""/>
+        <restriction type="sql" sql="dv.bu_id in (select bu_id from bu where bu_class in (${parameters['buClassRes']}))"/>
+    </dataSource>
+    
+    <!-- The Teaching Divisions Summary Data -->
+    <panel type="grid" controlType="reportGrid" id="dashLeader_teachDvGrid" dataSource="ds_dash_leader_grid_dv" layoutRegion="teachDvPosition">
+    	<title translatable="true">Teaching Division</title>
+		<action id="showWholeSchoolRmcat">
+            <title>WholeSchoolRmcat</title>
+        </action>
+        <sortField name="area_rm" table="dv" ascending="false"/>
+        <field table="dv" name="dv_id" controlType="link">
+            <title translatable="true">Jiao Xue Ke Yan Dan Wei</title>
+            <command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="area_rm" controlType="link">
+            <title translatable="true">Total Usable Area</title>
+			<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="area_jianzhu" controlType="link">
+            <title translatable="true">Total Structure Area</title>
+			<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="count_em" controlType="link">
+        	<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="count_em_adjust" controlType="link">
+        	<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="area_avg_em" controlType="link">
+        	<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="count_student" controlType="link">
+        	<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+    </panel>
+    
+    <!-- The Management Divisions Summary Data -->
+    <panel type="grid" controlType="reportGrid" id="dashLeader_manageDvGrid" dataSource="ds_dash_leader_grid_dv" layoutRegion="manageDvPosition">
+    	<title translatable="true">Management Division</title>
+        <sortField name="area_rm" table="dv" ascending="false"/>
+        <field table="dv" name="dv_id" controlType="link">
+            <title translatable="true">Dang Zheng Guan Li Dan Wei</title>
+            <command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="area_rm" controlType="link">
+            <title translatable="true">Total Usable Area</title>
+            <command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="area_jianzhu" controlType="link">
+            <title translatable="true">Total Structure Area</title>
+            <command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="count_em" controlType="link">
+            <command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+		<field table="dv" name="count_em_adjust" controlType="link">
+        	<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+        <field table="dv" name="area_avg_em" controlType="link">
+        	<command type="callFunction" functionName="onRefreshDvRmcatPanel"/>
+        </field>
+    </panel>
+    
+	<dataSource id="ds_dialog-rmcat-sum" type="grouping">
+        <table name="rm" role="main"/>
+        <field table="rm" name="rm_cat" groupBy="true"/>
+        <field table="rm" name="rm_type" groupBy="true"/>
+        <field table="rm" name="count_rm" formula="count" baseField="rm.rm_id" dataType="number" size="6" decimals="0">
+            <title translatable="true">Room Count</title>
+        </field>
+        <field table="rm" name="area_shiyong" formula="sum" baseField="rm.area" dataType="number" size="6" decimals="2">
+            <title translatable="true">ShiYongMianJi</title>
+        </field>
+        <parameter name="rmRes" dataType="verbatim" value=" 1=1 "/>
+        <restriction type="sql" sql="${parameters['rmRes']}"/>
+    </dataSource>
+    
+    <panel type="grid" id="dialogRmcatGridReport" controlType="reportGrid" dataSource="ds_dialog-rmcat-sum" layoutRegion="rmcatPosition">
+        <title translatable="true">Room Category List</title>
+        <action id="export:XLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="dialogRmcatGridReport"/>
+        </action>
+        <sortField name="rm_type" table="rm" ascending="true"/>
+        
+        <field table="rm" name="rm_cat" controlType="link">
+            <command type="callFunction" functionName="onShowDialogRmListGridByDvRmcat"/>
+        </field>
+        <field table="rm" name="rm_type" controlType="link">
+            <command type="callFunction" functionName="onShowDialogRmListGridByDvRmtype"/>
+        </field>
+        <field name="count_rm" dataType="number" size="6" decimals="0" controlType="link">
+            <title translatable="true">Room Count</title>
+            <command type="callFunction" functionName="onShowDialogRmListGridByDvRmtype"/>
+        </field>
+        <field name="area_shiyong" dataType="number" size="6" decimals="2" controlType="link">
+            <title translatable="true">ShiYongMianJi</title>
+            <command type="callFunction" functionName="onShowDialogRmListGridByDvRmtype"/>
+        </field>
+    </panel>
+	
+	<dataSource id="ds_dialog-rm-by-rmcat">
+        <table name="rm" role="main"/>
+        
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="dv_id"/>
+        <field table="rm" name="dp_id"/>
+    </dataSource>
+    
+    <panel type="grid" id="dialogRmListGrid" dataSource="ds_dialog-rm-by-rmcat" showOnLoad="false">
+        <title translatable="true">Room List</title>
+        <action id="export:XLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="dialogRmListGrid"/>
+        </action>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="dv_id"/>
+        <field table="rm" name="dp_id"/>
+    </panel>
+	
+    <!--    按房屋类别统计建筑物面积 -->
+    <dataSource id="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat">
+        <table name="rmcat" role="main"/>
+        
+        <field table="rmcat" name="rm_cat"/>
+        
+        <field table="rmcat" name="name" hidden="true">
+            <title translatable="true">Lei Bie Dai Ma</title>
+        </field>
+        
+        <field table="rmcat" name="area">
+            <title translatable="true">Total Usable Area</title>
+        </field>
+        
+        <field table="rmcat" name="area_jianzhu">
+            <title translatable="true">Total Structure Area</title>
+        </field>
+        <sortField name="name" table="rmcat" ascending="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmtype" type="grouping">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        
+        <field table="rm" name="rm_cat" groupBy="true"/>
+        <field table="bl" name="gongtanlv" groupBy="true" hidden="true"/>
+        <field table="bl" name="bl_id" groupBy="true"/>
+        <field name="total_area_shiyong" formula="SUM" dataType="number" baseField="rm.area" decimals="2"/>
+        <field name="total_area_jianzhu" dataType="number" decimals="2">
+            <title translatable="true">Total Structure Area</title>
+            <sql dialect="generic">
+                CASE WHEN bl.gongtanlv =1 THEN 0 ELSE sum(rm.area)/(1-bl.gongtanlv) END
+            </sql>
+        </field>
+        <sortField name="bl_id" table="bl" ascending="true"/>
+    </dataSource>
+    
+    <panel id="abScRmtypebyRmcatChartPie"
+     type="chart"
+     controlType="pieChart"
+     dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat"
+     showLegendOnLoad="true"
+     showLegendAsPopUp="false"
+     legendLocation="right"
+     showDataTips="true"
+     backgroundColor="0xc6e2ff"
+     fillType="solid"
+     layoutRegion="charPosition">
+        <title translatable="true">By RmCat Statistics Building Area</title>
+        <action id="rmCatReport">
+            <title>report</title>
+        </action>
+        <event type="onClickItem">
+            <command type="callFunction" functionName="showDetail"/>
+        </event>
+        <groupingAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat" table="rmcat" field="rm_cat" labelRotation="45">
+            <title translatable="true">Room Category</title>
+        </groupingAxis>
+        <dataAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat" table="rmcat" field="area_jianzhu" labelPosition="callout">
+            <title translatable="true">JianZhuMianJi</title>
+        </dataAxis>
+    </panel>
+    
+    <panel type="grid" id="rmCatReportGrid" dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat" showOnLoad="false">
+        <title translatable="true">University All Room Category</title>
+        <action id="exportXLS">
+            <title translatable="true">export xls</title>
+            <command type="exportPanel" outputType="xls" panelId="rmCatReportGrid"/>
+        </action>
+        <action id="exportDOCX">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="rmCatReportGrid"/>
+        </action>
+    </panel>
+    
+    <panel type="grid" id="rmcat_chartGrid" dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmtype" showOnLoad="false">
+        <title translatable="true">Room Category</title>
+        <action id="exportXLS">
+            <title translatable="true">export xls</title>
+            <command type="exportPanel" outputType="xls" panelId="rmcat_chartGrid"/>
+        </action>
+        <action id="exportDOCX">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="rmcat_chartGrid"/>
+        </action>
+    </panel>
+    
+    <!--     按年代统计建筑屋面积 -->
+    <dataSource id="ascBjBlAreaByYearDs">
+        <sql dialect="generic">
+            select niandai,sum(area_building_manual) ${sql.as} sumArea
+            from (select date_bl,area_building_manual,
+            (case when date_bl &lt;= TO_DATE('1980/01/01','YYYY/MM/DD') then ${parameters['less80']}
+            when date_bl &gt;TO_DATE('1980/01/01','YYYY/MM/DD')  and date_bl &lt;=TO_DATE('1989/12/31','YYYY/MM/DD') then ${parameters['80to89']}
+            when date_bl &gt;TO_DATE('1990/01/01','YYYY/MM/DD')  and date_bl &lt;=TO_DATE('1999/12/31','YYYY/MM/DD') then ${parameters['90to99']}
+            when date_bl &gt;TO_DATE('2000/01/01','YYYY/MM/DD')  and date_bl &lt;=TO_DATE('2009/12/31','YYYY/MM/DD') then ${parameters['00to09']}
+            when date_bl &gt;TO_DATE('2010/01/01','YYYY/MM/DD')   then ${parameters['more2010']}
+            else  ${parameters['nullBLDate']} end) ${sql.as} niandai
+            from bl) group by niandai
+        </sql>
+        <table name="bl" role="main"/>
+        <parameter name="less80" dataType="text" value=""/>
+        <parameter name="80to89" dataType="text" value=""/>
+        <parameter name="90to99" dataType="text" value=""/>
+        <parameter name="00to09" dataType="text" value=""/>
+        <parameter name="more2010" dataType="text" value=""/>
+        <parameter name="nullBLDate" dataType="text" value=""/>
+        <field table="bl" name="niandai" dataType="text"/>
+        <field table="bl" name="sumArea" dataType="number" decimals="2"/>
+    </dataSource>
+    
+    <dataSource id="dashLeader_bl_ds">
+        <table name="bl" role="main"/>
+        <field table="bl" name="date_bl"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="area_usable"/>
+        <field table="bl" name="area_building_manual"/>
+    </dataSource>
+    
+    <panel id="abScDatebyRmcatChartPie"
+     type="chart"
+     controlType="pieChart"
+     dataSource="ascBjBlAreaByYearDs"
+     showLegendOnLoad="true"
+     showLegendAsPopUp="false"
+     legendLocation="right"
+     showDataTips="true"
+     backgroundColor="0xc6e2ff"
+     fillType="solid"
+     layoutRegion="charPosition">
+        <title translatable="true">By Date Statistics Building Area</title>
+        <action id="exportIamge">
+            <title>Report Image</title>
+            <command type="exportPanel" outputType="docx" panelId="abScDatebyRmcatChartPie"/>
+        </action>
+        <action id="rmCatReport">
+            <title>report</title>
+        </action>
+        <event type="onClickItem">
+            <command type="callFunction" functionName="showDateDetail"/>
+        </event>
+        <groupingAxis dataSource="ascBjBlAreaByYearDs" table="bl" field="niandai" labelRotation="45">
+            <title translatable="true">date</title>
+        </groupingAxis>
+        <dataAxis dataSource="ascBjBlAreaByYearDs" table="bl" field="sumArea" labelPosition="callout">
+            <title translatable="true">JianZhuMianJi</title>
+        </dataAxis>
+    </panel>
+    
+    <panel type="grid" id="dateReportGrid" dataSource="dashLeader_bl_ds" showOnLoad="false">
+        <title translatable="true">University All date</title>
+        <action id="exportXLS">
+            <title translatable="true">export xls</title>
+            <command type="exportPanel" outputType="xls" panelId="dateReportGrid"/>
+        </action>
+        <action id="exportDOCX">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="dateReportGrid"/>
+        </action>
+    </panel>
+    
+    <panel type="grid" id="date_chartGrid" dataSource="dashLeader_bl_ds" showOnLoad="false">
+        <title translatable="true">date</title>
+        <action id="exportXLS">
+            <title translatable="true">export xls</title>
+            <command type="exportPanel" outputType="xls" panelId="date_chartGrid"/>
+        </action>
+        <action id="exportDOCX">
+            <title>DOC</title>
+            <command type="exportPanel" outputType="docx" panelId="date_chartGrid"/>
+        </action>
+    </panel>
+    
+    <!-- 全校人均使用面积分析 -->
+    <dataSource id="caculatePerNumDs">
+        <sql dialect="generic">
+            select buId,perArea from
+            (select  dv.bu_id ${sql.as} buId,sum(em.area_rm)/count(em.area_rm) ${sql.as} perArea from em,dv where em.dv_id=dv.dv_id group by dv.bu_id
+            union
+            (select ${parameters['quanxiao']},sum(em.area_rm)/count(em.area_rm)  from em )) where buId=${parameters['quanxiao']}
+            union all
+            
+            ( select * from
+            (select  dv.bu_id as buId,sum(em.area_rm)/count(em.area_rm) as perArea from em,dv where em.dv_id=dv.dv_id group by dv.bu_id
+            union
+            (select ${parameters['quanxiao']},sum(em.area_rm)/count(em.area_rm)  from em )) where buId &lt;&gt; ${parameters['quanxiao']})
+        </sql>
+        <parameter name="quanxiao" dataType="text" value=""/>
+        
+        <table name="em" role="main"/>
+        <field table="em" name="buId" dataType="text"/>
+        <field table="em" name="perArea" dataType="number" decimals="2"/>
+        
+    </dataSource>
+    <!-- 根据单位大类统计人均面积 -->
+    <panel id="caculatePerNumChart"
+     type="chart"
+     controlType="columnChart"
+     dataSource="caculatePerNumDs"
+     showLegendOnLoad="true"
+     showLegendAsPopUp="false"
+     legendLocation="right"
+     showDataTips="true"
+     backgroundColor="0xc6e2ff"
+     fillColor="0xff0000"
+     fillType="solid"
+     layoutRegion="charPosition">
+        <title translatable="true">Per Area By BUID</title>
+        <event type="onClickItem">
+            <command type="callFunction" functionName="selectPerAreaByBu"/>
+        </event>
+        <action id="exportIamge">
+            <title>Report Image</title>
+            <command type="exportPanel" outputType="docx" panelId="caculatePerNumChart"/>
+        </action>
+        
+        <groupingAxis dataSource="caculatePerNumDs" table="em" field="buId" showLabel="true" labelRotation="45">
+            <title translatable="true">Per Area By BUID</title>
+        </groupingAxis>
+        <dataAxis dataSource="caculatePerNumDs" table="em" field="perArea" showLabel="true" labelPosition="callout">
+            <title translatable="true">PerArea</title>
+        </dataAxis>
+    </panel>
+    
+    <!-- 根据选择的大类弹出相应的图形和grid -->
+    <!-- 此大类下的各单位人均使用面积图形 -->
+    <dataSource id="perAreaBySelectBuDs">
+        <sql dialect="generic">
+            (select dv_id,perarea from renjun where dv_id=${parameters['quanxiao']})
+            union all
+            (select dv_id,perarea from renjun where dv_id &lt;&gt; ${parameters['quanxiao']} and dv_id &lt;&gt; ${parameters['weifenpei']} and dv_id &lt;&gt; ${parameters['xuexiao']} and dv_id in (select dv_id from dv where bu_id=${parameters['buId']}))
+        </sql>
+        <parameter name="quanxiao" dataType="text" value=""/>
+        <parameter name="weifenpei" dataType="text" value=""/>
+        <parameter name="xuexiao" dataType="text" value=""/>
+        <parameter name="buId" dataType="text" value=""/>
+        
+        <table name="renjun" role="main"/>
+        <field table="renjun" name="dv_id"/>
+        <field table="renjun" name="perarea"/>
+    </dataSource>
+    <panel id="perAreaBySelectBuPanel"
+     type="chart"
+     controlType="columnChart"
+     dataSource="perAreaBySelectBuDs"
+     showLegendOnLoad="true"
+     showLegendAsPopUp="false"
+     legendLocation="right"
+     showDataTips="true"
+     backgroundColor="0xc6e2ff"
+     fillType="solid"
+     showOnLoad="false">
+        <title translatable="true">perAreaBySelectBu</title>
+        <action id="exportIamge">
+            <title>Report Image</title>
+            <command type="exportPanel" outputType="docx" panelId="perAreaBySelectBuPanel"/>
+        </action>
+        <action id="rmCatReport">
+            <title>report</title>
+            <command type="callFunction" functionName="perAreaBySelectBuMethod"/>
+        </action>
+        <groupingAxis dataSource="perAreaBySelectBuDs" table="renjun" field="dv_id" showLabel="true" labelRotation="45">
+            <title translatable="true">Dv RenJun</title>
+        </groupingAxis>
+        <dataAxis dataSource="perAreaBySelectBuDs" table="renjun" field="perarea" showLabel="true" labelPosition="callout">
+            <title translatable="true">PerArea</title>
+        </dataAxis>
+    </panel>
+    <!-- 各大类下单位人均使用面积报表 -->
+    <dataSource id="perAreaBySelectDvByBuDs">
+        <sql dialect="generic">
+            (select * from renjun where dv_id=${parameters['quanxiao']})
+            union all
+            (select * from renjun where dv_id &lt;&gt; ${parameters['quanxiao']} and dv_id &lt;&gt; ${parameters['weifenpei']} and dv_id &lt;&gt; ${parameters['xuexiao']} and dv_id in (select dv_id from dv where bu_id=${parameters['buId']}))
+        </sql>
+        <parameter name="quanxiao" dataType="text" value=""/>
+        <parameter name="weifenpei" dataType="text" value=""/>
+        <parameter name="xuexiao" dataType="text" value=""/>
+        <parameter name="buId" dataType="text" value=""/>
+        
+        <table name="renjun" role="main"/>
+        <field table="renjun" name="dv_id"/>
+        <field table="renjun" name="area_rm" dataType="number" decimals="2"/>
+        <field table="renjun" name="count_em" dataType="number" decimals="0"/>
+        <field table="renjun" name="perarea" dataType="number" decimals="2"/>
+        <field table="renjun" name="teacher" dataType="number" decimals="2"/>
+        <field table="renjun" name="ganbu" dataType="number" decimals="2"/>
+        <field table="renjun" name="rencai" dataType="number" decimals="2"/>
+        <field table="renjun" name="gongren" dataType="number" decimals="2"/>
+        <field table="renjun" name="fudaoyuan" dataType="number" decimals="2"/>
+        <field table="renjun" name="shiye" dataType="number" decimals="2"/>
+        <field table="renjun" name="boshihou" dataType="number" decimals="2"/>
+    </dataSource>
+    <panel type="grid" id="gridPanelByBu" dataSource="perAreaBySelectDvByBuDs" showOnLoad="false">
+        <title translatable="true">perAreaBySelectDvByBu</title>
+        <action id="exportDOCX">
+            <title>Report Grid</title>
+            <command type="exportPanel" outputType="xls" panelId="gridPanelByBu"/>
+        </action>
+        <field table="renjun" name="dv_id"/>
+        <field table="renjun" name="area_rm" dataType="number" decimals="2"/>
+        <field table="renjun" name="count_em" dataType="number" decimals="0"/>
+        <field table="renjun" name="perarea" dataType="number" decimals="2"/>
+        <field table="renjun" name="teacher" dataType="number" decimals="2"/>
+        <field table="renjun" name="ganbu" dataType="number" decimals="2"/>
+        <field table="renjun" name="rencai" dataType="number" decimals="2"/>
+        <field table="renjun" name="gongren" dataType="number" decimals="2"/>
+        <field table="renjun" name="fudaoyuan" dataType="number" decimals="2"/>
+        <field table="renjun" name="shiye" dataType="number" decimals="2"/>
+        <field table="renjun" name="boshihou" dataType="number" decimals="2"/>
+    </panel>
+    
+    <!-- 全校所有单位的人均使用面积统计 -->
+    <dataSource id="perAreaBySelectDvByBuAllSchoolDs">
+        <sql dialect="generic">
+            (select * from renjun where dv_id=${parameters['quanxiao']})
+            union all
+            (select * from renjun where dv_id &lt;&gt; ${parameters['quanxiao']} and dv_id &lt;&gt; ${parameters['weifenpei']} and dv_id &lt;&gt; ${parameters['xuexiao']})
+        </sql>
+        <parameter name="quanxiao" dataType="text" value=""/>
+        <parameter name="weifenpei" dataType="text" value=""/>
+        <parameter name="xuexiao" dataType="text" value=""/>
+        <parameter name="buId" dataType="text" value=""/>
+        
+        <table name="renjun" role="main"/>
+        <field table="renjun" name="dv_id"/>
+        <field table="renjun" name="area_rm" dataType="number" decimals="2"/>
+        <field table="renjun" name="count_em" dataType="number" decimals="0"/>
+        <field table="renjun" name="perarea" dataType="number" decimals="2"/>
+        <field table="renjun" name="teacher" dataType="number" decimals="2"/>
+        <field table="renjun" name="ganbu" dataType="number" decimals="2"/>
+        <field table="renjun" name="rencai" dataType="number" decimals="2"/>
+        <field table="renjun" name="gongren" dataType="number" decimals="2"/>
+        <field table="renjun" name="fudaoyuan" dataType="number" decimals="2"/>
+        <field table="renjun" name="shiye" dataType="number" decimals="2"/>
+        <field table="renjun" name="boshihou" dataType="number" decimals="2"/>
+    </dataSource>
+    <panel type="grid" id="gridPanelByBuAllSchool" dataSource="perAreaBySelectDvByBuAllSchoolDs" showOnLoad="false">
+        <title translatable="true">perAreaBySelectDvByBuAllSchool</title>
+        <action id="exportDOCX">
+            <title>Report Grid</title>
+            <command type="exportPanel" outputType="xls" panelId="gridPanelByBuAllSchool"/>
+        </action>
+        <field table="renjun" name="dv_id"/>
+        <field table="renjun" name="area_rm" dataType="number" decimals="2"/>
+        <field table="renjun" name="count_em" dataType="number" decimals="0"/>
+        <field table="renjun" name="perarea" dataType="number" decimals="2"/>
+        <field table="renjun" name="teacher" dataType="number" decimals="2"/>
+        <field table="renjun" name="ganbu" dataType="number" decimals="2"/>
+        <field table="renjun" name="rencai" dataType="number" decimals="2"/>
+        <field table="renjun" name="gongren" dataType="number" decimals="2"/>
+        <field table="renjun" name="fudaoyuan" dataType="number" decimals="2"/>
+        <field table="renjun" name="shiye" dataType="number" decimals="2"/>
+        <field table="renjun" name="boshihou" dataType="number" decimals="2"/>
+    </panel>
+	
+    <js file="asc-bj-usms-dash-leader-bl.js"/>
+	<js file="asc-bj-usms-constant.js"/>
+</view>

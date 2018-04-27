@@ -1,0 +1,57 @@
+<view version="2.0">
+	<dataSource id="scZzfCardRmDs" distinct="true">
+        <table name="sc_zzfcard" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="rm_id"/>
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="sc_zzfcard" name="em_name"/>
+        <field table="sc_zzfcard" name="dv_name"/>
+        <field table="sc_zzfcard" name="zhiw_id"/>
+        <field table="sc_zzfcard" name="zhic_id"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="bl" name="name"/>
+        <field name="xiangchatianshu"  dataType="number" size="6" decimals="0">
+            <sql dialect="generic">
+            (sc_zzfcard.date_checkout_ought-${sql.currentDate})
+            </sql>
+        </field>    
+        <sortField name="date_checkout_ought" table="sc_zzfcard" ascending="true"/>
+    <restriction type="sql" sql=" ((sc_zzfcard.date_checkout_ought-${sql.currentDate}) &lt;= 60 and
+    (sc_zzfcard.date_checkout_ought-${sql.currentDate}) &gt;= 0
+     and (sc_zzfcard.card_status='yrz' or sc_zzfcard.card_status='yxq')) 
+     or ((sc_zzfcard.date_checkout_ought-${sql.currentDate}) &lt; 0 and (sc_zzfcard.card_status='yrz' or sc_zzfcard.card_status='yxq')) or 
+     ((sc_zzfcard.date_checkout_ought-${sql.currentDate}) &gt; 60 and (sc_zzfcard.card_status='yrz' or sc_zzfcard.card_status='yxq'))"/>
+    </dataSource>
+	<panel type="html" id="color2" layoutRegion="collorPanel">
+        <html>
+        <table>
+            <tr>
+                <td style="height:25px;width:100px;background-color:#00CC66"></td><td width="200"><span id="idd4"></span></td><td></td>
+                <td style="height:25px;width:100px;background-color:#00CC66"></td><td width="200"><span id="idd5"></span></td><td></td>
+                <td style="height:25px;width:100px;background-color:#00CC66"></td><td width="200"><span id="idd6"></span></td><td></td>
+            </tr>
+        </table>
+        </html>
+	</panel>
+	<panel type="grid" id="abScDefDeAreaGrid" dataSource="scZzfCardRmDs">
+		<title> </title>
+        <field name="xiangchatianshu" dataType="number" size="6" decimals="0" hidden="true"/>
+        <field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="rm_id" />
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="sc_zzfcard" name="em_name"/>
+        <field table="sc_zzfcard" name="dv_name"/>
+        <field table="sc_zzfcard" name="zhiw_id"/>
+        <field table="sc_zzfcard" name="zhic_id"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <sortField table="sc_zzfcard" name="bl_id"/>
+        <indexField table="sc_zzfcard" name="bl_id"/>
+    </panel>
+	<js file="asc-bj-usms-house-alert-board-card.js"/>
+</view>

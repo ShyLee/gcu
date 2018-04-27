@@ -1,0 +1,38 @@
+<view version="2.0">
+	<title translatable="true">jxky eq sj1</title>
+	<dataSource id="eq_DS">
+		<sql dialect="generic">
+		select sc_school.sch_code as schname, eq.eq_id,eq.csi_id,eq.eq_name
+		,eq.eq_type,eq.eq_std,eq.source,eq.ctry_id,eq.price,eq.date_purchased
+		,eq.sch_status,eq.type_use,eq.dv_code,eq.dv_id from eq ,sc_school
+		</sql>
+		<table name="eq" role="main"/>
+		<field name="schname" dataType="text">
+			<title translatable="true">School</title>
+		</field>
+		<field table="eq" name="eq_id" dataType="text"/>
+		<field table="eq" name="csi_id" dataType="text"/>
+		<field table="eq" name="eq_name" dataType="text"/>
+		<field table="eq" name="eq_type" dataType="text"/>
+		<field table="eq" name="eq_std" dataType="text"/>	
+		<field table="eq" name="source" dataType="text"/>
+		<field table="eq" name="ctry_id" dataType="text"/>
+		<field table="eq" name="price" dataType="number" decimals="2"/>
+		<field table="eq" name="date_purchased" dataType="date"/>
+		<field table="eq" name="sch_status" dataType="text"/>
+		<field table="eq" name="type_use" dataType="text"/>
+		<field table="eq" name="dv_code" dataType="text"/>
+		<field table="eq" name="dv_id" dataType="text"/>
+		<restriction type="sql" sql="eq.price &gt;= 800 and eq.dv_id in (select dv.dv_id from dv where dv.bu_id = '${parameters['JXKY']}') and eq.type_use in( '1','2') and SUBSTR(eq.csi_id,1,2) not in ('01','02','11','13','15','16') "/>
+		<parameter name="JXKY" dataType="verbatim" value="JXKY"/>
+
+	</dataSource>
+	<panel type="grid" id="gridPanel" dataSource="eq_DS" >
+		<title translatable="true">SJ1</title>
+		<action id="exportXLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="gridPanel"/>
+		</action>
+	</panel>
+	<js file="asc-bj-usms-eq-reported-SJ1.js"/>
+</view>

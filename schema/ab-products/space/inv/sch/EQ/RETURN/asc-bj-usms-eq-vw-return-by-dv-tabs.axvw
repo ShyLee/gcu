@@ -1,0 +1,11 @@
+<view version="2.0">
+	<title>Return View</title>
+	<tabs workflow="free" id="returnTabs" tabRefreshPolicy="refreshOnSelect">
+		<tab name="eqViewTab" file="asc-bj-usms-eq-vw-return-by-dv.axvw" selected="true">
+		    <title translatable="true">Eq View</title>
+	    </tab>
+		<tab name="eqAttachViewTab" file="asc-bj-usms-eq-attach-vw-return-by-dv.axvw">
+		    <title translatable="true">Attach View</title>
+	    </tab>
+	</tabs>
+</view>

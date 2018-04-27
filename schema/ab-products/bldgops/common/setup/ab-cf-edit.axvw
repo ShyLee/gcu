@@ -1,0 +1,99 @@
+
+<!--ViewDefTemplate type="edit" pattern="ab-viewdef-editform-drilldown" -->
+<view version="2.0">
+    <designInfo type="edit" pattern="ab-viewdef-editform-drilldown" isAlterable="false"/>
+    <layout file="pkey-tree.axvw"/>
+    <title translatable="true">Enter Craftspersons Available for Work</title>
+    
+	<dataSource id="craftspersonsDS">
+        <table name="cf" role="main"/>
+		       <field name="cf_id" table="cf"/>
+	            <field name="name" table="cf"/>
+	            <field name="tr_id" table="cf"/>
+  	            <field name="work_team_id" table="cf"/>
+	            <field name="is_supervisor" table="cf"/>
+	            <field name="is_planner" table="cf"/>
+	            <field name="is_estimator" table="cf"/>
+  	            <field name="assign_work" table="cf"/>  	            
+	            <field name="position" table="cf"/>
+	            <field name="std_hours_avail" table="cf"/>
+	            <field name="status" table="cf"/>
+	            <field name="in_house" table="cf"/>
+	            <field name="reports_to" table="cf"/>
+	            <field name="skills" table="cf"/>
+	            <field name="rate_hourly" table="cf"/>
+	            <field name="rate_over" table="cf"/>
+	            <field name="rate_double" table="cf"/>
+	            <field name="date_ins_wc_exp" table="cf"/>
+	            <field name="date_contract_exp" table="cf"/>
+	            <field name="date_ins_lia_exp" table="cf"/>
+	            <field name="date_ins_auto_exp" table="cf"/>
+	            <field name="email" table="cf"/>
+    </dataSource>
+    
+    <panel type="grid" id="treePanel" showOnLoad="true" selectionEnabled="true" dataSource="craftspersonsDS" region="west">
+        <title translatable="true">Craftspersons</title>
+		 <sortField table="cf" name="cf_id" ascending="true"/>
+        <action id="addNew">
+            <title translatable="true">Add New</title>
+        <command type="showPanel" panelId="detailsPanel" newRecord="true"/>
+        </action>
+        <field name="cf_id" table="cf" controlType="link">
+      <command type="showPanel" panelId="detailsPanel"/>
+        </field>
+        <field name="work_team_id" table="cf" controlType="link">
+           <command type="showPanel" panelId="detailsPanel"/>
+        </field>
+		 <field name="tr_id" table="cf" controlType="link">
+           <command type="showPanel" panelId="detailsPanel"/>
+		    
+        </field>
+		
+    </panel>
+    
+    
+    <panel type="form" id="detailsPanel" showOnLoad="false" columns="2" dataSource="craftspersonsDS" region="center">
+        <title translatable="true">Craftspersons</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="showPanel" panelId="treePanel" applyParentRestriction="false"/>
+        </action>
+        <action id="delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="detailsPanel" show="false"/>
+            <command type="showPanel" panelId="treePanel"  applyParentRestriction="false"/>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="showPanel" panelId="detailsPanel" show="false"/>
+        </action>
+        
+            <field name="cf_id" table="cf"/>
+            <field name="name" table="cf"/>
+            <field name="email" table="cf"/>
+            <field/>
+            <field name="tr_id" table="cf"/>
+            <field name="work_team_id" table="cf"/>
+            <field name="is_supervisor" table="cf"/>
+            <field name="is_planner" table="cf"/>
+            <field name="is_estimator" table="cf"/>
+            <field name="assign_work" table="cf"/>  
+            <field name="position" table="cf"/>
+            <field name="std_hours_avail" table="cf"/>
+            <field name="status" table="cf"/>
+            <field name="in_house" table="cf"/>
+            <field name="reports_to" table="cf"/>
+            <field name="skills" table="cf" colspan="2"/>
+            <field name="rate_hourly" table="cf"/>
+            <field name="rate_over" table="cf"/>
+            <field name="rate_double" table="cf"/>
+            <field/>
+            <field name="date_ins_wc_exp" table="cf"/>
+            <field name="date_contract_exp" table="cf"/>
+	        <field name="date_ins_lia_exp" table="cf"/>
+	        <field name="date_ins_auto_exp" table="cf"/>
+    </panel>
+</view>
+

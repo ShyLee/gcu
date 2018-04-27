@@ -1,0 +1,140 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="10%" split="true"/>
+        <center id="rmcatPosition"/>
+    </layout>
+    
+	<!-- datasource for division summary data report -->
+    <dataSource id="ds_asc-bj-usms-overall-dp-occu-whole_grid_dv">
+		<table name="dv" role="main" />
+		<table name="bu" role="standard" />
+		
+		<field table="dv" name="bu_id" >
+			<title translatable="true">Division Type</title>
+        </field>
+		<field table="bu" name="name"/>
+<!-- 		<field table="dv" name="dv_code"/> -->
+		<field table="dv" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		
+		<field table="dv" name="count_em" showTotals="true">
+			<title translatable="true">Employee Count</title>
+        </field>
+		
+		<field table="dv" name="count_rm" showTotals="true">
+			<title translatable="true">Room Count</title>
+        </field>
+		
+		<field table="dv" name="area_jianzhu" showTotals="true">
+			<title translatable="true">Total Structure Area</title>
+		</field>
+		
+		<field table="dv" name="area_rm" showTotals="true">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		
+		<!-- the following fields setting in the js, the data from the ds-->
+		<field table="dv" name="area_comn_ocup" showTotals="true">
+			<title translatable="true">Total Office Area</title>
+		</field>
+		<field table="dv" name="area_conference" showTotals="true">
+			<title translatable="true">Total Meeting Area</title>
+		</field>
+		<field table="dv" name="area_comn_nocup" showTotals="true">
+			<title translatable="true">Total Teacher Office Area</title>
+		</field>
+		
+		<restriction type="sql" sql="not dv.dv_id in (${parameters['xuexiaoBuDv']},${parameters['wuDv']})"/>
+		<parameter name="xuexiaoBuDv" dataType="text" value=""/>
+		<parameter name="wuDv" dataType="text" value=""/>
+	</dataSource> 
+	
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-dp-occu-whole_basic_school">
+    	<table name="sc_school" role="main"/>
+		
+		<!--basic info-->
+		<field table="sc_school" name="sch_name"/>
+		
+    </dataSource>
+	
+	<!-- base university info panel-->
+    <panel type="form" id="ascBjUsmsOverallDeptOccuWhole_siteBasicGrid" dataSource="ds_asc-bj-usms-overall-dp-occu-whole_basic_school" columns="3"  layoutRegion="sitePosition">
+    	<action id="fixedReport">
+			<title translatable="true">GuDingBaoBiao</title>
+		</action>
+		<field table="sc_school" name="sch_name" readOnly="true">
+			<title translatable="true">Xiao Qu Name</title>
+		</field>
+		<field>
+			<title>Total Structure Area</title>
+			<html>
+					<div id="area_jianzhu"></div>
+			</html>
+		</field>
+		<field>
+			<title>Total Usable Area</title>
+			<html>
+				<div id="area_shiyong"></div>
+			</html>
+		</field>		
+    </panel>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallDeptOccuWhole_dvGrid" dataSource="ds_asc-bj-usms-overall-dp-occu-whole_grid_dv" layoutRegion="rmcatPosition">
+    	<title translatable="true">Xue Xiao Suo You Shi Yong Dan Wei</title>
+		<sortField name="bu_id" table="dv" ascending="true" />
+		<sortField name="dv_id" table="dv" ascending="true" />
+		
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallDeptOccuWhole_dvGrid"/>
+		</action>
+		
+<!-- 		<field table="dv" name="bu_id" > -->
+<!-- 			<title translatable="true">Division Type</title> -->
+<!--         </field> -->
+		<field table="bu" name="name"/>
+		<field table="dv" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+<!-- 		<field table="dv" name="dv_code" > -->
+<!-- 			<title translatable="true">Division Code</title> -->
+<!--         </field> -->
+<!-- 		<field table="dv" name="dv_id" > -->
+<!-- 			<title translatable="true">Division Name</title> -->
+<!--         </field> -->
+		<field table="dv" name="count_em" showTotals="true">
+			<title translatable="true">Employee Count</title>
+        </field>
+		
+		<field table="dv" name="count_rm" showTotals="true">
+			<title translatable="true">Room Count</title>
+        </field>
+		
+		<field table="dv" name="area_jianzhu" showTotals="true">
+			<title translatable="true">Total Structure Area</title>
+		</field>
+		
+		<field table="dv" name="area_rm" showTotals="true">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		
+		<!-- the following fields setting in the js, the data from the ds-->
+		<field table="dv" name="area_comn_ocup" showTotals="true">
+			<title translatable="true">Total Office Area</title>
+		</field>
+		<field table="dv" name="area_conference" showTotals="true">
+			<title translatable="true">Total Meeting Area</title>
+		</field>
+		<field table="dv" name="area_comn_nocup" showTotals="true">
+			<title translatable="true">Total Teacher Office Area</title>
+		</field>
+    </panel>
+	
+    
+    <js file="asc-bj-usms-overall-dp-rm-occu-whole-wd.js"/>
+</view>

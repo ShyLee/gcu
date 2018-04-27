@@ -1,0 +1,52 @@
+  <view version="2.0">
+    <title translatable="true">building value change</title>
+	<dataSource id="valuemarketDS">
+	  <table name="sc_bl_value_chg" role="main"/>
+	  <field table="sc_bl_value_chg" name="bl_record_id"/>
+	  <field table="sc_bl_value_chg" name="bl_id"/>
+	  <field table="sc_bl_value_chg" name="value_book"/>
+	  <field table="sc_bl_value_chg" name="value_add"/>
+	  <field table="sc_bl_value_chg" name="value_market"/>
+	  <field table="sc_bl_value_chg" name="change_cause"/>
+	  <field table="sc_bl_value_chg" name="change_date"/>
+	  <field table="sc_bl_value_chg" name="approver"/>
+	  <field table="sc_bl_value_chg" name="operator"/>
+	  <field table="sc_bl_value_chg" name="name"/>
+	  <field table="sc_bl_value_chg" name="sys_date"/>
+	  <field table="sc_bl_value_chg" name="type"/>
+	</dataSource>
+	<dataSource id="blDS">
+	  <table name="bl" role="main"/>
+	  <field table="bl" name="bl_id"/>
+	  <field table="bl" name="name"/>
+	  <field table="bl" name="value_book"/>
+	  <field table="bl" name="value_net"/>
+	</dataSource>
+	<panel type="form" id="valueMarketForm" dataSource="valuemarketDS" >
+	 <title translatable="true">building value change</title>
+	  <action id="save">
+	   <title translatable="true">save</title>
+	  </action>
+	  <action id="cancel">
+	   <title translatable="true">cancel</title>
+	   <command type="closeDialog" panelId="valueMarketForm"/>
+	  </action>
+	  <field table="sc_bl_value_chg" name="bl_record_id" hidden="true"/>
+	  <field table="sc_bl_value_chg" name="bl_id" hidden="true"/>
+	  <field table="sc_bl_value_chg" name="value_book" readOnly="true">
+	   <title translatable="true">value book</title>
+	  </field>
+	  <field table="sc_bl_value_chg" name="value_add" onchange="change()"/>
+	  <field table="sc_bl_value_chg" name="value_market" readOnly="true">
+	    <title translatable="true">value market</title>
+	  </field>
+	  <field table="sc_bl_value_chg" name="change_cause"/>
+	  <field table="sc_bl_value_chg" name="change_date"/>
+	  <field table="sc_bl_value_chg" name="approver"/>
+	  <field table="sc_bl_value_chg" name="operator" value="${user.name}" readOnly="true"/>
+	  <field table="sc_bl_value_chg" name="name" hidden="true"/>
+	  <field table="sc_bl_value_chg" name="sys_date" hidden="true" value="new Date()"/>
+	  <field table="sc_bl_value_chg" name="type" hidden="true"/>
+	</panel>
+   <js file="asc-bj-usms-data-bl-value-chg-dialog.js"/>
+</view>

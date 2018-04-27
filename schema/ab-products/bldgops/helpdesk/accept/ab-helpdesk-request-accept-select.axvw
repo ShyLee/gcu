@@ -1,0 +1,95 @@
+<view version="2.0">
+	<preferences>
+		<viewTitleBar show="true" />
+	</preferences>
+	
+	<title translatable="true">Select</title>
+	
+	<js file="ab-helpdesk-request-accept-select.js" />
+    <js file="ab-helpdesk-common-v2.js"/>
+	
+	<message name="error_date_range" translatable="true">Given dates are invalid.</message>
+	<message name="selectTitle" translatable="true">-select-</message>
+	<message name="requestType" translatable="true">Service Desk Request Type</message>
+    <message name="substituteLegend" translatable="true">Service Requests assigned to you as substitute</message>
+	
+	<!--  tab "select" setting begin -->
+	<dataSource id="acitvityLogAndWaitingStepDs">
+		<table name="activity_log" role="main" />
+		<table name="activity_log_step_waiting" role="standard" />
+
+		<field table="activity_log" name="activity_log_id" />
+		<field table="activity_log" name="activity_type" />
+		<field table="activity_log" name="status" />
+		<field table="activity_log" name="requestor" />
+		<field table="activity_log" name="description" />
+		<field table="activity_log" name="date_requested" />
+		<field table="activity_log_step_waiting" name="user_name" />
+		<field table="activity_log_step_waiting" name="step" />
+		<field table="activity_log_step_waiting" name="step_log_id" />
+
+		<restriction type="sql"
+			sql="activity_log_step_waiting.step_type='acceptance'
+			 AND (activity_log_step_waiting.user_name = ${sql.literal(user.name)} 
+             OR activity_log_step_waiting.em_id IN (SELECT em_id FROM workflow_substitutes WHERE workflow_substitutes.em_id = activity_log_step_waiting.em_id
+                AND workflow_substitutes.substitute_em_id = ${sql.literal(user.employee.id)} AND workflow_substitutes.steptype_or_role='acceptance'
+                AND (workflow_substitutes.start_date_unavailable IS NULL OR workflow_substitutes.start_date_unavailable &lt;= ${sql.currentDate})
+                AND (workflow_substitutes.end_date_unavailable IS NULL OR workflow_substitutes.end_date_unavailable &gt;= ${sql.currentDate})))" />
+	</dataSource>
+	<!-- tab "select" setting  end -->
+
+
+
+	<panel type="console" columns="3" labelsPosition="top"
+		id="requestConsole" dataSource="acitvityLogAndWaitingStepDs">
+		<title translatable="true">Filter</title>
+		<action id="filter">
+			<title translatable="true">Show</title>
+		</action>
+
+		<action id="clear">
+			<title translatable="true">Clear</title>
+		</action>
+
+		<field table="activity_log" name="activity_type" value=""
+			required="false">
+			<title translatable="true">Request Type</title>
+			<action id="selectActivityType">
+				<title>...</title>
+			</action>
+		</field>
+
+		<field table="activity_log" name="date_requested"
+			alias="activity_log.date_requested.from" required="false">
+			<title translatable="true">Date Requested From</title>
+		</field>
+
+		<field table="activity_log" name="date_requested"
+			alias="activity_log.date_requested.to" required="false">
+			<title translatable="true">Date Requested To</title>
+		</field>
+	</panel>
+
+	<panel type="grid" id="requestReportGrid" controlType="reportGrid"
+		dataSource="acitvityLogAndWaitingStepDs">
+		
+		<title>Select a Request to Accept/Decline</title>
+		<sortField table="activity_log" name="activity_log_id"
+			ascending="false" />
+		<sortField table="activity_log" name="date_requested"
+			ascending="false" />
+		<field controlType="button" id="edit">
+			<title translatable="true">Select</title>
+		</field>
+
+		<field table="activity_log" name="activity_log_id">
+			<title translatable="true">Service Request ID</title>
+		</field>
+		<field table="activity_log" name="activity_type">
+			<title translatable="true">Request Type</title>
+		</field>
+		<field table="activity_log" name="requestor" />
+		<field table="activity_log" name="date_requested" />
+		<field table="activity_log_step_waiting" name="step" />
+	</panel>
+</view>

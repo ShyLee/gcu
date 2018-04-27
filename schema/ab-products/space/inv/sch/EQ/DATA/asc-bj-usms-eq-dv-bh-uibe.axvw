@@ -1,0 +1,127 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-dv-bh-uibe.js"/>
+    <title translatable="true">Define DvId between Archibus and BeiHua</title>
+    <layout id="mainLayout" type="borderLayout">
+        <west initialSize="30%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsDpDs">
+        <table name="dp_top" role="main"/>
+        <field table="dp_top" name="dp_id"/>
+        <field table="dp_top" name="bh_num"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsDlDs">
+         <table name="dp_level" role="main"/>
+         <field table="dp_level" name="dl_id"/>
+         <field table="dp_level" name="bh_num"/>   
+    </dataSource>
+    <dataSource id="ascBjUsmsDvDs">
+        <table name="dv" role="main"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="bh_num"/>
+        <parameter name="sqlRes" dataType="verbatim" value=""/>
+        <restriction type="sql" sql="${parameters['sqlRes']}"/>
+    </dataSource>
+    
+    <dataSource id="ascBjUsmsDvFormDs">
+        <table name="dv" role="main"/>
+        <field table="dv" name="dv_id" readOnly="true"/>
+        <field table="dv" name="bh_num" required="true"/>
+        <field table="dv" name="bh_dwjc" required="true"/>
+        <field table="dv" name="bh_dwjm" required="true"/>
+        <field table="dv" name="bh_jlnf" required="true"/>
+        <field table="dv" name="bh_dwxz" required="true"/>
+        <field table="dv" name="bh_syfxz" required="true"/>
+        <field table="dv" name="bh_jfkmz" required="true"/>
+        <field table="dv" name="bh_dwbz" hidden="true"/>
+        <field table="dv" name="bh_bz" hidden="true"/>
+        <field table="dv" name="bh_sh" hidden="true"/>
+        <field table="dv" name="bh_xq" hidden="true"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsDpTopFormDs">
+        <table name="dp_top" role="main"/>
+        <field table="dp_top" name="dv_id" readOnly="true"/>
+        <field table="dp_top" name="dp_id" readOnly="true"/>
+        <field table="dp_top" name="bh_num" required="true"/>
+        <field table="dp_top" name="bh_dwjc" required="true"/>
+        <field table="dp_top" name="bh_dwjm" required="true"/>
+        <field table="dp_top" name="bh_jlnf" required="true"/>
+        <field table="dp_top" name="bh_dwxz" required="true"/>
+        <field table="dp_top" name="bh_syfxz" required="true"/>
+        <field table="dp_top" name="bh_jfkmz" required="true"/>
+        <field table="dp_top" name="bh_dwbz" hidden="true"/>
+        <field table="dp_top" name="bh_bz" hidden="true"/>
+        <field table="dp_top" name="bh_sh" hidden="true"/>
+        <field table="dp_top" name="bh_xq" hidden="true"/>
+    </dataSource>
+    
+    <dataSource id="ascBjUsmsDpLevelFormDs">
+        <table name="dp_level" role="main"/>
+        <field table="dp_level" name="dv_id" readOnly="true"/>
+         <field table="dp_level" name="dp_id" readOnly="true"/>
+        <field table="dp_level" name="dl_id" readOnly="true"/>
+         <field table="dp_level" name="bh_num" required="true"/>
+        <field table="dp_level" name="bh_dwjc" required="true"/>
+        <field table="dp_level" name="bh_dwjm" required="true"/>
+        <field table="dp_level" name="bh_jlnf" required="true"/>
+        <field table="dp_level" name="bh_dwxz" required="true"/>
+        <field table="dp_level" name="bh_syfxz" required="true"/>
+        <field table="dp_level" name="bh_jfkmz" required="true"/>
+        <field table="dp_level" name="bh_dwbz" hidden="true"/>
+        <field table="dp_level" name="bh_bz" hidden="true"/>
+        <field table="dp_level" name="bh_sh" hidden="true"/>
+        <field table="dp_level" name="bh_xq" hidden="true"/>
+    </dataSource>
+    <panel type="tree" id="dvPanel" dataSource="ascBjUsmsDvDs" layout="mainLayout" region="west" showOnLoad="false">
+         <title translatable="true">Dv List</title>
+        
+         <event type="onClickNode">
+            <command type="callFunction" functionName="controller.onClickDvNode()"/>
+         </event>
+         <field table="dv" name="dv_id"/>
+         <field table="dv" name="bh_num"/>
+         <panel type="tree" id="dpPanel" dataSource="ascBjUsmsDpDs" >
+            <event type="onClickNode">
+                <command type="callFunction" functionName="controller.onClickDpNode()"/>
+            </event>
+            <field table="dp_top" name="dp_id"/>
+            
+         </panel>
+         <panel type="tree" id="dlPanel" dataSource="ascBjUsmsDlDs" >
+                <event type="onClickNode">
+                    <command type="callFunction" functionName="controller.onClickDlNode()"/>
+                </event>
+                <field table="dp_level" name="dl_id"/>
+          </panel>
+    </panel>
+    <tabs id="tabs" workflow="enforced"  layout="centerLayout" region="center" >
+        <tab name="dvTab" selected="true">
+            <title translatable="true">DvEdite</title>
+            <panel type="form" id="dvPanelForm" dataSource="ascBjUsmsDvFormDs" showOnLoad="false">
+                <title translatable="true">DvPanelForm</title>
+                <action id="btnSaveDv">
+                    <title translatable="true">Save</title>
+                </action>
+            </panel>
+        </tab>
+        <tab name="dpTopTab">
+            <title translatable="true">DpEdite</title>
+            <panel type="form" id="dpTopPanel" dataSource="ascBjUsmsDpTopFormDs">
+                <title translatable="true">DpTopPanelForm</title>
+                <action id="btnSaveDv">
+                    <title translatable="true">Save</title>
+                </action>
+            </panel>
+        </tab>
+        <tab name="dpLevelTab">
+            <title translatable="true">DpLevelEdite</title>
+            <panel type="form" id="dpLevelPanel" dataSource="ascBjUsmsDpLevelFormDs">
+                <title translatable="true">DpLevelPanelForm</title>
+                <action id="btnSaveDv">
+                    <title translatable="true">Save</title>
+                </action>
+            </panel>
+        </tab>
+    </tabs> 
+    
+</view>

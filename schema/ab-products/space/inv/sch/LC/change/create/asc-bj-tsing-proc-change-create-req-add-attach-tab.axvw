@@ -1,0 +1,132 @@
+<view version="2.0">
+    
+    <js file="asc-bj-tsing-proc-change-create-req-add-attach-tab.js"/>
+    
+    <dataSource id="ascBjUsmsProcChangeCreateReqAddAttachmentsTabFormDS">
+        <table name="activity_log" role="main"/>     
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>		
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="time_required" table="activity_log"/>
+        <field name="dp_id" table="activity_log"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="rm_cat" table="activity_log"/>
+        <field name="rm_type" table="activity_log"/>
+		<field name="rm_name" table="activity_log"/>
+        <field name="rm_name_after" table="activity_log"/>
+        <field name="rm_cat_after" table="activity_log"/>
+        <field name="rm_type_after" table="activity_log"/>
+        <field name="bl_id" table="activity_log"/>
+        <field name="fl_id" table="activity_log"/>
+        <field name="rm_id" table="activity_log"/>
+		<field name="doc1" table="activity_log"/>
+        <field name="doc2" table="activity_log"/>
+    </dataSource>
+    
+     <dataSource id="tsRmTuChangeLogDS">
+      <table name="ts_rm_tu_change_log" role="main" />     
+      <field name="site_id" table="ts_rm_tu_change_log"/>
+      <field name="pr_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_name" table="ts_rm_tu_change_log"/>
+      <field name="fl_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_use" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat" table="ts_rm_tu_change_log"/>
+      <field name="rm_type" table="ts_rm_tu_change_log"/>
+      <field name="use_desc" table="ts_rm_tu_change_log"/>
+      <field name="rm_name" table="ts_rm_tu_change_log"/>
+      <field name="rm_use_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_type_after" table="ts_rm_tu_change_log"/>
+      <field name="use_desc_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_name_after" table="ts_rm_tu_change_log"/>
+      <field name="oper_dv_id" table="ts_rm_tu_change_log"/>
+      <field name="oper_em_id" table="ts_rm_tu_change_log"/>
+      <field name="oper_em_name" table="ts_rm_tu_change_log"/>
+      <field name="oper_date" table="ts_rm_tu_change_log"/>
+      <field name="activity_log_id" table="ts_rm_tu_change_log"/>
+            
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcChangeCreateReqAddAttachmentsTabForm" dataSource="ascBjUsmsProcChangeCreateReqAddAttachmentsTabFormDS" >
+       <title translatable="true">basic information</title>
+       
+        <action id="insert">
+         <title translatable="true">create new request</title>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="false" >
+            <title translatable="true">Service Request ID</title>
+        </field>
+       
+        <field table="activity_log" name="requestor" >
+        	<action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.requestor" 
+				 selectFieldNames="em.em_id"
+                 visibleFieldNames="em.em_id,em.name,em.sex,em.dv_id"></command>
+            </action>
+		</field>
+		<field table="activity_log" name="phone_requestor" />
+        <field name="dv_id" table="activity_log" />
+        <field name="date_required" table="activity_log" />
+        <field name="activity_type" table="activity_log"/>
+        <field table="activity_log" name="description"
+         colspan="4" required="true" style="width: 100%; height: 80px;"
+         showSelectValueAction="false"/>
+        
+        <field name="priority" table="activity_log" hidden="true"/>
+    </panel>
+    
+    
+    <panel type="grid"  id="roomListGrid" dataSource="tsRmTuChangeLogDS" >        
+      <title translatable="true">room list</title>             
+      <field name="site_id" table="ts_rm_tu_change_log"/>
+      <field name="pr_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_id" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="bl_name" table="ts_rm_tu_change_log"/>
+      <field name="fl_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_use" table="ts_rm_tu_change_log"/>
+      <field name="rm_use_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_type" table="ts_rm_tu_change_log"/>
+      <field name="rm_type_after" table="ts_rm_tu_change_log"/>
+      <field name="use_desc" table="ts_rm_tu_change_log"/>
+      <field name="use_desc_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_name" table="ts_rm_tu_change_log"/>
+      <field name="rm_name_after" table="ts_rm_tu_change_log"/>
+      <field name="oper_dv_id" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="oper_em_id" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="oper_em_name" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="oper_date" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="activity_log_id" table="ts_rm_tu_change_log" hidden="true"/>
+    </panel>
+    
+    <panel type="form" columns="2" id="docForm" dataSource="ascBjUsmsProcChangeCreateReqAddAttachmentsTabFormDS" >
+        
+        <title translatable="true">Attachment</title>
+        <action id="save">
+         <title translatable="true">save</title>
+         <command type="saveForm" panelId="docForm"/>
+        </action> 
+        <action id="cancel">
+         <title translatable="true">cancel</title>
+         <command type="clearPanel" panelId="docForm"/>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="true"/>
+        <field name="doc1" table="activity_log"/>
+        <field name="doc2" table="activity_log"/>
+    </panel>
+    
+   
+</view>

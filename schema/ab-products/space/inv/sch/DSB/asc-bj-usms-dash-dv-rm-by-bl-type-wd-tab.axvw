@@ -1,0 +1,309 @@
+ <view version="2.0">
+	<title>Laboratory Rooms</title>
+	<layout type="borderLayout" id="mainLayout">
+        <north id="northPosition" initialSize="14%" split="true"/>
+        <center id="rmPosition" />
+    </layout>
+	<layout id="nested_center" containingLayout="mainLayout" region="center">
+        <west id="dwgAll" initialSize="70%" split="true"/>
+        <center id="rmCatPosition" />
+    </layout>
+	 <layout id="nested_center_west" containingLayout="nested_center" region="west">
+        <north id="dwg" initialSize="50%" split="true"/>
+        <center id="rmListPosition" />
+    </layout>
+    <layout id="nested_center_west_north" containingLayout="nested_center_west" region="north">
+        <west id="dwgGridPosition" initialSize="15%" split="true"/>
+        <center id="dwgPosition" />
+    </layout>
+    
+    
+    <message name="drawingPanelTitle" translatable="true">Highlight Rooms by Division</message>
+    <message name="drawingPanelTitle1" translatable="true">Highlight Rooms for Division : {0}</message>
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_grid_fl" type="grouping">
+    	<table name="rm" role="main"/>
+    	<table name="bl" role="standard"/>
+        <field table="bl" name="name" groupBy="true"/>
+        <field table="bl" name="building_cat"/>
+        <field table="rm" name="bl_id" groupBy="true"/>
+    	<field table="rm" name="fl_id" groupBy="true"/>
+    	<field table="rm" name="dwgname" groupBy="true" hidden="true"/>
+        <parameter name="dvRes" dataType="verbatim" value="1=1"/>
+		<parameter name="blRes" dataType="verbatim" value="  IS NOT NULL"/>
+        <restriction type="sql" sql="${parameters['dvRes']}
+		 AND rm.bl_id${parameters['blRes']} 
+		 AND rm.dwgname IS NOT NULL
+		 AND rm.dp_id in('21','22') and rm.dv_id not in('03','06','39') and rm.dv_id||'-'||rm.dp_id!='59-21'
+		 AND (rm.rm_cat IS NULL OR EXISTS (SELECT 1 FROM rmcat WHERE
+         rm.rm_cat= rmcat.rm_cat AND rmcat.used_in_calcs IN('all_totals', 'dp_comn_ocup_totals')))"/>
+    </dataSource> 
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight" type="DrawingControlHighlight">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="dwgname"/>
+        <field table="rm" name="dv_id" legendKey="true"/>
+        <field table="rm" name="dp_id" legendKey="true"/>
+        <field table="dv" name="hpattern_acad"/>
+        <parameter name="rmDv" dataType="verbatim" value="AND 1=1"/>
+        <restriction type="sql" sql="rm.dp_id in('21','22') AND (rm.rm_cat IS NULL OR EXISTS (SELECT 1 FROM rmcat WHERE 
+         rmcat.used_in_calcs IN('all_totals', 'dp_comn_ocup_totals')
+         AND rmcat.rm_cat= rm.rm_cat))
+         ${parameters['rmDv']}"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel">
+        <table name="rm" role="main"/>
+        <field name="bl_id" hidden="true"/>
+        <field name="fl_id" hidden="true"/>
+        <field name="rm_id"/>
+        <field name="name"/>
+        <field name="area"/>
+        <field table="rm" name="dwgname"/>
+    <!--     添加画图字段 -->
+        <field name="dwgname" hidden="true"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_columnReport_rm">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="rm_use"/>
+        <field table="dv" name="dv_id"/>
+        <field table="rm" name="phone"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="area"/>
+    </dataSource>
+    
+    <panel type="grid" id="abSpHlRmByDp_flGrid" multipleSelectionEnabled="true" controlType="reportGrid" dataSource="ds_ab-sp-hl-rm-by-dp_grid_fl"  layoutRegion="dwgGridPosition">
+        <title translatable="true">Select Floor</title>
+        <indexField table="rm" name="bl_id"/>
+        <field table="bl" name="name" />
+        <field table="rm" name="bl_id"  hidden="true"/>
+    	<field table="rm" name="fl_id"/>
+    	<field table="rm" name="dwgname"  hidden="true"/>    	
+    	<sortField table="rm" name="bl_id" ascending="true"/>
+        <sortField table="rm" name="fl_id" ascending="true"/>
+    </panel>
+    
+    <panel type="drawing" id="abSpHlRmByDp_DrawingPanel" layoutRegion="dwgPosition"
+     highlightDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight"
+     labelsDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel" multiple="false" selectionMode="1" assignMode="2">
+     	<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpHlRmByDp_DrawingPanel"/>
+		</action>
+		<action id="showDwgView">
+			<title translatable="true">ShowDwg</title>
+		</action>
+        <title></title>
+
+    </panel>
+    
+    <panel type="columnReport" id="abSpHlRmByDp_RmDetailPanel" columns="2" dataSource="ds_ab-sp-hl-rm-by-dp_columnReport_rm" showOnLoad="false" hidden="true" layoutRegion="dwgPosition">
+        <title translatable="true">Room Details</title>
+    </panel>
+    <dataSource id="abScSearchRmLayoutByBuGridReportDS">
+        <table name="rm" role="main"/>
+		<table name="dv" role="standard"/>
+		<table name="dp" role="standard"/>
+		<table name="bl" role="standard"/>
+		<table name="rmcat" role="standard"/>
+		<table name="rmtype" role="standard"/>
+
+		<field table="bl" name="name"/>
+		<field table="bl" name="building_cat"/>
+		<field table="dv" name="bu_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="dp" name="dp_name"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="dv_id"/>
+        <field table="rm" name="dp_id"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="rm_type"/>
+		<field table="rm" name="count_design"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="phone"/>
+		<field table="rm" name="em_use"/>
+        <field table="rm" name="chaoxiang"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="name"/>
+        <field table="rmcat" name="rm_cat"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <restriction type="sql" sql="rm.dp_id in('21','22') and rm.dv_id not in('03','06','39') and rm.dv_id||'-'||rm.dp_id!='59-21'"/>
+    </dataSource>
+    
+    <panel type="grid" id="abScSearchRmLayoutByBuGridReport" dataSource="abScSearchRmLayoutByBuGridReportDS" showOnLoad="true" layoutRegion="rmListPosition" >
+        <title translatable="true">Room List</title>
+        <indexField table="rm" name="bl_id"/>
+        <action id="exportXLS">
+        	<title>XLS</title>
+        	<command type="exportPanel" outputType="xls" panelId="abScSearchRmLayoutByBuGridReport"/>
+        </action>
+        <field table="rm" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="rm" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name"/>
+        <field table="bl" name="name"/>
+		<field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>      
+        <field table="rm" name="chaoxiang"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="area_comn_rm"/>
+		<field table="rmcat" name="rmcat_name"/>
+		<field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="name"/>
+		<field id="viewUser" controlType="button" >
+			<title translatable="true">Room User</title>
+		</field>
+    </panel>
+	
+	<dataSource id="abScSearchRmLayoutByBuGridReportShowDS">
+        <table name="em" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="bl" name="name"/>
+        <field table="em" name="rm_id"/>
+        <field table="em" name="fl_id"/>
+        <field table="em" name="bl_id"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+    </dataSource>
+	<panel type="grid" id="abScSearchRmLayoutByBuGridReportShow" dataSource="abScSearchRmLayoutByBuGridReportShowDS" showOnLoad="false">
+        <title translatable="true">Room User</title>
+		<field table="bl" name="name"/>
+		<field table="em" name="bl_id" hidden="true"/>
+		<field table="em" name="fl_id"/>
+		<field table="em" name="rm_id"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+    </panel>
+	
+	<dataSource id="abScSearchBlByDvGridReportShowDS">
+        <table name="bl" role="main"/>
+		<field table="bl" name="bl_id"/>
+		<parameter name="buId" dataType="verbatim" value="1=1"/>
+		<parameter name="dvId" dataType="verbatim" value=" 1=1"/>
+		<restriction type="sql" sql=" exists(select 1 from rm ,dv where rm.dv_id=dv.dv_id and rm.bl_id=bl.bl_id and ${parameters['buId']} and ${parameters['dvId']})"/>
+    </dataSource>
+	
+	<panel type="grid"  id="abScSearchBlByDvGridReport"  dataSource="abScSearchBlByDvGridReportShowDS" showOnLoad="false">
+        <field table="bl" name="bl_id"/>
+    </panel>
+    
+      <dataSource id="abScSearchRmLayoutByDvGridDS" type="grouping">
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+		<field table="rmcat" name="rmcat_name" groupBy="true"/>
+		<field table="rmtype" name="rmtype_name" groupBy="true"/>
+        <field table="rm" name="rm_cat" groupBy="true"/>
+        <field table="rm" name="rm_type" groupBy="true"/>
+        <field table="rm" name="dv_id" groupBy="true"/>
+        <field table="rm" name="dp_id" groupBy="true"/> 
+        <field name="count_rm" formula="count" baseField="rm.rm_id" dataType="number" size="6" decimals="0">
+            <title translatable="true">Room Count</title>
+        </field>
+        <field name="area_shiyong" formula="sum" baseField="rm.area" dataType="number" size="6" decimals="2">
+            <title translatable="true">ShiYongMianJi</title>
+        </field>
+        <restriction type="sql" sql="rm.dp_id in('21','22') and rm.dv_id not in('03','06','39') and rm.dv_id||'-'||rm.dp_id!='59-21'"/>
+    </dataSource>
+	
+    <panel type="grid" id="abScSearchRmLayoutByDvGrid" controlType="reportGrid" dataSource="abScSearchRmLayoutByDvGridDS" layoutRegion="rmCatPosition" showOnLoad="true">
+        <title translatable="true">Room Category List</title>
+		<sortField table="rm" name="rm_cat" />
+		
+		<field table="rmcat" name="rmcat_name" />
+        <field table="rm" name="dv_id" hidden="true" />
+        <field table="rm" name="dp_id" hidden="true" />
+        <field table="rm" name="rm_cat" hidden="true" >
+        </field>
+        <field table="rm" name="rm_type" hidden="true">
+        </field>
+         <field table="rmtype" name="rmtype_name"/>
+        <field name="count_rm" dataType="number" size="6" decimals="0" >
+            <title translatable="true">Room Count</title>
+        </field>
+		<field name="area_shiyong" dataType="number" size="6" decimals="2" >
+            <title translatable="true">ShiYongMianJi</title>
+        </field>
+    </panel>
+    
+    <!-- datasource for department summary data report -->
+    <dataSource id="ds_asc-bj-usms-dash-dp-rm-by-bl-type_grid_dv">
+		<table name="dp" role="main" />
+		<table name="dv" role="standard" />
+		<field table="dp" name="dv_id" />
+		<field table="dv" name="dv_name" />
+		<field table="dp" name="dp_id" />
+		<field table="dp" name="dp_name" />
+		<field table="dp" name="count_em"/>	
+		<field table="dp" name="count_rm"/>
+		<field table="dp" name="area_jianzhu" />
+		<field table="dp" name="area_rm" />			
+		<field table="dp" name="count_student" />
+		<restriction type="sql" sql="dp.dp_id in('21','22') and dp.dv_id not in('03','06','39') and dp.dv_id||'-'||dp.dp_id!='59-21'"/>
+	</dataSource>
+	
+    <!--<panel type="grid" id="abScSearchRmLayoutByDvCountGrid" controlType="reportGrid" dataSource="ds_asc-bj-usms-dash-dp-rm-by-bl-type_grid_dv" layoutRegion="rmAreaPosition" showOnLoad="true">
+        <title translatable="true">tongji</title>
+		
+		<field table="dv" name="area_rm">
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		<field table="dv" name="area_jianzhu">
+			<title translatable="true">Total Structure Area</title>
+		</field>
+		<field table="dv" name="count_rm">
+			<title translatable="true">Room Count</title>
+        </field>
+    </panel>-->
+    
+    
+    <panel type="grid" id="abScSearchRmLayoutByDvCountPeopleGrid" controlType="reportGrid" dataSource="ds_asc-bj-usms-dash-dp-rm-by-bl-type_grid_dv" layoutRegion="northPosition" showOnLoad="true">
+        <title translatable="true">Division List</title>
+        <action id="show">
+             <title translatable="true">Show All</title>
+         </action> 
+		<field table="dp" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name" controlType="link">
+			<command type="callFunction" functionName="controller.showLabInfo()"/>
+		</field>
+		<field table="dp" name="dp_id" hidden="true"/>
+		<field table="dp" name="dp_name" controlType="link">
+			<command type="callFunction" functionName="controller.showLabInfo()"/>
+		</field>
+		<field table="dp" name="count_em" >
+            <title translatable="true">EmCount</title>
+        </field>
+		<field table="dp" name="area_rm" showTotals="true">
+			<title translatable="true">ShiYongMianJi</title>
+        </field>
+		<field table="dp" name="area_jianzhu"/>
+		<field table="dp" name="count_rm"/>
+    </panel>
+	
+	
+    <js file="asc-bj-usms-dash-dv-rm-by-bl-type-wd-tab.js"/>
+	<js file="asc-bj-usms-def-common.js"/>
+</view>

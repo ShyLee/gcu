@@ -1,0 +1,187 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+
+    <layout type="borderLayout" id="mainLayout">
+        <north id="top" initialSize="0" autoScroll="false"/>
+        <center id="console" autoScroll="true"/>
+    </layout>
+    
+    <message translatable="true" name="selectRoomAndTimeError">You must select a Room and a time period to validate this step</message>
+    <message translatable="true" name="fillMandatoryFieldsError">Please fill in all mandatory fields in the form</message>
+    <message translatable="true" name="msgBackExit">Are you sure that you want to cancel the process?</message>
+    <message translatable="true" name="msgGoBack">Warning, all resolved conflicts will be lost, Are you sure that you want to go back?</message>
+    <message translatable="true" name="errorTabs">This view can only be used as a part of the Room Reservations</message>
+    <message translatable="true" name="errNotFound">User form loaded but miniconsole not found</message>
+    <message translatable="true" name="allView">View all dates</message>
+    <message translatable="true" name="ResourceId">Resource Code</message>
+    <message translatable="true" name="Quantity">Requested Quantity</message>
+    <message translatable="true" name="TimeStart">Time Start</message>
+    <message translatable="true" name="TimeEnd">Time End</message>
+    <message translatable="true" name="Comments">Comments</message>
+    
+    <dataSource id="ds_ab-rr-content-add-room-reservation-confirm_form_reserve_rm">
+        <table name="reserve_rm" role="main"/>
+        <table name="reserve" role="standard"/>
+        <table name="bl" role="standard"/>
+        
+        <field table="reserve_rm" name="bl_id"/>
+        <field table="reserve_rm" name="fl_id"/>
+        <field table="reserve_rm" name="rm_id"/>
+        <field table="reserve_rm" name="date_start"/>
+        <field table="reserve_rm" name="time_start"/>
+        <field table="reserve_rm" name="time_end"/>
+        <field table="reserve_rm" name="rm_arrange_type_id"/>
+        <field table="reserve_rm" name="config_id"/>
+        
+        <field table="reserve" name="user_created_by"/>
+        <field table="reserve" name="user_requested_by"/>
+        <field table="reserve" name="user_requested_for"/>
+        <field table="reserve" name="phone"/>
+        <field table="reserve" name="email"/>
+        <field table="reserve" name="dv_id"/>
+        <field table="reserve" name="dp_id"/>
+        <field table="reserve" name="reservation_name"/>
+        <field table="reserve" name="comments"/>
+        <field table="reserve" name="attendees"/>
+        <field table="reserve" name="cost_res"/>
+        
+        <restriction type="sql" sql="reserve_rm.rmres_id IS NULL"/>
+    </dataSource>
+    
+    
+    <panel id="roomReservationsDatailsPanel" type="form" columns="4" labelsPosition="top" 
+    		dataSource="ds_ab-rr-content-add-room-reservation-confirm_form_reserve_rm" layoutRegion="console">
+        <title translatable="true">Room Reservations Details</title>
+        
+        <field table="reserve_rm" name="date_start" required="false"/>
+        <field table="reserve_rm" name="bl_id" required="false"/>
+        <field table="reserve_rm" name="fl_id" required="false"/>
+        <field table="reserve_rm" name="rm_id" required="false"/>
+        <field table="reserve_rm" name="time_start" required="false"/>
+        <field table="reserve_rm" name="time_end" required="false"/>
+        <field table="reserve_rm" name="config_id" required="false"/>
+        <field table="reserve_rm" name="rm_arrange_type_id" required="false"/>
+    </panel>
+    
+    <panel id="panelFixedResources" type="form" columns="4" formLabelWidth="20" showOnLoad="true" 
+    		dataSource="ds_ab-rr-content-add-room-reservation-confirm_form_reserve_rm" layoutRegion="console">
+        <field table="reserve_rm" name="date_start" required="false" hidden="true"/>
+        <field colspan="4">
+            <title translatable="true">Room Fixed Resources</title>
+            <html>
+                <div id="resource_std_fixed" />
+            </html>
+        </field>
+    </panel>
+    
+    <panel id="panelViewAll" type="form" columns="4" layoutRegion="console" 
+    		dataSource="ds_ab-rr-content-add-room-reservation-confirm_form_reserve_rm">
+        
+        <field colspan="4">
+            <html>
+                <input type="button" id="btnAllView" onclick="onViewAllRecurring()" value="" />
+            </html>
+        </field>
+        
+        <field table="reserve_rm" name="rm_arrange_type_id" required="false" hidden="true"/>
+    </panel>
+    
+    <panel id="panelResourcesReservations" type="html" showOnLoad="false" layoutRegion="console">
+    	<html>
+    		<div id="gridResourcesReservations">
+    		</div>
+    	</html>
+    </panel>
+    
+    <panel id="confirmRoomReservPanel" type="form" columns="3" dataSource="ds_ab-rr-content-add-room-reservation-confirm_form_reserve_rm" layoutRegion="console">
+        <title translatable="true">Confirm Room Reservations</title>
+        <action id="change">
+            <title translatable="true">Change Room/Date</title>
+        </action>
+        <action id="finish" cssClass="borderButton">
+            <title translatable="true">Confirm and Finish</title>
+        </action>
+        <action id="next" cssClass="borderButton">
+            <title translatable="true">Confirm and Add Resources</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+        </action>
+        
+        <field table="reserve" name="user_created_by" readOnly="false" required="true"/>
+        <field table="reserve" name="phone" readOnly="false" required="false" showSelectValueAction="true"/>
+        <field table="reserve" name="dv_id" readOnly="false" required="false"/>
+        
+        <field table="reserve" name="user_requested_by" readOnly="false" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.user_requested_by,reserve.user_requested_for,reserve.dv_id,reserve.dp_id,reserve.phone,reserve.email"
+                 selectFieldNames="em.em_id,em.em_id,em.dv_id,em.dp_id,em.phone,em.email"
+                 visibleFieldNames="em.em_id,em.dv_id,em.dp_id,em.phone,em.email">
+                 <title>Requested By</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="email" readOnly="false" required="false" showSelectValueAction="true"/>
+        <field table="reserve" name="dp_id" readOnly="false" required="false">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.dv_id,reserve.dp_id"
+                 selectFieldNames="dp.dv_id,dp.dp_id"
+                 visibleFieldNames="dp.dv_id,dp.dp_id">
+                 <title>Dept. for Chargeback</title>
+               </command>
+            </action>
+        </field>
+        
+        <field table="reserve" name="user_requested_for" readOnly="false" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="reserve.user_requested_for,reserve.dv_id,reserve.dp_id,reserve.phone,reserve.email"
+                 selectFieldNames="em.em_id,em.dv_id,em.dp_id,em.phone,em.email"
+                 visibleFieldNames="em.em_id,em.dv_id,em.dp_id,em.phone,em.email">
+                 <title>Requested For</title>
+                </command>
+            </action>
+        </field>
+        <field table="reserve" name="reservation_name" readOnly="false" required="true" showSelectValueAction="true"/>
+        <field table="reserve" name="cost_res" readOnly="true" required="false"/>
+            
+        <field table="reserve" name="comments" readOnly="false" required="false" colspan="3"/>
+        
+        <field table="reserve" name="attendees" readOnly="false" required="false" colspan="3" width="100%">
+            <title translatable="true">Send invitations to</title>
+            <!-- id="addInternalEmp" -->
+            <action >
+                <title translatable="true">Add Internal Employee</title>
+                <command type="openDialog" viewName="ab-rr-content-add-room-reservation-confirm-add-em.axvw" clearRestriction="true" applyParentRestriction="false" />
+            </action>
+            <!-- id="addExternalVis" -->
+            <action >
+                <title translatable="true">Add External Visitor</title>
+                <command type="openDialog" viewName="ab-rr-content-add-room-reservation-confirm-add-visitor.axvw" clearRestriction="true" applyParentRestriction="false"  />
+            </action>
+       </field>
+       
+       <field>
+            <title translatable="true">Require Replies?</title>
+             <html>
+                <input type="checkbox" id="require_reply" onclick="" value="require_reply" align="left"/>
+            </html>
+        </field>
+        
+        <field table="reserve" name="attendees" alias="reserve.attendees.employee" hidden="true"/>
+        <field table="reserve" name="attendees" alias="reserve.attendees.visitor" hidden="true"/>
+    </panel>
+    
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-my-reservation-detailtab-common.js"/>
+    <js file="ab-rr-content-add-room-reservation-confirm.js"/>
+    
+</view>

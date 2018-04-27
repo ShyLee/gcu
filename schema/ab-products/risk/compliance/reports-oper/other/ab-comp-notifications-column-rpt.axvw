@@ -1,0 +1,35 @@
+<view version="2.0">
+
+    <dataSource id="abCompNotificationFormDS">
+        <table name="notifications" role="main"/>
+        <table name="activity_log" role="standard"/>
+
+        <field table="notifications" name="notify_id"/>
+        <field table="notifications" name="is_active" />
+        <field table="notifications" name="template_id" />
+		<field table="notifications" name="date_sent" />
+        <field table="notifications" name="activity_log_id" />
+
+		<field table="activity_log" name="regulation" />
+		<field table="activity_log" name="reg_program" />
+		<field table="activity_log" name="reg_requirement" />
+
+   </dataSource>
+
+    <panel type="columnReport" columns="2" showOnLoad="false" id="abCompNotificationForm" dataSource="abCompNotificationFormDS">
+    <title translatable="true">Compliance Notification</title>
+		<field table="notifications" name="template_id" />
+		<field table="activity_log" name="reg_requirement" />
+		<field table="activity_log" name="regulation" />
+		<field table="activity_log" name="reg_program" />
+		<field table="notifications" name="is_active" />
+		<field table="notifications" name="date_sent" />
+		<field table="notifications" name="notify_id"/>
+		<field table="notifications" name="activity_log_id">
+			<title>Event ID</title>
+		</field>
+    </panel>
+
+	<js file="ab-comp-notifications-column-rpt.js"/>
+
+</view>

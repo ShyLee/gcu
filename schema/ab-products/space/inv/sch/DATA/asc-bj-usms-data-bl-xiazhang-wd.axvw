@@ -1,0 +1,51 @@
+<view version="2.0">
+
+
+	<dataSource id="ds_asc-bj-usms-data-bl-xiazhang-wd">
+		<table name="sc_bl_xz" role="main" />
+		<field table="sc_bl_xz" name="bl_id" />
+		
+		<field table="sc_bl_xz" name="date_xiazhang" />
+		<field table="sc_bl_xz" name="status" />
+		
+		 <field table="sc_bl_xz" name="date_approved" />
+		<field table="sc_bl_xz" name="approved_by" />
+		
+		<field table="sc_bl_xz" name="approved_dv" />
+		<field table="sc_bl_xz" name="approved_doc" />
+		
+		<field table="sc_bl_xz" name="operator_xiazhang" />
+		<field table="sc_bl_xz" name="date_operate" />
+		
+		<field table="sc_bl_xz" name="value_book"/>
+		<field table="sc_bl_xz" name="handle_modality"/>
+		
+	</dataSource>
+
+	<panel type="form" id="ascBjUsmsDataBlXiazhangWdForm" columns="2"
+		dataSource="ds_asc-bj-usms-data-bl-xiazhang-wd" 
+		showOnLoad="true">
+		<title translatable="true"></title>
+		<action id="save" >
+			<title translatable="true">XiaZhang</title>
+		</action>
+	
+		<action id="cancel">
+			<title translatable="true">Cancel</title>
+			<command type="closeDialog" panelId="ascBjUsmsDataBlXiazhangWdForm"/>
+		</action>
+		<field table="sc_bl_xz" name="bl_id" hidden="true"/>
+		<field table="sc_bl_xz" name="date_xiazhang" />
+		<field table="sc_bl_xz" name="status" />
+		 <field table="sc_bl_xz" name="date_approved" />
+		<field table="sc_bl_xz" name="approved_by" />
+		<field table="sc_bl_xz" name="approved_dv" />
+		<field table="sc_bl_xz" name="approved_doc" />
+		<field table="sc_bl_xz" name="value_book"/>
+		<field table="sc_bl_xz" name="handle_modality"/>
+		<field name="operator_xiazhang" table="sc_bl_xz" readOnly="true" value="${user.name}"/>
+		<field table="sc_bl_xz" name="date_operate" readOnly="true"/>
+	</panel>
+	<js file="asc-bj-usms-data-bl-xiazhang-wd.js" />
+	<js file="ab-helpdesk-common-v2.js" />
+</view>

@@ -1,0 +1,144 @@
+<view version="2.0">
+    
+    <js file="asc-bj-usms-eq-dispose-proc-asgn-create-req-basic-input-tab.js"/>
+    <js file="asc-bj-usms-proc-common.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+    <js file="asc-bj-usms-constant.js"/>
+    
+    
+    <message name="noUser" translatable="true">Please select a division or room user or project group</message>
+    <dataSource id="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS">
+        <table name="activity_log" role="main"/>
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="add_eq_id" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="rtr_dip_id" table="activity_log"/>
+        
+    </dataSource>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcAsgnCreateReqBasicInputTabForm1" showOnLoad="false" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS" newRecord="true">
+        
+        <title translatable="true">Requestor</title>
+        
+        <action id="back">
+            <title translatable="true">Back</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnCreateReqBasicInputTabController.onBack()"/>
+        </action>
+        
+        <action id="submit">
+            <title translatable="true">Submit</title>
+            <command type="callFunction" functionName="ascBjUsmsProcAsgnCreateReqBasicInputTabController.onSubmit()"/>
+        </action>
+        
+        <field name="activity_log_id" table="activity_log" hidden="false" readOnly="true">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field table="activity_log" name="requestor"  value="${user.name}"  readOnly="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.requestor"
+                 selectFieldNames="em.em_id"
+                 visibleFieldNames="em.em_id,em.name,em.sex,em.dv_id"></command>
+            </action>
+        </field>
+        <field table="activity_log" name="phone_requestor" showSelectValueAction="false" value="${user.employee.phone}"/>
+        <field name="dv_id" table="activity_log" value="${user.employee.organization.divisionId}"  readOnly="true">
+            <title translatable="true">ShengQingDanWei</title>
+        </field>
+        <field name="date_required" table="activity_log" hidden="true"/>
+     	<field name="rtr_dip_id" table="activity_log">
+     		<title translatable="true">Return Dispose Id</title>
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.rtr_dip_id"
+                 selectFieldNames="return_dispose.rtr_dip_id"
+                 visibleFieldNames="return_dispose.rtr_dip_id,return_dispose.dv_id,return_dispose.total_price"
+                 restriction="dv_id='${user.employee.organization.divisionId}' and (audit_status='0' or audit_status='2') and data_type = '1'"
+                 actionListener="afterSelectRtrDipId"></command>
+            </action>
+     	
+     	</field>
+    </panel>
+    
+    <panel type="form" columns="1" id="ascBjUsmsProcAsgnCreateReqBasicInputTabDestricptionForm" formLabelWidth="25" dataSource="ascBjUsmsProcAsgnCreateReqBasicInputTabFormDS" newRecord="true">
+        
+        <title translatable="true">Description</title>
+        
+        <field name="activity_type" table="activity_log" hidden="true"/>
+      
+        <field name="prob_type" table="activity_log" readOnly="true" required="true">
+            <title translatable="true">Request Type</title>
+        </field>
+        
+        <field table="activity_log" name="description"
+         colspan="4"  style="width: 100%; height: 80px;"
+         showSelectValueAction="false">
+            <title translatable="true">BeiZhu</title>
+         </field>
+    </panel>
+   
+    <dataSource id="dispose_DS">
+    	<table name="return_dispose" role="main"/>
+    	<field table="return_dispose" name="rtr_dip_id" hidden="true"/>
+        <field table="return_dispose" name="date_request"/>
+        <field table="return_dispose" name="request_by"/>
+        <field table="return_dispose" name="dv_id" readOnly="true"/>
+        <field table="return_dispose" name="data_type" hidden="true"/>
+        <field table="return_dispose" name="description"/>
+        <field table="return_dispose" name="audit_status" hidden="true"/>
+    </dataSource>
+
+    <dataSource id="eq_change_DS">
+    	<table name="eq_change" role="main"/>
+    	<field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id" hidden="true"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="eq_std"/>
+        <field table="eq_change" name="em_id_old"/>
+        <field table="eq_change" name="bl_id_old"/>
+        <field table="eq_change" name="fl_id_old"/>
+        <field table="eq_change" name="rm_id_old"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="bl_id"/>
+        <field table="eq_change" name="fl_id"/>
+        <field table="eq_change" name="rm_id"/>
+        <field table="eq_change" name="em_id"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq_change" name="dv_id"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="date_change"/>
+        <field table="eq_change" name="operator"/>
+        <field table="eq_change" name="comments"/>
+        <field table="eq_change" name="type_adjust"/>
+        <field table="eq_change" name="status"/>
+        <field table="eq_change" name="date_appraisal"/>
+        <field table="eq_change" name="cost_old"/>
+        <field table="eq_change" name="cost"/>
+        <field table="eq_change" name="audit_status"/>
+        <field table="eq_change" name="check_status"/>
+        <field table="eq_change" name="person_appraisal"/>
+        <field table="eq_change" name="appraisal_option"/>
+        <field table="eq_change" name="change_reason"/>
+    </dataSource>
+    
+    <panel type="form" id="returnDisposePanel" dataSource="dispose_DS"  showOnLoad="false" columns="2">
+		<title translatable="true">dispose info</title>
+    </panel>
+    
+    <panel type="grid" id="eqChangePanel" dataSource="eq_change_DS" showOnLoad="false" >
+		<title translatable="true">eq change list</title>
+    </panel>
+    
+
+</view>

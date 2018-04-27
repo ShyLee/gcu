@@ -1,0 +1,83 @@
+<view version="2.0">
+    
+    <js file="asc-bj-usms-eq-entry-select-tab.js"/>
+    
+    <dataSource id="ascBjUsmsProcAsgnAsgnReqSelectTabDS">
+        <table name="activity_log" role="main"/>
+        <table name="em" role="standard"/>
+        
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="name" table="em"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        
+        <parameter name="activityType" dataType="text" value=""/>
+        <parameter name="probType" dataType="text" value=""/>
+        <parameter name="status" dataType="text" value=""/>
+        
+        <restriction type="sql" sql="activity_log.status= ${parameters['status']} AND activity_log.activity_type= ${parameters['activityType']} AND activity_log.prob_type= ${parameters['probType']}"/>
+    </dataSource> 
+    <panel type="console" columns="3" id="ascBjUsmsProcAsgnApproveReqSelectTabConsole"  dataSource="ascBjUsmsProcAsgnAsgnReqSelectTabDS">
+        <title translatable="true">Filter</title>
+        
+        <action id="filter">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+        
+        <field table="activity_log" name="date_requested" readOnly="false" alias="activity_log.date_requested.from" required="false" op="&gt;=">
+            <title translatable="true">Date Requested From</title>
+        </field>
+        <field table="activity_log" name="date_requested" readOnly="false" alias="activity_log.date_requested.to" required="false" op="&lt;=">
+            <title translatable="true">Date Requested To</title>
+        </field>
+    </panel>
+    
+    <panel type="grid" id="ascBjUsmsProcAsgnAsgnReqSelectTabGrid" showOnLoad="false" controlType="reportGrid" dataSource="ascBjUsmsProcAsgnAsgnReqSelectTabDS">
+        <title translatable="true">Requests</title>
+        
+        <sortField table="activity_log" name="activity_log_id" ascending="false"/>
+        
+        <field controlType="button">
+            <title translatable="true">Select</title>
+            <command type="callFunction" functionName="selectNextTab"/>
+        </field>
+        <field name="activity_log_id" table="activity_log" width="100">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log">
+            <title translatable="true">Request Type</title>
+        </field>
+        <field name="requestor" table="activity_log"  hidden="true"/>
+        <field name="name" table="em">
+            <title translatable="true">ShenQingRen</title>
+        </field>
+        <field name="status" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+    </panel>
+    <panel type="grid" id="ascBjUsmsProcAsgnComletedListPanel" dataSource="ascBjUsmsProcAsgnAsgnReqSelectTabDS" controlType="reportGrid">
+        <title translatable="true">Completed List</title>
+        <field name="activity_log_id" table="activity_log" width="100">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log">
+            <title translatable="true">Request Type</title>
+        </field>
+        <field name="requestor" table="activity_log"  hidden="true"/>
+        <field name="name" table="em">
+            <title translatable="true">ShenQingRen</title>
+        </field>
+        <field name="status" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+    </panel>
+</view>

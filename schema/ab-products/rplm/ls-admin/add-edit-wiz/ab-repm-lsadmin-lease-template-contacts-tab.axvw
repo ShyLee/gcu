@@ -1,0 +1,190 @@
+<view version="2.0">
+	<js file="ab-repm-lsadmin-lease-template-contacts-tab.js"/>
+	<message name="confirm_delete_contact" translatable="true">Are you sure you want to remove this contact?</message>
+	<message name="error_delete" translatable="true">Could not delete selected contact.</message>
+	<message name="title_add_contact" translatable="true">Add New Contact</message>
+	<message name="title_edit_contact" translatable="true">Edit contact</message>
+	<layout type="borderLayout" id="contactLayout">
+		<north split="false"/>
+		<west split="true" initialSize="25%"/>
+		<center autoScroll="true"/>
+	</layout>
+	
+	<panel type="html" id="panelContactAction" layout="contactLayout" >
+       <action id="finish">
+	        <title translatable="true">Finish</title>
+			<command type="callFunction" functionName="View.getOpenerView().controllers.get('abRplmLsAdminAddEditLeaseTemplate_ctrl').finishWizard()"/>
+        </action>
+	</panel>
+	<dataSource id="dsTreeContactsType" type="grouping">
+		<table name="contact"/>
+		<field table="contact" name="contact_type" groupBy="true"/>
+		<sortField table="contact" name="contact_type" ascending="true"/>
+	</dataSource>
+	<dataSource id="dsTreeContacts">
+		<table name="contact"/>
+		<field table="contact" name="contact_id"/>
+		<field table="contact" name="contact_type"/>
+		<field table="contact" name="company"/>
+		<sortField table="contact" name="contact_id" ascending="true"/>
+	</dataSource>
+	
+	<panel type="tree" id="abRplmLeaseTemplateContactsTab_contactTypeTree" dataSource="dsTreeContactsType" showOnLoad="false" region="west">
+        <title translatable="true">Contacts List</title>
+		<action id="new">
+	        <title translatable="true">Add New Contact</title>
+			<command type="openDialog" panelId="formAddEditContact" newRecord="true"/>
+			<command type="callFunction" functionName="View.panels.get('formAddEditContact').setTitle(getMessage('title_add_contact'))"/>
+        </action>
+		
+        <panel type="tree" id="abRplmLeaseTemplateContactsTab_contactsTree" dataSource="dsTreeContacts">
+            <event type="onClickNode">
+            	<command type="showPanel" panelId="formContactDetails"/>
+            </event>
+        </panel>
+    </panel>
+    
+	
+	
+	<dataSource id="dsContactDetails">
+		<table name="contact"/>
+		<field table="contact" name="contact_id" readOnly="true"/>
+		<field table="contact" name="contact_type" readOnly="true"/>
+		<field table="contact" name="company" readOnly="true"/>
+		<field table="contact" name="city_id" readOnly="true"/>
+		<field table="contact" name="honorific" readOnly="true"/>
+		<field table="contact" name="state_id" readOnly="true"/>
+		<field table="contact" name="name_last" readOnly="true"/>
+		<field table="contact" name="zip" readOnly="true"/>
+		<field table="contact" name="name_first" readOnly="true"/>
+		<field table="contact" name="address1" readOnly="true"/>
+		<field table="contact" name="regn_id" readOnly="true"/>
+		<field table="contact" name="address2" readOnly="true"/>
+		<field table="contact" name="ctry_id" readOnly="true"/>
+		<field table="contact" name="phone" readOnly="true"/>
+		<field table="contact" name="cellular_number" readOnly="true"/>
+		<field table="contact" name="fax" readOnly="true"/>
+		<field table="contact" name="pager" readOnly="true"/>
+		<field table="contact" name="email" readOnly="true"/>
+		<field table="contact" name="status" readOnly="true"/>
+		<field table="contact" name="notes" readOnly="true"/>
+	</dataSource>
+	<panel type="form" id="formContactDetails" layout="contactLayout" region="center" showOnLoad="false" dataSource="dsContactDetails" columns="2">
+		<title translatable="true">Contact Details</title>
+       <action id="edit">
+	        <title translatable="true">Edit</title>
+			<command type="openDialog" panelId="formAddEditContact" applyParentRestriction="true"/>
+			<command type="callFunction" functionName="View.panels.get('formAddEditContact').setTitle(getMessage('title_edit_contact'))"/>
+        </action>
+       <action id="delete">
+	        <title translatable="true">Delete</title>
+        </action>
+       	<field table="contact" name="contact_id" readOnly="true"/>
+		<field table="contact" name="contact_type" readOnly="true"/>
+		<field table="contact" name="company" readOnly="true"/>
+		<field table="contact" name="city_id" readOnly="true"/>
+		<field table="contact" name="honorific" readOnly="true"/>
+		<field table="contact" name="state_id" readOnly="true"/>
+		<field table="contact" name="name_last" readOnly="true"/>
+		<field table="contact" name="zip" readOnly="true"/>
+		<field table="contact" name="name_first" readOnly="true"/>
+		<field table="contact" name="address1" readOnly="true"/>
+		<field table="contact" name="regn_id" readOnly="true"/>
+		<field table="contact" name="address2" readOnly="true"/>
+		<field table="contact" name="ctry_id" readOnly="true"/>
+		<field table="contact" name="phone" readOnly="true"/>
+		<field table="contact" name="cellular_number" readOnly="true"/>
+		<field table="contact" name="fax" readOnly="true"/>
+		<field table="contact" name="pager" readOnly="true"/>
+		<field table="contact" name="email" readOnly="true"/>
+		<field table="contact" name="notes" readOnly="true"/>
+		<field table="contact" name="status" readOnly="true"/>
+	</panel>
+	
+	<dataSource id="dsAddEditContact">
+		<table name="contact" role="main"/>
+		<field table="contact" name="contact_id"/>
+		<field table="contact" name="contact_type"/>
+		<field table="contact" name="company"/>
+		<field table="contact" name="city_id"/>
+		<field table="contact" name="honorific"/>
+		<field table="contact" name="state_id"/>
+		<field table="contact" name="name_last"/>
+		<field table="contact" name="zip"/>
+		<field table="contact" name="regn_id"/>
+		<field table="contact" name="name_first"/>
+		<field table="contact" name="county_id"/>
+		<field table="contact" name="address1"/>
+		<field table="contact" name="address2"/>
+		<field table="contact" name="ctry_id"/>
+		<field table="contact" name="phone"/>
+		<field table="contact" name="cellular_number"/>
+		<field table="contact" name="fax"/>
+		<field table="contact" name="pager"/>
+		<field table="contact" name="email"/>
+		<field table="contact" name="status"/>
+		<field table="contact" name="notes"/>
+		<field table="contact" name="bl_id"/>
+		<field table="contact" name="ls_id"/>
+		<field table="contact" name="pr_id"/>
+	</dataSource>
+	<panel type="form" id="formAddEditContact" dataSource="dsAddEditContact" showOnLoad="false" columns="2">
+		<action id="save">
+			<title translatable="true">Save</title>
+			<command type="callFunction" functionName="saveContact"/>
+			<command type="closeDialog"/>
+		</action>
+		<action id="close">
+			<title translatable="true">Close</title>
+			<command type="closeDialog"/>
+		</action>
+		
+		<field table="contact" name="contact_id"/>
+		<field table="contact" name="company">
+			<title translatable="true">Company</title>
+			<action id="formAddEditContact_company">
+				<title translatable="false">...</title>
+				<tooltip translatable="true">Select Value</tooltip>
+				<command 
+					type="selectValue"
+					fieldNames="contact.company"
+					selectFieldNames="company.company"
+					visibleFieldNames="company.company,company.comments"
+					applyFilter="false"
+					actionListener="afterSelectCompany">
+				</command>
+			</action>	
+		</field>
+		<field table="contact" name="name_first"/>
+		<field table="contact" name="honorific"/>
+		<field table="contact" name="name_last"/>
+		<field table="contact" name="email"/>
+		<field table="contact" name="address1"/>
+		<field table="contact" name="phone"/>
+		<field table="contact" name="address2"/>
+		<field table="contact" name="cellular_number"/>
+		<field table="contact" name="city_id"/>
+		<field table="contact" name="fax"/>
+		<field table="contact" name="state_id"/>
+		<field table="contact" name="pager"/>
+		<field table="contact" name="zip"/>
+		<field table="contact" name="regn_id"/>
+		<field table="contact" name="contact_type"/>
+		<field table="contact" name="ctry_id"/>
+		<field table="contact" name="status"/>
+		<field table="contact" name="ls_id" readOnly="true"/>
+		<field table="contact" name="notes" colspan="2"/>
+	</panel>
+	
+	<dataSource id="abRplmLeaseTemplateContactsTab_dsCompany">
+		<table name="company" role="main"/>
+		<field table="company" name="company"/>
+		<field table="company" name="address1"/>
+		<field table="company" name="address2"/>
+		<field table="company" name="city_id"/>
+		<field table="company" name="ctry_id"/>
+		<field table="company" name="regn_id"/>
+		<field table="company" name="state_id"/>
+		<field table="company" name="zip"/>
+	</dataSource>
+</view>

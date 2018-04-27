@@ -1,0 +1,89 @@
+<view version="2.0">
+	<!-- Layout -->
+	<layout type="borderLayout" id="mainLayout">
+    <west initialSize="60%" split="true"/>
+    <center autoScroll="true"/>
+  </layout>
+	<message name="noRecords" translatable="true">No employee contacts records.</message>
+	<title translatable="true">Emergency Contacts</title>
+	
+	<!-- DataSource for contact -->
+	<dataSource id="ds_ab-em-contacts_grid_contact">
+		<table name="contact" role="main" />
+
+		<field name="contact_id" table="contact" />
+		<field name="contact_type" table="contact" />
+		<field name="name_first" table="contact" />
+		<field name="name_last" table="contact" />
+		<field name="phone" table="contact" />
+		<field name="email" table="contact" />
+		<field name="pager" table="contact" />
+		<field name="company" table="contact" />
+		<field name="city_id" table="contact" />
+		<field name="state_id" table="contact" />
+		<field name="bl_id" table="contact" />
+		<field name="notes" table="contact" />
+
+		<restriction type="parsed">
+   			<clause table="contact" name="contact_type" op="IN" value="FIRE AND SAFETY,OWNER,LANDLORD,BLDG SUPER,HAZMAT"/>
+		</restriction>
+	</dataSource>
+ 
+ 	<!-- Tree Panel -->
+	<panel type="grid" id="abEmContacts_tree_contact" dataSource="ds_ab-em-contacts_grid_contact" layout="mainLayout" region="west">
+		<title translatable="true">Contacts List</title>
+		<field name="contact_type" table="contact" controlType="link">
+			<command type="showPanel" panelId="abEmContacts_report_contact" />
+		</field>
+		<field name="contact_id" table="contact" controlType="link">
+			<command type="showPanel" panelId="abEmContacts_report_contact" />
+		</field>		
+		<field name="company" table="contact" controlType="link">
+			<command type="showPanel" panelId="abEmContacts_report_contact" />
+		</field>
+		<field name="name_first" table="contact" controlType="link">
+			<command type="showPanel" panelId="abEmContacts_report_contact" />
+		</field>
+		<field name="name_last" table="contact" controlType="link">
+			<command type="showPanel" panelId="abEmContacts_report_contact" />
+		</field>
+		<field name="ctry_id" table="contact" hidden="true" />
+		<field name="state_id" table="contact" hidden="true" />
+		<field name="city_id" table="contact" hidden="true" />
+		<field name="phone" table="contact" hidden="true" />
+		<field name="email" table="contact" hidden="true" />
+		<field name="pager" table="contact" hidden="true" />		
+		<field name="bl_id" table="contact" hidden="true" />
+		<field name="notes" table="contact" hidden="true" />
+		
+		<sortField table="contact" name="contact_type" ascending="true" />
+		<sortField table="contact" name="company" ascending="true" />
+		<sortField table="contact" name="name_last" ascending="true" />
+		<sortField table="contact" name="name_first" ascending="true" />
+	</panel>
+
+	<!-- Grid Report -->
+	<panel type="columnReport" id="abEmContacts_report_contact" dataSource="ds_ab-em-contacts_grid_contact" layout="mainLayout" region="center" showOnLoad="false">
+		<title translatable="true">Contact Details</title>   
+		
+		<action id="paginatedReport">
+            <title translatable="true">DOCX</title>
+        </action>
+
+		<field name="contact_id" table="contact" />
+		<field name="contact_type" table="contact" />
+		<field name="name_first" table="contact" />
+		<field name="name_last" table="contact" />
+		<field name="phone" table="contact" />
+		<field name="email" table="contact" />
+		<field name="pager" table="contact" />
+		<field name="company" table="contact" />
+		<field name="city_id" table="contact" />
+		<field name="state_id" table="contact" />
+		<field name="bl_id" table="contact" />
+		<field name="notes" table="contact" />
+				
+	</panel>
+	
+	<js file="ab-em-contacts.js"/>
+</view>

@@ -1,0 +1,100 @@
+<view version="2.0">
+    <title translatable="true">View Room Category Summary and Room Inventory</title>
+    
+    <layout id="main">
+        <north id="blRptPosition" initialSize="50%" split="true"/>
+        <center id="rmRptPosition" />
+    </layout>
+	
+	<message name="total" translatable="true">Total</message>
+	<message name="secondPanelTitle" translatable="true">Rooms Category : {0}</message>
+	<message name="bottomPanelTitle" translatable="true">Jian Zhu Wu : {0}</message>
+   
+	
+	<!-- datasource for rmcat-bl report-->
+    <dataSource id="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmtype" type="grouping">
+		<table name="rm" role="main" />
+		<table name="bl" role="standard" />
+		<table name="rmcat" role="standard"/>
+		<table name="rmtype" role="standard"/>
+		
+		<field table="rm" name="rm_cat" groupBy="true" controlType="link" hidden="true">
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field table="rmcat" name="rm_cat" groupBy="true" controlType="link">
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field table="rm" name="rm_type" groupBy="true" controlType="link" hidden="true">
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+        
+        <field table="rmtype" name="rmtype_name" groupBy="true" controlType="link">
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+		
+		<field table="bl" name="gongtanlv" groupBy="true" hidden="true"/>
+		
+		<!--building name-->
+		<field table="bl" name="bl_id" groupBy="true" controlType="link">
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+        </field>
+		
+		<field name="count_rm" formula="COUNT" dataType="number" 
+			baseField="rm.rm_id" decimals="0" controlType="link">
+			<title translatable="true">Room Count</title>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		
+		<field name="total_area_shiyong" formula="SUM" dataType="number" 
+			baseField="rm.area" decimals="2" controlType="link">
+			<title translatable="true">Total Usable Area</title>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		
+		<!--jianzhu area-->
+		<field name="total_area_jianzhu" dataType="number" decimals="2" controlType="link">
+			<title translatable="true">Total Structure Area</title>
+			<sql dialect="generic">
+				CASE WHEN bl.gongtanlv =1 THEN 0 ELSE sum(rm.area)/(1-bl.gongtanlv) END
+            </sql>
+			<command type="callFunction" functionName="onRefreshBottomReport"/>
+		</field>
+		
+		<sortField name="bl_id" table="bl" ascending="true" />
+	</dataSource>
+	
+	<!-- dataSource for room panel -->
+    <dataSource id="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rm">
+        <table name="rm" role="main"/>
+		<table name="bl" role="standard"/>
+		
+		<field table="rm" name="bl_id"/>
+		<field table="bl" name="name"/>
+        <field table="rm" name="fl_id"/>
+		<field table="rm" name="rm_id"/>
+		<field table="rm" name="area"/>
+		<field table="rm" name="name"/>
+		<field table="rm" name="dv_id"/>
+		<field table="rm" name="rm_cat"/>
+    </dataSource>
+	
+	
+    <panel type="grid" id="abScRptRmbyBlRmcat_blSumGrid" dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rmtype" showOnLoad="true" layoutRegion="blRptPosition">
+        <title translatable="true">Rooms Category</title>
+    </panel>
+    
+	<panel type="grid" id="abScRptRmbyBlRmcat_rmGrid" dataSource="ds_ab-sc-rpt-rm-by-bl-rmcat_grid_rm" showOnLoad="false" layoutRegion="rmRptPosition">
+        <title translatable="true">Jian Zhu Wu</title>
+		<field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+		<field table="rm" name="rm_id"/>
+		<field table="rm" name="area"/>
+		<field table="rm" name="name"/>
+		<field table="rm" name="dv_id"/>
+    </panel>
+	
+    
+    <js file="asc-bj-usms-dash-rm-stat-by-type-bl-dialog.js"/>
+</view>

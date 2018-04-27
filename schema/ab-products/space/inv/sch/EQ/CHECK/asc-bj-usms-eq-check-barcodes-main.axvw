@@ -1,0 +1,121 @@
+<view version="2.0">
+	<title>EQ List</title>
+    <layout id="mainCenter"  >
+        <north id="consoleL" initialSize="120" split="true"/>
+        <center id="center" />
+    </layout>
+  	<dataSource id="eqDS">
+    	<table name="eq" role="main"/>
+    	<table name="bl" role="standard"/>
+    	<table name="dv" role="standard"/>
+    	<table name="dp" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="date_in_service"/>
+        <field table="eq" name="is_label"/>
+        <sortField table="eq" name="eq_id"/>
+        <restriction type="sql" sql="(eq.sch_status!='5' and eq.sch_status!='6' and  eq.sch_status!='7' and  eq.sch_status!='C' and eq.sch_status!='D') and (add_eq_id is null or add_eq_id in (select add_eq_id from add_eq where add_eq.status='4'))"/>
+    </dataSource>
+    
+    
+    <panel type ="console" id="consolePanel" dataSource="eqDS" columns="3" layout="mainCenter" region="north">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="consolePanel"/>
+        </action>
+        <field table="eq" name="bl_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.bl_id"
+                    selectFieldNames="bl.bl_id" 
+                    visibleFieldNames="bl.bl_id" 
+                    
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.dv_id,dv.dv_name"
+                    selectFieldNames="dv.dv_id,dv.dv_name" 
+                    visibleFieldNames="dv.dv_id,dv.dv_name"                    
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="eq_id">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.eq_id,eq.eq_name"
+                    selectFieldNames="eq.eq_id,eq.eq_name" 
+                    visibleFieldNames="eq.eq_id,eq.eq_name" 
+                    showIndex="false"/>
+            </action>
+        </field>    
+        <field table="eq" name="eq_name">
+            <action>
+                <title>...</title>
+                <command type="selectValue" 
+                    fieldNames="eq.eq_id,eq.eq_name"
+                    selectFieldNames="eq.eq_id,eq.eq_name" 
+                    visibleFieldNames="eq.eq_id,eq.eq_name" 
+                    showIndex="false"/>
+            </action>
+        </field>
+        <field table="eq" name="is_label"/>
+        <field table="eq" name="date_in_service" alias="eq.dateServiceFrom" required="false">
+             <title translatable="true">From</title>
+        </field>
+        <field table="eq" name="date_in_service" alias="eq.dateServiceTo" required="false">
+             <title translatable="true">To</title>
+        </field>
+    </panel>
+    
+    
+  <panel id="eqPanel" type="grid" dataSource="eqDS" multipleSelectionEnabled="false" layout="mainCenter" region="center">
+        <title translatable="true">Equipment List</title> 
+        <indexField table="eq" name="eq_id" /> 
+        <action id="btnExport">
+            <title>Export</title>
+        </action>
+        <!-- <action id="printBarCodes">
+        	<title>Print</title>
+        </action>
+        <action id="changeStatus">
+        	<title>Change Label Status</title>
+        </action>  -->  
+     	<field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="dp_id" hidden="true"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="is_label"/>
+        <field table="eq" name="date_in_service"/>
+    </panel>
+    <js file="asc-bj-usms-eq-check-barcodes-main.js"/>
+</view>

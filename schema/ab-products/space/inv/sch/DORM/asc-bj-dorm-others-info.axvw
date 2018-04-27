@@ -1,0 +1,341 @@
+<view version="2.0">
+
+	<layout type="borderLayout" id="mainLayout">
+		<north id="filterPosition" initialSize="80" split="true" />
+		<west id="westPosition" initialSize="25%" split="true" />
+		<center />
+	</layout>
+	<layout type="borderLayout" id="westLayout" containingLayout="mainLayout" region="west">
+		<north id="nwPosition" initialSize="45%" split="true"/>
+		<center/>
+	</layout>
+
+	<layout type="borderLayout" id="centerLayout" containingLayout="mainLayout" region="center">
+		<center id="ncWestPosition"   />
+		<east id="legendPosition" initialSize="20%"  split="true"/>
+		<south id="assignPosition" split="true" initialSize="30%" />
+	</layout>
+
+	<message name="countOver" translatable="true">Employee Count will exceed Employee Capacity, Do you wish to continue?</message>
+    <message name="selectFloor" translatable="true">Please select a floor</message>
+    <message name="selectEm" translatable="true">Please select a man</message>
+    <message name="selectRm" translatable="true">Select a room to assign selected employees to</message>
+    <message name="selectAnotherEm" translatable="true">Please select Students</message>
+    <message name="saving" translatable="true">Saving changes...</message>
+    <message name="confirmMessage" translatable="true">Are you sure you want to unassign the selected employees?</message>
+    <message name="noEmSelected" translatable="true">Please make selection first</message>
+    <message name="legendLevel1" translatable="true">Non-Occupiable</message>
+    <message name="legendLevel2" translatable="true">Vacant</message>
+    <message name="legendLevel3" translatable="true">Available</message>
+    <message name="legendLevel4" translatable="true">At Capacity</message>
+    <message name="legendLevel5" translatable="true">Exceeds Capacity</message>
+	<title translatable="true">Others Info</title>
+
+	<dataSource id="sc_other_ds">
+		<table name="sc_stu_other" role="main" />
+		<table name="bl" role="standard" />
+		<field table="sc_stu_other" name="id"/>
+		<field table="sc_stu_other" name="identi_code"/>
+		<field table="sc_stu_other" name="pro_name"/>
+        <field table="bl" name="name"/>
+        <field table="bl" name="bl_id"/>
+	</dataSource>
+	
+ 	<dataSource id="sc_other_save_ds">
+		<table name="sc_stu_other" role="main" />
+		<field table="sc_stu_other" name="id"/>
+		<field table="sc_stu_other" name="identi_code"/>
+		<field table="sc_stu_other" name="pro_name"/>
+		<field table="sc_stu_other" name="is_key"/>
+<!-- 		<field table="sc_stu_other" name="bl_id"/> -->
+<!-- 		<field table="sc_stu_other" name="fl_id"/> -->
+<!-- 		<field table="sc_stu_other" name="rm_id"/> -->
+		<field table="sc_stu_other" name="checkin_count"/>
+		<field table="sc_stu_other" name="checkin_cause"/>
+		<field table="sc_stu_other" name="date_checkin"/>
+		<field table="sc_stu_other" name="date_checkout"/>
+		<field table="sc_stu_other" name="comments"/>		
+	</dataSource> 
+	
+	<dataSource id="sc_other_list_ds">
+		<table name="sc_stu_other" role="main" />
+		<field table="sc_stu_other" name="id"/>
+		<field table="sc_stu_other" name="identi_code"/>
+		<field table="sc_stu_other" name="pro_name"/>
+		<field table="sc_stu_other" name="is_key"/>
+<!-- 		<field table="sc_stu_other" name="bl_id"/> -->
+<!-- 		<field table="sc_stu_other" name="fl_id"/> -->
+<!-- 		<field table="sc_stu_other" name="rm_id"/> -->
+		<field table="sc_stu_other" name="checkin_count"/>
+		<field table="sc_stu_other" name="checkin_cause"/>
+		<field table="sc_stu_other" name="date_checkin"/>
+		<field table="sc_stu_other" name="date_checkout"/>
+		<field table="sc_stu_other" name="comments"/>
+		<restriction type="sql" sql=" not exists(select other_id from sc_stu_other_log where sc_stu_other_log.other_id =sc_stu_other.id)"/>
+	</dataSource>
+	
+	<dataSource id="sc_other_bl_tree_ds">
+        <table name="bl" role="main"/>
+        <field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name"/>
+        <parameter name="blId" dataType="verbatim" value="1=1"/>
+		<restriction type="sql" sql="${parameters['blId']}  and EXISTS (SELECT 1 FROM rm left join rmcat on rmcat.rm_cat=rm.rm_cat WHERE rm.dwgname IS NOT NULL  AND rm.bl_id=bl.bl_id and rmcat.supercat!='VERT' and rmcat.rm_cat='301')"/>
+        <sortField table="bl" name="bl_id" ascending="true"/>
+    </dataSource>
+    
+<!--     楼层树 数据源 -->
+    <dataSource id="sc_other_fl_tree_ds">
+<!--        <sql dialect="generic"> -->
+<!--        SELECT -->
+<!--             rm.bl_id ${sql.as} bl_id, -->
+<!--             rm.fl_id ${sql.as} fl_id, -->
+<!--             rm.dwgname ${sql.as} dwgname -->
+<!--             FROM rm left join rmcat on rmcat.rm_cat=rm.rm_cat WHERE rm.dwgname IS NOT NULL   and rmcat.supercat!='VERT' GROUP BY rm.bl_id,rm.fl_id,rm.dwgname -->
+<!--         </sql> -->
+       <sql dialect="generic">
+       select rm.bl_id,rm.fl_id,rm.dwgname 
+       		from rm 
+       		where rm_cat='301' and rm.dwgname IS NOT NULL and (rm_type='30101' or rm_type='30105') and NOT EXISTS
+           (select bl_id||'-'||fl_id||'-'||rm_id from  sc_student s  where rm.bl_id=s.bl_id and rm.fl_id=s.fl_id and rm.rm_id=s.rm_id and s.bl_id is not null and s.fl_id is not null and s.rm_id is not null 
+             union
+           select bl_id||'-'||fl_id||'-'||rm_id from  em where rm.bl_id=em.bl_id and rm.fl_id=em.fl_id and rm.rm_id=em.rm_id and em.bl_id is not null and em.fl_id is not null and em.rm_id is not null) GROUP BY rm.bl_id,rm.fl_id,rm.dwgname
+        </sql>
+        <table name="fl" role="main"/>
+        <field name="fl_id"/>
+        <field name="dwgname" hidden="true"/>
+        <sortField table="fl" name="fl_id" ascending="true"/>
+    </dataSource>
+    
+<!--     高亮图纸数据源 -->
+    <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmHighlight" >
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="sc_stu_other_log" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="dwgname"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rmcat" name="occupiable"/>
+        <field table="rmcat" name="used_in_calcs"/>
+        <field table="rm" name="legend_level" dataType="String" legendKey="true">
+            <sql dialect="generic">
+	        CASE 
+				WHEN rmcat.occupiable = 0 THEN '1'
+				WHEN ( SELECT COUNT(*) FROM sc_stu_other_log WHERE sc_stu_other_log.bl_id = rm.bl_id AND sc_stu_other_log.fl_id = rm.fl_id AND sc_stu_other_log.rm_id = rm.rm_id ) =0 THEN '2'
+				WHEN ( SELECT COUNT(*) FROM sc_stu_other_log WHERE sc_stu_other_log.bl_id = rm.bl_id AND sc_stu_other_log.fl_id = rm.fl_id AND sc_stu_other_log.rm_id = rm.rm_id  ) =1 THEN '3'
+				WHEN ( SELECT COUNT(*) FROM sc_stu_other_log WHERE sc_stu_other_log.bl_id = rm.bl_id AND sc_stu_other_log.fl_id = rm.fl_id AND sc_stu_other_log.rm_id = rm.rm_id  ) &gt;1 THEN '4'
+			END
+            </sql>
+        </field>
+       <!--  <restriction type="sql" sql=" rm_cat='301' and (rm_type='30105' or rm_type='30101')"/> -->
+        <restriction type="sql" sql="(rm_type='30105' or rm_type='30101') and  NOT EXISTS
+(select bl_id||'-'||fl_id||'-'||rm_id from  sc_student s where rm.bl_id=s.bl_id and rm.fl_id=s.fl_id and rm.rm_id=s.rm_id and s.bl_id is not null and s.fl_id is not null and s.rm_id is not null 
+     union
+   select bl_id||'-'||fl_id||'-'||rm_id from  em where rm.bl_id=em.bl_id and rm.fl_id=em.fl_id and rm.rm_id=em.rm_id and em.bl_id is not null and em.fl_id is not null and em.rm_id is not null
+)"/>
+    </dataSource>    
+    
+     <dataSource id="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmLabel" >
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="dwgname" hidden="true"/>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id" hidden="true"/>
+        <field table="rm" name="rm_id"/>
+        <field table="dv" name="name"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em" dataType="integer">
+            <sql dialect="generic">
+			 ( SELECT COUNT(*) FROM sc_stu_other_log WHERE sc_stu_other_log.bl_id = rm.bl_id AND sc_stu_other_log.fl_id = rm.fl_id AND sc_stu_other_log.rm_id = rm.rm_id ) 
+            </sql>
+		</field>
+        <field table="rm" name="stu_names" dataType="string">
+            <sql dialect="generic">
+			 ( SELECT LISTAGG(pro_name, ',') WITHIN GROUP(ORDER BY pro_name) FROM sc_stu_other_log WHERE sc_stu_other_log.bl_id = rm.bl_id AND sc_stu_other_log.fl_id = rm.fl_id AND sc_stu_other_log.rm_id = rm.rm_id group by rm.bl_id, rm.fl_id, rm.rm_id ) 
+            </sql>
+		</field>
+        <field table="rmcat" name="rmcat_name" hidden="true"/>
+        <field table="rmtype" name="rmtype_name"/>
+    </dataSource>
+     <dataSource id="ds_ab-sp-asgn-rmcat-to-rm_legend" distinct="true">
+        <table name="rm" role="main"/>
+    </dataSource>
+    
+    <dataSource id="sc_other_rm_ds" >
+        <table name="rm" role="main"/>
+        <table name="rmcat" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="count_key"/>
+        <field table="rm" name="area"/>
+        <field table="rm" name="cap_em"/>
+        <field table="rm" name="count_em"/>
+        <field table="rmcat" name="occupiable"/>
+        <field table="rmcat" name="supercat"/>
+    </dataSource>
+    
+     <!--分配信息  数据源-->      
+     <dataSource id="sc_other_assign_ds">
+        <table name="sc_stu_other_log" role="main"/>
+        <field table="sc_stu_other_log" name="id"/>
+        <field table="sc_stu_other_log" name="other_id"/>
+        <field table="sc_stu_other_log" name="identi_code"/>
+		<field table="sc_stu_other_log" name="pro_name"/>
+        <field table="sc_stu_other_log" name="bl_id"/>
+        <field table="sc_stu_other_log" name="fl_id"/>
+        <field table="sc_stu_other_log" name="is_key"/>
+        <field table="sc_stu_other_log" name="rm_id"/>
+        <field table="sc_stu_other_log" name="date_checkin"/>
+        <field table="sc_stu_other_log" name="date_checkout"/>
+        <field table="sc_stu_other_log" name="cap_em"/>
+        <field table="sc_stu_other_log" name="mark"/>
+        <restriction type="sql" sql=" sc_stu_other_log.identi_code IS NOT NULL"/>
+    </dataSource>
+    
+    <panel type="console" id="consolePanel" columns="3" dataSource="sc_other_ds" layout="mainLayout"  region="north" >
+    	<title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+        <action id="allocated">
+			<title translatable="true">YiFenPeiXinXi</title>
+		</action>
+		<field table="bl" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" >
+        	<title translatable="true">Sushelou</title>
+			<action>
+			<title translatable="true">...</title>
+			<command type="selectValue" 
+			         fieldNames="bl.bl_id,bl.name"
+				     selectFieldNames="bl.bl_id,bl.name" 
+				     visibleFieldNames="bl.bl_id,bl.name"
+					 restriction="bl.bl_id in(select bl_id from rm where rm.rm_cat='301')">
+			</command>
+			</action>
+        </field>
+		<field table="sc_stu_other" name="identi_code"/>
+		<field table="sc_stu_other" name="pro_name"/>
+    </panel>
+
+	   
+    <panel type="tree" id="scOtherBlTreePanel" dataSource="sc_other_bl_tree_ds"  layoutRegion="nwPosition">
+        <title translatable="true">Select Floor</title>
+        <panel type="tree" id="scOtherFlTreePanel" dataSource="sc_other_fl_tree_ds">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="onFlTreeClick"/>
+            </event>
+        </panel>
+    </panel>
+<!--     左边外来人员列表 -->
+    <panel type="grid" id="scOtherGridPanel"  dataSource="sc_other_list_ds"  multipleSelectionEnabled="true"   layout="westLayout" region="center">
+    	<title translatable="true">Other List</title>
+    	<action id="add">
+    		<title translatable="true">Add New</title>
+    	</action>
+    	<field table="sc_stu_other" name="id" hidden="true"/>
+    	<field table="sc_stu_other" name="identi_code"  controlType="link">
+			  <command type="callFunction" functionName="scStuOtherController.editOtherForm()"/>
+		</field>
+		<field table="sc_stu_other" name="pro_name"/>
+		<field table="sc_stu_other" name="checkin_count"/>
+		<field table="sc_stu_other" name="date_checkin"/>
+		<field table="sc_stu_other" name="date_checkout"/>
+    </panel>
+    
+    <panel type="form" id="scOtherFormPanel" dataSource="sc_other_list_ds" columns="1" showOnLoad="false">
+    	<title translatable="true">Add Form</title>
+    	<action id="save">
+    		<title translatable="true">Save</title>
+    		<command type="saveForm"/>
+    		<command type="showPanel" panelId="scOtherGridPanel" applyParentRestriction="false"/>	
+    		<command type="callFunction" functionName="scStuOtherController.onCloseDialog()" />	
+    	</action>
+    	<action id="delete">
+			<title translatable="true">Delete</title>
+			<command type="deleteRecord" />
+            <command type="showPanel" panelId="scOtherGridPanel" applyParentRestriction="false" />
+            <command type="callFunction" functionName="scStuOtherController.onCloseDialog()" />	
+		</action>
+    	<field table="sc_stu_other" name="id" hidden="true"/>
+		<field table="sc_stu_other" name="identi_code" required="true"/>
+		<field table="sc_stu_other" name="pro_name" required="true"/>
+		<field table="sc_stu_other" name="checkin_count" required="true"/>
+		<field table="sc_stu_other" name="checkin_cause" required="true"/>
+		<field table="sc_stu_other" name="date_checkin" required="true"/>
+		<field table="sc_stu_other" name="date_checkout" required="true"/>
+		<field table="sc_stu_other" name="comments" colspan="2"/>
+    </panel>
+<!--     图纸 -->
+    <panel type="drawing" id="scOtherDrawingPanel" layoutRegion="ncWestPosition" multiple="false" selectionMode="1" assignMode="2" showOnLoad="false" 
+     	highlightDataSource="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmHighlight"
+     	labelsDataSource="ds_ab-sp-asgn-dv-dp-to-rm_drawing_rmLabel"
+     	legendPanel="scOtherLegendGridPanel">
+        <title></title>
+     	<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="scOtherDrawingPanel"/>
+		</action>
+<!-- 		<action id="showDwg"> -->
+<!-- 			<title translatable="true">ShowDwg</title> -->
+<!-- 		</action> -->
+    </panel>
+<!--     图例panel -->
+    <panel type="grid" controlType="reportGrid" id="scOtherLegendGridPanel" dataSource="ds_ab-sp-asgn-rmcat-to-rm_legend" layoutRegion="legendPosition" showOnLoad="false">
+        <title translatable="true">Legend</title>
+        <field table="legend" name="color" controlType="color"/>
+        <field table="legend" name="value" width="80%">
+            <title translatable="true">tulifenlei</title>
+        </field>
+    </panel>
+    
+<!--     分配panel -->
+    <panel type="grid"  id="scOtherDormAssignPanel" dataSource="sc_other_assign_ds" layoutRegion="assignPosition" showOnLoad="false">
+        <title translatable="true">Assignments</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Remove All</title>
+            <command type="callFunction" functionName="removeAllAssign"/>
+        </action>
+        <field controlType="button" width="50">
+            <title translatable="true">Remove</title>
+            <command type="callFunction" functionName="removeAssignFromList"/>
+        </field>
+        <field table="sc_stu_other_log" name="other_id" hidden="true"/>
+        <field table="sc_stu_other_log" name="identi_code" width="50"/>
+        <field table="sc_stu_other_log" name="pro_name"/>
+        <field table="sc_stu_other_log" name="bl_id" width="50">
+            <title translatable="true">Assigned Bulding</title>
+        </field>
+        <field table="sc_stu_other_log" name="fl_id" width="50">
+            <title translatable="true">Assigned Floor</title>
+        </field>
+        <field table="sc_stu_other_log" name="rm_id" width="50">
+            <title translatable="true">Assigned Room</title>
+        </field>
+        <field table="sc_stu_other_log" name="cap_em" width="50">
+       		 <title translatable="true">biaozhunrenshu</title>
+        </field>
+        <field table="sc_stu_other_log" name="date_checkin" width="80"/>
+        <field table="sc_stu_other_log" name="date_checkout" width="50"/>
+    </panel>
+    <panel id="ruzhushijian" type="form" dataSource="sc_other_assign_ds" showOnLoad="false" newRecord="true">
+        <title translatable="true">ruzhushijian</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+             <command type="closeDialog" panelId="addPanel"/> 
+        </action>
+        <field table="sc_stu_other_log" name="is_key" required="true"/>
+    </panel>
+    <js file="asc-bj-dorm-others-info.js"/>
+    <js file="asc-bj-dorm-commons.js"/>
+</view>

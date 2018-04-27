@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<afmLocalizedStrings> 
+  <locale name="zh_CN"> 
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="message" key3="Are you sure you want to delete &apos;{0}&apos; ?" value="确认要删除 &apos;{0}&apos;"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="message" key3="Could not delete &apos;{0}&apos;." value="不能删除&apos;{0}&apos;。"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="message" key3="You cannot modify the Top Level node." value="您不能修改顶级节点."/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Cancel" value="取消"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Classification" value="分类"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Classifications" value="分类"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Define Classifications" value="定义分类"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/project/cond-assess/bus-proc-owner/asc-bj-usms-eq-def-class.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Cancel" value="取消"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Insurer" value="保险公司"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Insurers" value="保险公司"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Select Insurer" value="选择保险公司"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Filter" value="筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-insurer.axvw" key2="title" key3="Show" value="显示"/>
+
+
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Define Countries" value="定义国家"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Select Country" value="选择国家"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Countries" value="国家"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Cancel" value="取消"/>    
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Filter" value="筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="title" key3="Show" value="显示"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-ctry.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="message" key3="The End Date must be greater than the Start Date." value="结束日期必须大于开始日期。"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Cancel" value="取消"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Edit Insurance Policies" value="编辑保险"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Insurance Policies" value="保险"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="View and Edit Insurance Policies" value="查看和编辑保险"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Policies Id" value="保险编号"/>
+
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Filter" value="筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="validity for such insurances from" value="保险有效期从"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="to" value="到"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-policy.axvw" key2="title" key3="Show" value="显示"/>
+
+    
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Cancel" value="取消"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Select Warranty" value="选择保修单"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Warranty details" value="保修单详情"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Warranty Name" value="保修单名称"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Date Start" value="起始日期"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Define Warranty" value="定义保修单"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Show" value="显示"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Filter" value="筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Warranty Identifer" value="保修单号"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-warranty.axvw" key2="title" key3="Warranty Vendor" value="保修商家"/>
+    
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Cancel" value="取消"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Vendors" value="供货商"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="View and Edit Vendors" value="查看和编辑供应商"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Filter" value="筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Vendor identifer" value="供货商编码"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Vendor type" value="供货商类型"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="ShowFilter" value="开始筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-vn.axvw" key2="title" key3="Show" value="显示"/>
+
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="message" key3="Are you sure you want to delete '{0}' ?" value="你确定要删除'{0}'吗?"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="message" key3="Could not delete '{0}'." value="不能删除'{0}'"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="message" key3="You cannot modify the Top Level node." value="不能修改顶级节点"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Define Classifications" value="定义分类"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Classifications" value="类别"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Classification" value="类别"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Cancel" value="取消"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Filter" value="筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Show Position" value="定位"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    <string key1="/ab-products/space/inv/sch/EQ/DATA/asc-bj-usms-eq-def-class.axvw" key2="title" key3="Show" value="显示"/>
+
+
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Define Dudget" value="定义预算"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Filter" value="过滤"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Show" value="显示"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Select Budget" value="选择预算"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Add New" value="新增"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Budget Details" value="预算详情"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Add New Budget Item" value="新增预算条目"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Delete" value="删除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Cancel" value="取消"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="tianbiaoren" value="填表人"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Select Budget Item" value="选择预算项"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget.axvw" key2="title" key3="Budget Item Details" value="选择预算详细"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-summary.axvw" key2="title" key3="Budget Year Summary Report" value="全校本年度采购教学及行政设备预算汇总"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-summary.axvw" key2="title" key3="Budget List" value="预算列表"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-summary.axvw"  key2="title" key3="View Details" value="查看预算项"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-summary.axvw" key2="title" key3="Export:XLS" value="导出：XLS"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-summary.axvw" key2="title" key3="Capatial Balance" value="预算结余"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-summary.axvw" key2="title" key3="View Budget Items" value="预算项列表"/>
+
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="Budget Year Summary Report" value="预算年度总结报告"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="Filter" value="筛选"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="Show" value="显示"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="Cancel" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="Budget List" value="预算列表"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="Export:XLS" value="导出:XLS"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="View Details" value="详细"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="Capatial Balance" value="预算结余"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-budget-view.axvw" keky2="title" key3="View Budget Items" value="查看预算条目"/>
+
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Define Equipment Increase" value="定义仪器设备报增"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Filter" value="过滤"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Show" value="显示"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Equipment Increase List" value="仪器设备报增条目"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Add New" value="新建"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Refresh" value="刷新"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Equipment Increase Detail" value="报增详情"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Save" value="保存"/>
+    <string key1="/ab-products/space/inv/sch/EQ/ADD/asc-bj-usms-eq-add-def.axvw" key2="title" key3="Delete" value="删除"/>
+
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget-dialog.axvw" key2="title" key3="Select Equipment To Budget" value="挑选设备分类编码"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget-dialog.axvw" key2="title" key3="Filter" value="过滤"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget-dialog.axvw" key2="title" key3="Show" value="显示"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget-dialog.axvw" key2="title" key3="Clear" value="清除"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget-dialog.axvw" key2="tooltip" key3="Select Value" value="选择值"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget-dialog.axvw" key2="title" key3="Detail Of Select" value="设备挑选详细"/>
+    <string key1="/ab-products/space/inv/sch/EQ/BUDGET/asc-bj-usms-eq-def-budget-dialog.axvw" key2="title" key3="Select Equipment To Budget" value="挑选设备分类编码"/>
+
+  </locale>
+</afmLocalizedStrings>

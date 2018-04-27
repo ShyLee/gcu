@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<!-- ======================== Flash drawing control preferences. ======================= -->
+
+	<!-- 
+		Used for controlling the default properties associated with fills, labels, 
+		and legends in the flash drawing control.  Even though in most cases these preset default settings
+		will suffice for most common situations, but if needed, they can be overrode as needed at runtime on
+		a per-view basis.
+	-->
+	<bean id="drawingControlConfig"
+		class="com.archibus.model.drawing.DrawingControlConfig">
+
+		<!-- highlights contains a map of the predefined logical fill types: unassigned, assigned, and selected -->
+		<property name="highlights">
+			<map>
+				<!--  The 'unassigned' fill type properties -->
+				<entry>
+					<key>
+						<value>unassigned</value>
+					</key>
+					<bean
+						class="com.archibus.model.drawing.HighlightConfig">
+						<property name="fill.color" value="0xCCCCCC" />
+						<property name="fill.opacity" value="0.7" />
+						<property name="border.color" value="0" />
+						<property name="border.opacity" value="1" />
+						<property name="border.thickness" value="2" />
+					</bean>
+				</entry>
+
+				<!--  The 'assigned' fill type properties -->
+				<entry>
+					<key>
+						<value>assigned</value>
+					</key>
+					<bean
+						class="com.archibus.model.drawing.HighlightConfig">
+						<property name="fill.color" value="0xFFFF00" />
+						<property name="fill.opacity" value="0.7" />
+						<property name="border.color" value="0" />
+						<property name="border.opacity" value="1" />
+						<property name="border.thickness" value="5" />
+					</bean>
+				</entry>
+
+				<!--  The 'selected' fill type properties -->
+				<entry>
+					<key>
+						<value>selected</value>
+					</key>
+					<bean
+						class="com.archibus.model.drawing.HighlightConfig">
+						<property name="fill.color" value="0x00FFFF" />
+						<property name="fill.opacity" value="0.9" />
+						<property name="border.color" value="255" />
+						<property name="border.opacity" value="1" />
+						<property name="border.thickness" value="10" />
+					</bean>
+				</entry>
+
+				<!--  The 'nofill' fill type properties -->
+				<entry>
+					<key>
+						<value>nofill</value>
+					</key>
+					<bean
+						class="com.archibus.model.drawing.HighlightConfig">
+						<property name="fill.color" value="-2" />
+						<property name="fill.opacity" value="0.0" />
+						<property name="border.color" value="0" />
+						<property name="border.opacity" value="1" />
+						<property name="border.thickness" value="2" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+
+		<!-- 
+			labels contains a map of the predefined logical label types: 
+			default:	is applied to rooms or equivilent
+			parent:		is appliced to the floor or equivilent
+		-->
+		<property name="labels">
+			<map>
+				<!--  The 'default' label type properties -->
+				<entry>
+					<key>
+						<value>default</value>
+					</key>
+					<bean
+						class="com.archibus.model.drawing.LabelConfig">
+						<property name="font">
+							<bean
+								class="com.archibus.model.drawing.FontConfig">
+								<property name="font" value="Arial" />
+								<property name="color" value="0x000000" />
+								<property name="textHeight" value="12" />
+								<property name="justification"
+									value="center" />
+								<property name="bold" value="false" />
+								<property name="italic" value="false" />
+								<property name="underline"
+									value="false" />
+							</bean>
+						</property>
+					</bean>
+				</entry>
+
+				<!--  The 'parent' label type properties -->
+				<entry>
+					<key>
+						<value>parent</value>
+					</key>
+					<bean
+						class="com.archibus.model.drawing.LabelConfig">
+						<property name="font">
+							<bean
+								class="com.archibus.model.drawing.FontConfig">
+								<property name="font" value="Arial" />
+								<property name="color" value="0x0000FF" />
+								<property name="textHeight" value="24" />
+								<property name="justification"
+									value="center" />
+								<property name="bold" value="true" />
+								<property name="italic" value="false" />
+								<property name="underline"
+									value="false" />
+							</bean>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+
+		<!-- legend contains a list of properties that define the default look and feel of a legend -->
+		<!-- NOTE: THE LEGEND PROPERTIES ARE NOT CURRENTLY SUPPORTED WITH THE DRAWING CONTROL -->
+		<property name="legend">
+			<bean class="com.archibus.model.drawing.LegendConfig">
+				<property name="enabled" value="true" />
+				<property name="grid" value="false" />
+
+				<!-- The 'font' related properties are the default properties for the contents of the legend -->
+				<property name="font">
+					<bean
+						class="com.archibus.model.drawing.FontConfig">
+						<property name="font" value="Arial" />
+						<property name="color" value="0x000000" />
+						<property name="textHeight" value="2.5" />
+						<property name="justification" value="left" />
+						<property name="bold" value="false" />
+						<property name="italic" value="false" />
+						<property name="underline" value="false" />
+					</bean>
+				</property>
+				<property name="title">
+					<bean class="com.archibus.model.drawing.Title">
+						<property name="enabled" value="true" />
+						<property name="font">
+							<bean
+								class="com.archibus.model.drawing.FontConfig">
+								<property name="font" value="Arial" />
+								<property name="color" value="0x000000" />
+								<property name="textHeight" value="3" />
+								<property name="justification"
+									value="left" />
+								<property name="bold" value="true" />
+								<property name="italic" value="false" />
+								<property name="underline"
+									value="false" />
+							</bean>
+						</property>
+					</bean>
+				</property>
+				<property name="total">
+					<bean class="com.archibus.model.drawing.Total">
+						<property name="enabled" value="false" />
+						<property name="font">
+							<bean
+								class="com.archibus.model.drawing.FontConfig">
+								<property name="font" value="Arial" />
+								<property name="color" value="0x000000" />
+								<property name="textHeight" value="3" />
+								<property name="justification"
+									value="left" />
+								<property name="bold" value="true" />
+								<property name="italic" value="false" />
+								<property name="underline"
+									value="false" />
+							</bean>
+						</property>
+					</bean>
+				</property>
+
+				<!-- These highlight properties control the background properties of the legend area in the display -->
+				<property name="highlight">
+					<bean
+						class="com.archibus.model.drawing.HighlightConfig">
+						<property name="fill.color" value="0xCCCCCC" />
+						<property name="fill.opacity" value="0" />
+						<property name="border.color" value="0" />
+						<property name="border.opacity" value="1" />
+						<property name="border.thickness" value="3" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+
+		<!-- tooltip contains a list of properties that define the default look and feel of the tooltips -->
+        <!-- This property is supported in both Printed and Flash Drawing reports -->
+		<property name="tooltip">
+			<bean class="com.archibus.model.drawing.TooltipConfig">
+				<property name="enabled" value="true" />
+				<property name="color" value="0xEEEEFF" />
+				<property name="opacity" value="0.85" />
+				<property name="datasource" value="label" />
+				<property name="minWidth" value="100" />
+				<property name="minHeight" value="25" />
+
+				<!-- For the first line in a tooltip, these properties control the text settings -->
+				<property name="firstline">
+					<bean
+						class="com.archibus.model.drawing.FontConfig">
+						<property name="font" value="Arial" />
+						<property name="color" value="0x000000" />
+						<property name="textHeight" value="25" />
+						<property name="justification" value="left" />
+						<property name="bold" value="true" />
+						<property name="italic" value="false" />
+						<property name="underline" value="false" />
+					</bean>
+				</property>
+
+				<!-- For all subsequent lines in a tooltip, these properties control the text settings -->
+				<property name="subsequentlines">
+					<bean
+						class="com.archibus.model.drawing.FontConfig">
+						<property name="font" value="Arial" />
+						<property name="color" value="0x000000" />
+						<property name="textHeight" value="18" />
+						<property name="justification" value="left" />
+						<property name="bold" value="false" />
+						<property name="italic" value="false" />
+						<property name="underline" value="false" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+
+		<!-- 
+			Used for specifying the colors to be used when they are auto assigned in the Drawing control.
+			The order of colors is the order in which they will be auto assigned.
+            
+            For highlight fields that does not have color defined in database, we will use these auto assigned colors
+            as 2nd to 21st entries. The first entry is the "assigned" color defined in "highlights" property. 
+		-->
+		<property name="autoAssignColors">
+			<list>
+				<value>0x66CCFF</value>
+				<value>0xCC66FF</value>
+				<value>0x66FFCC</value>
+				<value>0xCC66CC</value>
+				<value>0xCCFF99</value>
+				<value>0x339999</value>
+				<value>0xB9DAFF</value>
+				<value>0xFF6600</value>
+				<value>0xFFFF00</value>
+				<value>0xCC6633</value>
+				<value>0x99CC00</value>
+				<value>0x00FFCC</value>
+				<value>0x993300</value>
+				<value>0xCC3366</value>
+				<value>0xFF3366</value>
+				<value>0xCCCCFF</value>
+				<value>0xCCCC00</value>
+				<value>0xCC3399</value>
+				<value>0x99CC66</value>
+				<value>0x66FF99</value>
+			</list>
+		</property>
+
+		<!-- The amount to zoom in when the zoom is enabled when finding an asset -->
+		<!-- This property is supported in both Printed and Flash Drawing reports -->
+        <property name="zoomFactor" value="5.0" />
+
+		<!-- Specify whether or not to display tooltips in conjunction with the 'noFill' values -->
+		<!-- This property is supported in both Printed and Flash Drawing reports -->
+        <property name="nofillTooltip" value="false" />
+
+		<!-- Specify whether or not to display labels in conjunction with the 'noFill' values -->
+        <!-- This property is supported in both Printed and Flash Drawing reports -->
+		<property name="nofillLabels" value="false" />
+
+        <!-- NOTES: Ideal Text size and Minimal Text Size are the boundaries for the text size. The actual text size is usually in between
+             in order to make the labels fit in their room. However, when the actual text size is out of the boundary, i.e. smaller than
+             the Minimal Text size, the Ideal Text Size will be used -->
+        
+		<!-- Ideal Text Size in Printed Reports (points) -->
+        <property name="idealTextSize" value="30" />
+
+		<!-- Minimum Text Size in Printed Report (points). -->
+		<property name="minimumTextSize" value="5" />
+		
+		<!-- Shrink Text to fit Boundary in Printed Drawings? Yes/No.  Default is Yes. -->
+        <property name="shrinkTextToFit" value="yes" />
+
+        <!-- Ideal Text Size in Flash Drawing (points) -->
+        <property name="idealLabelTextSize" value="11" />
+
+        <!-- Minimum Text(points). -->
+        <property name="minimumLabelTextSize" value="8" />
+        
+        <!-- Shrink Text to fit Boundary in Flash Drawings? Yes/No.  Default is Yes. -->
+        <property name="shrinkLabelTextToFit" value="yes" />
+
+	</bean>
+
+</beans>

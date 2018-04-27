@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- Common CFX definitions, used by all CXF WebServices -->
+	
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- Set up CXF Aegis data binding -->
+
+	<bean id="aegisInterfaceMapping" class="com.archibus.service.remoting.cxf.AegisInterfaceMapping">
+		<property name="mappedClassNames">
+			<util:map>
+				<entry key="com.archibus.model.processor.translator.TranslatableItem" value="com.archibus.model.processor.translator.TranslatableItemImpl" />
+			</util:map>
+		</property>
+	</bean>
+
+	<bean id="aegisModelContext" class="com.archibus.service.remoting.cxf.AegisReadonlySupportContext"
+		scope="prototype">
+		<property name="writeXsiTypes" value="true" />
+		<property name="rootClassNames">
+			<list>
+				<value>com.archibus.model.view.datasource.DataSourceDef</value>
+				<value>com.archibus.model.view.datasource.grouping.GroupingDataSourceDef</value>
+				<value>com.archibus.model.view.datasource.ParsedRestrictionDef</value>
+				<value>com.archibus.model.view.datasource.SqlRestrictionDef</value>
+				<value>com.archibus.model.view.datasource.field.ReferenceFieldDef</value>
+				<value>com.archibus.model.view.datasource.field.CalculatedSqlFieldDef</value>
+				<value>com.archibus.model.view.datasource.grouping.GroupingDataSourceDef</value>
+				<value>com.archibus.model.view.datasource.grouping.CalculatedFormulaFieldDef</value>
+				<value>com.archibus.model.view.datasource.grouping.GroupingFormulaFieldDef</value>
+				<value>com.archibus.model.view.datasource.grouping.GroupingReferenceFieldDef</value>
+				<value>com.archibus.ext.drawing.highlight.HighlightPattern</value>
+			</list>
+		</property>
+		<property name="beanImplementationMap">
+			<ref bean="aegisInterfaceMapping" />
+		</property>
+	</bean>
+
+    <!-- CXF Aegis databinding bean, customized to support polymorphic classes, read-only properties,
+         and MTOM attachments with URL-encoded IDs.
+         Required for web services that expose the view model classes (ViewDef, DataSourceDef, etc),
+         and for services that receive MTOM attachments from WCF-based clients. -->
+	<bean id="aegisModelDataBinding" class="com.archibus.service.remoting.cxf.AegisMtomDatabinding"
+		scope="prototype">
+		<property name="aegisContext" ref="aegisModelContext" />
+	</bean>
+
+    <!-- CXF Aegis databinding bean, customized to handle MTOM attachments with URL-encoded IDs.
+         Required for services that receive MTOM attachments from WCF-based clients. -->
+	<bean id="aegisDataBinding" class="com.archibus.service.remoting.cxf.AegisMtomDatabinding" scope="prototype">
+	</bean>
+
+</beans>

@@ -1,0 +1,58 @@
+<view version="2.0">
+    <designInfo type="edit" pattern="ab-viewdef-editform-drilldown" isAlterable="true"/>
+	<js file="ab-ac-edit.js"/>
+	
+    <layout file="pkey-tree.axvw"/>
+    <title translatable="true">Define Accounts</title>
+    
+    <dataSource id="abAcEdit_ds_0">
+        <table name="ac" role="main"/>
+        <field table="ac" name="ac_id"/>
+        <field table="ac" name="description"/>
+		<field table="ac" name="hierarchy_ids"/>
+    </dataSource>
+    <panel type="hierTree" id="abAcEdit_treePanel" dataSource="abAcEdit_ds_0" region="west">
+		<action id="abAcEdit_addNew">
+            <title translatable="true">Add New</title>
+            <command type="showPanel" panelId="abAcEdit_detailsPanel" newRecord="true"/>
+        </action>
+        <action id="abAcEdit_refresh">
+            <title translatable="true">Refresh</title>
+            <command type="showPanel" panelId="abAcEdit_treePanel"/>
+        </action>
+		<event type="onClickNode">
+           <command type="showPanel" panelId="abAcEdit_detailsPanel"/>
+        </event>
+    </panel>
+	<dataSource id="abAcEdit_ds_1">
+        <table name="ac" role="main"/>
+        <field table="ac" name="ac_id"/>
+        <field table="ac" name="company"/>
+        <field table="ac" name="description"/>
+		<field table="ac" name="hierarchy_ids"/>
+    </dataSource>
+    
+    <panel type="form" id="abAcEdit_detailsPanel" dataSource="abAcEdit_ds_1" showOnLoad="false" labelsPosition="top" columns="2" region="center">
+        <title translatable="true">Accounts</title>        
+        <action id="abAcEdit_save">
+            <title translatable="true">Save</title>
+            <command type="saveForm"/>
+            <command type="showPanel" panelId="abAcEdit_treePanel" applyParentRestriction="false"/>
+        </action>
+        <action id="abAcEdit_delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="abAcEdit_detailsPanel" show="false"/>
+            <command type="showPanel" panelId="abAcEdit_treePanel" applyParentRestriction="false"/>
+        </action>
+        <action id="abAcEdit_cancel">
+            <title translatable="true">Cancel</title>
+            <command type="showPanel" panelId="abAcEdit_detailsPanel" show="false"/>
+        </action>    
+        <field name="ac_id" table="ac"/>
+        <field name="company" table="ac"/>
+        <field name="description" table="ac"/>
+		<field name="hierarchy_ids" hidden="true"/>
+        <sortField name="ac_id" table="ac" ascending="true" />
+    </panel>
+</view>

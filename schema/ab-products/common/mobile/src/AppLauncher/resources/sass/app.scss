@@ -1,0 +1,27 @@
+@import 'mobileclient/theme';
+
+@import 'sencha-touch/default/all';
+
+@import 'mobileclient/shared';
+
+// You may remove any of the following modules that you
+// do not use in order to create a smaller css file.
+@include sencha-panel;
+@include sencha-buttons;
+//@include sencha-sheet;
+//@include sencha-picker;
+//@include sencha-tabs;
+@include sencha-toolbar;
+@include sencha-toolbar-forms;
+//@include sencha-indexbar;
+//@include sencha-list;
+@include sencha-layout;
+//@include sencha-carousel;
+@include sencha-form;
+@include sencha-msgbox;
+@include sencha-loading-spinner;
+
+
+@include sencha-button-ui('secondary', #99A4AE, 'glossy');
+@include sencha-button-ui('iron', #7f7f7f, 'glossy');
+@include sencha-button-ui('base', #0080FF, 'glossy');

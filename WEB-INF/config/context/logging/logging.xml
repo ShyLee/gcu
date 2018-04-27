@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!--
+		Adjust the priorities of the "archibus" logging categories below to increase or decrease the level
+		of logging information for startup, SQL, object logging, localization messages, etc. Priority
+		values can be: "off" - none "fatal" - severe errors only "error" - application errors "warn" -
+		warnings "info" - informational messages "debug" - fine-grained debug information "all" - all
+		information See also "Turning on SQL and Object Logging" in the ARCHIBUS System Management help.
+		The logging features use and extend the standard log4j logging utility. Please refer to
+		http://logging.apache.org/log4j/docs/manual.html for more details. See
+		http://logging.apache.org/log4j/docs/api/org/apache/log4j/PatternLayout.html for instructions on
+		changing the information provided by the ConversionPattern. [%d] adds date and time; [%-5p]
+		priority in a 5 character-wide column; [%l] calling method and line number; [%m] adds the message
+		itself; %n adds the platform-dependent newline character. Removing [%l] will improve performance
+		slightly.
+	-->
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!--
+		The file appender dictates what information appears in the archibus/WEB-INF/log/archibus.log file.
+		The [%C{1}] outputs class name, which is performance hit; for developent mode only! TODO: Remove
+		before production.
+	-->
+	<appender name="archibusLog" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="${WebCentral.root}/WEB-INF/config/archibus.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="5MB" />
+        <param name="MaxBackupIndex" value="3" />
+		<param name="encoding" value="UTF-16" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d][%C{1}] - [%m]%n" />
+		</layout>
+	</appender>
+	<!--
+		The console appender dictates what information is echoed to the screen or console window.
+		You can specify encoding as UTF-16 for this appender too, in this case Eclipse console will show funny characters. 
+	-->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%C{1}][%m]%n" />
+		</layout>
+	</appender>
+	<!--
+		The workflow rules appender logs workflow rule start/stop/failure events for all executed workflow
+		rules to afm_wf_log database table. Warning: use only with
+		com.archibus.jobmanager.WorkflowRuleExecutor category.
+	-->
+	<appender name="afm_wf_log" class="com.archibus.jobmanager.WorkflowRuleAppender">
+	</appender>
+
+	<!--
+		Log file for SmartClient.
+	-->
+	<appender name="webcentralForSmartclientLog" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${WebCentral.root}/WEB-INF/config/webcentral-for-smartclient.log" />
+		<param name="Append" value="false" />
+		<param name="encoding" value="UTF-16" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d][%C{1}] - [%m]%n" />
+		</layout>
+	</appender>
+
+    <!--Log file for SendErrorLogEmail-->
+	<appender name="errorLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${WebCentral.root}/WEB-INF/config/errorlogs/error.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />   
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d][%C{1}] - [%m]%n" />
+		</layout>
+		<filter   class= "org.apache.log4j.varia.LevelRangeFilter">
+			<param   name= "LevelMax"   value= "ERROR"  />
+			<param   name= "LevelMin"   value= "ERROR"  />
+		</filter>
+	</appender>
+
+	<!--
+		This is the root category for all archibus log messages. By default only error, warning messages
+		are enabled. Set priority to 'off' to supress ALL archibus logging information. Specific
+		sub-categories can override the root priority.
+	-->
+	<category name="com.archibus" additivity="false">
+		<priority value="warn" />
+		<appender-ref ref="archibusLog" />
+		<appender-ref ref="errorLog" />
+	</category>
+	<!--
+		This category controls startup configuration messages. Set priority to 'debug' to debug the
+		afm-secure attributes insertion. Setting priority lower than 'info' is not recommended.
+	-->
+	<category name="com.archibus.config.ConfigManagerLoader">
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</category>
+	<!--
+		Those categories control project loading messages. Setting priority lower than 'info' is not
+		recommended.
+	-->
+	<category name="com.archibus.config.ProjectLoader">
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</category>
+	<category name="com.archibus.config.ProjectsFactory">
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</category>
+	<!--
+		This category controls database loading messages. Set priority to 'debug' to debug the afm-secure
+		attributes insertion. Setting priority lower than 'info' is not recommended.
+	-->
+	<category name="com.archibus.config.DatabaseLoader">
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</category>
+	<!--
+		This category controls localized strings loading messages. Setting priority lower than 'info' is
+		not recommended.
+	-->
+	<category name="com.archibus.config.LocalizedStringsLoader">
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</category>
+	<!--
+		This category controls secirity-related messages. Setting priority lower than 'info' is not
+		recommended.
+	-->
+	<category name="com.archibus.security">
+		<priority value="info" />
+	</category>
+    <category name="com.archibus.app.solution.security">
+        <priority value="info" />
+    </category>
+    <category name="org.springframework.security">
+        <priority value="info" />
+    </category>
+
+	<!--
+		This category controls database-related messages, including database server name, driver type and
+		connection details. Setting priority lower than 'info' is not recommended.
+	-->
+	<category name="com.archibus.db">
+		<priority value="info" />
+	</category>
+	<!--
+		Set priority to 'debug' to log all SQL statements issued to the database. Over the long run, this
+		can produce large volume of log messages and is not recommended for production use.
+	-->
+	<category name="com.archibus.db.DbConnectionImpl.sql">
+		<priority value="info" />
+	</category>
+	<!--
+		Set priority to 'info' to log schema objects loading, such as table and field definitions.
+	-->
+	<category name="com.archibus.schema">
+		<priority value="info" />
+	</category>
+	<!--
+	-->
+	<category name="com.archibus.config">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.controller">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.viewTagHandler">
+		<priority value="info" />
+	</category>
+	<!--
+		Set priority to 'info' to log data records loaded from views. Over the long run, this can produce
+		large volume of log messages and is not recommended for production use.
+	-->
+	<category name="com.archibus.view">
+		<priority value="warn" />
+	</category>
+	<category name="com.archibus.view.tablegroup.xmlgenerator.RetrievedRecord">
+		<priority value="warn" />
+	</category>
+	<!--
+		Set priority to 'debug' to log servlet invocation parameters, such as servlet path and query
+		string.
+	-->
+	<category name="com.archibus.servlet">
+		<priority value="info" />
+	</category>
+	<!--
+		Root category for all messages related to HTTP request processing. Setting priority to 'debug'
+		will produce extremely large volume of log messages and is not recommended for production use.
+	-->
+	<category name="request" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="archibusLog" />
+	</category>
+	<category name="request.com.archibus.config.ConfigManagerImpl">
+		<priority value="info" />
+	</category>
+	<category name="request.com.archibus.config.ProjectImpl">
+		<priority value="info" />
+	</category>
+	<category name="request.com.archibus.config.UserSessionImpl">
+		<priority value="info" />
+	</category>
+	<!-- Set priority to 'debug' to turn on View Analysis logging. -->
+	<category name="mdx">
+		<priority value="info" />
+		<appender-ref ref="archibusLog" />
+	</category>
+	<category name="mdx.com.archibus.view.analysis.MdxActionGenerator">
+		<priority value="info" />
+	</category>
+	<!-- Set priority to 'debug' to log SQL queries used by View Analysis. -->
+	<category name="mdx.sql">
+		<priority value="info" />
+	</category>
+	<!-- Set priority to 'debug' to log workflow rule DWR calls. -->
+	<category name="com.archibus.servlet.DWRWorkflowService">
+		<priority value="info" />
+	</category>
+	<!-- Set priority to 'info' to log workflow rule loading and execution. -->
+	<category name="com.archibus.jobmanager">
+		<priority value="info" />
+	</category>
+	<!-- Set priority to 'debug' to debug workflow rules. -->
+	<category name="com.archibus.jobmanager.EventHandler">
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</category>
+	<!--
+		Set priority to 'info' to log workflow rule start/stop/failure events to afm_wf_log database
+		table.
+	-->
+	<category name="afm_wf_log">
+		<priority value="info" />
+		<appender-ref ref="afm_wf_log" />
+	</category>
+	<!--
+		Set priority of 'objects' and 'PerformanceCountersHandler' to 'debug' to turn on the object log
+		echoing the internal state of each core object, such as the action received, the XML response,
+		etc. in its own timestamped file in WEB-INF/log/objects folder. Over the long run, this can
+		produce large number of log files and is not recommended for production use.
+	-->
+	<category name="objects">
+		<priority value="info" />
+	</category>
+	<category name="cache.com.archibus.config.PerformanceCountersHandler">
+		<priority value="info" />
+	</category>
+	<!--
+		Root category for all messages related to object caching. Setting priority to 'debug' will produce
+		extremely large volume of log messages and is not recommended for production use. If you change
+		this priority to 'debug', you also must set priority of
+		"cache.com.archibus.config.PerformanceCountersHandler" to 'debug', otherwise you will get
+		NullPointerException.
+	-->
+	<category name="cache" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="archibusLog" />
+	</category>
+	<!-- 17.2 categories -->
+	<category name="com.archibus.context">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.servletx">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.service">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.service.remoting">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.security">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.datasource">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.dao">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.dao.jdbc">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.view.taghandler">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.ext.report">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.model">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.fixture">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.utility">
+		<priority value="info" />
+	</category>
+	<category name="com.archibus.utility.ClasspathHacker">
+		<priority value="info" />
+	</category>
+
+	<!-- Spring framework logging -->
+	<category name="org.springframework">
+		<priority value="info" />
+		<appender-ref ref="archibusLog" />
+	</category>
+
+	<!-- LoggingInterceptor logging -->
+	<category name="com.archibus.service.interceptor.LoggingInterceptor">
+		<priority value="debug" />
+	</category>
+
+	<!-- HelloWorld example logging -->
+	<category name="com.archibus.eventhandler.cookbook.HelloWorld">
+		<priority value="info" />
+		<appender-ref ref="archibusLog" />
+	</category>
+
+	<!-- WebService examples logging -->
+	<category name="com.archibus.webservice">
+		<priority value="info" />
+	</category>
+
+    <!-- Mobile Services logging -->
+    <category name="com.archibus.app.common.mobile">
+        <priority value="info" />
+    </category>
+    
+     <!-- Svg Services logging -->
+    <category name="com.archibus.service.common.svg">
+        <priority value="info" />
+    </category>
+
+	<!--
+		Category for all webcentralForSmartclientLog messages.
+	-->
+	<category name="webcentralForSmartclientLog" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="webcentralForSmartclientLog" />
+	</category>
+
+	<!-- The one and only root category -->
+	<root>
+		<priority value="error" />
+		<appender-ref ref="console" />
+	</root>
+</log4j:configuration>

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <!-- ========================= This Spring configuration file contains definitions for the core infrastructure beans. ========================= -->
+    <!-- The beans here are shared between all projects. -->
+    <!-- A bean belongs here if one of the following conditions is met: -->
+    <!-- 1. WebCentral will not start without the bean. -->
+    <!-- 2. The bean is referenced in a core Java class, and the reference is not expected to fail (there is no if(containsBean) or try/catch block around getBean call). -->
+    <!-- The "ext" package does not belong to the core. -->
+
+    <!-- Per-site user preferences. -->
+    <bean
+        id="persitePreferences"
+        class="com.archibus.config.PersitePreferences">
+        <property name="securityGroups">
+            <util:map>
+                <entry
+                    key="editCanonicViews"
+                    value="${security.groups.editCanonicViews}"/>
+                <entry
+                    key="editAnalysisViews"
+                    value="${security.groups.editAnalysisViews}"/>
+                <entry
+                    key="editInBulk"
+                    value="${security.groups.editInBulk}"/>
+                <entry
+                    key="alterSchema"
+                    value="${security.groups.alterSchema}"/>
+                <entry
+                    key="executeSystemAdminActions"
+                    value="${security.groups.executeSystemAdminActions}"/>
+            </util:map>
+        </property>
+        <property
+            name="guestUserId"
+            value="${security.guestUserID}"/>
+        <property
+            name="systemUserId"
+            value="${security.systemUserID}"/>
+        <property
+            name="useHierarchicalSecurity"
+            value="${security.useHierarchicalSecurity}"/>
+        <property
+            name="logoutView"
+            value="${security.logoutView}"/>
+        <property
+            name="timeoutView"
+            value="${security.timeoutView}"/>
+        <property
+            name="removeUnlicensedActivitiesOnStartup"
+            value="${security.removeUnlicensedActivitiesOnStartup}"/>
+    </bean>
+
+    <!-- helpProperties is required for rendering. -->
+    <bean
+        id="helpProperties"
+        class="com.archibus.core.config.HelpProperties">
+        <property
+            name="url"
+            value="${help.url}"/>
+        <property
+            name="systemAdministrationUrl"
+            value="${help.systemAdministrationUrl}"/>
+    </bean>
+
+    <!-- mailMessage is required for MailSender. -->
+    <bean
+        id="mailMessage"
+        class="com.archibus.utility.MailMessage"
+        scope="prototype">
+    </bean>
+
+    <!-- DocumentDao provides document management operations. -->
+    <bean
+        id="documentDao"
+        class="com.archibus.dao.jdbc.DocumentDaoImpl">
+    </bean>
+
+    <!-- ========================= infrastructure/context beans DEFINITIONS ========================= -->
+    <!-- Logs method invocation time. Should be used for debugging. -->
+    <bean
+        id="loggingInterceptor"
+        class="com.archibus.service.interceptor.LoggingInterceptor">
+    </bean>
+
+    <!-- AuthenticationInterceptor intercepts authenticate method, to count failed login attempts. -->
+    <bean
+        id="authenticationInterceptor"
+        class="com.archibus.service.interceptor.AuthenticationInterceptor">
+    </bean>
+
+    <!-- ContextInterceptor creates and assembles Context, setting ConfigManager and Spring application context. Must be invoked before any WebCentral code. -->
+    <bean
+        id="contextInterceptor"
+        class="com.archibus.service.interceptor.ContextInterceptor"
+        p:configManager-ref="configManager">
+    </bean>
+
+    <!-- ExceptionHandlingInterceptor handles exceptions: maps non-ARCHIBUS exceptions to user-friendly ExceptionBase, logs, translates, prepares value object for remoting, re-throws. Context is optional here. TODO: replace with Spring Security interceptor. This interceptor should be configured to intercept the first filter in a chain, and any service, so that any exceptions thrown by any filter or servlet or service would be processed correctly. -->
+    <bean
+        id="exceptionHandlingInterceptor"
+        class="com.archibus.service.interceptor.ExceptionHandlingInterceptor">
+    </bean>
+
+    <bean
+        id="exceptionHandlingInterceptorNoException"
+        class="com.archibus.service.interceptor.ExceptionHandlingInterceptor"
+        p:rethrowException="false">
+    </bean>
+
+    <!-- DelayedExceptionHandlingInterceptor handles "delayed" exceptions, which are used in SSO configuration. Context is required here. This interceptor should be configured to intercept all rendering filters in the filter chain. -->
+    <bean
+        id="delayedExceptionHandlingInterceptor"
+        class="com.archibus.service.interceptor.DelayedExceptionHandlingInterceptor">
+    </bean>
+
+    <!-- SecurityInterceptor checks if the service method call is allowed, depending on if user is authenticated or not. TODO: replace with Spring Security interceptor. -->
+    <bean
+        id="securityInterceptor"
+        class="com.archibus.service.interceptor.SecurityInterceptor">
+    </bean>
+
+    <!-- transactionInterceptor.data - starts/committs/rolls back transaction for DATA database, sets current DATA connection in Context, handles database errors. -->
+    <bean
+        id="transactionInterceptor.data"
+        class="com.archibus.service.interceptor.TransactionInterceptor"
+        p:readOnly="false"
+        p:role="DATA">
+    </bean>
+    <!-- transactionInterceptor.security - starts/committs/rolls back transaction for SECURITY database, sets current SECURITY connection in Context, handles database errors. -->
+    <bean
+        id="transactionInterceptor.security"
+        class="com.archibus.service.interceptor.TransactionInterceptor"
+        p:readOnly="false"
+        p:role="SECURITY">
+    </bean>
+
+    <bean
+        id="eventHandlerContextInterceptor"
+        class="com.archibus.service.interceptor.EventHandlerContextInterceptor">
+    </bean>
+
+    <!-- Thread-scope definition -->
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <util:map>
+                <entry
+                    key="thread"
+                    value="com.archibus.context.ThreadScope"/>
+            </util:map>
+        </property>
+    </bean>
+
+    <!-- Thread-scoped proxies of beans: legacy beans are not managed by Spring, just made accessible in Spring context through proxies. So, the bean properties can not be set here. TODO: port legacy beans to Spring beans. proxy-target-class="false" means: use 'standard' JDK interface-based proxies, not CGLIB-based class proxy. The CGLIB-based class proxies have memory leaks (TODO: report problem to Spring), which leads to exceptions on application shutdown (To reproduce, "stop" and "start" application in Tomcat Web Application Manager). -->
+
+    <bean
+        id="userAccount"
+        class="com.archibus.security.UserAccountImpl"
+        scope="thread">
+        <aop:scoped-proxy proxy-target-class="false"/>
+    </bean>
+
+    <bean
+        id="project"
+        class="com.archibus.config.ProjectImpl"
+        scope="thread">
+        <aop:scoped-proxy proxy-target-class="false"/>
+    </bean>
+
+    <bean
+        id="session"
+        class="com.archibus.context.SessionImpl"
+        scope="thread">
+        <aop:scoped-proxy proxy-target-class="false"/>
+    </bean>
+
+    <!-- Legacy bean ConfigManager is managed by Spring. -->
+    <bean
+        id="configManager"
+        class="com.archibus.config.ConfigManagerLoader"
+        factory-method="createConfigManager"
+        destroy-method="destroy">
+        <constructor-arg>
+            <value>${core.debug}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${app.debug}</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- ProjectsFactory creates legacy beans Project. -->
+    <bean
+        id="projectsFactory"
+        class="com.archibus.config.ProjectsFactory"
+        p:configManager-ref="configManager">
+    </bean>
+
+    <bean
+        id="projects"
+        factory-bean="projectsFactory"
+        factory-method="createProjects"/>
+
+    <!-- The WorkflowRulesContainerLoader creates the WorkflowRulesContainer as a Spring bean, and then loads the workflow rule definitions into it. We do not use a factory method here because we need the Project to be available when the Container is loaded. -->
+    <bean
+        id="workflowRulesContainer"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.jobmanager.WorkflowRulesContainer$ThreadSafe"
+        scope="prototype">
+        <property name="target">
+            <bean
+                class="com.archibus.jobmanager.WorkflowRulesContainerImpl"
+                scope="prototype"
+                p:basicRuleClassLoader-ref="basicRuleClassLoader">
+                <property
+                    name="asyncThreadPoolSize"
+                    value="100"/>
+                <property
+                    name="asyncThreadPriority"
+                    value="1"/>
+                <property
+                    name="runScheduledRules"
+                    value="${core.runScheduledRules}"/>
+                <property name="level3Rules">
+                    <list>
+                        <value>AbSystemAdministration-dataTransfer-transferIn</value>
+                        <value>AbSystemAdministration-dataTransfer-transferOut</value>
+                        <value>AbSystemAdministration-generatePaginatedReport-buildXlsFromDataSource</value>
+                        <value>AbSystemAdministration-addViewToMyFavorites</value>
+                        <value>AbSystemAdministration-removeViewFromMyFavorites</value>
+                        <value>AbSystemAdministration-getListOfFilesToConvert</value>
+                        <value>AbSystemAdministration-getViewContents</value>
+                        <value>AbSystemAdministration-writeViewContents</value>
+                        <value>AbSystemAdministration-moveAndRenameFile</value>
+                        <value>AbSystemAdministration-deleteFile</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list></list>
+        </property>
+    </bean>
+
+    <bean
+        id="basicRuleClassLoader"
+        class="com.archibus.jobmanager.BasicRuleClassLoader"
+        scope="prototype"
+        p:basicRuleCompiler-ref="basicRuleCompiler">
+        <property name="sourcePaths">
+            <list>
+                <value>schema\ab-core\test\basic-rules</value>
+                <value>schema\ab-products\common\resources\basic-rules</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean
+        id="basicRuleCompiler"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        scope="prototype"
+        p:proxyInterfaces="com.archibus.jobmanager.IBasicRuleCompiler">
+        <property name="target">
+            <bean class="com.archibus.jobmanager.BasicRuleCompiler">
+            </bean>
+        </property>
+    </bean>
+
+    <bean
+        id="jobManager"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.jobmanager.JobManager$ThreadSafe">
+        <property name="target">
+            <bean
+                class="com.archibus.jobmanager.JobManagerImpl"
+                destroy-method="shutdown">
+                <!-- threadPoolSize: Maximum number of threads that can run jobs. -->
+                <constructor-arg
+                    index="0"
+                    value="100"/>
+                <!-- threadPriority: Job thread priority, from 1 to 10. -->
+                <constructor-arg
+                    index="1"
+                    value="1"/>
+                <!-- collectionInterval: How often to run the inactive job collection process, in seconds. -->
+                <constructor-arg
+                    index="2"
+                    value="60"/>
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list></list>
+        </property>
+    </bean>
+
+    <!-- Custom editor configuration to set bean properties of type java.util.Date. -->
+    <bean
+        id="customEditorConfigurer"
+        class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="java.util.Date">
+                    <bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+                        <constructor-arg index="0">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg value="yyyy-MM-dd"/>
+                            </bean>
+                        </constructor-arg>
+                        <constructor-arg
+                            index="1"
+                            value="false"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean
+        id="fileIndex"
+        class="com.archibus.servletx.utility.FileIndex"
+        p:configManager-ref="configManager"
+        p:preload="${core.preloadFileIndex}">
+    </bean>
+
+    <!-- Listener for InteractiveAuthenticationSuccessEvent, triggered by the Preauth...Filter. Invokes securityService.startSsoUserSession(), if event was not caused by a WebService call. Required for SSO mode from the browser (browser does not call startSsoUserSession method). -->
+    <bean
+        id="authenticationSuccessfulEventListener"
+        class="com.archibus.app.solution.common.security.ui.AuthenticationSuccessfulEventListener">
+    </bean>
+</beans>

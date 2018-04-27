@@ -1,0 +1,188 @@
+<view version="2.0">
+   	<title translatable="true">fen pei fang jian lie biao</title>
+    <layout id="main">
+        <north id="sitePosition" initialSize="90"/>
+        <center id="gridPosition"/>
+    </layout>
+
+    <message name="message6" translatable="true">shanchufudaoyuan</message>
+
+     <dataSource id="ds_stuAssign">
+        <table name="sc_stu_log" role="main"/>
+        <field table="sc_stu_log" name="em_id"/>
+        <field table="sc_stu_log" name="id"/>
+		<field table="sc_stu_log" name="stu_name"/>
+        <field table="sc_stu_log" name="bl_id"/>
+        <field table="sc_stu_log" name="fl_id"/>
+        <field table="sc_stu_log" name="rm_id"/>
+        <field table="sc_stu_log" name="dv_id"/>
+        <field table="sc_stu_log" name="date_checkin"/>
+        <field table="sc_stu_log" name="stu_in_year"/>
+        <field table="sc_stu_log" name="stu_sex"/>
+        <field table="sc_stu_log" name="pro_id"/>
+        <field table="sc_stu_log" name="cap_em"/>
+        <field table="sc_stu_log" name="date_checkin"/>
+        <field table="sc_stu_log" name="checkout_cause" />
+		<field table="sc_stu_log" name="date_checkout"/>
+		<field table="sc_stu_log" name="comments"/>
+		<field table="sc_stu_log" name="mark"/>
+	</dataSource>
+	
+	<dataSource id="ds_asc_bj_dorm_assign">
+        <sql dialect="generic">
+			select em.em_id ${sql.as} em_id,
+			       em.name ${sql.as} name,
+			       em.sex ${sql.as} sex,
+			       dv.dv_name ${sql.as} dv_name,
+			       bl.name ${sql.as} bl_name,
+			       em.fl_id ${sql.as} fl_id,
+			       em.rm_id ${sql.as} rm_id,
+			       rm.cap_em ${sql.as} cap_em,
+			       em.bl_id ${sql.as} bl_id,
+			       em.dv_id ${sql.as} dv_id
+			from em, dv, rm, bl
+			where em.bl_id = bl.bl_id
+				   and em.dv_id = dv.dv_id
+				   and em.bl_id = rm.bl_id
+				   and em.fl_id = rm.fl_id
+				   and em.rm_id = rm.rm_id
+				   and em.rm_id is not null
+				   and gangwei_id=${parameters['gangWei']} 
+        </sql>
+		<table name="em" role="main" />
+        <field table="em" name="em_id" dataType="text" />
+		<field name="name" dataType="text" />
+		<field name="sex" dataType="text"/>
+		<field name="dv_id"  dataType="text"/>
+		<field name="dv_name" dataType="text"/>
+		<field name="bl_id" dataType="text"/>
+        <field name="bl_name" dataType="text"/>
+		<field name="fl_id" dataType="text"/>
+		<field name="rm_id" dataType="text"/>
+		<field name="cap_em" dataType="text"/>
+		 <parameter name="gangWei" dataType="text" value=""/>
+	</dataSource>
+    
+    <dataSource id="ds_asc_bj_dorm_assign2">
+		<table name="em" role="main" />
+        <field table="em" name="em_id" />
+		<field table="em" name="name" />
+		<field table="em" name="sex"/>
+		<field table="em" name="bl_id" />
+		<field table="em" name="fl_id"/>
+		<field table="em" name="rm_id" />
+		<field table="em" name="dv_id" />
+	</dataSource>
+	
+    <dataSource id="ds_asc_bj_dorm_assign3">
+		<sql dialect="generic">
+			select sc_em.em_id ${sql.as} em_id,
+			       sc_em.name ${sql.as} name,
+			       sc_em.sex ${sql.as} sex,
+			       dv.dv_name ${sql.as} dv_name,
+			       bl.name ${sql.as} bl_name,
+			       sc_em.fl_id ${sql.as} fl_id,
+			       sc_em.rm_id ${sql.as} rm_id,
+			       rm.cap_em ${sql.as} cap_em,
+			       sc_em.bl_id ${sql.as} bl_id,
+			       sc_em.dv_id ${sql.as} dv_id
+			from sc_em, dv, rm, bl
+			where sc_em.bl_id = bl.bl_id
+				   and sc_em.dv_id = dv.dv_id
+				   and sc_em.bl_id = rm.bl_id
+				   and sc_em.fl_id = rm.fl_id
+				   and sc_em.rm_id = rm.rm_id
+				   and sc_em.rm_id is not null
+				   and gangwei_id=${parameters['gangWei']} 
+        </sql>
+		<table name="sc_em" role="main" />
+        <field table="sc_em" name="em_id" dataType="text" />
+		<field name="name" dataType="text" />
+		<field name="sex" dataType="text"/>
+		<field name="dv_id"  dataType="text"/>
+		<field name="dv_name" dataType="text"/>
+		<field name="bl_id" dataType="text"/>
+        <field name="bl_name" dataType="text"/>
+		<field name="fl_id" dataType="text"/>
+		<field name="rm_id" dataType="text"/>
+		<field name="cap_em" dataType="text"/>
+		 <parameter name="gangWei" dataType="text" value=""/>
+	</dataSource>
+	
+	
+	<dataSource id="ds_asc_bj_dorm_assign4">
+		<table name="sc_em" role="main" />
+        <field table="sc_em" name="em_id" />
+		<field table="sc_em" name="name" />
+		<field table="sc_em" name="sex"/>
+		<field table="sc_em" name="bl_id" />
+		<field table="sc_em" name="fl_id"/>
+		<field table="sc_em" name="rm_id" />
+		<field table="sc_em" name="dv_id" />
+	</dataSource>
+	
+	
+	
+    <panel type="console" id="ConsoleForm" dataSource="ds_asc_bj_dorm_assign" columns="3"  layoutRegion="sitePosition">
+    	<title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+<!-- 		<field  name="bl_id" hidden="true"/> -->
+        <field  name="bl_name" onchange="changeBlName()" dataType="text">
+        	<title translatable="true">sushe</title>
+		<action>
+			<title translatable="true">...</title>
+			<command type="selectValue" 
+			         fieldNames="em.bl_name,em.bl_id"
+				     selectFieldNames="bl.name,bl.bl_id" 
+				     visibleFieldNames="bl.name,bl.bl_id" 
+				     restriction="bl.bl_id in(select bl_id from rm where rm.rm_cat='301')">
+			</command>
+		</action>
+        </field>
+		<field table="em" name="em_id">
+			<action id="selectEm">
+			</action>
+		</field>
+		<field table="em" name="name">
+			<action id="selectEmName">
+			</action>
+		</field>
+		<field  name="dv_id" hidden="true" dataType="text"/>
+    </panel>
+    
+    <panel type="grid" id="GridForm" dataSource="ds_asc_bj_dorm_assign3" layoutRegion="gridPosition"  multipleSelectionEnabled="true" >
+    	<title translatable="true">fenpei</title>
+        <action id="submitChanges">
+            <title translatable="true">delete all</title>
+        </action>
+    	<action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="GridForm"/>
+        </action>
+        <indexField table="sc_em" name="em_id"/>
+        <field name="em_id" width="50"/>
+		<field name="name" width="50"/>
+		<field name="sex" width="50"/>
+		<field name="dv_name" width="50">
+			<title translatable="true">danweimingcheng</title>
+		</field>
+		<field name="bl_name" width="50">
+			<title translatable="true">sushe</title>
+		</field>		
+		<field name="fl_id" width="50"/>
+		<field name="rm_id" width="50"/>
+		<field name="dv_id" hidden="true"/>
+		<field name="bl_id" hidden="true"/>
+		<field name="cap_em" width="30">
+			<title translatable="true">standard cap_em</title>
+		</field>
+    </panel>
+    
+    <js file="asc-bj-dorm-assign-counsellor-allocated.js"/>
+    <js file="asc-bj-dorm-commons.js"/>
+</view>

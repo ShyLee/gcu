@@ -1,0 +1,43 @@
+<view version="2.0">
+    <js file="ab-proj-export-to-ms-project.js"/>
+    <message name="fileSaved">File saved to Document Management System:</message>
+    
+    <dataSource id="projExportMsProjectDs0">
+        <table name="activity_log" role="main"/>
+        <table name="work_pkgs" role="standard" />
+        <field name="project_id" table="activity_log"/>
+        <field name="action_title" table="activity_log"/>
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="date_scheduled" table="activity_log"/>
+        <field name="duration" table="activity_log"/>
+        <field name="days_per_week" table="work_pkgs"/>
+        <field name="assigned_to" table="activity_log"/>
+        <field name="pct_complete" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <restriction type="sql" sql="activity_log.status IN ('N/A','REQUESTED','PLANNED','SCHEDULED','IN PROGRESS')" />
+    </dataSource>
+    
+    <panel type="grid" id="projExportMsProjectGrid" dataSource="projExportMsProjectDs0" showOnLoad="false">
+        <title>Scheduled and In Progress Action Items</title>
+        <action id="exportMsProject">
+            <title>Export to MS Project</title>
+        </action>
+        <sortField name="project_id" table="activity_log" ascending="true"/>
+        <sortField name="action_title" table="activity_log" ascending="true"/>
+    </panel>
+    
+    <dataSource id="projExportMsProjectDs1">
+        <table name="project" role="main"/>
+        <field name="project_id" table="project"/>
+        <field name="doc_acts_xfer" table="project"/>
+    </dataSource>
+    
+    <panel type="form" id="projExportMsProjectForm" dataSource="projExportMsProjectDs1" showOnLoad="false">
+        <title>Save File</title>
+        <instructions translatable="true">Click the Show Document button to download stored file for editing in MS Project.  If you would like to modify the XML file in MS Project, please make sure to import the file as a new project. Otherwise, your predecessors data for the tasks might not be accurate.</instructions>
+        <field name="doc_acts_xfer" table="project" readOnly="true" style="width:280">
+            <title>Stored File</title>
+        </field>
+        <field name="project_id" table="project" hidden="true"/>
+    </panel>
+</view>

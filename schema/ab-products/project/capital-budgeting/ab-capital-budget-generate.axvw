@@ -1,0 +1,143 @@
+<view version="2.0">
+    <title>Generate Capital Budget</title>
+    <layout file="ab-proj-console-details.axvw"/>
+    <js file="ab-capital-budget-generate.js"/>
+    <message name="useSelValButton">Please use ellipsis to select values</message>
+    <message name="emptyRequiredFields">Missing required field or fields</message>
+    <message name="invalid_date_range">Date range is invalid</message>
+    <message name="range_exceeds_maximum">Date range exceeds maximum allowed</message>
+    <message name="range_exceeds_ten">The new Budget will span {0} years.  The view may take a few moments to render.  Continue?</message>
+    <message name="allTypes">{default - none specified}</message>
+    
+    <dataSource id="capitalBudgetGenerateDs0">
+        <table name="budget" role="main"/>
+        <field name="budget_id" table="budget"/>
+    </dataSource>
+    
+    <panel type="console" columns="2" id="capitalBudgetGenerateConsole" dataSource="capitalBudgetGenerateDs0" region="north">
+        <title>Select Budget Details</title>
+        <action id="generateCapitalBudget">
+            <title>Generate Capital Budget</title>
+        </action>
+        <action id="clear">
+            <title>Clear</title>
+        </action>
+        <field table="budget" name="budget_id" required="true" onfocus="View.showMessage(getMessage('useSelValButton'))" onkeypress="View.showMessage(getMessage('useSelValButton'))">
+            <action>
+                <title>...</title>
+                <tooltip>Select Budget Code</tooltip>
+                <command type="selectValue"
+                        fieldNames="budget.budget_id"
+                        selectFieldNames="budget.budget_id,budget.description"
+                        visibleFieldNames="budget.budget_id,budget.description"
+                        actionListener="selectBudget">
+                        <title>Budget Code</title>
+                 </command>
+            </action>
+        </field>
+        <field>
+						<title>Update Budget Items from Projects?</title>
+						<html>
+							 <input type="radio" id="update_yes" name="update_check" value="update_yes" checked="true"/>
+							 <span translatable="true">Yes</span>
+							 <input type="radio" id="update_no" name="update_check" value="update_no"/>
+							 <span translatable="true">No</span>
+						</html>
+			  </field>
+        <field colspan="2">
+            <title>Program Types</title>
+            <html>
+                <input id="capitalBudgetGenerateConsole_programtypes" class="inputField_multi_col" type="text" onkeypress="View.showMessage(getMessage('useSelValButton'))" onfocus="View.showMessage(getMessage('useSelValButton'))" name="capitalBudgetGenerateConsole_program.program_type" maxlength="500" size="500"/><img onclick="openSelvalDialog('capitalBudgetGenerateSelectProgramTypes')" class="selectValue_Button" value="..." src="/archibus/schema/ab-system/graphics/ab-icons-ellipses.gif"/>
+            </html>
+        </field>
+        <field colspan="2">
+            <title>Program Sites</title>
+            <html>
+                <input id="capitalBudgetGenerateConsole_programsites" class="inputField_multi_col" type="text" onkeypress="View.showMessage(getMessage('useSelValButton'))" onfocus="View.showMessage(getMessage('useSelValButton'))" name="capitalBudgetGenerateConsole_program.site_id" maxlength="500" size="500"/><img onclick="openSelvalDialog('capitalBudgetGenerateSelectProgramSites')" class="selectValue_Button" value="..." src="/archibus/schema/ab-system/graphics/ab-icons-ellipses.gif"/>
+            </html>
+        </field>
+        <field required="true">
+            <title>From Year</title>
+						<html>
+							<div style="position:relative;float:left">							
+								<input id="from_year" class="inputField" type="text" value="" style="width:70" size="4" />
+							</div>
+							<div style="position:relative;padding-left:2px;padding-top:1px;">
+								<div style="position:relative;float:top;height:9px"><img id="from_yeard" style="vertical-align:top;border:0;margin:0;padding:0" alt="Up" src="/archibus/schema/ab-system/graphics/but_yeard.gif" onclick="changeYear(1, 'from_year');"/></div>
+								<div><img id="from_yearu" style="vertical-align:top;border:0;margin:0;padding:0" alt="Down" src="/archibus/schema/ab-system/graphics/but_yearu.gif" onclick="changeYear(-1, 'from_year');"/></div>
+							</div>
+						</html>
+				</field>
+				<field required="true">
+            <title>To Year</title>
+						<html>
+							<div style="position:relative;float:left">							
+								<input id="to_year" class="inputField" type="text" value="" style="width:70" size="4" />
+							</div>
+							<div style="position:relative;padding-left:2px;padding-top:1px;">
+								<div style="position:relative;float:top;height:9px"><img id="to_yeard" style="vertical-align:top;border:0;margin:0;padding:0" alt="Up" src="/archibus/schema/ab-system/graphics/but_yeard.gif" onclick="changeYear(1, 'to_year');"/></div>
+								<div><img id="to_yearu" style="vertical-align:top;border:0;margin:0;padding:0" alt="Down" src="/archibus/schema/ab-system/graphics/but_yearu.gif" onclick="changeYear(-1, 'to_year');"/></div>
+							</div>
+						</html>
+					</field>
+      </panel> 
+      
+      <dataSource id="capitalBudgetGenerateProgramTypesDs" applyVpaRestrictions="false">
+          <table name="prog_budget_items" role="main" />
+            <table name="program" role="standard" />
+            <field name="budget_id" table="prog_budget_items" />
+            <field name="program_type" table="program" /> 
+            <sql dialect="generic">
+                SELECT DISTINCT prog_budget_items.budget_id, program.program_type
+                FROM prog_budget_items LEFT OUTER JOIN program 
+                ON prog_budget_items.program_id = program.program_id
+                WHERE program.program_type IS NOT NULL
+                ORDER BY program.program_type</sql>
+            <sql dialect="sqlserver">
+                SELECT DISTINCT TOP 100000 prog_budget_items.budget_id, program.program_type
+                FROM prog_budget_items LEFT OUTER JOIN program 
+                ON prog_budget_items.program_id = program.program_id
+                WHERE program.program_type IS NOT NULL
+                ORDER BY program.program_type</sql>
+            <sql dialect="oracle">
+                SELECT DISTINCT prog_budget_items.budget_id, program.program_type
+                FROM prog_budget_items, program 
+                WHERE prog_budget_items.program_id = program.program_id(+)
+                AND program.program_type IS NOT NULL
+                ORDER BY program.program_type</sql>
+      </dataSource>
+      
+      <dataSource id="capitalBudgetGenerateProgramSitesDs" applyVpaRestrictions="false">
+          <table name="prog_budget_items" role="main" />
+            <table name="program" role="standard" />
+            <field name="budget_id" table="prog_budget_items" />
+            <field name="site_id" table="program" /> 
+            <sql dialect="generic">
+                SELECT DISTINCT prog_budget_items.budget_id, program.site_id 
+                FROM prog_budget_items LEFT OUTER JOIN program 
+                ON prog_budget_items.program_id = program.program_id
+                WHERE program.site_id IS NOT NULL
+                ORDER BY program.site_id</sql>
+            <sql dialect="sqlserver">
+                SELECT DISTINCT TOP 100000 prog_budget_items.budget_id, program.site_id 
+                FROM prog_budget_items LEFT OUTER JOIN program 
+                ON prog_budget_items.program_id = program.program_id
+                WHERE program.site_id IS NOT NULL
+                ORDER BY program.site_id</sql>
+            <sql dialect="oracle">
+                SELECT DISTINCT prog_budget_items.budget_id, program.site_id 
+                FROM prog_budget_items, program 
+                WHERE prog_budget_items.program_id = program.program_id(+)
+                AND program.site_id IS NOT NULL
+                ORDER BY program.site_id</sql>
+      </dataSource>
+      
+      <dataSource id="capitalBudgetGenerateFiscalYearsDs" type="grouping">
+          <table name="prog_budget_items" role="main" />
+          <field name="budget_id" table="prog_budget_items" groupBy="true"/>         
+          <field name="min_fiscal_year" formula="min" baseField="prog_budget_items.fiscal_year" dataType="text"/>
+          <field name="max_fiscal_year" formula="max" baseField="prog_budget_items.fiscal_year" dataType="text"/>
+      </dataSource>
+      
+      <panel type="view" id="capitalBudgetGenerateTable" file="ab-capital-budget-edit-items.axvw" region="center"/>
+</view>

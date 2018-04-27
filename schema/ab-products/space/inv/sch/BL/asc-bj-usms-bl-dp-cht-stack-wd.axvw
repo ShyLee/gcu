@@ -1,0 +1,235 @@
+<view version="2.0">
+    <designInfo type="summary" pattern="ab-viewdef-summary-chart" isAlterable="false"/>
+    
+    <title translatable="true">Show Division Stack Plan</title>
+	
+	<message name="treeTitle" translatable="true">Xiao Qu : {0}</message>
+	<message name="rptPanelTitle" translatable="true">Jian Zhu Wu : {0}</message>
+	<message name="noSite" translatable="true">No Site</message>
+	
+	<layout type="borderLayout" id="mainLayout">
+        <north id="consolePanel" autoScroll="true" split="true" initialSize="90"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout type="borderLayout" id="centerLayout" containingLayout="mainLayout" region="center">
+        <west id="treePosition" autoScroll="true" split="true" initialSize="18%"/>
+        <center autoScroll="true"/>
+    </layout>
+	<layout id="nested_center" containingLayout="centerLayout" region="center">
+      <center id="chartPosition" />
+      <south id="crossPosition" initialSize="18%" split="true"/>
+    </layout>
+	
+	<dataSource id="abScDvStack_console_blDS">
+		<table name="bl" role="main"/>
+        <table name="property" role="standard"/>
+        <field table="property" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+        <field table="bl" name="bl_id"/>
+		<field table="bl" name="use1"/>
+    </dataSource>
+    
+    <panel type="console" columns="4" id="sbfFilterPanel" labelsPosition="top" dataSource="abScDvStack_console_blDS" layoutRegion="consolePanel">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="sbfFilterPanel"/>
+        </action>
+        
+        <field table="property" name="site_id"/>
+		<field table="bl" name="pr_id">
+			<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" fieldNames="bl.pr_id,property.site_id"
+					selectFieldNames="property.pr_id,property.site_id" 
+					visibleFieldNames="property.site_id,property.pr_id,property.name" 
+					filterFieldNames="property.site_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>	
+        <field table="bl" name="bl_id">
+        	<action>
+				<title translatable="true">...</title>
+				<command type="selectValue"
+					fieldNames="bl.bl_id,bl.pr_id,property.site_id" 
+					selectFieldNames="bl.bl_id,bl.pr_id,bl.site_id"
+					visibleFieldNames="bl.site_id,bl.pr_id,bl.bl_id,bl.name"
+					restriction="bl.acc_type!='yxz'" >
+					<title>Building</title>
+				</command>
+			</action>
+        </field>
+		  <field table="bl" name="use1"/>	
+    </panel>
+	
+    
+    <!-- dataSource for site tree -->
+    <dataSource id="abScDvStack_tree_siteDS">
+        <table name="site" role="main"/>
+        <field table="site" name="site_id"/>
+        <field table="site" name="name"/>
+        <sortField table="site" name="site_id" ascending="true"/>
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="siteId" dataType="verbatim" value=" IS NOT NULL "/>
+		<parameter name="blUseFor" dataType="verbatim" value=" IS NOT NULL"/>
+		<restriction type="sql" sql="site.site_id ${parameters['siteId']} AND site_id in (SELECT site_id FROM property WHERE pr_id ${parameters['prId']} AND pr_id in (SELECT pr_id from bl where bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']}))"/>
+    </dataSource>
+	
+	<dataSource id="abScDvStack_tree_prDS">
+        <table name="property" role="main"/>
+        <field table="property" name="site_id"/>
+        <field table="property" name="pr_id"/>
+        <field table="property" name="name"/>
+		<field table="property" name="qty_no_bldgs_calc"/>
+        <sortField table="property" name="name" ascending="true"/>
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<restriction type="sql" sql="property.pr_id ${parameters['prId']} AND pr_id in (SELECT pr_id from bl where bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']})"/>
+	</dataSource>	
+	
+	<!-- dataSource for building tree -->
+    <dataSource id="abScDvStack_tree_blDS">
+        <table name="bl" role="main"/>
+        <field table="bl" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <sortField table="bl" name="bl_id" ascending="true"/>
+        <parameter name="blId" dataType="verbatim" value="IS NOT NULL"/>
+		<parameter name="blUseFor" dataType="verbatim" value="IS NOT NULL"/>
+		<restriction type="sql" sql="bl.bl_id ${parameters['blId']} AND use1 ${parameters['blUseFor']} AND bl.acc_type!='yxz'"/>
+    </dataSource>
+	
+	
+    <dataSource id="abScDvStack_check_rmDS">
+        <table name="rm" role="main"/>
+		<field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+		<field table="rm" name="dwgname"/>
+		<parameter name="blId" dataType="text" value=""/>
+		<restriction type="sql" sql="dwgname is not null and bl_id=${parameters['blId']}"/>
+    </dataSource>
+    
+	<!-- site tree panel-->
+	<panel type="tree" id="abScDvStackSite_tree" dataSource="abScDvStack_tree_siteDS" layoutRegion="treePosition">
+        <title translatable="true">Xiao Qu</title>
+		
+		<panel type="tree" id="abScDvStackPr_tree" dataSource="abScDvStack_tree_prDS">
+            <field table="property" name="pr_id"/>
+        </panel>
+        <panel type="tree" id="abScDvStackBl_tree" dataSource="abScDvStack_tree_blDS">
+            <event type="onClickNode">
+                <command type="callFunction" functionName="onClickBlNode"/>
+            </event>
+            <field table="bl" name="bl_id" hidden="true"/>
+            <field table="bl" name="name"/>
+        </panel>
+    </panel>
+	
+    <dataSource id="ds_ab-sp-show-dp-stack_chart_fl"  type="grouping">
+        <table name="fl" role="main"/>
+        <field table="fl" name="bl_fl" dataType="string" groupBy="true">
+           <!--  <sql dialect="generic">RTRIM(bl_id)${sql.concat}'-'${sql.concat}RTRIM(fl_id)</sql> -->
+           <sql dialect="generic">RTRIM(fl_id)</sql>
+        </field>
+        <restriction type="sql" sql=" EXISTS (SELECT 1 FROM rm
+										 WHERE  rm.bl_id = fl.bl_id AND rm.fl_id = fl.fl_id and fl.bl_id =${parameters['blIdRes']}
+								 )"/>
+        <sortField name="bl_fl" table="fl" ascending="true"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-show-dp-stack_chart_rm_union_gp" type="grouping">
+        <sql dialect="generic">
+            SELECT
+				CASE WHEN(rm.dv_id IS NULL) THEN '' ELSE rm.dv_id END ${sql.as} dv_id,
+				CASE WHEN(dv.dv_name IS NULL) THEN '' ELSE dv.dv_name END ${sql.as} dv_name,
+				CASE WHEN(rm.bl_id IS NULL) THEN '' ELSE rm.bl_id END ${sql.as} bl_id,
+	            CASE WHEN(rm.fl_id IS NULL) THEN '' ELSE rm.fl_id END ${sql.as} fl_id,
+	            rm.area  ${sql.as} area_manual,
+	            rm.rm_id ${sql.as} rm_id
+            FROM rm ,dv where rm.dv_id=dv.dv_id
+        
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="dv_name" dataType="string" groupBy="true">
+        	<sql dialect="generic">RTRIM(rm.dv_name)</sql>
+        </field>
+		
+        <field table="rm" name="bl_fl" dataType="string" groupBy="true">
+            <!-- <sql dialect="generic">RTRIM(rm.bl_id)${sql.concat}'-'${sql.concat}RTRIM(rm.fl_id)</sql> -->
+            <sql dialect="generic">RTRIM(rm.fl_id)</sql>
+        </field>
+        <field name="sum_area" formula="sum" baseField="rm.area_manual" dataType="number" decimals="2"/>
+	
+		<parameter name="summaryValueBlId" dataType="text" value=""/>
+		<parameter name="summaryValueForThisGroup" dataType="text" value=""/>
+        <restriction type="sql" sql="rm.dv_id IS NOT NULL AND rm.bl_id=${parameters['summaryValueBlId']} and RTRIM(rm.fl_id) = ${parameters['summaryValueForThisGroup']}"/>
+		
+        <sortField name="dv_name" table="rm" ascending="true"/>
+    </dataSource>
+    
+	
+    <panel id="abSpShowDpStack_dpChart"
+     type="chart"
+     controlType="stackedBarChart"
+     dataSource="ds_ab-sp-show-dp-stack_chart_rm_union_gp"
+     layoutRegion="chartPosition"
+     showLegendOnLoad="true"
+     showLegendAsPopUp="false"
+     legendLocation="right"
+     showDataTips="true"
+     backgroundColor="0xc6e2ff"
+     fillType="linearGradient"
+     percentGradientChange="0.5"
+     percentTransparency="1.0"
+	 showOnLoad="false">
+     	<title translatable="true">Jian Zhu Wu</title>
+		<action id="exportDOCX">
+			<title translatable="true">DOC</title>
+			<tooltip translatable="true">Export current view to Docx file.</tooltip>
+			<command type="exportPanel" outputType="docx" panelId="abSpShowDpStack_dpChart"/>
+		</action>
+        <groupingAxis dataSource="ds_ab-sp-show-dp-stack_chart_fl" table="fl" field="bl_fl">
+            <title translatable="true">Floor</title>
+        </groupingAxis>
+        <secondaryGroupingAxis dataSource="ds_ab-sp-show-dp-stack_chart_rm_union_gp" table="rm" field="dv_name"></secondaryGroupingAxis>
+        <dataAxis dataSource="ds_ab-sp-show-dp-stack_chart_rm_union_gp" table="rm" field="sum_area" displayAxis="true" labelPosition="inside">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+    
+	<!-- datasource for cross table report ,addition grouping by none -->
+    <dataSource id="ds_ab-sc-show-dv-stack-by-bl_cross_rm" type="grouping">
+		<table name="rm" role="main" />
+		<table name="dv" role="standard" />
+		
+		<field table="rm" name="fl_id" groupBy="true"/>
+		<field name="dv_name" table="dv" groupBy="true"/>
+		
+		<field name="total_area" formula="SUM" dataType="number" 
+			baseField="rm.area" decimals="2">
+			<title translatable="true">Usable Area1</title>
+		</field>
+		<sortField name="fl_id" table="rm" ascending="true" />
+<!-- 		<sortField name="dv_id" table="rm" ascending="true" /> -->
+		<sortField name="dv_name" table="dv" ascending="true" />
+		
+		<restriction type="sql" sql="rm.dv_id IS NOT NULL AND dv.dv_name IS NOT NULL AND rm.bl_id=${parameters['blIdRes']}"/>
+		<parameter name="blIdRes" dataType="verbatim" value="1=1"/>
+	</dataSource>
+	
+    <!-- cross table report-->
+	<panel id="abScShowDvStackCrossPanel" type="crossTable" dataSource="ds_ab-sc-show-dv-stack-by-bl_cross_rm" showOnLoad="false"  layoutRegion="crossPosition">
+		
+	</panel>
+ 
+    <js file="asc-bj-usms-bl-dp-cht-stack-wd.js"/>
+</view>

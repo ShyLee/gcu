@@ -1,0 +1,301 @@
+<view version="2.0">
+	<message name="noBusinessUnit" translatable="true">No Business Unit</message>
+	<message name="Unit" translatable="true">Unit</message>
+	<message name="Division" translatable="true">Division</message>
+    <message name="Department" translatable="true">Department</message>
+	<message name="formSaved" translatable="true">Form saved successfully.</message>
+	<message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+	<message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+	<message name="selectTreeNode" translatable="true">Please select Division.</message>
+	<message name="okMessage" translatable="true">GenXinChengGong!</message>
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <title translatable="true">Def Unit by Standard</title>
+    
+	<layout type="borderLayout" id="mainLayout">
+        <north id="consolePanel" autoScroll="true" split="true" initialSize="90"/>
+        <center autoScroll="true"/>
+    </layout>
+    <layout type="borderLayout" id="centerLayout" containingLayout="mainLayout" region="center">
+        <west id="treePosition" autoScroll="true" split="true" initialSize="35%"/>
+        <center id="editPosition" autoScroll="true"/>
+    </layout>
+	
+	<dataSource id="ds_asc-bj-usms-data-def-org_console_dp_dv">
+		<table name="dp" role="main"/>
+		<table name="dv" role="standard"/>
+        <field table="dv" name="bu_id"/>
+		<field table="dv" name="dv_id"/>
+		<field table="dp" name="dp_id"/>
+    </dataSource>
+	
+    <panel type="console" columns="3" id="sbfFilterPanel" labelsPosition="top" dataSource="ds_asc-bj-usms-data-def-org_console_dp_dv" layoutRegion="consolePanel">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="sbfFilterPanel"/>
+        </action>
+        
+        <field table="dv" name="bu_id"/>
+		<field table="dv" name="dv_id">
+			<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        	    fieldNames="dv.dv_id,dv.bu_id"
+					selectFieldNames="dv.dv_id,dv.bu_id" 
+					visibleFieldNames="dv.dv_id,dv.dv_name,dv.bu_id,bu.name" 
+					filterFieldNames="dv.bu_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>	
+		<field table="dp" name="dp_id">
+			<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        	    fieldNames="dp.dp_id,dv.dv_id,dv.bu_id"
+					selectFieldNames="dp.dp_id,dp.dv_id" 
+					visibleFieldNames="dp.dp_id,dp.dp_name,dp.dv_id,dv.dv_name" 
+					filterFieldNames="dv.bu_id,dv.dv_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>	
+    </panel>
+	
+   <dataSource id="abScDefUnitTreeDs">
+        <table name="bu" role="main"/>
+        <field table="bu" name="bu_id"/>
+        <field table="bu" name="name"/>
+        <sortField table="bu" name="bu_id" ascending="true"/>
+        <parameter name="dvId" dataType="verbatim" value="IS NOT NULL"/>
+<!--         <parameter name="dpId" dataType="verbatim" value="IS NOT NULL"/> -->
+        <parameter name="buId" dataType="verbatim" value="IS NOT NULL"/>
+	
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+
+		<restriction type="sql" sql="bu.bu_id ${parameters['buId']} ${parameters['orand']} bu_id in (SELECT bu_id FROM dv WHERE dv_id ${parameters['dvId']}) "/>
+    </dataSource>
+    
+	<dataSource id="abScDefUnitFormDs">
+        <table name="bu" role="main"/>
+        <field table="bu" name="bu_id"/>
+        <field table="bu" name="name"/>
+        <field table="bu" name="bu_class"/>
+	</dataSource>
+		
+    <dataSource id="abScDefDivisionTreeDs">
+        <table name="dv" role="main"/>
+        <table name="bu" role="standard"/>
+        <field table="bu" name="name"/>
+        <field table="dv" name="bu_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dv" name="dv_id"/>
+        <sortField table="dv" name="dv_id" ascending="true"/>
+        <parameter name="dvId" dataType="verbatim" value="IS NOT NULL"/>
+<!--         <parameter name="dpId" dataType="verbatim" value="IS NOT NULL"/> -->
+		
+		<parameter name="orand" dataType="verbatim" value=" OR "/>
+		
+		<restriction type="sql" sql="dv.dv_id ${parameters['dvId']}"/>
+    </dataSource>
+	
+	<dataSource id="abScDefDivisionFormDs">
+        <table name="dv" role="main"/>
+        <table name="bu" role="standard"/>
+        <field table="bu" name="bu_id"/>
+        <field table="bu" name="name"/>
+        <field table="dv" name="bu_id"/>
+        <field table="dv" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="dv" name="description"/> 
+		<field table="dv" name="head"/>
+		<field table="dv" name="hpattern_acad"/> 
+		<field table="dv" name="site_id"/>
+		<field table="dv" name="count_em"/>
+		<field table="dv" name="rm_manager"/>
+		<field table="dv" name="rm_manager_phone"/>
+    </dataSource>
+	
+	<dataSource id="abScDefDepartmentTreeDs">
+        <table name="dp" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="dv" name="bu_id" dataType="text"/>
+        <field table="dv" name="dv_id" dataType="text"/>
+        <field table="dv" name="dv_name" dataType="text"/>
+        <field table="dp" name="dv_id" dataType="text"/>
+        <field table="dp" name="dp_id" dataType="text"/>
+        <field table="dp" name="dp_name" dataType="text"/>
+        <parameter name="dpId" dataType="verbatim" value="IS NOT NULL"/>
+		<restriction type="sql" sql="dp.dp_id ${parameters['dpId']}"/>
+    </dataSource>
+	
+	<dataSource id="abScDefDepartmentFormDs">
+        <table name="dp" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="dp" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="dp" name="dp_id"/>
+		<field table="dp" name="dp_name"/>
+		<field table="dp" name="head"/>
+		<field table="dp" name="count_em" readOnly="true"/>
+		<field table="dp" name="description"/> 
+		<field table="dp" name="eq_own"/> 
+		<field table="dp" name="dv_own"/> 
+	
+    </dataSource>
+    
+    <panel type="tree" id="bu_tree" dataSource="abScDefUnitTreeDs" layoutRegion="treePosition">
+        <title translatable="true">Select Unit,Division,Department</title>
+		<action id="addNew">
+            <title translatable="true">Add New</title>
+        </action>
+        <action id="test">
+            <title translatable="true">Auto IO Data</title>
+        </action>
+        <event type="onClickNode">
+            <command type="callFunction" functionName="onBusinessUnitClick"/>
+        </event>
+        <panel type="tree" id="dv_tree" dataSource="abScDefDivisionTreeDs">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="unitDetailTabs" tabPageName="dvTab"/>
+                <command type="callFunction" functionName="onTreeviewClick"/>
+            </event>
+			<field table="dv" name="dv_id"/>
+			<field table="dv" name="dv_name"/>
+        </panel>
+		
+		<panel type="tree" id="dp_tree" dataSource="abScDefDepartmentTreeDs">
+            <event type="onClickNode">
+                <command type="selectTabPage" tabPanelId="unitDetailTabs" tabPageName="dpTab"/>
+                <command type="callFunction" functionName="onTreeviewClick"/>
+			</event>
+			<field table="dp" name="dp_id"/>
+			<field table="dp" name="dp_name"/>
+			<sortField name="dp_id" table="dp" ascending="true"/>
+        </panel>
+		
+		<field table="bu" name="bu_id"/>
+    </panel>
+	
+	<tabs id="unitDetailTabs" workflow="enforced" cssClass="wizard" layoutRegion="editPosition">
+		
+    	<tab name="buTab" selected="true">
+            <title translatable="true">Unit</title>
+            <panel type="form" id="bu_detail" showOnLoad="false" dataSource="abScDefUnitFormDs" columns="1">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+            </panel>
+        </tab>
+		
+        <tab name="dvTab" selected="false">
+            <title translatable="true">Division</title>
+            <panel type="form" id="dv_detail" showOnLoad="false" dataSource="abScDefDivisionFormDs" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+							
+				<field table="dv" name="bu_id"/>
+				<field table="bu" name="name" readOnly="false">
+					<action>
+						<title>...</title>
+						<tooltip>Select Value</tooltip>
+						<command type="selectValue" 
+						    fieldNames="dv.bu_id,bu.name"
+							selectFieldNames="bu.bu_id,bu.name" 
+							visibleFieldNames="bu.bu_id,bu.name"
+						    showIndex="true" />
+					</action>
+				</field>
+		        <field table="dv" name="dv_id"/>
+				<field table="dv" name="dv_name"/>
+				<field table="dv" name="head">
+					<action>
+				      <title translatable="true">...</title>
+				      <command type="selectValue"
+					      fieldNames="dv.head" 
+					      selectFieldNames="em.em_id"
+					      visibleFieldNames="em.em_id,em.name,dv.name">
+					     <title>JiaoZhiGong</title>
+				      </command>
+			        </action>
+			    </field>
+				<field table="dv" name="count_em"/>
+				<field table="dv" name="count_student" readOnly="true"/>
+				
+				<field table="dv" name="hpattern_acad" readOnly="false">
+					<action>
+                		<command type="callFunction" functionName="setPattern"/>
+            		</action>
+				</field>
+				<field table="dv" name="rm_manager">
+					<action>
+			        	<title>...</title>
+			        	<tooltip>Select Value</tooltip>
+			        	<command type="selectValue" 
+			        	    fieldNames="dv.rm_manager"
+							selectFieldNames="em.em_id" 
+							visibleFieldNames="em.em_id,em.name"> 
+						</command>
+			    	</action>
+			    	
+				</field>
+				<field table="dv" name="rm_manager_phone"/>
+				<field table="dv" name="description" rowspan="5" colspan="2"/> 
+            </panel>
+        </tab>
+		
+		<tab name="dpTab" selected="false">
+            <title translatable="true">Department</title>
+            <panel type="form" id="dp_detail" showOnLoad="false" dataSource="abScDefDepartmentFormDs" columns="2">
+                <action id="save">
+                    <title translatable="true">Save</title>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                </action>
+		        <field table="dp" name="dv_id"/>
+		        <field table="dv" name="dv_name"/>
+		        <field table="dp" name="dp_id"/>
+				<field table="dp" name="dp_name"/>
+				<field table="dp" name="head"/>
+				<field table="dp" name="eq_own"/> 
+				<field table="dp" name="dv_own"/> 
+				<field></field>
+				<field table="dp" name="count_em" readOnly="true"/>
+				<field></field>
+				<field table="dp" name="description" colspan="2"/> 
+            </panel>
+        </tab>
+        <field table="dp" name="dv_id"/>
+        <field table="dv" name="dv_name" readOnly="false">
+			<action>
+				<title>...</title>
+				<tooltip>Select Value</tooltip>
+				<command type="selectValue" 
+					fieldNames="dp.dv_id,dv.dv_name"
+					selectFieldNames="dv.dv_id,dv.dv_name" 
+					visibleFieldNames="dv.dv_id,dv.dv_name"
+					showIndex="true" />
+			</action>
+        </field>
+        <field table="dp" name="dp_id"/>
+		<field table="dp" name="dp_name"/>
+		<field table="dp" name="head"/>
+		<field table="dp" name="count_em" readOnly="true"/>
+	    <field table="dp" name="description"/> 
+    </tabs>
+    <js file="asc-bj-usms-data-def-org-wd.js"/>
+	<js file="asc-bj-usms-def-common.js"/>  
+</view>

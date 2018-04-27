@@ -1,0 +1,107 @@
+<view version="2.0">
+    
+    <css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+    
+    <layout id="main">
+        <north id="schoolPosition" initialSize="30%" split="true"/>
+        <center id="sitePosition"/>
+    </layout>
+    
+    <title translatable="true">XueXiao Zhengti QingKuang ZongBiao</title>
+    
+    <!-- datasource for site grid -->
+    <dataSource id="ds_asc-bj-usms-overall-site-info_grid_site">
+        <table name="site" role="main"/>
+        
+        <field table="site" name="site_id"/>
+        <field table="site" name="name"/>
+        <field table="site" name="address"/>
+        <field table="site" name="area_land_occu"/>
+		
+		
+        <field table="site" name="no_bldgs"/>
+        <field table="site" name="jianzhuyongdi"/>
+		
+		<field table="site" name="area_gross_int">
+			<title translatable="true">Jian Zhu Mian Ji</title>
+         </field>
+        <field table="site" name="area_rm"/>
+		<field table="site" name="count_student_actual"/>
+        <field table="site" name="count_teacher_actual"/>
+    </dataSource>
+	
+	<!-- datasource for school report -->
+    <dataSource id="ds_asc-bj-usms-overall-site-info_columnRpt_school">
+        <table name="sc_school" role="main"/>
+		
+        <field table="sc_school" name="area_land_occu"/>
+        <field table="sc_school" name="area_land_occu_bl"/>
+		<field table="sc_school" name="count_bl"/>
+        <field table="sc_school" name="area_jianzhu"/>
+		<field table="sc_school" name="area_shiyong"/>
+		
+		<field table="sc_school" name="count_teacher_actual"/>
+		<field table="sc_school" name="count_teacher_plan"/>
+        <field table="sc_school" name="count_student_actual"/>
+		<field table="sc_school" name="count_student_plan"/>
+    </dataSource>
+    
+    <!-- base university info panel-->
+    <tabs id="campusTabs" layoutRegion="schoolPosition">
+        <tab name="univer">
+            <title translatable="true">XueXiaoGanKuang</title>
+			
+            <!-- whole school summary data-->
+            <panel type="columnReport" id="ascBjUsmsOverallSiteInfoColuRpt" dataSource="ds_asc-bj-usms-overall-site-info_columnRpt_school" columns="3" >
+                <!-- row 1-->
+				<field name="area_land_occu">
+					<title translatable="true">Area Land School</title>
+                </field>
+				<field name="area_land_occu_bl">
+					<title translatable="true">Area Land Building</title>
+                </field>
+				<field name="count_bl">
+					<title translatable="true">Count Building</title>
+                </field>
+					
+				<!-- row 2-->	
+                <field/>
+                <field id="plan" labelClass="prominentLabel">
+                    <title translatable="true">Plan Person Quantity</title>
+                </field>
+                <field id="actual" labelClass="prominentLabel">
+                    <title translatable="true">Actual Person Quantity</title>
+                </field>
+				
+				<!-- row 3-->
+                <field name="area_jianzhu">
+                    <title translatable="true">Total Structure Land</title>
+                </field>
+                <field name="count_teacher_plan">
+                    <title translatable="true">Plan Teacher Quantity</title>
+                </field>
+                <field name="count_teacher_actual">
+                    <title translatable="true">Actual Teacher Quantity</title>
+                </field>
+				
+				<!-- row 4-->
+                <field name="area_shiyong">
+                    <title translatable="true">Total Usable Area</title>
+                </field>
+                <field name="count_student_plan">
+                    <title translatable="true">Plan Student Quantity</title>
+                </field>
+                <field name="count_student_actual">
+                    <title translatable="true">Actual Student Quantity</title>
+                </field>
+            </panel>
+        </tab>
+    </tabs>
+    
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallSiteInfoGrid" dataSource="ds_asc-bj-usms-overall-site-info_grid_site" layoutRegion="sitePosition">
+        <title translatable="true">GeXiaoQu</title>
+        <sortField table="site" name="site_id" ascending="true"/>
+    </panel>
+    
+</view>

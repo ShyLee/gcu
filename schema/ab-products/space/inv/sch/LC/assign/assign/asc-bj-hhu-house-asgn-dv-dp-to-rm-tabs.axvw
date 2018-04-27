@@ -1,0 +1,15 @@
+<view version="2.0">
+    <title translatable="true">Asign DvDp To Room</title>
+    
+    <tabs workflow="enforced" id="reviewRequestTabs" tabRefreshPolicy="never">
+        <tab name="selectLcTab" file="asc-bj-hhu-house-asgn-dv-dp-to-rm-select-tab.axvw" selected="true">
+            <title translatable="true">Select Tab</title>
+        </tab>
+        <tab name="selectDvAndBl" file="asc-bj-hhu-house-asgn-dv-dp-to-rm-select-dvbl-tab.axvw">
+            <title translatable="true">Select DV And BL Tab</title>
+        </tab> 
+        <tab name="asgnDvToRm" file="asc-bj-hhu-house-asgn-dv-dp-to-rm-tab.axvw">
+            <title translatable="true">Asgn Tab</title>
+        </tab> 
+    </tabs>
+</view>

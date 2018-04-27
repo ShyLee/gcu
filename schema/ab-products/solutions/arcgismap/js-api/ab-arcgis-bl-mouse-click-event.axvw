@@ -1,0 +1,35 @@
+<!-- map with mouse click event handler -->
+
+<view version="2.0" docType="html4/strict">
+  <title>Example: Map with Panel Actions to Show Building Markers</title>  
+  <js url="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"/>
+  <js file="ab-arcgis-bl-mouse-click-event.js"/>
+  <js file="ab-arcgis-map.js"/>
+  <css file="ab-arcgis-map.css"/>
+  <css url="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css" />
+
+  <dataSource id="bl_ds">
+    <table name="bl" role="main"/>
+    <field name="bl_id" table="bl"/>
+    <field name="address1" table="bl"/>
+    <field name="city_id" table="bl"/>
+    <field name="state_id" table="bl"/>
+    <field name="ctry_id" table="bl"/>
+    <field name="lat" table="bl"/>
+    <field name="lon" table="bl"/>
+  </dataSource>
+
+  <panel type="html" id="mapPanel">
+    <title translatable="true">Map</title>
+    <action id="showMap">
+      <title translatable="true">Show Building Markers</title>
+    </action>
+    <action id="clearMap">
+      <title translatable="true">Clear Building Markers</title>
+    </action>
+    <html>    
+      	<div id="map" style="100%;"> </div>
+    </html>
+  </panel>
+  
+</view>

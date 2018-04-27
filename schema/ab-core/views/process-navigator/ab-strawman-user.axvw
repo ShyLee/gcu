@@ -1,0 +1,8 @@
+<view version="2.0">
+    <dataSource id="userRole_ds">
+        <table name="afm_users" role="main"/>
+        <field table="afm_users" name="user_name"/>
+        <field table="afm_users" name="role_name"/>
+        <restriction type="sql" sql="afm_users.user_name='${user.name}'"/>
+    </dataSource>
+</view>

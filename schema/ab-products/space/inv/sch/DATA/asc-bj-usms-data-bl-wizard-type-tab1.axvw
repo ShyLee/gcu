@@ -1,0 +1,142 @@
+<view version="2.0">
+  <js file="asc-bj-usms-data-bl-wizard-type-tab1.js" />
+  <style type="text/css">
+    .spacing { padding-left: 20px; padding-top: 20px; text-align: left; } 
+    .sub-spacing { padding-left: 40px; padding-top: 20px; text-align: left; }
+    .elem-hidden { visibility: hidden; }
+  </style>
+  <message name="title_building" translatable="true">Select Building</message>
+  <message name="title_building_selected" translatable="true">Selected Building</message>
+  <message name="title_structure_selected" translatable="true">Selected Structure</message>
+  
+  <message name="radio_action_label" translatable="true">Step 1 - Select Action:</message>
+  <message name="actions_opt0_label" translatable="true">Add New</message>
+  <message name="actions_opt1_label" translatable="true">Edit Existing</message>
+  <message name="actions_opt2_label" translatable="true">Delete Existing</message>
+  <message name="radio_item_label" translatable="true">Step 2 - Select Portfolio Item:</message>
+  <message name="items_opt0_label" translatable="true">Building</message>
+  <message name="select_value_action_label" translatable="true">Step 3</message>
+  <message name="add_new_bl_id_label" translatable="true">Step 3 - Add New Bl_id</message>
+  <message name="add_new_bl_id_label_continue1" translatable="true">The new Bling Id is </message>
+  <message name="add_new_bl_id_label_continue2" translatable="true">Select Continue Button Make Sure Save The New Bulidding!</message>
+  <message name="continue_label" translatable="true">Select Continue Button</message>
+  <message name="continue_delete_label" translatable="true">Are You Sure To Delete This Record, If You Sure , Please Select Continue Button</message>
+  <message name="confirm_delete_label" translatable="true">Are You Sure To Delete This Record ???</message>
+  <message name="error_add_noblid" translatable="true">You must submit a bl_id</message>
+  <message name="error_edit_nobldgselected" translatable="true">Select an bl_id for the item you wish to add or delete.</message>
+  
+  
+  <panel type="html" id="rplmTypeForm">
+    <title translatable="true">Select an action and portfolio item</title>
+    <action id="continue" >
+      <title translatable="true">Continue</title>
+    </action>
+    <html>
+    <table class="panel" id="rplmTypeForm_body" style="" width="100%">
+        <tr class="space">
+          <td class="formTopSpace" colspan="3">&#160;</td>
+        </tr>
+        <tr>
+          <td rowspan="1" colspan="1" class="label" style="" width="25%" nowrap="1"><span id="radioActionLabel"></span></td>
+          <td colspan="1" rowspan="1" width="25%" nowrap="1">
+            
+			 <select class="inputField_box" name="action" id="actions" onchange="setAction()">
+				<option value="1"></option>
+		        <option value="2"></option>
+                <!-- <option value="3"></option> --> 
+		    </select>
+          </td>
+          <td rowspan="1" colspan="1" class="label" style="" width="25%" nowrap="1">
+            <span id="currActionValue" style="float: left;">&#160;</span>
+          </td>
+        </tr>
+       <tr>
+          <td rowspan="1" colspan="1" class="label" style="" width="25%" nowrap="1">
+            <span id="radioItemLabel"></span>
+          </td>
+          <td colspan="1" width="25%" nowrap="1">
+            <select class="inputField_box" name="items" id="items" onchange="setItems()">
+				<option value="0"></option>
+		        
+			</select>
+          </td>
+          <td rowspan="1" colspan="1" class="label" width="25%" nowrap="1">
+            <span id="currActionItemValue" style="float: left;"></span>
+          </td>
+        </tr>
+        <tr>
+          <td rowspan="1" colspan="1" class="label" style="" width="25%" nowrap="1">
+            <span id="selectValueActionLabel"></span>
+          </td>
+          <td colspan="1" rowspan="1" width="25%" nowrap="1" style="padding-left: 3px; padding-top: 0px; padding-bottom: 3px;">
+            <input type="button" class="selectValue_AbActionButtonFormStdWidth" id="btnItem0" name="btnItem0" value="..." onclick="setItemValue('BUILDING', 0, 'ITEM');" />
+          </td>
+         
+          <td rowspan="1" colspan="1" class="label" style="" width="25%" nowrap="1">
+            <span id="currActionItemSelectValue" style="float: left;">&#160;</span><br />
+            <span id="currActionItemSelectValueContinueLabel" style="float: left;">&#160;</span>
+          </td>
+       	</tr>
+        <tr >
+        	<td rowspan="1" colspan="1" class="label" style="" width="25%" nowrap="1">
+            	<span id="AddNewBlIdLabel"></span>
+            </td>
+        	 <td colspan="1" rowspan="1" width="25%" nowrap="1" style="padding-left: 3px; padding-top: 0px; padding-bottom: 3px;">
+	            <input type="text"  id="blIdText" name="blIdText" value="" onkeyup="this.value=this.value.toUpperCase()" maxlength="8" onblur="rplmTypeController.saveBlId();"/>
+	         </td>
+	         <td rowspan="1" colspan="1" class="label" style="" width="25%" nowrap="1">
+	         	<span id="newBlContinueLabel" style="float: left;">&#160;</span>
+	         </td>
+       	</tr>
+      </table>
+    </html>
+  </panel>
+  	
+	<dataSource id="tsBl">	
+		<table name="bl" role="main"/>
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="site_id"/>
+		<field table="bl" name="pr_id"/>
+		<field table="bl" name="name"/> 
+		<field table="bl" name="use1"/> 
+		<field table="bl" name="area_building_manual"/>  
+	</dataSource>
+	<panel type="form" id="tsBlForm" showOnLoad="false" newRecord="true" dataSource="tsBl" columns="2">
+		<title translatable="true">Add the new building - base info</title>
+		<action id="save">
+            <title translatable="true">Save</title>
+            <command type="callFunction" functionName="rplmTypeController.saveTsBlForm()"/>
+        </action>
+        <action id="Cacel">
+            <title translatable="true">Cacel</title>
+			<command type="callFunction" functionName="rplmTypeController.clearTsBlForm()"/>
+        </action>
+		<field table="bl" name="bl_id" readOnly="true"/>
+		<field table="bl" name="site_id" required="true">
+        	<action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" fieldNames="bl.pr_id,bl.site_id"
+					selectFieldNames="property.pr_id,property.site_id" 
+					visibleFieldNames="property.site_id,property.pr_id,property.name" 
+					filterFieldNames="bl.site_id" 
+					showIndex="false"/>
+	    	</action>
+        </field>
+        <field table="bl" name="pr_id" required="true">
+            <action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" fieldNames="bl.pr_id,bl.site_id"
+					selectFieldNames="property.pr_id,property.site_id" 
+					visibleFieldNames="property.site_id,property.pr_id,property.name" 
+					filterFieldNames="bl.site_id" 
+					showIndex="false"/>
+	    	</action>
+		</field>
+		<field table="bl" name="name" required="true"/>
+		<field table="bl" name="use1" required="true"/>
+		
+		<field table="bl" name="area_building_manual" required="true"/>
+	</panel>
+</view>

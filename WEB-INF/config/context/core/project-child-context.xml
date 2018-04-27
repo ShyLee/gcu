@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ehcache="http://www.springmodules.org/schema/ehcache"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+ http://www.springmodules.org/schema/ehcache 
+ http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd">
+
+    <!-- ========================= This is a child Spring context, loaded for each project instance. ========================= -->
+    <!-- A bean belongs here if one of the following conditions is met: -->
+    <!-- 1. The bean class belongs to the core. -->
+    <!-- 2. The bean is referenced in a core Java class, and the reference is not expected to fail (there is no if(containsBean) or try/catch block around getBean call). -->
+    <!-- The "ext" package does not belong to the core. -->
+
+    <!-- AssetType must be a bean - required by AssetTypeDataSource implementation. -->
+    <bean
+        id="assetType"
+        class="com.archibus.model.drawing.asset.AssetType"
+        scope="prototype">
+    </bean>
+    <bean
+        id="assetTypeDataSource"
+        class="com.archibus.model.drawing.asset.dao.datasource.AssetTypeDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- DrawingProperties must be a bean - required by DrawingPropertiesDataSource implementation. -->
+    <bean
+        id="drawingProperties"
+        class="com.archibus.model.drawing.drawingproperties.DrawingProperties"
+        scope="prototype">
+    </bean>
+    <bean
+        id="drawingPropertiesDataSource"
+        class="com.archibus.model.drawing.drawingproperties.dao.datasource.DrawingPropertiesDataSource"
+        scope="prototype">
+    </bean>
+
+    <!-- DrawingVersion must be a bean - required by DrawingVersionDataSource implementation. -->
+    <bean
+        id="drawingVersion"
+        class="com.archibus.model.drawing.version.DrawingVersion"
+        scope="prototype">
+    </bean>
+    <bean
+        id="drawingVersionDataSource"
+        class="com.archibus.model.drawing.version.dao.datasource.DrawingVersionDataSource"
+        scope="prototype">
+    </bean>
+</beans>
+

@@ -1,0 +1,4 @@
+﻿#afm_activity_params.activity_id,param_id,param_value,description
+#2 records written,,,
+AbWorkplaceReservations,PlugInFullReservationView,ab-rr-my-reservations.axvw,View loaded by the ARCHIBUS Room Reservations Plug In for Outlook when the user loads the full Web Central View.
+AbWorkplaceReservations,PlugInRoomInformationView,ab-rr-rm-arrange-details-urlparams.axvw,"View loaded by the ARCHIBUS Room Reservations Plugin for Outlook when the user presses the ""I"" button to get more information on the room."

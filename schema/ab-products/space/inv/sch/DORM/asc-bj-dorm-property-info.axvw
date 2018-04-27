@@ -1,0 +1,104 @@
+<view version="2.0">
+
+	<layout type="borderLayout" id="mainLayout">
+		<north id="filterPosition" initialSize="80" split="true" />
+		<center />
+	</layout>
+	<title translatable="true">Property Info</title>
+	
+	<dataSource id="sc_property_ds">
+		<table name="sc_stu_property" role="main"/>
+		<field table="sc_stu_property" name="id"/>
+		<field table="sc_stu_property" name="identi_code"/>
+		<field table="sc_stu_property" name="pro_name"/>
+		<field table="sc_stu_property" name="pro_sex"/>
+		<field table="sc_stu_property" name="pro_type"/>
+		<field table="sc_stu_property" name="date_work"/>
+		<field table="sc_stu_property" name="status"/>
+		<field table="sc_stu_property" name="work_loc"/>
+		<field table="sc_stu_property" name="work_performance"/>
+		<field table="sc_stu_property" name="comments"/>
+	</dataSource>
+	<panel type="console" id="scPropertyConsolePanel" dataSource="sc_property_ds" layout="mainLayout" region="north" columns="3">
+		<title translatable="true">Filter</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+			<command type="showPanel" panelId="scPropertyGridPanel"/>
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel"  panelId="scPropertyConsolePanel"/>
+			<command type="showPanel" panelId="scPropertyGridPanel"/>
+		</action>
+		<field table="sc_stu_property" name="identi_code"/>
+		<field table="sc_stu_property" name="pro_name"/>
+		<field table="sc_stu_property" name="status"/>
+	</panel>
+	<panel type="grid" id="scPropertyGridPanel" dataSource="sc_property_ds" layout="mainLayout" region="center" multipleSelectionEnabled="true" >
+		<title translatable="true">Property List</title>
+		<action id="refresh">
+			<title translatable="true">Refresh</title>
+			<command type="showPanel" panelId="scPropertyGridPanel" applyParentRestriction="false"/>
+		</action>
+		<action id="add">
+			<title translatable="true">Add New</title>
+			<command type="openDialog" panelId="scPropertyFormPanel" newRecord="true" width="650" height="400" closeButton="true"/>
+		</action>
+		<action id="delete">
+			<title translatable="true">Delete</title>
+		</action>
+		<action id="download">
+			<title translatable="true">Download</title>
+		</action>
+		<action id="import">
+			<title translatable="true">Import</title>
+		</action>
+		<action id="export">
+			<title translatable="true">Export XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="scPropertyGridPanel"/>
+		</action>
+		<field table="sc_stu_property" name="identi_code" controlType="link">
+			  <command type="openDialog" panelId="scPropertyFormPanel" newRecord="false" width="650" height="350" closeButton="true"/>
+		</field>
+		<field table="sc_stu_property" name="id" hidden="true"/>
+		<field table="sc_stu_property" name="pro_name"  controlType="link">
+			  <command type="openDialog" panelId="scPropertyFormPanel" newRecord="false" width="650" height="350" closeButton="true"/>
+		</field>
+		<field table="sc_stu_property" name="pro_sex"  controlType="link">
+			  <command type="openDialog" panelId="scPropertyFormPanel" newRecord="false" width="650" height="350" closeButton="true"/>
+		</field>
+		<field table="sc_stu_property" name="pro_type"  controlType="link">
+			  <command type="openDialog" panelId="scPropertyFormPanel" newRecord="false" width="650" height="350" closeButton="true"/>
+		</field>
+		<field table="sc_stu_property" name="date_work"/>
+		<field table="sc_stu_property" name="status"/>
+		<field table="sc_stu_property" name="work_loc"/>
+		<field table="sc_stu_property" name="work_performance"/>
+		<field table="sc_stu_property" name="comments"/>
+	</panel>
+	
+	<panel type="form" id="scPropertyFormPanel" dataSource="sc_property_ds" columns="2" showOnLoad="false" newRecord="true" labelsPosition="left">
+		<title translatable="true">Add New</title>
+		<action id="save">
+			<title translatable="true">Save</title>
+			<command type="saveForm"/>
+			<command type="showPanel" panelId="scPropertyGridPanel" applyParentRestriction="false"/>
+			<command type="closeDialog" />
+		</action>
+		<action id="close">
+			<title translatable="true">Close</title>
+			<command type="closeDialog" />
+		</action>
+		<field table="sc_stu_property" name="id" hidden="true"/>
+		<field table="sc_stu_property" name="identi_code" required="true"/>
+		<field table="sc_stu_property" name="pro_name" required="true"/>
+		<field table="sc_stu_property" name="pro_sex" required="true"/>
+		<field table="sc_stu_property" name="pro_type" required="true"/>
+		<field table="sc_stu_property" name="date_work" required="true"/>
+		<field table="sc_stu_property" name="status" required="true"/>
+		<field table="sc_stu_property" name="work_loc"  height="20" colspan="2" required="true"/>
+		<field table="sc_stu_property" name="work_performance" colspan="2"/>
+		<field table="sc_stu_property" name="comments" colspan="2"/>
+	</panel>
+	<js file="asc-bj-dorm-property-info.js"/>
+</view>

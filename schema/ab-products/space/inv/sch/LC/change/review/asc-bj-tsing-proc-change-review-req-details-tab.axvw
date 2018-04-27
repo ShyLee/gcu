@@ -1,0 +1,153 @@
+<view version="2.0">
+   
+    <js file="asc-bj-tsing-proc-change-review-req-details-tab.js"/>
+    
+    <js file="asc-bj-usms-proc-common.js"/>
+
+    <dataSource id="activity_log_ds">
+        <table name="activity_log" role="main"/>   
+        <field table="activity_log" name="activity_log_id"/>
+        <field table="activity_log" name="activity_type"/>
+        <field table="activity_log" name="description"/>
+        <field table="activity_log" name="requestor"/>
+        <field table="activity_log" name="phone_requestor"/>
+        <field table="activity_log" name="priority"/>
+        <field table="activity_log" name="prob_type"/>
+        <field table="activity_log" name="date_required"/>
+        <field table="activity_log" name="date_requested"/>
+        <field table="activity_log" name="time_required"/>
+        <field table="activity_log" name="dp_id"/>
+        <field table="activity_log" name="dv_id"/>      
+        <field table="activity_log" name="area"/>
+        <field table="activity_log" name="count_rm"/>
+        <field table="activity_log" name="rm_user"/>
+        <field table="activity_log" name="project_gp_id"/>
+        <field table="activity_log" name="date_used_from"/>
+        <field table="activity_log" name="date_used_to"/>
+        <field table="activity_log" name="bl_id"/>
+        <field table="activity_log" name="doc1"/>
+        <field table="activity_log" name="doc2"/>
+        <field table="activity_log" name="comments"/>
+    </dataSource>
+    
+    <dataSource id="ts_rm_tu_change_log_ds">
+        <table name="ts_rm_tu_change_log" role="main"/>
+        <field table="ts_rm_tu_change_log" name="activity_log_id"/>
+        <field table="ts_rm_tu_change_log" name="use_desc_after"/>
+        <field table="ts_rm_tu_change_log" name="bl_name"/>
+        <field table="ts_rm_tu_change_log" name="fl_id"/>
+        <field table="ts_rm_tu_change_log" name="oper_date"/>
+        <field table="ts_rm_tu_change_log" name="oper_dv_id"/>
+        <field table="ts_rm_tu_change_log" name="oper_em_id"/>
+        <field table="ts_rm_tu_change_log" name="oper_em_name"/>
+        <field table="ts_rm_tu_change_log" name="rm_cat"/>
+        <field table="ts_rm_tu_change_log" name="rm_cat_after"/>
+        <field table="ts_rm_tu_change_log" name="rm_id"/>
+        <field table="ts_rm_tu_change_log" name="rm_name"/>
+        <field table="ts_rm_tu_change_log" name="rm_name_after"/>
+        <field table="ts_rm_tu_change_log" name="bl_id"/>
+        <field table="ts_rm_tu_change_log" name="rm_type"/>
+        <field table="ts_rm_tu_change_log" name="rm_type_after"/>
+        <field table="ts_rm_tu_change_log" name="rm_use"/>
+        <field table="ts_rm_tu_change_log" name="rm_use_after"/>
+        <field table="ts_rm_tu_change_log" name="site_id"/>
+        <field table="ts_rm_tu_change_log" name="use_desc"/>
+        <field table="ts_rm_tu_change_log" name="rm_tu_change_id"/>
+        <field table="ts_rm_tu_change_log" name="pr_id"/>
+    </dataSource>
+    <!-- 审批页面  需要显示房间信息 -->
+    <panel type="form" columns="2" id="activity_log_ds_form" dataSource="activity_log_ds" showOnLoad="false">
+        <title translatable="true">Requestor Info</title>
+        <action id="back">
+            <title translatable="true">Back</title>
+			<command type="callFunction" functionName="ascBjUsmsProcAsgnApproveReqApproveTabController.onBack()"/>
+        </action>
+       
+         <field table="activity_log" name="activity_log_id" readOnly="true"/>
+       <field table="activity_log" name="requestor" readOnly="true">
+        	<action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.requestor" 
+				 selectFieldNames="em.em_id"
+                 visibleFieldNames="em.em_id,em.name,em.sex,em.dv_id"></command>
+            </action>
+		</field>
+		<field table="activity_log" name="phone_requestor" readOnly="true"/>
+        <field name="dv_id" table="activity_log" readOnly="true"/>
+        <field name="date_required" table="activity_log" readOnly="true"/>
+        <field name="activity_type" table="activity_log" readOnly="true"/>
+        <field table="activity_log" name="description"
+         colspan="4" required="true" style="width: 100%; height: 80px;"
+         showSelectValueAction="false" readOnly="true"/>
+        
+        <field name="priority" table="activity_log" hidden="true"/>
+    </panel>
+    <panel type="grid" columns="2" id="ts_rm_tu_change_log_grid" dataSource="ts_rm_tu_change_log_ds" showOnLoad="false">
+        <title translatable="true">room Info</title>
+       <field table="ts_rm_tu_change_log" name="bl_name"/>
+      <field table="ts_rm_tu_change_log" name="fl_id"/>
+      <field table="ts_rm_tu_change_log" name="rm_id"/>
+      <field table="ts_rm_tu_change_log" name="rm_name"/>
+      <field table="ts_rm_tu_change_log" name="rm_use_after"/>
+      <field table="ts_rm_tu_change_log" name="rm_cat_after"/>
+      <field table="ts_rm_tu_change_log" name="rm_type_after"/>
+      <field table="ts_rm_tu_change_log" name="rm_name_after"/>
+      <field table="ts_rm_tu_change_log" name="oper_em_name"/>
+      <field table="ts_rm_tu_change_log" name="oper_date"/>
+      <field table="ts_rm_tu_change_log" name="activity_log_id" hidden="true">
+        <title translatable="true">shengqingdanhao</title>
+      </field>
+    </panel>
+    
+     <panel type="form" columns="2" id="ascBjUsmsProcAsgnApproveReqApproveTabAttachmentForm" dataSource="activity_log_ds" showOnLoad="false">
+        <title translatable="true">Attachment</title>
+        <field name="activity_log_id" table="activity_log" hidden="true"/>
+        <field name="doc1" table="activity_log" readOnly="true"/>
+        <field name="doc2" table="activity_log" readOnly="true"/>
+    </panel>
+    
+    <dataSource id="helpdesk_step_log_ds">    
+        <table name="helpdesk_step_log" role="main"/>		
+        <table name="afm_wf_steps" role="standard"/>
+        <field table="helpdesk_step_log" name="step_log_id"/>
+        <field table="helpdesk_step_log" name="user_name"/>
+        <field table="helpdesk_step_log" name="em_id"/>		
+        <field table="helpdesk_step_log" name="vn_id"/>
+        <field table="helpdesk_step_log" name="date_response"/>
+        <field table="helpdesk_step_log" name="time_response"/>
+        <field table="afm_wf_steps" name="step"/>
+        <field table="afm_wf_steps" name="status"/>
+        <field table="helpdesk_step_log" name="step_status_result"/>
+        <field table="helpdesk_step_log" name="comments"/>
+    </dataSource>
+    <panel type="grid" id="ascBjUsmsProcAsgnApproveReqApproveTabHistoryPanel" controlType="reportGrid" dataSource="helpdesk_step_log_ds" showOnLoad="false">
+        <title translatable="true">History</title>
+        <field table="helpdesk_step_log" name="step_log_id" hidden="true"/>
+        <field table="helpdesk_step_log" name="user_name" hidden="true"/>
+        <field table="em" name="name" hidden="true"/>
+        <field table="helpdesk_step_log" name="vn_id">
+            <title translatable="true">Step Responded By</title>
+        </field>
+        <field table="helpdesk_step_log" name="date_response">
+            <title translatable="true">On</title>
+        </field>
+        <field table="helpdesk_step_log" name="time_response" hidden="true"/>
+        <field table="afm_wf_steps" name="step">
+            <title translatable="true">Workflow Step</title>
+        </field>
+        <field table="afm_wf_steps" name="status">
+            <title translatable="true">Status</title>
+        </field>
+        <field table="helpdesk_step_log" name="step_status_result">
+            <title translatable="true">Step Status After</title>
+        </field>
+        <field table="helpdesk_step_log" name="comments">
+            <title translatable="true">Comments</title>
+        </field>
+    </panel>
+    
+  
+    
+  
+</view>

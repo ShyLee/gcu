@@ -1,0 +1,94 @@
+<view version="2.0">
+	<title translatable="true">eqcapitalsource</title>
+<!-- 	1;教学;2;科研;3;基建;4;自筹经费;5;世界银行贷款;6;捐赠;9;其它;A;研究生;B;贷款配套费;C;行政事业费;D;211经费 -->
+	<dataSource id="eq_DS" type="grouping">
+		<table name="eq" role="main" />
+		<table name="dv" role="stanadrd" />
+		<field table="dv" name="dv_name" groupBy="true"/>
+		<field name="subject_funds_name" dataType="text" groupBy="true">
+			<title>subject funds</title>
+			<sql dialect="generic">case 
+      			when subject_funds = '1' then '${parameters['JX']}'
+      			when subject_funds = '2' then '${parameters['KY']}'
+      			when subject_funds = '3' then '${parameters['JJ']}'
+      			when subject_funds in ('4','5','6') then '${parameters['ZCJKDK']}'
+      			when subject_funds = 'D' then '${parameters['211JF']}'
+      			when subject_funds = '9' then '${parameters['QT']}'
+      			else '${parameters['WZ']}' end </sql>
+		</field>
+		<field table="eq" name="eq_count" formula="count" baseField="eq.eq_id" dataType="number" decimals="2">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="eq_sum" formula="sum" baseField="eq.total_price" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<parameter name="JX" dataType="verbatim" value="JX"/>
+		<parameter name="KY" dataType="verbatim" value="KY"/>
+		<parameter name="JJ" dataType="verbatim" value="JJ"/>
+		<parameter name="ZCJKDK" dataType="verbatim" value="ZCJKDK"/>
+		<parameter name="211JF" dataType="verbatim" value="211JF"/>
+		<parameter name="QT" dataType="verbatim" value="QT"/>
+		<parameter name="WZ" dataType="verbatim" value="WZ"/>
+		<restriction type="sql" sql="eq.sch_status='1' and  eq.dv_id||eq.dp_id not in (select dv_id||dp_id from dp where eq_own='1')"/>
+	</dataSource>
+	
+	<dataSource id="eqOwn_DS" type="grouping">
+		<table name="eq" role="main" />
+		<table name="dp" role="stanadrd" />
+		<field table="dp" name="dp_name" groupBy="true"/>
+		<field name="subject_funds_name" dataType="text" groupBy="true">
+			<title>subject funds</title>
+			<sql dialect="generic">case 
+      			when subject_funds = '1' then '${parameters['JX']}'
+      			when subject_funds = '2' then '${parameters['KY']}'
+      			when subject_funds = '3' then '${parameters['JJ']}'
+      			when subject_funds in ('4','5','6') then '${parameters['ZCJKDK']}'
+      			when subject_funds = 'D' then '${parameters['211JF']}'
+      			when subject_funds = '9' then '${parameters['QT']}'
+      			else '${parameters['WZ']}' end </sql>
+		</field>
+		<field table="eq" name="eq_count" formula="count" baseField="eq.eq_id" dataType="number" decimals="2">
+			<title translatable="true">taijian</title>
+		</field>
+		<field table="eq" name="eq_sum" formula="sum" baseField="eq.total_price" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<parameter name="JX" dataType="verbatim" value="JX"/>
+		<parameter name="KY" dataType="verbatim" value="KY"/>
+		<parameter name="JJ" dataType="verbatim" value="JJ"/>
+		<parameter name="ZCJKDK" dataType="verbatim" value="ZCJKDK"/>
+		<parameter name="211JF" dataType="verbatim" value="211JF"/>
+		<parameter name="QT" dataType="verbatim" value="QT"/>
+		<parameter name="WZ" dataType="verbatim" value="WZ"/>
+		<restriction type="sql" sql="eq.sch_status='1' and  eq.dv_id||eq.dp_id in (select dv_id||dp_id from dp where eq_own='1')"/>
+	</dataSource>
+	
+	<tabs workflow="free" id="eqTabs" tabRefreshPolicy="never">
+		<tab name="eqTab" selected="true">
+			<title>Eq</title>
+			<panel type="crossTable" id="tablePanel" dataSource="eq_DS">
+				<action id="exportXLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="tablePanel"/>
+				</action>
+<!-- 				<action id="report"> -->
+<!-- 					<title>Report</title> -->
+<!-- 				</action> -->
+			</panel>
+		</tab>
+		<tab name="eqOwnTab">
+			<title>Eq Own</title>
+			<panel type="crossTable" id="eqOwnTablePanel" dataSource="eqOwn_DS">
+				<action id="exportXLS">
+					<title>XLS</title>
+					<command type="exportPanel" outputType="xls" panelId="eqOwnTablePanel"/>
+				</action>
+<!-- 				<action id="report"> -->
+<!-- 					<title>Report</title> -->
+<!-- 				</action> -->
+			</panel>
+		
+		</tab>
+    </tabs>
+	<js file="asc-bj-usms-eq-report-dv-by-capital-source.js"/>
+</view>

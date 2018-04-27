@@ -1,0 +1,40 @@
+<view version="2.0">
+	<title translatable="true">External Visitor</title>
+	
+	<message translatable="true" name="tooManyRows">Too many rows selected, it exceeds the number of the invitations</message>
+    
+	<dataSource id="visitorsDs">
+		<table name="visitors" role="main" />
+
+		<field name="name_first" table="visitors" />
+		<field name="name_last" table="visitors" />
+		<field name="email" table="visitors" />
+		<field name="bl_id" table="visitors" />
+		<field name="fl_id" table="visitors" />
+		<field name="dp_id" table="visitors" />
+		<field name="dv_id" table="visitors" />		
+		<field name="company" table="visitors" />
+	</dataSource>
+
+	<!-- Trade grid list -->
+	<panel type="grid" id="visitors_list" showOnLoad="true"  multipleSelectionEnabled="true" dataSource="visitorsDs">
+		<title translatable="true">Visitor</title>
+		<action>
+			<title translatable="true">Select</title>
+			<command type="callFunction" functionName="selectEmail('visitors_list', 'visitors.email')" />
+		</action>
+
+		<field name="name_first" table="visitors" />
+		<field name="name_last" table="visitors" />
+		<field name="email" table="visitors" />
+		<field name="bl_id" table="visitors" />
+		<field name="fl_id" table="visitors" />
+		<field name="dp_id" table="visitors" />
+		<field name="dv_id" table="visitors" />
+		<field name="company" table="visitors" />
+		
+		<sortField name="name_first" table="visitors" ascending="true" />
+	</panel>
+	
+	<js file="ab-rr-content-add-room-reservation-confirm-add.js" />
+</view>

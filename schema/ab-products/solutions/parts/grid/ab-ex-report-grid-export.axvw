@@ -1,0 +1,47 @@
+
+<!-- Report that uses new Grid panel -->
+
+<view version="2.0">
+  <title translatable="true">Grid Report</title>
+  <!-- Use Grid format. -->
+
+  <dataSource id="reportGridExport_ds">
+    <table name="project" role="main"/>
+   <field name="project_id" table="project"/>
+        <field name="status" table="project"/>
+        <field name="date_start" table="project"/>
+        <field name="project_type" table="project"/>
+        <field name="contact_id" table="project"/>
+        <field name="date_end" table="project"/>
+        <field name="description" table="project"/>
+  </dataSource>
+  <!-- All customizations are specified in panel elements -->
+  <!-- Define Grid panel to display the report. 
+                 The id attribute helps to address the panel in interactive views. -->
+
+  <panel type="grid" id="reportGridExport_grid" dataSource="reportGridExport_ds">
+    <!-- A panel can contain its own title bar. -->
+
+    <title translatable="true">Projects</title>
+    <!-- By default the grid panel displays all fields defined in the dataSource. -->
+
+    <action id="exportDOCX">
+      <title>DOC</title>
+       <!-- default orientation is portrait -->
+      <command type="exportPanel" outputType="docx" panelId="reportGridExport_grid" orientation="landscape"/>
+    </action>
+    <action id="exportPDF">
+      <title>PDF</title>
+       <!-- default orientation is portrait -->
+      <command type="exportPanel" outputType="pdf" panelId="reportGridExport_grid" orientation="landscape"/>
+    </action>
+    <action id="exportXLS">
+      <title>XLS</title>
+      <command type="exportPanel" outputType="xls" panelId="reportGridExport_grid"/>
+    </action>
+    <action id="exportTXFR">
+      <title>DATA</title>
+      <command type="exportPanel" outputType="txfr" panelId="reportGridExport_grid"/>
+    </action>
+  </panel>
+</view>

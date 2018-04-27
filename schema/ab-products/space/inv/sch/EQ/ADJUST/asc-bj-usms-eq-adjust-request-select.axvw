@@ -1,0 +1,101 @@
+<view version="2.0">
+    <layout type="borderLayout" id="mainLayout">
+        <north id="eqRegion" initialSize="45%" split="true"/>
+        <center id="requestRegion"/>
+    </layout>
+    <dataSource id="eq_notice_ds">
+        <table name="eq_change" role="main"/>
+        <field table="eq_change" name="id"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_id_old"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="dv_id"/>
+        <field table="eq_change" name="dv_name"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="dv_name_old"/>
+        <field table="eq_change" name="dp_id"/>
+        <field table="eq_change" name="dp_name"/>
+        <field table="eq_change" name="dp_id_old"/>
+        <field table="eq_change" name="dp_name_old"/>
+        <field table="eq_change" name="adjust_cause"/>
+        <field table="eq_change" name="adjust_date"/>
+        <field table="eq_change" name="adjust_em_id"/>
+        <field table="eq_change" name="adjust_em_name"/>
+        <field table="eq_change" name="adjust_dv_id"/>
+        <field table="eq_change" name="adjust_dv_name"/>
+        <field table="eq_change" name="adjust_status"/>
+        <field table="eq_change" name="okBadStatus"/>
+        <field table="eq_change" name="change_reason"/>
+        <parameter name="dvOldId" dataType="verbatim" value=" 1=1 "/>
+<!--         <parameter name="dpOldId" dataType="verbatim" value=" 1=1 "/> -->
+        <restriction type="sql" sql="${parameters['dvOldId']} and eq_change.rtr_dip_id in (select rtr_dip_id from return_dispose where audit_status='5') and eq_change.adjust_status in ('0','3')"/>
+    </dataSource>
+    
+    <dataSource id="eq_change_ds">
+        <table name="eq_change" role="main"/>
+        <field table="eq_change" name="id"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="dv_id"/>
+        <field table="eq_change" name="dv_name"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="dv_name_old"/>
+        <field table="eq_change" name="adjust_cause"/>
+        <field table="eq_change" name="adjust_date"/>
+        <field table="eq_change" name="adjust_em_id"/>
+        <field table="eq_change" name="adjust_em_name"/>
+        <field table="eq_change" name="adjust_dv_id"/>
+        <field table="eq_change" name="adjust_dv_name"/>
+        <field table="eq_change" name="change_reason"/>
+        <field table="eq_change" name="okBadStatus"/>
+        <field table="eq_change" name="adjust_status"/>
+        <parameter name="adjustDvId" dataType="verbatim" value=" 1=1 "/>
+        <restriction type="sql" sql="eq_change.adjust_em_id='${user.employee.id}' and ${parameters['adjustDvId']} and eq_change.adjust_status in ('1','2','3')"/>
+    </dataSource>
+    
+     <panel type="grid" id="eqListPanel" showOnLoad="true" dataSource="eq_notice_ds" layoutRegion="eqRegion">
+        <title translatable="true">Eq List</title>
+        <field id="adjust" controlType="button" width="120">
+            <title translatable="true">Adjust</title>
+        </field>
+        <field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_id_old"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="dv_name_old"/>
+        <field table="eq_change" name="dp_name_old"/>
+        <field table="eq_change" name="okBadStatus"/>
+        <field table="eq_change" name="change_reason"  width="120"/>
+<!--         <field table="eq_change" name="adjust_status"/> -->
+    </panel>
+     <panel type="grid" id="requestedPanel" showOnLoad="true" dataSource="eq_change_ds"  layoutRegion="requestRegion">
+     	<title>My Request</title>
+        <field table="eq_change" name="id" hidden="true"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="dv_name_old"/>
+        <field table="eq_change" name="okBadStatus"/>
+        <field table="eq_change" name="change_reason"  width="120"/>
+        <field table="eq_change" name="adjust_date"/>
+        <field table="eq_change" name="adjust_em_id" hidden="true"/>
+        <field table="eq_change" name="adjust_em_name"/>
+        <field table="eq_change" name="adjust_dv_id" hidden="true"/>
+        <field table="eq_change" name="adjust_dv_name"/>
+        <field table="eq_change" name="adjust_status"/>
+     </panel>
+     <js file="asc-bj-usms-eq-adjust-request-select.js"/>
+     <js file="asc-bj-usms-eq-comments.js"/>
+     
+</view>

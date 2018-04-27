@@ -1,0 +1,278 @@
+<view version="2.0">
+    <title translatable="true">View Room Category Proportion</title>
+    
+    <layout id="main">
+        <north  initialSize="45%" split="true"/>
+        <center/>
+		<south initialSize="25%" split="true"/>
+    </layout>
+	<layout id="nested_north" containingLayout="main" region="north">
+        <west id="rmcatPosition" initialSize="50%" split="true"/>
+        <center id="rmcatChartPosition" />
+    </layout>
+    
+	<layout id="nested_center" containingLayout="main" region="center">
+        <west  id="rmtypeChart1Position" initialSize="20%" />
+        <center/>
+    </layout>
+    
+	<layout id="nested_center_center" containingLayout="nested_center" region="center">
+        <west id="rmtypeChart2Position" initialSize="27%" />
+        <center/>
+    </layout>
+    
+	<layout id="nested_center_center_center" containingLayout="nested_center_center" region="center">
+        <west id="rmtypeChart3Position" initialSize="20%" />
+        <center id="rmtypeChart4Position" />
+    </layout>
+    
+	<layout id="nested_south" containingLayout="main" region="south">
+        <west  id="rmtype1Position" initialSize="25%" />
+        <center />
+    </layout>
+    
+	<layout id="nested_south_center" containingLayout="nested_south" region="center">
+        <west id="rmtype2Position" initialSize="26%" />
+        <center />
+    </layout>
+	
+ 	<layout id="nested_south_center_center" containingLayout="nested_south_center" region="center">
+        <west id="rmtype3Position" initialSize="25%" />
+        <center id="rmtype4Position" initialSize="25%"  />
+    </layout>
+       
+	<message name="total" translatable="true">Total</message>
+   
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat">
+		<table name="rmcat" role="main" />
+		
+<!-- 		<field table="rmcat" name="rmcat_name"> -->
+<!-- 			<title translatable="true">Lei Bie Dai Ma</title> -->
+<!-- 		</field> -->
+		
+		<field table="rmcat" name="rm_cat" hidden="true"/>
+		<field table="rmcat" name="rmcat_name"/>
+		
+		<field table="rmcat" name="area" >
+			<title translatable="true">Total Usable Area</title>
+		</field>
+		
+		<field table="rmcat" name="area_jianzhu" >
+			<title translatable="true">Total Structure Area</title>
+		</field>
+		
+		<field name="percent_area" dataType="number"  size="6" decimals="2">
+			<title translatable="true">Percentage Area</title>
+			<sql dialect="generic">rmcat.area_jianzhu/(SELECT decode(SUM(ino.area_jianzhu),0,1) FROM rmcat ino)</sql>
+		</field>
+		
+<!-- 		<sortField name="name" table="rmcat" ascending="true" /> -->
+	</dataSource>
+	
+	<!--  data source for the grouping axis --> 
+    <dataSource id="ds_ab-sc-rmtype-pie-chart-by-rmcat_columnChart_rmtype_groupingAxis" type="grouping" >
+  	    <table name="rm" role="main"/>        
+        <field name="rm_type" groupBy="true" dataType="text">
+            <title translatable="true">Room Type</title> 
+        </field>
+        
+        <sortField table="rm" name="rm_type" ascending="true"/>
+		<restriction type="sql" sql="rm.rm_cat=${parameters['rmcatRes']}"/>
+		<parameter name="rmcatRes" dataType="text" value=""/>
+  	</dataSource>
+	
+	<!-- datasource for rmtype report-->
+    <dataSource id="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype">
+		<table name="rmtype" role="main" />
+		<table name="rmcat"  role="standard"/>
+		<field table="rmcat" name="rm_cat"/>
+		<field table="rmcat" name="rmcat_name"/>
+		<field table="rmcat" name="area"/>
+		<field table="rmtype" name="rm_type"/>
+		<field table="rmtype" name="rmtype_name"/>
+		<field table="rmtype" name="area"/>
+			
+		<restriction type="sql" sql="rmtype.area &gt;= 0 AND rmcat.rmcat_name=${parameters['rmcatRes']}"/>
+		<parameter name="rmcatRes" dataType="text" value=""/>
+	</dataSource>
+	
+    
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="abScRmtypebyRmcat_rmcatSumGrid" dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat" layoutRegion="rmcatPosition">
+        <title translatable="true">University All Room Category</title>
+		
+		<action id="export:XLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="abScRmtypebyRmcat_rmcatSumGrid"/>
+		</action>	
+		
+    </panel>
+	
+	<panel 	id="abScRmtypebyRmcatChartPie" 
+    		type="chart" 
+    		controlType="pieChart" 
+    		dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat" 
+    		showLegendOnLoad="false"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillType="solid"
+			layoutRegion="rmcatChartPosition">
+		
+		<action id="DOCX">
+			<title>daochuDOCX</title>
+			<command type="exportPanel" outputType="docx" panelId="abScRmtypebyRmcatChartPie"/>
+		</action>
+				
+        <title translatable="true">University All Room Category pie Chart</title>
+		
+        <groupingAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat" table="rmcat" field="rmcat_name" labelRotation="45">
+            <title translatable="true">Room Category</title>
+        </groupingAxis>
+        <dataAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_grid_rmcat" table="rmcat" field="area_jianzhu" labelPosition="callout">
+            <title translatable="true">JianZhuMianJi</title>
+        </dataAxis>
+    </panel>
+	
+	<!--room type1 : classroom-->
+    <panel type="grid" id="abScRmtypebyRmcat_type1SumGrid" dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" layoutRegion="rmtype1Position" showOnLoad="false">
+        <title translatable="true">Room Category : Classroom</title>
+		<field table="rmtype" name="rm_type" hidden="true"/>
+		<field table="rmtype" name="rmtype_name"/>
+		<field table="rmtype" name="area"/>
+		<!--field name="total_area_shiyong" dataType="number"  decimals="2">
+			<title translatable="true">Area</title>
+		</field-->
+    </panel>
+	
+	<panel 	id="abScRmtypebyRmcatChartPie_rmtype1" 
+    		type="chart" 
+    		controlType="pieChart" 
+    		dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" 
+    		showLegendOnLoad="false"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillType="solid"
+			layoutRegion="rmtypeChart1Position"
+			showOnLoad="false">
+		
+	
+		
+        <groupingAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="rmtype_name" labelRotation="45">
+            <title translatable="true">Room Type</title>
+        </groupingAxis>
+		<!--dataAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rm" field="percent_area" showLabel="true" labelPosition="inside">
+            <title translatable="true">Proportion</title>
+        </dataAxis-->
+		<dataAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="area" showLabel="true" labelPosition="callout">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+	
+	<!--room type2 : lab-->
+	<panel type="grid" id="abScRmtypebyRmcat_type2SumGrid" dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" layoutRegion="rmtype2Position" showOnLoad="false">
+        <title translatable="true">Room Category : Lab</title>
+		<field table="rmtype" name="rm_type" hidden="true"/>
+		<field table="rmtype" name="rmtype_name"/>
+		<field table="rmtype" name="area"/>
+		<!--field name="total_area_shiyong" dataType="number"  decimals="2">
+			<title translatable="true">Area</title>
+		</field-->
+    </panel>
+	
+	<panel 	id="abScRmtypebyRmcatChartPie_rmtype2" 
+    		type="chart" 
+    		controlType="pieChart" 
+    		dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" 
+    		showLegendOnLoad="false"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillType="solid"
+			layoutRegion="rmtypeChart2Position"
+			showOnLoad="false">
+				
+        <groupingAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="rmtype_name" labelRotation="45">
+            <title translatable="true">Room Type</title>
+        </groupingAxis>
+		<dataAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="area" showLabel="true" labelPosition="callout">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+	
+	
+	<!--room type3 : faculty administration room-->
+	<panel type="grid" id="abScRmtypebyRmcat_type3SumGrid" dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" layoutRegion="rmtype3Position" showOnLoad="false">
+        <title translatable="true">Room Category : JiaoXueDanWeiBanGongYongFang</title>
+		
+		<field table="rmtype" name="rm_type" hidden="true"/>
+		<field table="rmtype" name="rmtype_name"/>
+		<field table="rmtype" name="area"/>
+		<!--field name="total_area_shiyong" dataType="number"  decimals="2">
+			<title translatable="true">Area</title>
+		</field-->
+    </panel>
+	
+	<panel 	id="abScRmtypebyRmcatChartPie_rmtype3" 
+    		type="chart" 
+    		controlType="pieChart" 
+    		dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" 
+    		showLegendOnLoad="false"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillType="solid"
+			layoutRegion="rmtypeChart3Position"
+			showOnLoad="false">
+		
+        <groupingAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="rmtype_name" labelRotation="45">
+            <title translatable="true">Room Type</title>
+        </groupingAxis>
+		<dataAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="area" showLabel="true" labelPosition="callout">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+	
+	<!--room type4 : university administration room-->
+	<panel type="grid" id="abScRmtypebyRmcat_type4SumGrid" dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" layoutRegion="rmtype4Position" showOnLoad="false">
+        <title translatable="true">Room Category : DangZhengGuanLiBanGongYongFang</title>
+		
+		<field table="rmtype" name="rm_type" hidden="true"/>
+		<field table="rmtype" name="rmtype_name"/>
+		<field table="rmtype" name="area"/>
+		<!--field name="total_area_shiyong" dataType="number"  decimals="2">
+			<title translatable="true">Area</title>
+		</field-->
+    </panel>
+	
+	<panel 	id="abScRmtypebyRmcatChartPie_rmtype4" 
+    		type="chart" 
+    		controlType="pieChart" 
+    		dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" 
+    		showLegendOnLoad="false"
+    		showLegendAsPopUp="false" 
+    		legendLocation="right"
+    		showDataTips="true" 
+    		backgroundColor="0xc6e2ff" 
+    		fillType="solid"
+			layoutRegion="rmtypeChart4Position"
+			showOnLoad="false">
+				
+		
+				
+        <groupingAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="rmtype_name" labelRotation="45">
+            <title translatable="true">Room Type</title>
+        </groupingAxis>
+		<dataAxis dataSource="ds_ab-sc-rmtype-pie-chart-by-rmcat_chart_rmtype" table="rmtype" field="area" showLabel="true" labelPosition="callout">
+            <title translatable="true">Usable Area</title>
+        </dataAxis>
+    </panel>
+    <js file="asc-bj-usms-type-occu-cht-wd.js"/>
+</view>

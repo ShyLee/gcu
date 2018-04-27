@@ -1,0 +1,56 @@
+<view version="2.0">
+	<title translatable="true">fangzu daoqi tixing</title>
+	<tabs workflow="free" id="console_tabs" tabRefreshPolicy="refreshOnLoad">
+		<tab name="financePayTab" selected="true" file="asc-bj-usms-house-alert-board-zj.axvw" >
+			<title translatable="true">zi jiao alert</title>
+		</tab> 
+		<tab name="selfGzcPayTab">
+			<title translatable="true">cai wu chu dai kou</title>
+			 <dataSource id="scZzfCardDs" >
+		        <table name="sc_zzfrent_details" role="main"/>
+		        <table name="sc_zzfcard" role="standard"/>
+		        <field table="sc_zzfcard" name="card_id"/>
+		        <field table="sc_zzfcard" name="rm_id"/>
+		        <field table="sc_zzfcard" name="bl_id"/>
+		        <field table="sc_zzfcard" name="em_name"/>
+		        <field table="sc_zzfcard" name="em_id"/>
+		        <field table="sc_zzfcard" name="payment_to"/>
+		       
+		        <field table="sc_zzfrent_details" name="card_id"/>
+		        <field table="sc_zzfrent_details" name="month"/>
+		       <field table="sc_zzfrent_details" name="year"/>
+		        <field table="sc_zzfrent_details" name="month_rent"/>
+		       <field table="sc_zzfrent_details" name="actual_payoff"/>
+		       <field table="sc_zzfrent_details" name="amount_payrent"/>
+		       <field table="sc_zzfrent_details" name="date_payrent"/>
+		       <field table="sc_zzfrent_details" name="area_lease"/>
+		       <field table="sc_zzfrent_details" name="note1"/>
+		       <parameter name="rmType" dataType="verbatim" value="1=1"/>
+		       <restriction  type="sql" sql=" sc_zzfcard.payment_to='finance' and  sc_zzfrent_details.amount_payrent != sc_zzfrent_details.actual_payoff"/>
+	            
+		    </dataSource>
+			<panel type="grid" id="selfGzcPayForm"  dataSource="scZzfCardDs">
+			    <title translatable="true">cai wu chu dai kou  weikou zhuhu</title>
+			       
+			       <field table="sc_zzfcard" name="card_id" hidden="true"/>
+			       <field table="sc_zzfrent_details" name="card_id" hidden="true"/>
+		       	   <field table="sc_zzfrent_details" name="year"/>
+			       <field table="sc_zzfrent_details" name="month"/>
+			       <field table="sc_zzfcard" name="em_name"/>
+			       <field table="sc_zzfcard" name="em_id"/>
+			       <field table="sc_zzfcard" name="bl_id"/>
+			       <field table="sc_zzfcard" name="rm_id"/>
+			       <field table="sc_zzfrent_details" name="amount_payrent"/>
+			       <field table="sc_zzfrent_details" name="actual_payoff"/>
+			       <indexField table="sc_zzfrent_details" name="year"/>
+			       <indexField table="sc_zzfrent_details" name="month"/>
+				   <sortField table="sc_zzfrent_details" name="year"/>
+				   <sortField table="sc_zzfrent_details" name="month"/>
+		    </panel>
+		</tab>
+		<tab name="endLeaseTab" file="asc-bj-usms-house-alert-board-card.axvw" >
+			<title translatable="true">zu qi dao alert</title>
+		</tab>
+	</tabs>
+	<js file="asc-bj-usms-house-alert-board.js"/>
+</view>

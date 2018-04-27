@@ -1,0 +1,48 @@
+<view version="2.0">   <!-- xmlns="http://www.archibus.com/axvw"  -->
+    <js file="ab-helpdesk-manager-search.js"/>
+    
+    <message name="request_type" translatable="true">Request Type</message>
+    <message name="request_id" translatable="true">Service Request ID</message>
+    <message name="legend" translatable="true">Legend:</message>
+    <message name="escalatedResponse" translatable="true">Escalated for response</message>
+    <message name="escalatedCompletion" translatable="true">Escalated for completion</message>
+    <message name="select" translatable="true">Select</message>
+    <message name="substituteLegend" translatable="true">Service Requests assigned to you as substitute</message>
+    
+ 	<dataSource id="resultGridDS"> 	
+ 		<table name="activity_log_hactivity_log"/>
+ 		
+ 		<field name="activity_log_id"/>
+  		<field name="wr_id"/>
+        <field name="wo_id"/>
+        <field name="status"/>        
+        <field name="activity_type"/>
+        <field name="prob_type"/>
+        <field name="requestor"/>    
+        <field name="date_requested"/>    
+        <field name="escalated_response"/>   
+        <field name="escalated_completion"/> 
+        <field name="date_completed"/>  
+        <field name="date_escalation_response"/>  
+        <field name="date_escalation_completion"/>  
+        <field name="description"/>      
+        
+        <restriction type="sql" sql="activity_log_hactivity_log.activity_type LIKE 'SERVICE DESK%' 
+        	AND activity_log_hactivity_log.status != 'N/A' AND activity_log_hactivity_log.status != 'CREATED'
+        	AND (activity_log_hactivity_log.manager =${sql.literal(user.employee.id)} OR activity_log_hactivity_log.manager IN (SELECT em_id FROM workflow_substitutes WHERE
+            workflow_substitutes.em_id = activity_log_hactivity_log.manager AND workflow_substitutes.substitute_em_id = ${sql.literal(user.employee.id)}
+            AND workflow_substitutes.steptype_or_role='manager'  
+            AND (workflow_substitutes.start_date_unavailable IS NULL OR workflow_substitutes.start_date_unavailable &lt;= ${sql.currentDate})
+            AND (workflow_substitutes.end_date_unavailable IS NULL OR workflow_substitutes.end_date_unavailable &gt;= ${sql.currentDate})))" />
+               
+        <sortField name="activity_log_id" ascending="true"/>         
+    </dataSource>  
+    
+    <panel type="html" id="searchGridPanel">
+        <indexField table="activity_log_hactivity_log" name="activity_log_id"/>
+        <html>
+            <!-- The grid will be created inside this div element -->
+            <div id="searchGrid"/>
+        </html>
+    </panel>
+</view>

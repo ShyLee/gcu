@@ -1,0 +1,19 @@
+<view version="2.0" type="dashboard">
+    <title translatable="true">View Faculties Usable Area Chart</title>
+	
+    <!-- datasource for rmtype report-->
+    <dataSource id="ds_asc-bj-usms-dash-rm-stat-by-dp_tab_site">
+		<table name="site" role="main" />
+		<field table="site" name="site_id"/>
+		<field table="site" name="name"/>
+	</dataSource>
+    
+    <!-- datasource for rmcat report -->
+    <tabs id="campusTabs" layout="mainLayout">
+        <tab name="univer" selected="true" file="asc-bj-usms-dash-rm-stat-by-dp-whole.axvw">
+            <title translatable="true">Whole School</title>
+        </tab>
+    </tabs>
+	
+    <js file="asc-bj-usms-dash-rm-stat-by-dp.js"/>
+</view>

@@ -1,0 +1,97 @@
+<view version="2.0">
+<title translatable="true">test</title>
+<js file="asc-bj-tsing-proc-change-approve-req-select-tab.js"/>
+ <dataSource id="activity_log_ds">
+        <table name="activity_log" role="main"/>
+        <table name="activity_log_step_waiting" role="standard"/>        
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="status" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field table="activity_log_step_waiting" name="activity_log_id"/>
+        <field table="activity_log_step_waiting" name="user_name"/>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field table="activity_log_step_waiting" name="step_type"/>
+        <field table="activity_log_step_waiting" name="step_log_id"/>        
+        <parameter name="activityType" dataType="text" value=""/>        
+       <restriction type="sql"
+         sql="activity_log.activity_type= ${parameters['activityType']} AND activity_log.status = activity_log_step_waiting.status  AND (activity_log_step_waiting.user_name = '${user.name}' OR  activity_log_step_waiting.em_id = '${user.name}') AND activity_log_step_waiting.step_type IN ('approval','review')"/>
+    </dataSource>
+    
+    <panel type="console" columns="3" id="activity_log_console" labelsPosition="top" dataSource="activity_log_ds">
+        <title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="activity_log_console"/>
+            <command type="callFunction" functionName="refresh"/>
+        </action>
+        
+        <field table="activity_log" name="date_requested" readOnly="false" alias="activity_log.date_requested.from" required="false" op="&gt;=">
+            <title translatable="true">Date Requested From</title>
+        </field>
+        <field table="activity_log" name="date_requested" readOnly="false" alias="activity_log.date_requested.to" required="false" op="&lt;=">
+            <title translatable="true">Date Requested To</title>
+        </field>
+    </panel>
+    <panel type="grid" id="activity_log_grid" showOnLoad="false" controlType="reportGrid" dataSource="activity_log_ds">
+         <title translatable="true">Requests</title>
+        
+        <sortField table="activity_log" name="activity_log_id" ascending="false"/>
+        
+        <field controlType="button">
+            <title translatable="true">Select</title>
+            <command type="callFunction" functionName="selectNextTab"/>
+        </field>
+        <field name="activity_log_id" table="activity_log">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field name="activity_type" table="activity_log" hidden="true"/>
+        <field name="prob_type" table="activity_log">
+            <title translatable="true">Request Type</title>
+        </field>
+        <field table="activity_log_step_waiting" name="step"/>
+        <field name="requestor" table="activity_log" hidden="true"/>		
+        <field name="status" table="activity_log"/>
+        <field name="date_requested" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+    </panel>
+    <dataSource id="activity_log_ds2">
+        <table name="activity_log_hactivity_log" role="main"/>
+        <field table="activity_log_hactivity_log" name="activity_log_id"/>
+        <field table="activity_log_hactivity_log" name="status"/>
+        <field table="activity_log_hactivity_log" name="requestor"/>
+        <field table="activity_log_hactivity_log" name="prob_type"/>
+        <field table="activity_log_hactivity_log" name="activity_type"/>
+        <field table="activity_log_hactivity_log" name="date_requested"/>
+        <field table="activity_log_hactivity_log" name="description"/>
+        <field table="activity_log_hactivity_log" name="comments"/>
+        <sortField table="activity_log_hactivity_log" name="activity_log_id" ascending="false"/>
+        <parameter name="actyType" dataType="text" value=""/>
+        <restriction type="sql" sql="activity_log_hactivity_log.activity_log_id in ( select distinct pkey_value from helpdesk_step_log where user_name='${user.name}' AND step_status_result in ('rejected','approved'))  AND activity_log_hactivity_log.activity_type= ${parameters['actyType']}"/>
+    </dataSource>
+    
+    <panel type="grid" id="activity_log_hactivity_log_grid" showOnLoad="false" controlType="reportGrid" dataSource="activity_log_ds2" >
+        <title translatable="true">Approved</title>
+        <sortField table="activity_log_hactivity_log" name="date_requested" ascending="false"/>
+        <field table="activity_log_hactivity_log" name="activity_log_id" width="100">
+            <title translatable="true">Service Request ID</title>
+        </field>
+        <field table="activity_log_hactivity_log" name="requestor" hidden="true">
+            <title translatable="true">ShenQingRen</title>
+        </field>
+        <field table="activity_log_hactivity_log" name="activity_type" hidden="true"/>
+        <field table="activity_log_hactivity_log" name="prob_type">
+            <title translatable="true">Request Type</title>
+        </field>
+        <field table="activity_log_hactivity_log" name="status"/>
+        <field table="activity_log_hactivity_log" name="date_requested"/>
+        <field table="activity_log_hactivity_log" name="description"/>
+        <!-- <field name="comments" table="activity_log_hactivity_log"/> -->
+    </panel>
+</view>

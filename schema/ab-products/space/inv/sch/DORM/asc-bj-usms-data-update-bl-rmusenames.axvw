@@ -1,0 +1,70 @@
+<view version="2.0">
+	<title translatable="true">Pi Liang Updating Standard Room UseName By Bl</title>
+	<dataSource id="updatermusenamesDs">
+        <table name="rm" role="main"/>
+        <table name="rmuse" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+        <field table="rmuse" name="rm_use"/>
+        <field table="rmuse" name="rmuse_name"/>
+        <field table="rmcat" name="rm_cat"/>
+        <field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rm_type"/>
+        <field table="rmtype" name="rmtype_name"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="fl_id"/>
+		<field table="rm" name="name"/>
+		<field table="rm" name="rm_use"/>
+		<field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type"/>
+    </dataSource>
+    <panel id="updatermusenamesDsPanel" dataSource="updatermusenamesDs" type="console" showOnLoad="true">
+    	<title translatable="true">Room Usename</title>
+  
+    	<action id="updatermusenamebyfloor">
+			<title translatable="true">repair</title>
+			<command type="callFunction" functionName="controller.updatermusenamebyfloor()"/>
+		</action>
+    	<field table="rm" name="rm_use" hidden="true"/>
+		<!-- 这个是房间大类选择值,rmuse_name是房间大类名称字段 -->
+		<field table="rmuse" name="rmuse_name" readOnly="false" required="true">
+				<action>
+						<title>...</title>
+						<command type="selectValue"
+							fieldNames="rm.rm_use,rmuse.rmuse_name"
+							selectFieldNames="rmuse.rm_use,rmuse.rmuse_name"
+							visibleFieldNames="rmuse.rm_use,rmuse.rmuse_name"
+							showIndex="false">
+						</command>
+				</action>
+       </field>
+       <field table="rm" name="rm_cat" hidden="true"/>
+                <!-- 这个是房间类别名称选择值 rmcat_name是房间类别名称字段-->
+		<field table="rmcat" name="rmcat_name"  readOnly="false" required="true">
+              	<action>
+				<title>Room Category</title>
+				<command type="selectValue"
+					fieldNames="rm.rm_cat,rmcat.rmcat_name,rm.rm_use,rmuse.rmuse_name"
+					selectFieldNames="rmcat.rm_cat,rmcat.rmcat_name,rmcat.rm_use,rmuse.rmuse_name"
+					visibleFieldNames="rmcat.rm_cat,rmcat.rmcat_name,rmcat.rm_use,rmuse.rmuse_name">
+				</command>
+			</action>
+        </field>
+            <field table="rm" name="rm_type" hidden="true"/>
+            <!-- 这个是房间类型名称选择值 rmtype_name是房间类型字段-->
+       <field table="rmtype" name="rmtype_name" readOnly="false" showSelectValueAction="true" required="true">
+		<action>
+			<title>Room Type</title>
+			<command type="selectValue"
+				fieldNames="rm.rm_type,rmtype.rmtype_name,rm.rm_cat,rmcat.rmcat_name"
+				selectFieldNames="rmtype.rm_type,rmtype.rmtype_name,rmcat.rm_cat,rmcat.rmcat_name"
+				visibleFieldNames="rmtype.rm_type,rmtype.rmtype_name,rmcat.rm_cat,rmcat.rmcat_name">
+			</command>
+		</action>
+       </field>
+       
+    </panel>
+    <js file="asc-bj-usms-data-update-bl-rmusenames.js"/>
+    
+</view>

@@ -1,0 +1,68 @@
+<view version="2.0">
+    
+	<message name="error_dingeArea" translatable="true">DingEJibieHeDingEMianJiBiXuWeiYiDuiYing.</message>
+	<message name="errorSave" translatable="true">BaoCunJiLuShiBai.</message>
+    <message name="formSaved" translatable="true">ChengGongBaoCunJiLu</message>
+	
+    <layout type="borderLayout" id="mainLayout">
+        <west id="top" initialSize="30%" split="true"/>
+        <center autoScroll="true"/>
+    </layout>
+    <title translatable="true">Define Ding e Ji Bie</title>
+    
+    <dataSource id="abScDefDeAreaGridDS">
+        <table name="sc_dinge_jibie" role="main"/>
+		<field table="sc_dinge_jibie" name="gangweijibie_id"/>
+		<field table="sc_dinge_jibie" name="zhic_bz_id"/>
+        <field table="sc_dinge_jibie" name="dingejibie_id"/>
+        <field table="sc_dinge_jibie" name="area"/>
+		
+    </dataSource>
+	
+	<dataSource id="abScDefDeAreaCheckDS" distinct="true">
+        <table name="sc_dinge_jibie" role="main"/>
+		<field name="gangweijibie_id"/>
+        <field name="area"/>
+    </dataSource>
+	
+    
+    <panel type="grid" id="abScDefDeAreaGrid" dataSource="abScDefDeAreaGridDS" layout="mainLayout" region="west" recordLimit="0">
+        <sortField name="dingejibie_id" table="sc_dinge_jibie" ascending="true"/>
+        <title translatable="true">Quota Area list  panel</title>
+        <action id="addNew">
+            <title translatable="true">Add New</title>
+            <command type="showPanel" panelId="abScDefDeAreaForm" newRecord="true"/>
+        </action>
+        <field name="dingejibie_id" table="sc_dinge_jibie" controlType="link">
+            <command type="showPanel" panelId="abScDefDeAreaForm"/>
+        </field>
+        <field name="area" table="sc_dinge_jibie" controlType="link">
+            <command type="showPanel" panelId="abScDefDeAreaForm"/>
+        </field>
+		<field name="gangweijibie_id" table="sc_dinge_jibie" controlType="link">
+            <command type="showPanel" panelId="abScDefDeAreaForm"/>
+        </field>
+		<field name="zhic_bz_id" table="sc_dinge_jibie" controlType="link">
+            <command type="showPanel" panelId="abScDefDeAreaForm"/>
+        </field>
+    </panel>
+    
+    <panel type="form" id="abScDefDeAreaForm" showOnLoad="false" columns="2" dataSource="abScDefDeAreaGridDS" layout="mainLayout" region="center">
+        <title translatable="true">Quota Area form  panel</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="delete">
+            <title translatable="true">Delete</title>
+            <command type="deleteRecord"/>
+            <command type="showPanel" panelId="abScDefDeAreaForm" show="false"/>
+            <command type="showPanel" panelId="abScDefDeAreaGrid" applyParentRestriction="false"/>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="showPanel" panelId="abScDefDeAreaForm" show="false"/>
+        </action>
+    </panel>
+   
+   <js file="asc-bj-usms-data-def-em-rated-area.js"/>
+</view>

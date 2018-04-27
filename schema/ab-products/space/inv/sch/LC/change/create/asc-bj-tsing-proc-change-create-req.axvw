@@ -1,0 +1,18 @@
+<view version="2.0">
+    <title translatable="true">Create Request</title>
+    
+    <tabs workflow="enforced" id="createRequestTabs" tabRefreshPolicy="never">
+        <tab name="selectTab" selected="true" file="asc-bj-tsing-proc-change-create-req-select-type-tab.axvw">
+            <title translatable="true">Select Request Type</title>
+        </tab>
+        
+        <tab name="basicInputTab" file="asc-bj-tsing-proc-change-create-req-basic-input-tab.axvw">
+            <title translatable="true">Input Basic Information</title>
+        </tab>
+        
+        <tab name="attachTab" file="asc-bj-tsing-proc-change-create-req-add-attach-tab.axvw">
+            <title translatable="true">Add Attachments</title>
+        </tab>
+        
+    </tabs>
+</view>

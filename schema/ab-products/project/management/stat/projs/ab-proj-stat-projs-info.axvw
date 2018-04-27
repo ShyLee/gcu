@@ -1,0 +1,14 @@
+<view version="2.0">
+    
+    <panel id="projStatProjsInfo_info" type="html" dataSource="none" showOnLoad="true">
+        <html><h1 style="font-size:14px">Progress Status Report</h1>
+        <p style="font-size:11px">Review project progress.  Select Project Code to open the Project Dashboard.<br/></p>
+        <ul style="font-size:11px">
+            <li><b>Cost - Budgeted: </b>Total Budgeted Project cost.  </li>
+            <li><b>Project Funding: </b>Funding amount derived from the Project Funds table.  </li>
+            <li><b>Revised Contracted Cost: </b>Contracted Cost plus approved change orders.  </li>
+            <li><b>% Contracted Actions Complete (by Cost): </b>Average of the '% Complete' values for all contracted action items weighted by estimated cost.  </li>
+            <li><b>% Project Actions Complete (by Cost): </b>Average of the '% Complete' values for all project action items weighted by estimated cost.  </li>
+        </ul></html>
+    </panel>
+</view>

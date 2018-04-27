@@ -1,0 +1,20 @@
+<view version="2.0">
+    <title translatable="true">Create Request</title>
+    
+    <tabs workflow="enforced" id="createRequestTabs" tabRefreshPolicy="refreshOnSelect">
+        <tab name="selectTab" selected="true" file="asc-bj-usms-proc-asgn-create-req-select-type-tab.axvw">
+            <title translatable="true">Select Request Type</title>
+        </tab>
+		
+        <tab name="basicInputTab" file="asc-bj-usms-proc-asgn-create-req-basic-input-tab.axvw">
+            <title translatable="true">Input Basic Information</title>
+        </tab>
+        <tab name="requestDetailsTab" file="asc-bj-usms-proc-asgn-review-req-details-tab.axvw">
+            <title translatable="true">Request Details</title>
+        </tab>
+        <tab name="attachTab" file="asc-bj-usms-proc-asgn-create-req-add-attach-tab.axvw">
+            <title translatable="true">Add Attachments</title>
+        </tab>
+    </tabs>
+    <js file="asc-bj-usms-proc-asgn-create-req.js"/>
+</view>

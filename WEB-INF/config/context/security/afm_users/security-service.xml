@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	<!-- ========================= SecurityService DEFINITIONS ========================= -->
+	<!-- 
+		SecurityService provides login/logout/sendPassword and other operations, required for the login page. 
+	-->
+	<!-- TODO: The passwordChanger is optional: is used by changePassword method only. -->
+	<!-- TODO: The sqlPasswordChanger is optional: is used by changeSqlPassword method only. -->
+	<bean id="securityService"
+		class="org.springframework.aop.framework.ProxyFactoryBean"
+		p:proxyInterfaces="com.archibus.service.remoting.SecurityService">
+		<property name="target">
+			<bean
+				class="com.archibus.service.remoting.SecurityServiceImpl"
+				p:passwordChanger-ref="passwordChanger"
+				p:passwordManager-ref="passwordManager"
+				p:sqlPasswordChanger-ref="sqlPasswordChanger"
+                p:passwordEncryptor-ref="passwordEncryptor"
+				p:configManager-ref="configManager"
+				p:authenticationManager-ref="authenticationManager"
+				p:securityConfiguration="${security.configurationFile}">
+			</bean>
+		</property>
+	<!-- TODO: Add transaction interceptor to passwordChanger, passwordManager, sqlPasswordChanger? -->
+		<property name="interceptorNames">
+			<list>
+				<value>securityInterceptor</value>
+				<value>exceptionHandlingInterceptor</value>
+			</list>
+		</property>
+	</bean>
+</beans>

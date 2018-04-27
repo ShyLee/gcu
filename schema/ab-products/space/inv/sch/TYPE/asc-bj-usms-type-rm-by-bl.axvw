@@ -1,0 +1,94 @@
+<view version="2.0">
+    <title translatable="true">Highlight Rooms by Building</title>
+    
+    <layout id="main">
+        <west id="flTreePosition" initialSize="30%" split="true"/>
+        <center id="dwgPosition"/>
+    </layout>
+    
+    <message name="drawingPanelTitle" translatable="true">Highlight Rooms by Building</message>
+    <message name="drawingPanelTitle1" translatable="true">Highlight Rooms for Building : {0}</message>
+    
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_grid_fl" type="grouping">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <field table="rm" name="bl_id" groupBy="true"/>
+        <field table="rm" name="fl_id" groupBy="true"/>
+        <field table="rm" name="dwgname" groupBy="true"/>
+        <parameter name="blRes" dataType="verbatim" value=" 1=1 "/>
+        <restriction type="sql" sql="${parameters['blRes']} 
+         AND rm.dwgname IS NOT NULL "/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight" type="DrawingControlHighlight">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="dwgname"/>
+        <field table="rm" name="dv_id" legendKey="true"/>
+        <field table="dv" name="hpattern_acad"/>
+        <parameter name="rmcat" dataType="verbatim" value=""/>
+        <restriction type="sql" sql="${parameters['rmcat']}"/>
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <field name="bl_id" hidden="true"/>
+        <field name="fl_id" hidden="true"/>
+        <field name="rm_id"/>
+        <field name="name"/>
+        <field table="dv" name="dv_name"/>
+        <field name="area"/>
+        <field table="rm" name="dwgname" />
+    </dataSource>
+    
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_columnReport_rm">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="rm_use"/>
+        <field table="dv" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="rm" name="phone"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="area"/>
+    </dataSource>
+    
+    <panel type="grid" id="abSpHlRmByDp_flGrid" dataSource="ds_ab-sp-hl-rm-by-dp_grid_fl"  controlType="reportGrid" multipleSelectionEnabled="true" layoutRegion="flTreePosition">
+        <title translatable="true">Select Floor</title>
+        <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="fl_id"/>
+		<field table="rm" name="dwgname" hidden="true"/>
+        <sortField table="rm" name="fl_id" ascending="true"/>
+    </panel>
+    
+    <panel type="drawing" id="abSpHlRmByDp_DrawingPanel" layoutRegion="dwgPosition"
+     highlightDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight"
+     labelsDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel">
+        <action id="exportDOCX">
+            <title translatable="true">DOC</title>
+            <tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+            <command type="exportPanel" outputType="docx" panelId="abSpHlRmByDp_DrawingPanel"/>
+        </action>
+        <action id="showDwgView">
+			<title translatable="true">ShowDwg</title>
+		</action>
+        <title></title>
+    </panel>
+    
+    <panel type="columnReport" id="abSpHlRmByDp_RmDetailPanel" columns="2" dataSource="ds_ab-sp-hl-rm-by-dp_columnReport_rm" showOnLoad="false" hidden="true" layoutRegion="dwgPosition">
+        <title translatable="true">Room Details</title>
+    </panel>
+    
+    <js file="asc-bj-usms-type-rm-by-bl.js"/>
+</view>

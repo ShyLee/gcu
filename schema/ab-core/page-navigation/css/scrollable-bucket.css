@@ -1,0 +1,117 @@
+/**
+ * Wrapper element for the scrollable.  set the viewport dimensions.
+ */
+.scrollable-wrapper-full-height {
+    margin: 0 auto;
+    height: 420px;
+}
+.scrollable-wrapper-three-quarter-height {
+    margin: 0 auto;
+    height: 300px;
+}
+.scrollable-wrapper-half-height {
+    margin:0 auto;
+    height:190px;
+}
+/**
+ * Root element for the scrollable. when scrolling occurs this element stays still.
+ */
+.scrollable-full-height {
+    /* required settings */
+    position: relative;
+    overflow: hidden;
+    height: 420px;
+}
+.scrollable-three-quarter-height {
+    /* required settings */
+    position: relative;
+    overflow: hidden;
+    height: 300px;
+}
+.scrollable-half-height {
+    /* required settings */
+    position: relative;
+    overflow: hidden;
+    height: 190px;
+}
+/**
+ * Root element for scrollable items. Must be absolutely positioned & have an extremely large width
+ * to accomodate scrollable items. It's enough that you set the width and height for the root element r.t. this element.
+ */
+.scrollable-full-height .items,
+.scrollable-three-quarter-height .items,
+.scrollable-half-height .items {
+    /* this cannot be too large */
+    width:20000em;
+    position:absolute;
+    clear:both;
+    line-height: 1.2;
+}
+/*
+ */
+.scrollable-full-height ol,
+.scrollable-three-quarter-height ol,
+.scrollable-half-height ol {
+    display: inline-table;
+    list-style: none;
+    padding-left: 1px;
+    margin-left: 1px;
+}
+
+/**
+ * single scrollable item
+ */
+.scrollable-full-height li,
+.scrollable-three-quarter-height li,
+.scrollable-half-height li {
+    margin: 1px 0px 8px 2px;
+    left: 2px;
+}
+
+.bucket-process .scrollable-wrapper-full-height,
+.bucket-process .scrollable-wrapper-three-quarter-height,
+.bucket-process .scrollable-wrapper-half-height,
+.bucket-process .scrollable-full-height,
+.bucket-process .scrollable-three-quarter-height,
+.bucket-process .scrollable-half-height,
+.bucket-process .scrollable-full-height ol,
+.bucket-process .scrollable-three-quarter-height ol,
+.bucket-process .scrollable-half-height ol {
+    width: 250px;
+}
+.bucket-application .scrollable-wrapper-full-height,
+.bucket-application .scrollable-wrapper-three-quarter-height,
+.bucket-application .scrollable-wrapper-half-height,
+.bucket-application .scrollable-full-height,
+.bucket-application .scrollable-three-quarter-height,
+.bucket-application .scrollable-half-height,
+.bucket-application .scrollable-full-height ol,
+.bucket-application .scrollable-three-quarter-height ol,
+.bucket-application .scrollable-half-height ol {
+    width:205px;
+}
+
+/* position and dimensions of the navigator */
+.navi {
+    margin: 0 80px;
+    width: 100px;
+    height:20px;
+}
+/* items inside navigator */
+.navi a {
+    width:8px;
+    height:8px;
+    float:left;
+    margin:3px;
+    background:url(../img/navigator.png) 0 0 no-repeat;
+    display:block;
+    font-size:1px;
+}
+/* mouseover state */
+.navi a:hover {
+    background-position:0 -8px;
+}
+/* active state (current page state) */
+.navi a.active {
+    background-position:0 -16px;
+}

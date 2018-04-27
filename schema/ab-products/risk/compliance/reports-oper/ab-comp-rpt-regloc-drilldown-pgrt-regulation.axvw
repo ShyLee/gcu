@@ -1,0 +1,77 @@
+<view version="2.0">
+	
+    <title translatable="true">Compliance by Location Drill-down - Regulations</title>
+    
+    <report orientation="landscape"/>
+
+    <dataSource id="abCbRptDrilldown_dsRegulation" >
+        <table name="regulation" role="main"/>
+    
+       
+        <field name="vf_count_program" dataType="number" size="12" decimals="0">
+            <title translatable="true">Count Programs</title>
+            <sql dialect="generic">(SELECT COUNT(regprogram.reg_program)FROM regprogram where regprogram.regulation=regulation.regulation and  ${parameters['programRes']})</sql>
+        </field>
+        <field name="vf_count_requirement" dataType="number" size="12" decimals="0">
+            <title translatable="true">Count Requirements</title>
+            <sql dialect="generic">(SELECT COUNT(regrequirement.reg_requirement)FROM regrequirement where regrequirement.regulation=regulation.regulation and  ${parameters['requirementRes']})</sql>
+        </field>
+        <field name="vf_count_event" dataType="number" size="12" decimals="0">
+            <title translatable="true">Count Events</title>
+            <sql dialect="generic">(SELECT COUNT(activity_log.activity_log_id)FROM activity_log ,regloc where 
+                                             activity_log.location_id=regloc.location_id 
+                                             AND  regloc.regulation=regulation.regulation 
+                                             AND activity_log.activity_type='COMPLIANCE - EVENT' 
+                                             AND ${sql.daysBeforeCurrentDate('activity_log.date_scheduled')}  >-365
+                                             AND  activity_log.date_scheduled >= ${sql.currentDate}  
+                                             AND activity_log.status not in('COMPLETED','COMPLETED-V', 'CLOSED', 'CANCELLED')
+                                     )
+            </sql>
+        </field>
+        <field  table="regulation" name="regulation" />
+        <field  table="regulation" name="reg_name"/>
+        <field  table="regulation" name="reg_class"/>
+        <field  table="regulation" name="reg_rank"/>
+        <field  table="regulation" name="reg_cat"/>
+        <field  table="regulation" name="reg_type"/>
+        <field  table="regulation" name="authority"/>
+        <field  table="regulation" name="citation"/>
+        <field  table="regulation" name="date_compliance"/>
+        <field  table="regulation" name="date_start"/>
+        <field  table="regulation" name="date_end"/>
+        <field  table="regulation" name="related_reg"/>
+        <parameter name="regulationRes" dataType="verbatim" value=" 1=1 "/>
+        <parameter name="programRes" dataType="verbatim" value=" 1=1 "/>
+        <parameter name="requirementRes" dataType="verbatim" value=" 1=1 "/>
+        
+        <restriction type="sql" sql=" ${parameters['regulationRes']}"/>
+    </dataSource>
+    
+    <panel id="abCbRptDrilldown_panelRegulation" dataSource="abCbRptDrilldown_dsRegulation" type="paginatedReport" format="table" role="data">
+        <title translatable="true">Regulations Summary</title>
+                <field name="vf_count_program" controlType="link">
+                    <title translatable="true">Count Programs</title>
+                </field>
+                <field name="vf_count_requirement" controlType="link">
+                    <title translatable="true">Count Requirements</title>
+                </field>
+               
+                <field name="vf_count_event"  controlType="link">
+                    <title translatable="true">Count Events</title>
+                </field>
+                <field  table="regulation" name="regulation" />
+                <field  table="regulation" name="reg_name"  />
+                <field table="regulation" name="reg_class" />
+                <field table="regulation" name="reg_rank" />
+                <field table="regulation" name="reg_cat" />
+                <field table="regulation" name="reg_type" />
+                <field table="regulation" name="authority" />
+                <field table="regulation" name="citation" />
+                <field table="regulation" name="date_compliance" />
+                <field table="regulation" name="date_start" />
+                <field table="regulation" name="date_end" />
+                <field table="regulation" name="related_reg" />
+        
+       
+    </panel>
+</view>

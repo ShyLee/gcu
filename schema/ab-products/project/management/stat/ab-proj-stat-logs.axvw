@@ -1,0 +1,71 @@
+<view version="2.0">
+    <message name="menu_comm1">Notice</message>
+    <message name="menu_comm2">Correspondence</message>
+    <message name="menu_comm3">Meeting Notes</message>
+    <message name="menu_comm4">More Options</message>
+    <js file="ab-proj-stat-logs.js"/>
+    
+    <dataSource id="projStatLogs_ds0">
+        <table name="ls_comm" role="main"/>
+        <table name="activity_log" role="standard"/>
+        <field name="comm_id" table="ls_comm" />
+        <field name="project_id" table="ls_comm"/>
+        <field name="date_of_comm" table="ls_comm" />
+        <field name="time_of_comm" table="ls_comm" />        
+        <field name="comm_type" table="ls_comm" />
+        <field name="contact_id" table="ls_comm"/>
+        <field name="priority" table="ls_comm" />
+        <field name="recorded_by" table="ls_comm"/>
+        <field name="project_id" table="ls_comm"/>
+        <field name="work_pkg_id" table="activity_log" />
+        <field name="action_title" table="activity_log"/>
+        <field name="activity_log_id" table="activity_log" />
+        <field name="doc" table="ls_comm"/>        
+        <field name="summary" table="ls_comm" />
+        <field name="auto_number" table="ls_comm" />
+        <field name="description" table="ls_comm" />
+    </dataSource>
+
+    <panel type="grid" id="projStatLogs_comm" dataSource="projStatLogs_ds0" showOnLoad="false">
+        <title>Project Communications</title>  
+        <action id="addNewComm">
+            <title>Add</title>
+        </action>   
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="projStatLogs_comm"/>
+        </action>
+        <sortField name="date_of_comm" table="ls_comm" ascending="false"/>
+        <sortField name="time_of_comm" table="ls_comm" ascending="false"/>
+        <field name="date_of_comm" table="ls_comm" controlType="link">
+            <title>Date</title>
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>
+        <field name="summary" table="ls_comm"  controlType="link">
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>
+        <field name="priority" table="ls_comm"  controlType="link">
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>
+        <field name="comm_id" table="ls_comm"  controlType="link">
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>
+        <field name="comm_type" table="ls_comm"  controlType="link">
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>
+        <field name="contact_id" table="ls_comm" controlType="link">
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>
+        <field name="doc" table="ls_comm" controlType="link"/>
+        <field name="recorded_by" table="ls_comm" controlType="link">
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>
+        <field name="work_pkg_id" table="activity_log"  controlType="link">
+            <command type="openDialog" viewName="ab-proj-stat-logs-edit.axvw"/>
+        </field>     
+        <field name="project_id" table="ls_comm" hidden="true"/>   
+        <field name="auto_number" table="ls_comm" hidden="true" />      
+    </panel>
+    
+
+</view>

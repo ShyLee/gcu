@@ -1,0 +1,170 @@
+<!-- 
+	View That Demonstrates the following Capabilities of the Drawing Control 
+
+	1)	Simple packaging of a Grid of Floors driving the Drawing Control
+	2)	Simple inclusion of the "drawing" panel using all default attributes.
+	3)	Inclusion of external data sources for both highlighting and labels.
+	
+-->
+
+<view version="2.0">
+    <style type="text/css">
+body{
+    margin:0px;
+    padding:0px
+}
+#map_canvas{
+    
+    width:100%;
+    height:600px;
+}
+#info{
+    font-size:12px;
+    font-color:blue;
+}
+    </style>
+    <title translatable="true">School Building Navigation</title>
+   
+  <message name="duiwangjinmao" translatable="true">duiwaijingmaodaxue</message>
+    <layout id="mainCenter"  >
+        <north id="north" initialSize="65" split="true"/>
+        <center id="center" />
+    </layout>
+     <layout  type="borderLayout" id="centerLayout" containingLayout="mainCenter" region="center">
+        <west id="nestWest" initialSize="50%" split="true"/>
+        <center />
+    </layout >
+    <layout type="borderLayout" id="innerLayout" containingLayout="centerLayout" region="center">
+    	<north id="innerNorth" split="true" initialSize="50%"></north>
+    	<center id="innerCenter" initialSize="50%"></center>
+    </layout>
+    <layout type="borderLayout" id="innerLayout1" containingLayout="innerLayout" region="north">
+    	<west id="blGrid" split="true" initialSize="30%"></west>
+    	<center id="flGrid" ></center>
+    </layout>
+
+    
+    <dataSource id="blDS">
+        <table name="bl" role="main"/>
+	<table name="site" role="standard"/>
+        <field table="site" name="site_id"/>
+        <field table="site" name="name"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="bl" name="use1"/>
+        <field table="bl" name="dv_use"/>
+        <field table="bl" name="area_building_manual"/>
+        <field table="bl" name="area_rm"/>
+        <field table="bl" name="latsou"/>
+        <field table="bl" name="lonsou"/>
+    </dataSource>
+    
+    <panel type="console" id="console" columns="3" dataSource="blDS" layoutRegion="north">
+        <title>Filter</title>
+        
+        <action id="show">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="console"/>
+        </action>
+        <!-- <field table="bl" name="bl_id"/> -->
+        <field table="bl" name="bl_id">
+        	<action>
+        		<tooltip>Select Value</tooltip>
+        		<command type="selectValue"
+        		fieldNames="bl.bl_id"
+        		selectFieldNames="bl.bl_id,bl.name"
+        		visibleFieldNames="bl.bl_id,bl.name"
+        		showIndex="true"
+        		></command>
+        	</action>
+        </field>
+        <field table="bl" name="area_building_manual"/>
+        <field table="bl" name="use1"/>
+    </panel>
+
+
+    <panel type="html" id="sogouMap"  layoutRegion="nestWest">
+        <title>Sougou Map View Building</title>
+<!-- 		 	 <action id="xuequ"> -->
+<!-- 		 		<title translatable="true">xue qu</title> -->
+<!-- 			 </action> -->
+             <html>
+                  <div id="map_canvas" style="width:100%;height:100%"></div>
+             </html>
+    </panel>
+      
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_grid_fl" type="grouping" >
+    	<table name="rm" role="main"/>
+    	<field table="rm" name="bl_id" groupBy="true"/>
+    	<field table="rm" name="fl_id" groupBy="true" />
+    	<field table="rm" name="dwgname" groupBy="true" hidden="true"/>
+        <parameter name="blRes" dataType="verbatim" value=" IS NOT NULL"/>
+        <restriction type="sql" sql="rm.bl_id${parameters['blRes']} 
+         AND rm.dwgname IS NOT NULL
+        "/>
+    </dataSource>
+    <panel type="grid" id="blGrid" dataSource="blDS"  layoutRegion="blGrid">
+    	<title translatable="true">Select Building</title>
+		<sortField table="bl" name="bl_id" ascending="true"/>
+		<indexField table="bl" name="bl_id"/>
+        <field table="bl" name="bl_id" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickShowInfo(false)"/>
+        </field>
+        <field table="bl" name="name" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickShowInfo(false)"/>
+        </field>
+        <field table="bl" name="area_building_manual" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickShowInfo(false)"/>
+        </field>
+        <field table="bl" name="use1" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickShowInfo(false)"/>
+        </field>
+    </panel>
+    <panel type="grid" id="flGrid"  dataSource="ds_ab-sp-hl-rm-by-dp_grid_fl" multipleSelectionEnabled="true" layoutRegion="flGrid" showOnLoad="false">
+        <title translatable="true">Select Floor</title>
+        <sortField table="rm" name="bl_id" ascending="true"/>
+        <sortField table="rm" name="fl_id" ascending="true"/>
+    </panel>
+    <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight" type="DrawingControlHighlight">
+        <table name="rm" role="main"/>
+        <table name="dv" role="standard"/>
+        <field table="rm" name="bl_id"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="dv_id" legendKey="true"/>
+        <field table="dv" name="hpattern_acad"/>
+        
+        <restriction type="sql" sql="(rm.rm_cat IS NULL OR EXISTS (SELECT 1 FROM rmcat WHERE 
+         rmcat.used_in_calcs IN('all_totals', 'dp_comn_ocup_totals')
+         AND rmcat.rm_cat= rm.rm_cat))
+        "/>
+    </dataSource>
+    
+   <dataSource id="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel">
+        <table name="rm" role="main"/>
+        <field name="bl_id" hidden="true"/>
+        <field name="fl_id" hidden="true"/>
+        <field name="rm_id"/>
+        <field name="name"/>
+        <field name="area"/>
+    </dataSource>
+    
+    <panel type="drawing" id="abSpHlRmByDp_DrawingPanel" layoutRegion="innerCenter"
+     highlightDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmHighlight"
+     labelsDataSource="ds_ab-sp-hl-rm-by-dp_drawing_rmLabel" multiple="false" assignMode="4">
+        <action id="exportDOCX">
+            <title translatable="true">DOC</title>
+            <tooltip translatable="true">Export current view of drawing to Docx file.</tooltip>
+            <command type="exportPanel" outputType="docx" panelId="abSpHlRmByDp_DrawingPanel"/>
+        </action>
+        <title></title>
+    </panel>
+    <js url="http://api.go2map.com/maps/js/api_v2.5.1.js"/>
+    <js file="sogou-map-navigation-dwg.js"/>
+    <js file="asc-bj-usms-def-common.js"/>
+    <!-- <css file="sougou-map.css"/> -->
+</view>

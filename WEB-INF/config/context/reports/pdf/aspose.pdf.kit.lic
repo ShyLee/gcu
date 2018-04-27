@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<License>
+  <Data>
+    <LicensedTo>ARCHIBUS, Inc.</LicensedTo>
+    <LicenseType>Developer OEM</LicenseType>
+    <LicenseNote>Limited to 1 developer.</LicenseNote>
+    <OrderID>120523160339</OrderID>
+    <OEM>This is a redistributable license</OEM>
+    <Products>
+      <Product>Aspose.Pdf.Kit for Java</Product>
+    </Products>
+    <EditionType>Enterprise</EditionType>
+    <SerialNumber>f007eb36-9d6e-4bbe-9431-b6a5395602a3</SerialNumber>
+    <SubscriptionExpiry>20130614</SubscriptionExpiry>
+    <LicenseVersion>2.2</LicenseVersion>
+  </Data>
+  <Signature>KraSGDsYzrHV9q5Nf3jDpUH0YHEysEph4TSXiNT/tW6VvcHig7aWDsmdnxpMph/NQMnX1JhYMw7KgXF+L6pXZJiavPm/xJE9ydfVJGBHR5pqVX24cBg0a6tfeR4U7gIJkd4B0T6DuWYBISx4w4CYLIDUWk0a1hCp/T9nJZjn+Pg=</Signature>
+</License>

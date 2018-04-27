@@ -1,0 +1,15 @@
+#
+# Site-configurable properties for mobile services (DWR services for Mobile Client).
+#
+
+#
+# File that defines the selected mobile services configuration.
+#
+# Possible values: 
+# classpath:com/archibus/app/common/mobile/dummy-services.xml - mobile services are disabled (default value)
+# classpath:com/archibus/app/common/mobile/services.xml - mobile services are enabled
+mobileServices.configurationFile=classpath:com/archibus/app/common/mobile/services.xml
+
+# Project ID to be used for mobile services. Required
+mobileServices.projectId=Fudan-Oracle
+ 

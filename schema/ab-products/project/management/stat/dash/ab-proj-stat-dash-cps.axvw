@@ -1,0 +1,154 @@
+<view version="2.0">
+    <message name="menu_add1">Invoice</message>
+    <message name="menu_add2">Change Order</message>
+    <message name="menu_add3">Work Package</message>
+    <message name="menu_report1">Project Scorecard</message>
+    <message name="menu_report2">Project Metrics</message>
+    <message name="menu_report3">Cumulative Spend</message>
+    <message name="menu_report4">Actions by Date</message>
+    <message name="menu_report5">Monthly Budget vs Spend</message>
+    <message name="menu_tool1">Gantt</message>
+    <message name="menu_tool2">Calendar</message>
+    <message name="menu_tool3">Import/Export</message>
+    <js file="ab-proj-stat-dash-cps.js"/>
+    <js file="ab-proj-stat-common.js"/>
+    
+    <dataSource id="projStatDashCps_ds0" type="grouping" applyVpaRestrictions="false">
+        <table name="work_pkgs" role="main"/>  
+        <field name="work_pkg_id" table="work_pkgs" groupBy="true"/>  
+        <field name="cost_contract" dataType="number" decimals="0" size="20" showTotals="true"> 
+            <title>Contract</title>
+            <sql dialect="generic">SUM(cost_contract)</sql>  
+        </field>  
+        <field name="req_cost_change_orders" dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Requested &lt;br/&gt;Change Orders</title> 
+            <sql dialect="generic">SUM(req_cost_change_orders)</sql>  
+        </field>
+        <field name="apprv_cost_change_orders" dataType="number" decimals="0" size="20" showTotals="true"> 
+            <title>Approved &lt;br/&gt;Change Orders</title>
+            <sql dialect="generic">SUM(apprv_cost_change_orders)</sql>  
+        </field>  
+        <field name="revised_cost" dataType="number" decimals="0" size="20" showTotals="true">  
+            <title>Revised &lt;br/&gt;Contract</title> 
+            <sql dialect="generic">SUM(revised_cost)</sql> 
+        </field> 
+        <field name="amount_open"  dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Open Invoice &lt;br/&gt;Amount</title>
+            <sql dialect="generic">SUM(amount_open)</sql>
+        </field> 
+        <field name="amount_closed"  dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Closed Invoice &lt;br/&gt;Amount</title>
+            <sql dialect="generic">SUM(amount_closed)</sql>
+        </field>       
+        <field name="amount_tot_invoice"  dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Invoice &lt;br/&gt;Total</title>
+            <sql dialect="generic">SUM(amount_tot_invoice)</sql>
+        </field>
+        <field name="pct_claims" dataType="number" decimals="0" size="6" showTotals="false">
+            <title>% &lt;br/&gt;Invoiced</title>
+            <sql dialect="generic">MAX(pct_claims)</sql>
+        </field>
+        <field name="pct_complete_by_cost" dataType="number" decimals="0" size="6" showTotals="false">
+            <title>% &lt;br/&gt;Complete</title>
+            <sql dialect="generic">MAX(pct_complete_by_cost)</sql>
+        </field>
+        <sql dialect="generic">
+        SELECT 
+            work_pkgs.work_pkg_id, work_pkgs.project_id,work_pkgs.status,
+            CASE WHEN contract_amount.cost_contract IS NULL THEN 0 ELSE contract_amount.cost_contract END ${sql.as} cost_contract,
+            CASE WHEN apprv_change_orders.apprv_cost_change_orders IS NULL THEN 0 ELSE apprv_change_orders.apprv_cost_change_orders END ${sql.as} apprv_cost_change_orders,
+            CASE WHEN req_change_orders.req_cost_change_orders IS NULL THEN 0 ELSE req_change_orders.req_cost_change_orders END ${sql.as} req_cost_change_orders,
+            (${sql.isNull('cost_contract',0)}+${sql.isNull('apprv_cost_change_orders',0)}) ${sql.as} revised_cost,
+            CASE WHEN invoices.amount_closed IS NULL THEN 0 ELSE invoices.amount_closed END ${sql.as} amount_closed,
+            CASE WHEN invoices.amount_tot_invoice IS NULL THEN 0 ELSE invoices.amount_tot_invoice END ${sql.as} amount_tot_invoice,
+            CASE WHEN amount_tot_invoice IS NULL THEN 0 WHEN amount_closed IS NULL THEN amount_tot_invoice ELSE (amount_tot_invoice - amount_closed) END ${sql.as} amount_open,
+            CASE WHEN amount_tot_invoice IS NULL THEN 0 WHEN (${sql.isNull('cost_contract',0)}+${sql.isNull('apprv_cost_change_orders',0)}) = 0 THEN 0
+            ELSE (amount_tot_invoice*100/(${sql.isNull('cost_contract',0)}+${sql.isNull('apprv_cost_change_orders',0)})) END ${sql.as} pct_claims,
+            CASE WHEN ${sql.isNull('cost_total',0)} = 0 THEN 0 WHEN ${sql.isNull('cost_complete',0)} = 0 THEN 0 
+            ELSE (100*cost_complete/cost_total) END ${sql.as} pct_complete_by_cost
+            
+        FROM work_pkgs 
+        LEFT OUTER JOIN 
+            (SELECT work_pkg_bids.work_pkg_id, work_pkg_bids.project_id, work_pkg_bids.cost_contract FROM work_pkg_bids WHERE work_pkg_bids.status IN ( 'Contract Signed', 'In Process', 'In Process-On Hold', 'Completed', 'Completed and Verified', 'Paid in Full')) 
+            ${sql.as} contract_amount
+        ON (work_pkgs.project_id = contract_amount.project_id AND work_pkgs.work_pkg_id = contract_amount.work_pkg_id ) 
+        LEFT OUTER JOIN
+            (SELECT activity_log.work_pkg_id, activity_log.project_id, SUM(cost_est_design_cap + cost_est_design_exp) ${sql.as} apprv_cost_change_orders FROM activity_log 
+            WHERE activity_log.activity_type LIKE 'PROJECT - CHANGE ORDER' AND activity_log.status NOT IN('CREATED','REQUESTED','REJECTED') GROUP BY activity_log.project_id, activity_log.work_pkg_id ) ${sql.as} apprv_change_orders 
+        ON (work_pkgs.project_id = apprv_change_orders.project_id AND work_pkgs.work_pkg_id = apprv_change_orders.work_pkg_id)
+        LEFT OUTER JOIN
+            (SELECT activity_log.work_pkg_id, activity_log.project_id, SUM(cost_est_design_cap + cost_est_design_exp) ${sql.as} req_cost_change_orders FROM activity_log 
+            WHERE activity_log.activity_type LIKE 'PROJECT - CHANGE ORDER' AND activity_log.status IN('REQUESTED') GROUP BY activity_log.project_id, activity_log.work_pkg_id ) ${sql.as} req_change_orders 
+        ON (work_pkgs.project_id = req_change_orders.project_id AND work_pkgs.work_pkg_id = req_change_orders.work_pkg_id)
+        LEFT OUTER JOIN
+            (SELECT invoice.work_pkg_id, invoice.project_id, SUM(invoice.amount_closed) ${sql.as} amount_closed, SUM(invoice.amount_tot_invoice) ${sql.as} amount_tot_invoice
+            FROM invoice WHERE status IN ('ISSUED','CLOSED') GROUP BY invoice.project_id, invoice.work_pkg_id ) ${sql.as} invoices 
+        ON (work_pkgs.project_id = invoices.project_id AND work_pkgs.work_pkg_id = invoices.work_pkg_id)
+        LEFT OUTER JOIN
+            (SELECT activity_log.work_pkg_id, activity_log.project_id, 
+            SUM(activity_log.pct_complete * (activity_log.cost_est_design_exp + activity_log.cost_est_design_cap)/100.000) ${sql.as} cost_complete, 
+            SUM(activity_log.cost_est_design_exp + activity_log.cost_est_design_cap) ${sql.as} cost_total
+            FROM activity_log GROUP BY activity_log.project_id, activity_log.work_pkg_id) ${sql.as} pct_complete_pkg
+        ON (work_pkgs.project_id = pct_complete_pkg.project_id AND work_pkgs.work_pkg_id = pct_complete_pkg.work_pkg_id)
+        </sql>
+        <sortField table="work_pkgs" name="work_pkg_id" ascending="true"/>
+    </dataSource>
+               
+    <panel id="projStatDashCps_cps" type="crossTable" dataSource="projStatDashCps_ds0" showOnLoad="false">
+        <title translatable="true">Commitment Progress Status Report</title>
+        <action id="cpsAdd">
+            <title>Add</title>
+        </action>
+        <action id="reports">
+            <title>Reports</title>
+        </action>
+        <action id="tools">
+            <title>Tools</title>
+        </action>
+        <action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="projStatDashCps_cps"/>
+        </action>
+        <action imageName="/schema/ab-system/graphics/ab-icon-helpview.gif" id="projStatDashCps_help">
+            <tooltip>Help</tooltip>
+            <command type="openDialog" viewName="ab-proj-stat-dash-cps-info.axvw" height="250" width="500"/>
+        </action>
+        <event type="onClickItem">
+            <command type="callFunction" functionName="showWorkpkg"/>
+        </event> 
+        <field name="work_pkg_id" table="work_pkgs" />  
+        <field name="cost_contract" dataType="number" decimals="0" size="20" showTotals="true">   
+            <title>Contract</title>
+        </field>  
+        <field name="req_cost_change_orders" dataType="number" decimals="0" size="20" showTotals="true">  
+            <title>Requested &lt;br/&gt;Change Orders</title>
+        </field>
+        <field name="apprv_cost_change_orders" dataType="number" decimals="0" size="20" showTotals="true">  
+            <title>Approved &lt;br/&gt;Change Orders</title>
+        </field>  
+        <field name="revised_cost" dataType="number" decimals="0" size="20" showTotals="true"> 
+            <title>Revised &lt;br/&gt;Contract</title> 
+        </field> 
+        <field name="amount_open"  dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Open Invoice &lt;br/&gt;Amount</title>
+        </field> 
+        <field name="amount_closed"  dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Closed Invoice &lt;br/&gt;Amount</title>
+        </field>       
+        <field name="amount_tot_invoice"  dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Invoice &lt;br/&gt;Total</title>
+        </field>
+        <field name="pct_claims" dataType="number" decimals="0" size="6" showTotals="false">
+            <title>% &lt;br/&gt;Invoiced</title>
+        </field>
+        <field name="pct_complete_by_cost" dataType="number" decimals="0" size="6" showTotals="false">
+            <title>% &lt;br/&gt;Complete</title>
+        </field>
+    </panel>
+
+</view>
+    
+ 
+ 
+ 
+ 

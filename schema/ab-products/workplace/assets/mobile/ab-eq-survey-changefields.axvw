@@ -1,0 +1,39 @@
+<view version="2.0">
+    
+    <title translatable="true">Change Fields to Survey</title>
+    
+    <dataSource id="eqFields_ds">
+        <table name="afm_activity_params" role="main"/>
+        <field table="afm_activity_params" name="activity_id" />
+        <field table="afm_activity_params" name="param_id"/>
+        <field table="afm_activity_params" name="param_value"/>
+        <field table="afm_activity_params" name="description"/>
+        <restriction type="sql" sql="activity_id='AbAssetManagement' AND param_id='EquipmentFieldsToSurvey'"/>
+    </dataSource>
+    
+    <dataSource id="eqChangeFields_ds">
+        <table name="afm_flds" role="main"/>
+        <field table="afm_flds" name="table_name" />
+        <field table="afm_flds" name="field_name"/>
+        <field table="afm_flds" name="allow_null"/>
+        <field table="afm_flds" name="ml_heading"/>
+        <restriction type="sql" sql="table_name = 'eq_audit' AND field_name NOT IN ('mob_locked_by', 'transfer_status','mob_is_changed')"/>
+    </dataSource>
+    
+    <message name="error_save" translatable="true">Could not save in database.</message>
+    
+    <panel id="changeFieldsTemplatePanel" type="html" dataSource="none" buttonsPosition="footer">
+            <action id="save">
+              <title>OK</title>
+              <command type="callFunction" functionName="onChangeSurveyFields" />
+              <command type="closeDialog"/>
+            </action>
+            <action id="cancel">
+              <title>Cancel</title>
+              <command type="closeDialog"/>
+            </action>
+    </panel>
+    
+    <js file="ab-eq-survey-changefields.js"/>
+    
+</view>

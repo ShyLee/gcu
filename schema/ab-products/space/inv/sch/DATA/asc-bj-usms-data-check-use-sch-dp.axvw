@@ -1,0 +1,180 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+		<north id="north_main" initialSize="1" split="true"/>
+        <center />
+	</layout>
+	<layout id="nested_center" containingLayout="mainLayout" region="center">
+		<east id="nested_east"  initialSize="1"/>
+        <center id="nested_center" />
+    </layout>
+	<dataSource id="falseDataSource">
+		<sql dialect="generic">
+		SELECT dp_id,dp_name,dv_id,area_avg_em,area_gp,
+		area_rm,area_ocup,em_area_rm,count_em,option2
+		from(
+			select dp.dp_id as dp_id,
+				dp.dp_name as dp_name,
+				dp.dv_id as dv_id,
+				dp.area_avg_em as area_avg_em,
+				dp.area_gp as area_gp,
+				dp.area_rm as area_rm,
+				dp.area_ocup as area_ocup,
+				dp.em_area_rm as em_area_rm,
+				dp.count_em as count_em,
+				${parameters['errorinfo1']} as option2
+				from dp
+				where dp.dv_id is null
+			union
+			(
+			select dp.dp_id as dp_id,
+				dp.dp_name as dp_name,
+				dp.dv_id as dv_id,
+				dp.area_avg_em as area_avg_em,
+				dp.area_gp as area_gp,
+				dp.area_rm as area_rm,
+				dp.area_ocup as area_ocup,
+				dp.em_area_rm as em_area_rm,
+				dp.count_em as count_em,
+				${parameters['errorinfo2']} as option2
+				from dp
+				where dp.area_ocup &gt; dp.area_rm
+			)
+			union
+			(
+			select dp.dp_id as dp_id,
+				dp.dp_name as dp_name,
+				dp.dv_id as dv_id,
+				dp.area_avg_em as area_avg_em,
+				dp.area_gp as area_gp,
+				dp.area_rm as area_rm,
+				dp.area_ocup as area_ocup,
+				dp.em_area_rm as em_area_rm,
+				dp.count_em as count_em,
+				${parameters['errorinfo3']} as option2
+				from dp
+				where dp.area_gp &gt; area_ocup
+			)
+			union
+			(
+			select dp.dp_id as dp_id,
+				dp.dp_name as dp_name,
+				dp.dv_id as dv_id,
+				dp.area_avg_em as area_avg_em,
+				dp.area_gp as area_gp,
+				dp.area_rm as area_rm,
+				dp.area_ocup as area_ocup,
+				dp.em_area_rm as em_area_rm,
+				dp.count_em as count_em,
+				${parameters['errorinfo4']} as option2
+				from dp
+				where dp.area_nocup &gt; dp.area_rm
+			)
+			union
+			(
+			select dp.dp_id as dp_id,
+				dp.dp_name as dp_name,
+				dp.dv_id as dv_id,
+				dp.area_avg_em as area_avg_em,
+				dp.area_gp as area_gp,
+				dp.area_rm as area_rm,
+				dp.area_ocup as area_ocup,
+				dp.em_area_rm as em_area_rm,
+				dp.count_em as count_em,
+				${parameters['errorinfo5']} as option2
+				from dp
+				where dp.area_rm &lt; '0'
+			)
+			union(
+			select dp.dp_id as dp_id,
+				dp.dp_name as dp_name,
+				dp.dv_id as dv_id,
+				dp.area_avg_em as area_avg_em,
+				dp.area_gp as area_gp,
+				dp.area_rm as area_rm,
+				dp.area_ocup as area_ocup,
+				dp.em_area_rm as em_area_rm,
+				dp.count_em as count_em,
+				${parameters['errorinfo6']} as option2
+				from dp
+				where dp.count_em &lt; '0'
+			)
+			union(
+			select dp.dp_id as dp_id,
+				dp.dp_name as dp_name,
+				dp.dv_id as dv_id,
+				dp.area_avg_em as area_avg_em,
+				dp.area_gp as area_gp,
+				dp.area_rm as area_rm,
+				dp.area_ocup as area_ocup,
+				dp.em_area_rm as em_area_rm,
+				dp.count_em as count_em,
+				${parameters['errorinfo7']} as option2
+				from dp
+				where dp.area_avg_em &gt; area_rm
+			)
+			)
+		</sql>
+		<table name="dp" role="main" />
+		<sortField name="dp_id" table="dp" ascending="true"/>
+		<field name="dp_id" table="dp" dataType="text" />
+		<field name="dp_name" table="dp" dataType="text" />
+		<field name="dv_id" table="dp" dataType="text" />
+		<field name="area_avg_em" table="dp" dataType="text" />
+		<field name="area_gp" table="dp" dataType="text" />
+		<field name="area_rm" table="dp" dataType="text" />
+		<field name="area_ocup" table="dp" dataType="text" />
+		<field name="em_area_rm" table="dp" dataType="text" />
+		<field name="count_em" table="dp" dataType="text" />
+		<field name="option2" table="dp" dataType="text" />
+		
+		<parameter name="errorinfo1"  dataType="text" value=""/>
+        <parameter name="errorinfo2"  dataType="text" value=""/>
+        <parameter name="errorinfo3"  dataType="text" value=""/>
+        <parameter name="errorinfo4"  dataType="text" value=""/>
+        <parameter name="errorinfo5"  dataType="text" value=""/>
+        <parameter name="errorinfo6"  dataType="text" value=""/>
+        <parameter name="errorinfo7"  dataType="text" value=""/>
+	</dataSource>
+	<panel type="grid"  id="falseDataPanel" dataSource="falseDataSource" showOnLoad="true" layoutRegion="nested_center">
+        <title translatable="true">False Data List</title>
+        <action id="exportXLS">
+                    <title translatable="true">XLS</title>
+                    <command type="exportPanel" outputType="xls" panelId="falseDataPanel"/>
+        </action>
+        <field controlType="button">
+            <title translatable="true">Edit</title>
+            <command type="callFunction" functionName="checkFalseController.edit()"/>
+        </field>
+        <indexField name="dp_id" table="dp"/>
+       <field name="dp_id" table="dp" dataType="text" />
+		<field name="dp_name" table="dp" dataType="text" />
+		<field name="dv_id" table="dp" dataType="text" />
+		<field name="area_avg_em" table="dp" dataType="text" />
+		<field name="area_gp" table="dp" dataType="text" />
+		<field name="area_rm" table="dp" dataType="text" />
+		<field name="area_ocup" table="dp" dataType="text" />
+		<field name="em_area_rm" table="dp" dataType="text" />
+		<field name="count_em" table="dp" dataType="text" />
+		<field name="option2" table="dp" dataType="text" >
+			 <title translatable="true">ERRORTYPE</title>
+		</field>
+		
+		
+    </panel>
+    <panel type="form" id="editPanel" dataSource="falseDataSource" showOnLoad="false" columns="2" layoutRegion="nested_east">
+        <title translatable="true">edit datiles</title>
+        <action id="save">
+            <title translatable="true">save</title>
+        </action>
+        <field name="dp_id" table="dp" dataType="text" />
+		<field name="dp_name" table="dp" dataType="text" />
+		<field name="dv_id" table="dp" dataType="text" />
+		<field name="area_avg_em" table="dp" dataType="text" />
+		<field name="area_gp" table="dp" dataType="text" />
+		<field name="area_rm" table="dp" dataType="text" />
+		<field name="area_ocup" table="dp" dataType="text" />
+		<field name="em_area_rm" table="dp" dataType="text" />
+		<field name="count_em" table="dp" dataType="text" />
+    </panel>
+    <js file="asc-bj-usms-data-check-use-sch-dp.js"/>
+</view>

@@ -1,0 +1,547 @@
+<view version="2.0">
+    <js file="ab-ehs-track-incidents-response-tabs.js"/>
+    <js file="ab-ehs-track-em-medical-monitoring.js"/>
+    <js file="ab-ehs-track-em-training.js"/>
+    <js file="ab-ehs-track-em-ppe-types.js"/>
+    
+    <message translatable="true" name="doneInFutureError">The status of a Medical Monitoring scheduled in the future can't be set to 'Done'. Please change the status back to 'Pending', or adjust the Medical Monitoring date if it's not correct.</message>
+    <message translatable="true" name="trainingDoneInFutureError">The status of a Training scheduled in the future can't be set to 'Done'. Please change the status back to 'Pending', or adjust the Training date if it's not correct.</message>
+    <message translatable="true" name="errDateStartEnd">Date End cannot be smaller than Date Start</message>
+    <message translatable="true" name="confirmDelete">Are you sure you want to delete this work restriction?</message>
+
+    <tabs id="abEhsTrackIncidents_tabs_response" tabRefreshPolicy="refreshOnLoad">
+        <tab name="abEhsTrackIncidents_tab3_0" selected="true">
+            <title translatable="true">Incident Response</title>
+            
+            <dataSource id="abEhsTrackIncidents_requests_ds">
+                <table name="activity_log"/>
+                
+                <field name="activity_log_id" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                    <title translatable="true">Service Request ID</title>
+                </field>
+                <field name="requestor" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+                <field name="activity_type" controlType="link">
+                  <title translatable="true">Request Type</title>
+                  <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+                <field name="prob_type" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+                <field name="description" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+                <field name="status" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+                <field name="date_requested" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+                <field name="date_required" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+                <field name="date_completed" controlType="link">
+                    <command type="callFunction" functionName="showRequestDetails"/>
+                </field>
+
+                <field name="incident_id" hidden="true"/>
+                
+                <restriction type="parsed">
+                    <clause table="activity_log" name="activity_type" op="LIKE" value="SERVICE DESK%"/>
+                </restriction>
+            </dataSource>
+            
+            <panel type="form" id="abEhsTrackIncidents_response" dataSource="abEhsTrackIncidents_incidents_ds" showOnLoad="false" columns="3">
+                <instructions translatable="true">To save this information click the Save button in the Incident Details tab.</instructions>
+                
+                <action id="generateRequest" enabled="${!panel.newRecord}">
+                    <title translatable="true">Generate Service Request</title>
+                </action>
+                
+                <title translatable="true">Incident Response</title>
+                <field name="incident_id" readOnly="true"/>
+                <field name="lost_work_days"/>
+                <field name="cause_doc"/>
+                <field name="cause_category_id"/>
+                <field name="short_term_ca"/>
+                <field name="long_term_ca"/>
+                <field name="cause_description"/>
+                <field name="short_term_ca_desc"/>
+                <field name="long_term_ca_desc"/>                 
+            </panel>
+
+            <panel type="grid" id="abEhsTrackIncidents_requests_grid" dataSource="abEhsTrackIncidents_requests_ds" showOnLoad="false">
+                <title translatable="true">Service Requests</title>
+            </panel>
+        </tab>
+        
+        <tab name="abEhsTrackIncidents_tab3_1">
+            <title translatable="true">Medical Monitoring</title>
+            
+            <dataSource id="abEhsTrackEmMedMon_ds">
+                <table name="ehs_medical_mon_results" role="main"/>
+                <table name="ehs_medical_monitoring" role="standard"/>
+                <field table="ehs_medical_mon_results" name="em_id"/>
+                <field table="ehs_medical_mon_results" name="medical_monitoring_id"/>
+                <field table="ehs_medical_mon_results" name="monitoring_type"/>
+                <field table="ehs_medical_mon_results" name="date_actual"/>
+                <field table="ehs_medical_mon_results" name="incident_id"/>
+                <field table="ehs_medical_mon_results" name="tracking_number"/>
+                <field table="ehs_medical_mon_results" name="resulting_actions"/>
+                <field table="ehs_medical_mon_results" name="comments"/>
+                <field table="ehs_medical_mon_results" name="status"/>
+                <field table="ehs_medical_monitoring" name="description"/>
+            </dataSource>
+            
+            <panel type="grid" id="abEhsTrackEmMedMon_grid" dataSource="abEhsTrackEmMedMon_ds" showOnLoad="false">
+                <title translatable="true">Employee Assigned Medical Monitoring</title>
+                
+                <action id="add">
+                    <title translatable="true">Add New</title>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" newRecord="true" applyParentRestriction="true"/>
+                </action>
+                <sortField table="ehs_medical_mon_results" name="status"/>
+                <sortField table="ehs_medical_mon_results" name="date_actual"/>
+                <field table="ehs_medical_mon_results" name="medical_monitoring_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" applyParentRestrinction="true"/>
+                </field>
+                <field table="ehs_medical_mon_results" name="monitoring_type" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" applyParentRestrinction="true"/>
+                </field>
+                <field table="ehs_medical_mon_results" name="date_actual" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" applyParentRestrinction="true"/>
+                </field>
+                <field table="ehs_medical_monitoring" name="description" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" applyParentRestrinction="true"/>
+                </field>
+                <field table="ehs_medical_mon_results" name="comments" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" applyParentRestrinction="true"/>
+                </field>
+                <field table="ehs_medical_mon_results" name="status" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" applyParentRestrinction="true"/>
+                </field>
+                <field table="ehs_medical_mon_results" name="em_id" hidden="true"/>
+            </panel>
+            
+            <panel type="form" id="abEhsTrackEmMedMon_editForm" dataSource="abEhsTrackEmMedMon_ds" showOnLoad="false" columns="2">
+                <title translatable="true">Edit Employee Medical Monitoring</title>
+                <instructions translatable="true">Note: By changing the Date Monitoring or deleting the record you could be avoiding the fulfillment of some EH&amp;S regulations</instructions>
+                <action id="save">
+                    <title translatable="true">Save</title>
+                    <command type="callFunction" functionName="abEhsTrackEmMedMonCtrl.checkNotification('Update')"/>
+                    <command type="callFunction" functionName="abEhsTrackEmMedMonCtrl.saveEditForm()"/>
+                    <command type="callFunction" functionName="abEhsTrackEmMedMonCtrl.notifyEmployee('Update')"/>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                    <command type="callFunction" functionName="abEhsTrackEmMedMonCtrl.checkNotification('Delete')"/>
+                    <command type="deleteRecord"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_grid" applyParentRestriction="false"/>
+                    <command type="callFunction" functionName="abEhsTrackEmMedMonCtrl.notifyEmployee('Delete')"/>
+                </action>
+                <action id="cancel">
+                    <title translatable="true">Cancel</title>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_editForm" show="false"/>
+                </action>
+                <action id="addWorkRestriction">
+                    <title translatable="true">Add Work Restriction</title>
+                </action>
+                <field name="em_id" readOnly="true"/>
+                <field name="medical_monitoring_id" readOnly="true"/>
+                <field name="monitoring_type" required="true" readOnly="true"/>
+                <field name="date_actual"/>
+                <field name="incident_id" readOnly="true">
+                    <action>
+                        <title translatable="false">...</title>
+                        <tooltip translatable="true">Select Value</tooltip>
+                        <command type="callFunction" functionName="selectIncidentId('abEhsTrackEmMedMon_editForm', 'ehs_medical_mon_results', true)"/>
+                    </action>
+                </field>
+                <field name="tracking_number"/>
+                <field name="resulting_actions"/>
+                <field name="comments"/>
+                <field name="status" required="true"/>
+                <field table="ehs_medical_monitoring" name="description" hidden="true"/>
+            </panel>
+            
+            <panel type="form" id="abEhsTrackEmMedMon_addForm" dataSource="abEhsTrackEmMedMon_ds" showOnLoad="false" columns="2">
+                <title translatable="true">Assign Medical Monitoring to Employee</title>
+                <instructions translatable="true">Once that you select a Medical Monitoring, you'll be prompted for the first (if more than one is required) tentative monitoring date.</instructions>
+                <action id="assign">
+                    <title translatable="true">Assign Medical Monitoring</title>
+                </action>
+                <action id="cancel">
+                    <title translatable="true">Cancel</title>
+                    <command type="showPanel" panelId="abEhsTrackEmMedMon_addForm" show="false"/>
+                </action>
+                <field name="em_id" readOnly="true"/>
+                <field name="incident_id" readOnly="true"/>
+                <field name="medical_monitoring_id">
+                    <action id="abEhsTrackIncidentsResponse_selectMedMon">
+                        <title translatable="false">...</title>
+                        <tooltip translatable="true">Select Value</tooltip>
+                            <command type="selectValue"
+                                fieldNames="ehs_medical_mon_results.medical_monitoring_id"
+                                selectFieldNames="ehs_medical_monitoring.medical_monitoring_id"
+                                visibleFieldNames="ehs_medical_monitoring.medical_monitoring_id, ehs_medical_monitoring.monitoring_type, ehs_medical_monitoring.is_recurring, ehs_medical_monitoring.description"
+                                restriction="ehs_medical_monitoring.monitoring_type = 'Incident Related'"/>
+                    </action>
+                </field>
+                <field name="date_actual"/>
+            </panel>
+        </tab>
+        
+        <tab name="abEhsTrackIncidents_tab3_2">
+            <title translatable="true">Work Restrictions</title>
+            <dataSource id="abEhsTrackIncidents_workRestr_ds">
+                <table name="ehs_restrictions" role="main"/>
+                <field name="em_id"/>
+                <field name="restriction_category_id"/>
+                <field name="restriction_type_id"/>
+                <field name="restriction_class"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="restriction_id"/>
+                <field name="medical_monitoring_id"/>
+                <field name="date_actual"/>
+                <field name="incident_id"/>                
+                <field name="description"/>
+                <field name="doc" dataType="text"/>
+                <field name="lost_work_days"/>
+                <field name="lost_work_days_auto" dataType="text">
+                    <sql dialect="generic">
+                    (CASE lost_work_days
+                        WHEN 0 THEN
+                            (SELECT COUNT(cal_date) FROM afm_cal_dates WHERE 
+                                day_type = 'Workday' AND 
+                                date_start &lt;= cal_date AND 
+                                cal_date &lt;= CASE WHEN date_end IS NULL THEN ${sql.currentDate} ELSE date_end END) 
+                        ELSE NULL
+                    END)
+                    </sql>
+                </field>
+        
+                <sortField name="restriction_class" ascending="true"/>
+                <sortField name="restriction_category_id" ascending="true"/>
+                <sortField name="restriction_type_id" ascending="true"/>
+                <sortField name="date_start" ascending="true"/>
+            </dataSource>
+
+            <panel type="grid" id="abEhsTrackIncidents_workRestr_grid" dataSource="abEhsTrackIncidents_workRestr_ds" showOnLoad="false">
+        
+                <title translatable="true">Work Restrictions</title>
+                
+                <action id="add">
+                    <title translatable="true">Add New</title>
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" newRecord="true"/>
+                </action>
+        
+                <field name="restriction_id" hidden="true"/>
+                <field name="restriction_category_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" applyParentRestriction="false"/>
+                </field>
+                <field name="restriction_type_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" applyParentRestriction="false"/>
+                </field>
+                <field name="restriction_class" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" applyParentRestriction="false"/>
+                </field>
+                <field name="date_start" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" applyParentRestriction="false"/>
+                </field>
+                <field name="date_end" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" applyParentRestriction="false"/>
+                </field>
+            </panel>
+        
+            <panel type="form" id="abEhsTrackIncidents_workRestr_edit" dataSource="abEhsTrackIncidents_workRestr_ds" showOnLoad="false">
+        
+                <title translatable="true">Work Restriction Details</title>
+        
+                <action id="save">
+                    <title translatable="true">Save</title>
+                    <command type="callFunction" functionName="validateWorkRestrictionForm('abEhsTrackIncidents_workRestr_edit')"/>
+                    <command type="saveForm"/>
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_grid" applyParentRestriction="false"/>
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" applyParentRestriction="true"/>
+                </action>
+                <action id="delete" enabled="${!panel.newRecord}">
+                    <title translatable="true">Delete</title>
+                    <command type="callFunction" functionName="onDeleteWorkRestriction"/>
+                </action>
+                <action id="cancel">
+                    <title translatable="true">Cancel</title>
+                    <command type="showPanel" panelId="abEhsTrackIncidents_workRestr_edit" show="false"/>
+                </action>
+                <field name="restriction_id" readOnly="true"/>
+                <field name="em_id" readOnly="true"/>
+                <field name="restriction_category_id"/>
+                <field name="restriction_type_id" onchange="enableDisableRestrictionDateEnd('abEhsTrackIncidents_workRestr_edit')"/>
+                <field name="restriction_class"/>
+                <field name="date_start"/>
+                <field name="date_end"/>                
+                <field name="lost_work_days_auto" readOnly="true">
+                	<title>Duration (Days), Auto-Calculated</title>
+                </field>
+                <field name="lost_work_days"/>
+                <field name="medical_monitoring_id" onchange="abEhsTrackIncidentsResponseTabsCtrl.clearDateActual()">
+                    <action id="abEhsTrackIncidents_workRestr_medMonId">
+                        <title translatable="false">...</title>
+                        <tooltip translatable="true">Select Value</tooltip>
+                        <command type="callFunction" functionName="selectMedMonIdForWorkRestriction('abEhsTrackIncidents_workRestr_edit', 'Incident Related')"/>
+                    </action>
+                </field>
+                <field name="date_actual"/>
+                <field name="incident_id" readOnly="true">
+                    <action>
+                        <title translatable="false">...</title>
+                        <tooltip translatable="true">Select Value</tooltip>
+                        <command type="callFunction" functionName="selectIncidentId('abEhsTrackIncidents_workRestr_edit', 'ehs_restrictions', true)"/>
+                    </action>
+                </field>                
+                <field name="description"/>
+                <field name="doc"/>
+            </panel>
+        </tab>
+
+        <tab name="abEhsTrackIncidents_tab3_3">
+            <title translatable="true">Employee Training</title>
+            
+            <dataSource id="abEhstrackEmTraining_result_ds">
+                <table name="ehs_training_results"/>
+                <field name="training_id"/>
+                <field name="date_actual"/>
+                <field name="em_id"/>
+                <field name="incident_id"/>
+                <field name="description"/>
+                <field name="status"/>
+                <field name="doc"/>
+            </dataSource>
+            
+            <panel type="grid" id="abEhstrackEmTraining_result" dataSource="abEhstrackEmTraining_result_ds" showOnLoad="false">
+                <sortField table="ehs_training_results" name="em_id" ascending="true"/>
+                <sortField table="ehs_training_results" name="date_actual" ascending="true"/>
+                <title>Training Program Assigned Employees and Dates</title>
+                
+                <action id="add">
+                    <title translatable="true">Add New</title>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_details" show="false"/>
+                    <command type="showPanel" panelId="abEhsAssignEmTraining_assign" newRecord="true" applyParentRestriction="true"/>
+                </action>
+        
+                <field name="training_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsAssignEmTraining_assign" show="false"/>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_details"/>
+                </field>
+                <field name="em_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsAssignEmTraining_assign" show="false"/>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_details"/>
+                </field>
+                <field name="date_actual" controlType="link">
+                    <command type="showPanel" panelId="abEhsAssignEmTraining_assign" show="false"/>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_details"/>
+                </field>
+                <field name="status" controlType="link">
+                    <command type="showPanel" panelId="abEhsAssignEmTraining_assign" show="false"/>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_details"/>
+                </field>
+            </panel>
+            
+            <panel type="form" id="abEhstrackEmTraining_details" dataSource="abEhstrackEmTraining_result_ds" columns="2" showOnLoad="false">
+                <title>Edit Employee Training Results</title>
+                <instructions translatable="true">Note: By changing the Training Date or deleting the record you could be avoiding the fulfillment of some EH&amp;S regulations</instructions>
+                <action id="save">
+                    <title>Save</title>
+                    <command type="callFunction" functionName="checkNotification('Update')"/>
+                    <command type="saveForm"/>
+                    <command type="callFunction" functionName="abEhsTrackEmTrainingCtrl.updateDocRecord()"/>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_result" applyParentRestriction="false"/>
+                    <command type="callFunction" functionName="sendNotification('Update')"/>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                    <command type="callFunction" functionName="checkNotification('Delete')"/>
+                    <command type="deleteRecord"/>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_details" show="false"/>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_result" applyParentRestriction="false"/>
+                    <command type="callFunction" functionName="sendNotification('Delete')"/>
+                </action>
+                <action id="cancel">
+                    <title>Cancel</title>
+                    <command type="showPanel" panelId="abEhstrackEmTraining_details" show="false" includeHeader="true"/>
+                </action>
+                <field name="training_id" readOnly="true"/>
+                <field name="em_id" readOnly="true"/>
+                <field name="date_actual"/>
+                <field name="incident_id" readOnly="true"/>
+                <field name="doc"/>
+                <field name="description" rowspan="2"/>
+                <field name="status"/>
+            </panel>
+            
+            <panel type="form" id="abEhsAssignEmTraining_assign" dataSource="abEhstrackEmTraining_result_ds" showOnLoad="false">
+                <title>Assign Employee</title>
+                <action id="cancel">
+                    <title>Cancel</title>
+                    <command type="showPanel" panelId="abEhsAssignEmTraining_assign" show="false" includeHeader="true"/>
+                </action>
+                <action id="assignToEmployee">
+                    <title>Assign Training to Employee</title>
+                </action>
+                <field name="incident_id" readOnly="true"/>
+                <field name="em_id" readOnly="true"/>
+                <field name="training_id" required="true">
+                    <action id="abEhsAssignEmTraining_selectTrainingId">
+                        <title translatable="false">...</title>
+                        <tooltip translatable="true">Select Value</tooltip>
+                            <command type="selectValue"
+                                fieldNames="ehs_training_results.training_id"
+                                selectFieldNames="ehs_training.training_id"
+                                visibleFieldNames="ehs_training.training_type_id,ehs_training.training_id,ehs_training.training_name,ehs_training.training_category_id,ehs_training.needs_refresh,ehs_training.description"/>
+                    </action>
+                </field>
+                <field name="date_actual" required="true"/>
+            </panel>
+        </tab>
+        
+        <tab name="abEhsTrackIncidents_tab3_4">
+            <title translatable="true">Personal Protective Equipment Types</title>
+            
+            <dataSource id="abEhsTrackEmPpeTypes_dsPpeTypes">
+                <table name="ehs_em_ppe_types" role="main"/>
+                
+                <field name="ppe_type_id"/>
+                <field name="date_delivered"/>
+                <field name="date_use"/>
+                <field name="bl_id"/>
+                <field name="fl_id"/>
+                <field name="rm_id"/>
+                <field name="em_id"/>
+                <field name="doc"/>
+                <field name="incident_id"/>
+            </dataSource>
+            
+            <panel type="grid" id="abEhsTrackEmPpeTypes_panelPpeTypes" dataSource="abEhsTrackEmPpeTypes_dsPpeTypes" showOnLoad="false">
+                <title translatable="true">Employee Assigned Personal Protective Equipment Types</title>
+                
+                <action id="addNew">
+                    <title translatable="true">Add New</title>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" newRecord="true"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" show="false"/>
+                </action>
+                
+                <sortField table="ehs_em_ppe_types" name="date_delivered" ascending="false"/>
+                <sortField table="ehs_em_ppe_types" name="date_use" ascending="true"/>
+                <sortField table="ehs_em_ppe_types" name="ppe_type_id" ascending="true"/>
+                
+                <field name="ppe_type_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" applyParentRestrinction="true"/>
+                </field>
+                <field name="date_delivered" controlType="link">
+                    <title translatable="true">Delivery Date</title>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" applyParentRestrinction="true"/>
+                </field>
+                <field name="date_use" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" applyParentRestrinction="true"/>
+                </field>
+                <field name="bl_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" applyParentRestrinction="true"/>
+                </field>
+                <field name="fl_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" applyParentRestrinction="true"/>
+                </field>
+                <field name="rm_id" controlType="link">
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" applyParentRestrinction="true"/>
+                </field>
+                
+                <field name="em_id" hidden="true"/>
+            </panel>
+
+            <panel type="form" id="abEhsTrackEmPpeTypes_formPpeTypeEdit" dataSource="abEhsTrackEmPpeTypes_dsPpeTypes" 
+                showOnLoad="false" columns="2">
+                <title translatable="true">Edit Employee PPE Type Delivery</title>
+                <instructions translatable="true">Note: By changing the Delivery Date or deleting the record you could be avoiding the fulfillment of some EH&amp;S regulations</instructions>
+        
+                <action id="save">
+                    <title translatable="true">Save</title>
+                    <command type="callFunction" functionName="abEhsTrackEmPpeTypesCtrl.checkNotification('Update')"/>
+                    <command type="saveForm"/>
+                    <command type="callFunction" functionName="abEhsTrackEmPpeTypesCtrl.updateDocRecord()"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_panelPpeTypes" applyParentRestriction="false"/>
+                    <command type="callFunction" functionName="abEhsTrackEmPpeTypesCtrl.notifyEmployee('Update')"/>
+                </action>
+                <action id="delete">
+                    <title translatable="true">Delete</title>
+                    <command type="callFunction" functionName="abEhsTrackEmPpeTypesCtrl.checkNotification('Delete')"/>
+                    <command type="deleteRecord"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" show="false"/>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_panelPpeTypes" applyParentRestriction="false"/>
+                    <command type="callFunction" functionName="abEhsTrackEmPpeTypesCtrl.notifyEmployee('Delete')"/>
+                </action>
+                <action id="cancel">
+                    <title translatable="true">Cancel</title>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeEdit" show="false"/>
+                </action>
+                
+                <field name="em_id" readOnly="true"/>
+                <field name="ppe_type_id" readOnly="true"/> 
+                <field name="date_use"/>
+                <field name="date_delivered" required="true">
+                    <title translatable="true">Delivery Date</title>
+                </field>
+                <field name="bl_id"/>
+                <field name="fl_id"/>
+                <field name="rm_id"/>
+                <field name="doc"/>
+                <field name="incident_id" readOnly="true"/>
+            </panel>
+                
+            <panel type="form" id="abEhsTrackEmPpeTypes_formPpeTypeAssign" dataSource="abEhsTrackEmPpeTypes_dsPpeTypes" columns="2" showOnLoad="false">
+                <title translatable="true">Assign PPE to Employee</title>
+                <instructions translatable="true">Once that you select a PPE, you'll be prompted for the first date put in use and place. Note that this date will be an estimation date, you'll have to later manage the final delivery of PPE to the employee</instructions>
+                
+                <action id="assignPpe">
+                    <title translatable="true">Assign PPE</title>
+                </action>
+                <action id="cancel">
+                    <title translatable="true">Cancel</title>
+                    <command type="showPanel" panelId="abEhsTrackEmPpeTypes_formPpeTypeAssign" show="false"/>
+                </action>
+                
+                <field name="em_id" readOnly="true"/>
+                <field name="ppe_type_id">
+                    <action id="selectPpeTypeId">
+                        <title translatable="false">...</title>
+                        <tooltip translatable="true">Select Value</tooltip>
+                        <command type="selectValue"
+                            selectValueType="grid"
+                            fieldNames="ehs_em_ppe_types.ppe_type_id"
+                            selectFieldNames="ehs_ppe_types.ppe_type_id"
+                            visibleFieldNames="ehs_ppe_types.ppe_type_id, ehs_ppe_types.description, ehs_ppe_types.needs_renewal, ehs_ppe_types.eq_std"/>
+                    </action>
+                </field>
+                <field name="date_use"/>
+                <field name="bl_id"/>
+                <field name="fl_id"/>
+                <field name="rm_id"/>
+                <field name="incident_id" readOnly="true"/>
+            </panel>
+        </tab>
+    </tabs>
+</view>

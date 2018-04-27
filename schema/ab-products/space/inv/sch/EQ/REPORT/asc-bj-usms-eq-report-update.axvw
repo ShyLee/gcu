@@ -1,0 +1,130 @@
+<view version="2.0">
+	<title translatable="true">dveqsource</title>	
+	<dataSource id="eq_DS">
+		<sql dialect="generic">
+			select dv.dv_id as dvId
+			  ,dv.dv_name as dvname
+		      ,A.t_eq as jd_count,A.t_price as jd_sum
+		      ,B.t_eq as jd20_count,B.t_price as jd20_sum
+		      ,round(B.t_eq/A.t_eq*100,2) as jd_Percent
+		      ,C.t_eq as dz_count,C.t_price as dz_sum
+		      ,D.t_eq as dz20_count,D.t_price as dz20_sum
+		      ,round(D.t_eq/C.t_eq*100,2) as dz_Percent
+		      ,E.t_eq as js_count,E.t_price as js_sum
+		      ,F.t_eq as js20_count,F.t_price as js20_sum
+		      ,round(F.t_eq/E.t_eq*100,2) as js_Percent
+		      ,G.t_eq as hj_count,G.t_price as hj_sum
+		      
+		      from dv 
+		      
+		      left join
+		      (select dv_id,sum(price) as t_price,count(eq_id) as t_eq 
+		      from eq 
+		      where SUBSTR(csi_id,1,2) = '04'
+		      group by dv_id) A on dv.dv_id = A.dv_id
+		      
+		      left join
+		      (select dv_id,sum(price) as t_price,count(eq_id) as t_eq 
+		      from eq 
+		      where SUBSTR(csi_id,1,2) = '04' and eq.date_purchased &gt; trunc(sysdate,'yyyy')- interval'20' year
+		      group by dv_id) B on dv.dv_id = B.dv_id
+		      
+		      left join
+		      (select dv_id,sum(price) as t_price,count(eq_id) as t_eq 
+		      from eq 
+		      where (SUBSTR(csi_id,1,2) = '05' and SUBSTR(csi_id,1,4) != '0501') or SUBSTR(csi_id,1,4) in ('0319','0320')
+		      group by dv_id) C on dv.dv_id = C.dv_id
+		      
+		      left join
+		      (select dv_id,sum(price) as t_price,count(eq_id) as t_eq 
+		      from eq 
+		      where (SUBSTR(csi_id,1,2) = '05' and SUBSTR(csi_id,1,4) != '0501') or SUBSTR(csi_id,1,4) in ('0319','0320')   and eq.date_purchased &gt; trunc(sysdate,'yyyy')- interval'15' year
+		      group by dv_id) D on dv.dv_id = D.dv_id
+		      
+		      left join
+		      (select dv_id,sum(price) as t_price,count(eq_id) as t_eq 
+		      from eq 
+		      where SUBSTR(csi_id,1,4) = '0501' 
+		      group by dv_id) E on dv.dv_id = E.dv_id
+		      
+		      left join
+		      (select dv_id,sum(price) as t_price,count(eq_id) as t_eq 
+		      from eq 
+		      where SUBSTR(csi_id,1,4) = '0501'  and eq.date_purchased &gt; trunc(sysdate,'yyyy')- interval'5' year
+		      group by dv_id) F on dv.dv_id = F.dv_id
+		      
+		      left join
+		      (select dv_id,sum(price) as t_price,count(eq_id) as t_eq 
+		      from eq 
+		      where SUBSTR(csi_id,1,2) in ('04','05') or SUBSTR(csi_id,1,4) in ('0319','0320')
+		      group by dv_id) G on dv.dv_id = G.dv_id
+		</sql>
+		<table name="eq" role="main"/>
+		<sortField table="eq" name="dvId"/>
+ 		<field name="dvname" dataType="text">
+			<title translatable="true">dvid</title>
+		</field>
+		<field name="jd_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="jd_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="jd20_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="jd20_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="jd_Percent" dataType="number" decimals="2">
+			<title translatable="true">Percent</title>
+		</field>
+		<field name="dz_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="dz_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="dz20_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="dz20_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="dz_Percent" dataType="number" decimals="2">
+			<title translatable="true">Percent</title>
+		</field>
+		<field name="js_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="js_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="js20_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="js20_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="js_Percent" dataType="number" decimals="2">
+			<title translatable="true">Percent</title>
+		</field>
+		<field name="hj_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="hj_sum" dataType="number" decimals="2">
+			<title translatable="true">jine</title>
+		</field>
+	</dataSource>
+	<panel type="grid" id="tablePanel" dataSource="eq_DS" showOnLoad="false">
+		<title translatable="true">equpdate</title>
+		<action id="exportXLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="gridPanel"/>
+		</action>
+		<action id="report">
+			<title>Report</title>
+		</action>
+	</panel>
+	<js file="asc-bj-usms-eq-report-update.js"/>
+</view>

@@ -1,0 +1,193 @@
+
+<view version="2.0">
+    <message name="error_date_range" translatable="true">The End Date cannot be earlier than Start Date.</message>
+    <message name="error_datefrom_early" translatable="true">The Start Date cannot be earlier than today.</message>
+    <message name="error_datefrom_empty" translatable="true">The Start Date cannot be empty.</message>
+    <message name="error_date_empty" translatable="true">The Start Date and End Date cannot be empty.</message>
+    <message name="invalid_date" translatable="true">The Start Date or End Date is invalid.</message>
+    <message translatable="true" name="noPattern">Please define the Recurring Pattern</message>
+	<message translatable="true" name="greater0">The input value must be greater than 0.</message>
+    
+    <dataSource id="ds_ab_ht_booking_create_search_rmpct">
+        <table name="rmpct" role="main"/>
+        <table name="rm" role="standard"/>
+        <field table="rmpct" name="bl_id"/>
+        <field table="rmpct" name="fl_id"/>
+        <field table="rmpct" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rmpct" name="dv_id"/>
+        <field table="rmpct" name="dp_id"/>
+        <field table="rmpct" name="pct_id"/>
+        <field table="rmpct" name="date_start"/>
+        <field table="rmpct" name="date_end"/>
+        <field table="rmpct" name="day_part"/>
+    </dataSource>
+    
+    <panel id="basicSearchOption" type="console" columns="3" dataSource="ds_ab_ht_booking_create_search_rmpct">
+        <title translatable="true">Basic Options</title>
+        <action id="next" cssClass="borderButton">
+            <title translatable="true">Search</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+        <field colspan="3">
+            <title translatable="true">For whom do you want to create bookings?</title>
+            <html>
+                <div>
+                    <input type="radio" name="bookingFor" value="1" onclick="onForWhoChangeHandler()">
+                        <span translatable="true">Yourself</span>
+                    </input>
+                    <input type="radio" name="bookingFor" value="2" onclick="onForWhoChangeHandler()">
+                        <span translatable="true">Other Employee</span>
+                    </input>
+                    <input type="radio" name="bookingFor" value="3" onclick="onForWhoChangeHandler()">
+                        <span translatable="true">External Visitor</span>
+                    </input>
+                </div>
+            </html>
+        </field>
+        <field table="rmpct" name="date_start" onchange="onStartDateChange()"/>
+        <field id="duration" dataType="integer" onchange="onDurationChange()">
+            <title translatable="true">Duration</title>
+        </field>
+        <field table="rmpct" name="date_end" onchange="onEndDateChange()"/>
+        <field>
+            <title translatable="true">Select Dates Using a Recurring Pattern</title>
+            <html>
+                <div>
+                    <input type="checkbox" name="isRecurring" value="0" id="isRecurring" onclick="onSetRecurringHandler()"/>
+                </div>
+            </html>
+        </field>
+        <field colspan="2">
+            <title translatable="true">Part of Day</title>
+            <html>
+                <div id="dayPart"></div>
+            </html>
+        </field>
+        <field colspan="3">
+            <html>
+                <div id="recurringField">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="radio" name="recurring_type" id="day" value="day" onclick="onSelectRecurringType()"></input>
+                                <span translatable="true">Daily</span>
+                            </td>
+                            <td>
+                                <span translatable="true">Every:</span>
+                                <input type="text" id="ndays" size="3" onchange="validationInteger(this)"/>
+                                <span translatable="true" style="margin-left:4px">days</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="recurring_type" id="week" value="week" onclick="onSelectRecurringType()"></input>
+                                <span translatable="true">Weekly</span>
+                            </td>
+                            <td>
+                                <span translatable="true">Every:</span>
+                                <input type="checkbox" id="weekly_mon" value="1">
+                                    <span translatable="true">Mon</span>
+                                </input>
+                                <input type="checkbox" id="weekly_tue" value="2">
+                                    <span translatable="true">Tue</span>
+                                </input>
+                                <input type="checkbox" id="weekly_wed" value="3">
+                                    <span translatable="true">Wed</span>
+                                </input>
+                                <input type="checkbox" id="weekly_thu" value="4">
+                                    <span translatable="true">Thu</span>
+                                </input>
+                                <input type="checkbox" id="weekly_fri" value="5">
+                                    <span translatable="true">Fri</span>
+                                </input>
+                                <input type="checkbox" id="weekly_sat" value="6">
+                                    <span translatable="true">Sat</span>
+                                </input>
+                                <input type="checkbox" id="weekly_sun" value="0">
+                                    <span translatable="true">Sun</span>
+                                </input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="recurring_type" id="month" value="month" onclick="onSelectRecurringType()"></input>
+                                <span translatable="true">Monthly</span>
+                            </td>
+                            <td>
+                                <span translatable="true">Every:</span>
+                                <input type="radio" name="monthly_value1" id="first" value="1st">
+                                    <span translatable="true">1st</span>
+                                </input>
+                                <input type="radio" name="monthly_value1" id="second" value="2nd">
+                                    <span translatable="true">2nd</span>
+                                </input>
+                                <input type="radio" name="monthly_value1" id="third" value="3rd">
+                                    <span translatable="true">3rd</span>
+                                </input>
+                                <input type="radio" name="monthly_value1" id="fourth" value="4th">
+                                    <span translatable="true">4th</span>
+                                </input>
+                                <input type="radio" name="monthly_value1" id="last" value="last">
+                                    <span translatable="true">last</span>
+                                </input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="radio" name="monthly_value2" id="month_mon" value="mon" style="margin-left:42px">
+                                    <span translatable="true">Mon</span>
+                                </input>
+                                <input type="radio" name="monthly_value2" id="month_tue" value="tue">
+                                    <span translatable="true">Tue</span>
+                                </input>
+                                <input type="radio" name="monthly_value2" id="month_wed" value="wed">
+                                    <span translatable="true">Wed</span>
+                                </input>
+                                <input type="radio" name="monthly_value2" id="month_thu" value="thu">
+                                    <span translatable="true">Thu</span>
+                                </input>
+                                <input type="radio" name="monthly_value2" id="month_fri" value="fri">
+                                    <span translatable="true">Fri</span>
+                                </input>
+                                <input type="radio" name="monthly_value2" id="month_sat" value="sat">
+                                    <span translatable="true">Sat</span>
+                                </input>
+                                <input type="radio" name="monthly_value2" id="month_sun" value="sun">
+                                    <span translatable="true">Sun</span>
+                                </input>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </html>
+        </field>
+        <field table="rmpct" name="day_part"/>
+    </panel>
+    
+    <panel id="otherSearchOption" type="console" columns="3" dataSource="ds_ab_ht_booking_create_search_rmpct">
+        <title translatable="true">Other Options</title>
+        <field id="minSpaceInBl" dataType="integer" onchange="validationInteger(this)">
+            <title translatable="true">Minimum Available Seats in Building</title>
+        </field>
+        <field id="minSpaceInFl" dataType="integer" onchange="validationInteger(this)">
+            <title translatable="true">Minimum Available Seats on Floor</title>
+        </field>
+        <field/>
+        <field table="rmpct" name="bl_id"/>
+        <field table="rmpct" name="fl_id"/>
+        <field table="rmpct" name="rm_id"/>
+        <field table="rm" name="rm_std"/>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rmpct" name="dv_id"/>
+        <field table="rmpct" name="dp_id"/>
+    </panel>
+    
+    <js file="ab-ht-booking-create-search.js"/>
+</view>

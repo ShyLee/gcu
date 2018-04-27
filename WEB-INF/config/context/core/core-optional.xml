@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <!-- ========================= This Spring configuration file contains definitions for the optional core beans. ========================= -->
+    <!-- The beans here are shared between all projects. -->
+    <!-- A bean belongs here if all of the following conditions are met: -->
+    <!-- 1. WebCentral will start without the bean. -->
+    <!-- 2. The bean is a core Java class, or is in "ext" package. -->
+    <!-- 3. The bean is either: -->
+    <!--  - Referenced in a core Java class, and the reference is expected to fail (there is if(containsBean) or try/catch block around getBean call); -->
+    <!--  Or -->
+    <!--  - Referenced in an application Java class. -->
+
+    <!-- Cascade and SQL injection handlers require archibus-common-resources.jar -->
+
+    <!-- Cascade update/delete handler, used by the DataSource implementation. -->
+    <bean
+        id="cascadeHandler"
+        class="com.archibus.datasource.CascadeHandlerImpl"/>
+
+    <!-- SQL injection handler. Checks whether SQL queries and restrictions passed from the client contain specified keywords, and stops the operation if they do. -->
+    <bean
+        id="sqlInjectionHandler"
+        class="com.archibus.datasource.SqlInjectionHandlerImpl">
+        <property name="reservedWords">
+            <list>
+                <value>DROP</value>
+                <value>DELETE</value>
+                <value>INSERT</value>
+                <value>TABLE</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Additional, more strict SQL injection handler for the replaceColumn web service. Specifies keywords checked in addition to those in the sqlInjectionHandler. -->
+    <bean
+        id="sqlInjectionHandlerForReplaceColumn"
+        class="com.archibus.datasource.SqlInjectionHandlerImpl">
+        <property name="reservedWords">
+            <list>
+                <value>SELECT</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Database Importer -->
+    <!-- This bean is the backbone of all database importer API that is used by Project Update Wizard, Data Transfer related Jobs, Localization and other WFRs -->
+    <bean
+        id="databaseImporter"
+        class="com.archibus.ext.importexport.importer.DatabaseImporterImpl"
+        scope="prototype">
+    </bean>
+    <!-- Database Exporter -->
+    <!-- This bean is the backbone of all database exporter API that is used by Project Update Wizard, Data Transfer related Jobs, Localization and other WFRs -->
+    <bean
+        id="databaseExporter"
+        class="com.archibus.ext.importexport.exporter.DatabaseExporterImpl"
+        scope="prototype">
+    </bean>
+
+    <!-- Data Transfer Job bean -->
+    <!-- This bean supports the data transfer in/out job from the view file -->
+    <bean
+        id="dataTransfer"
+        class="com.archibus.ext.datatransfer.DataTransferJob"
+        scope="prototype"
+        p:databaseImporter-ref="databaseImporter"
+        p:databaseExporter-ref="databaseExporter">
+    </bean>
+
+</beans>

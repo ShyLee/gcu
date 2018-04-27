@@ -1,0 +1,168 @@
+<view version="2.0">
+    <title translatable="true">Eq Repair Info</title>
+    <layout id="mainCenter"  >
+        <north id="north" initialSize="40%" split="true"/>
+        <center id="south" autoScroll="true"/>
+    </layout>
+    
+    <dataSource id="eq_DS">
+        <table name="eq" role="main"/>
+        <table name="csi" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="eq_attach" role="standard"/>
+        <field table="eq" name="eq_id"/>    
+        <field table="eq" name="eq_id_old"/>    
+        <field table="eq" name="add_eq_id"/>    
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="date_in_service"/>
+        <field table="eq" name="date_purchased"/>
+        <field table="eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="em_name"/>      
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>     
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="danju_id"/>
+        <field table="eq" name="date_manufactured"/>
+        <field table="eq" name="num_serial"/>       
+        <field table="eq" name="sci_resh_id"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="doc2"/>
+        <field table="eq" name="warranty_id" hidden="true"/>
+        <field table="eq" name="number2"/>
+        <field table="eq" name="repair_log"/>
+        <field table="eq" name="count_repair"/>
+        <field table="eq" name="cost_repair"/>
+        <sortField table="eq" name="eq_id"/>
+        <restriction type="sql" sql="(eq.sch_status!='5' and eq.sch_status!='6' and  eq.sch_status!='7' and  eq.sch_status!='C' and eq.sch_status!='D') and (add_eq_id is null or add_eq_id in (select add_eq_id from add_eq where add_eq.status='4'))"/>
+    </dataSource>
+    
+    <dataSource id="eq_repair_ds">
+        <table name="eq_repair" role="main"/>
+        <field table="eq_repair" name="eq_repair_id"/>
+        <field table="eq_repair" name="eq_id"/>
+        <field table="eq_repair" name="eq_name"/>
+        <field table="eq_repair" name="brand"/>
+        <field table="eq_repair" name="eq_type"/>
+        <field table="eq_repair" name="fee" showTotals="true"/>
+        <field table="eq_repair" name="comments"/>
+        <field table="eq_repair" name="date_register"/>
+    </dataSource>
+    
+    <dataSource id="count_repair_eq_ds">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="count_repair"/>
+        <field table="eq" name="cost_repair"/>
+    </dataSource>
+
+    <panel type ="grid" id="gridPanel" dataSource="eq_DS" layout="mainCenter" region="north" showOnLoad="true">
+        <title translatable="true">List</title>
+        <action id="exportXLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="gridPanel"/>
+		</action>
+		<indexField table="eq" name="number2"/>
+		<field controlType="button" width="80" id="regist">
+			<title>Repair Info</title>
+		</field>
+		<field controlType="button" id="viewAttach" width="120">
+        	<title>view Attach</title>
+        </field>
+        <field table="eq" name="eq_id" controlType="link">
+        	<command type="callFunction" functionName="controller.showEqRepairs()"/>
+        </field> 
+        <field table="eq" name="count_repair" controlType="link">
+        	<command type="callFunction" functionName="controller.showEqRepairs()"/>
+        </field> 
+        <field table="eq" name="cost_repair" controlType="link">
+        	<command type="callFunction" functionName="controller.showEqRepairs()"/>
+        </field> 
+        <field table="eq" name="eq_id_old" controlType="link">
+        	<command type="callFunction" functionName="controller.showEqRepairs()"/>
+        </field> 
+        <field table="eq" name="eq_name" controlType="link">
+        	<command type="callFunction" functionName="controller.showEqRepairs()"/>
+        </field>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="add_eq_id" hidden="true"/>
+        <field table="eq" name="csi_id" hidden="true"/>
+        <field table="csi" name="description" width="150"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="price" showTotals="true"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="date_in_service" width="80"/>
+        <field table="eq" name="date_purchased" width="80"/>
+        <field table="eq" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="em_id" hidden="true"/>
+        <field table="eq" name="em_name"/>      
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="eq_id_old"/> 
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="number2" hidden="true"/>
+    </panel>
+    
+    <panel type ="grid" id="eqRepairGrid" dataSource="eq_repair_ds" layout="mainCenter" region="center" columns="2" showOnLoad="false" multipleSelectionEnabled="true" showCounts="true">
+        <title></title>
+        <action id="delete">
+			<title>Delete</title>
+		</action>
+		<field table="eq_repair" name="eq_repair_id" hidden="true"/> 
+        <field table="eq_repair" name="eq_id" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickEqRepair()"/>
+        </field> 
+        <field table="eq_repair" name="eq_name" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickEqRepair()"/>
+        </field> 
+        <field table="eq_repair" name="brand" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickEqRepair()"/>
+        </field> 
+        <field table="eq_repair" name="eq_type" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickEqRepair()"/>
+        </field> 
+        <field table="eq_repair" name="fee" showTotals="true" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickEqRepair()"/>
+        </field> 
+        <field table="eq_repair" name="date_register" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickEqRepair()"/>
+        </field> 
+        <field table="eq_repair" name="comments" controlType="link">
+        	<command type="callFunction" functionName="controller.onClickEqRepair()"/>
+        </field> 
+    </panel>
+    <panel type ="form" id="formPanel" dataSource="eq_repair_ds" columns="2" showOnLoad="false">
+        <title translatable="true">Repair Info</title>
+        <action id="save">
+			<title>Save</title>
+		</action>
+        <field table="eq_repair" name="eq_repair_id" hidden="true"/> 
+        <field table="eq_repair" name="eq_id" readOnly="true"/> 
+        <field table="eq_repair" name="eq_name" readOnly="true"/>
+        <field table="eq_repair" name="brand" readOnly="true"/>
+        <field table="eq_repair" name="eq_type" readOnly="true"/>
+        <field table="eq_repair" name="fee"/>
+        <field table="eq_repair" name="date_register" required="true"/>
+        <field table="eq_repair" name="comments" colspan="2"/>
+    </panel>
+    <js file="asc-bj-usms-eq-repair-info.js"/> 
+</view>

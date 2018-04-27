@@ -1,0 +1,185 @@
+<view version="2.0">
+	<layout type="borderLayout" id="mainLayout">
+		<north id="north_main" initialSize="1" split="true"/>
+        <center />
+	</layout>
+	<layout id="nested_center" containingLayout="mainLayout" region="center">
+		<east id="nested_east"  initialSize="1"/>
+        <center id="nested_center" />
+    </layout>
+	<dataSource id="falseDataSource">
+		<sql dialect="generic">
+		select bl_id,(select name from bl where bl.bl_id=R.bl_id) as bl_name,fl_id,rm_id,
+			   dv_id,
+			   (select dv_name from dv where dv.dv_id=R.dv_id) as dv_name,dp_id,
+			   (select distinct dp_name from dp where dp.dv_id=R.dv_id and dp.dp_id=R.dp_id) as dp_name,
+			   area_manual,area,area_chargable,option2
+		from
+		(
+		SELECT bl_id,fl_id,rm_id,dv_id,dp_id,
+		area_manual,area,
+		area_chargable,option2
+		from(
+			select rm.bl_id as bl_id,
+					rm.fl_id as fl_id,
+					rm.rm_id as rm_id,
+					rm.dv_id as dv_id,
+					rm.dp_id as dp_id,
+					rm.area_manual as area_manual,
+					rm.area as area,
+					rm.area_chargable as area_chargable,
+					${parameters['errorinfo1']} as option2
+					from rm
+					where bl_id is null
+			union
+			(
+			select rm.bl_id as bl_id,
+					rm.fl_id as fl_id,
+					rm.rm_id as rm_id,
+					rm.dv_id as dv_id,
+					rm.dp_id as dp_id,
+					rm.area_manual as area_manual,
+					rm.area as area,
+					rm.area_chargable as area_chargable,
+					${parameters['errorinfo2']} as option2
+					from rm
+					where fl_id is null
+			)
+			union
+			(
+			select rm.bl_id as bl_id,
+					rm.fl_id as fl_id,
+					rm.rm_id as rm_id,
+					rm.dv_id as dv_id,
+					rm.dp_id as dp_id,
+					rm.area_manual as area_manual,
+					rm.area as area,
+					rm.area_chargable as area_chargable,
+					${parameters['errorinfo3']} as option2
+					from rm,dv,dp
+					where rm.dv_id is null
+			)
+			union
+			(
+			select rm.bl_id as bl_id,
+					rm.fl_id as fl_id,
+					rm.rm_id as rm_id,
+					rm.dv_id as dv_id,
+					rm.dp_id as dp_id,
+					rm.area_manual as area_manual,
+					rm.area as area,
+					rm.area_chargable as area_chargable,
+					${parameters['errorinfo4']} as option2
+					from rm,dv
+					where rm.dv_id = dv.dv_id
+					and dv.bu_id is  null
+			)
+			union(
+			select rm.bl_id as bl_id,
+					rm.fl_id as fl_id,
+					rm.rm_id as rm_id,
+					rm.dv_id as dv_id,
+					rm.dp_id as dp_id,
+					rm.area_manual as area_manual,
+					rm.area as area,
+					rm.area_chargable as area_chargable,
+					${parameters['errorinfo5']} as option2
+					from rm
+					where rm.area_manual > rm.area
+			)
+			union(
+			select rm.bl_id as bl_id,
+					rm.fl_id as fl_id,
+					rm.rm_id as rm_id,
+					rm.dv_id as dv_id,
+					rm.dp_id as dp_id,
+					rm.area_manual as area_manual,
+					rm.area as area,
+					rm.area_chargable as area_chargable,
+					${parameters['errorinfo7']} as option2
+					from rm
+					where rm.area > rm.area_chargable
+			)
+			)
+			)R
+		</sql>
+		<table name="rm" role="main" />
+		
+		<sortField name="bl_id" table="rm" ascending="true"/>
+		<sortField name="fl_id" table="rm" ascending="true"/>
+		<sortField name="rm_id" table="rm" ascending="true"/>
+		<field name="bl_id" table="rm" dataType="text" />
+		<field name="bl_name" table="rm" dataType="text" >
+			<title>bl name</title>
+		</field>
+		<field name="fl_id" table="rm" dataType="text" />
+		<field name="rm_id" table="rm" dataType="text" />
+		<field name="dv_id" table="rm" dataType="text" />
+		<field name="dv_name" table="rm" dataType="text" >
+			<title>dv name</title>
+		</field>
+		<field name="dp_id" table="rm" dataType="text" />
+		<field name="dp_name" table="rm" dataType="text" >
+			<title>dp name</title>
+		</field>
+		<field name="area_manual" table="rm" dataType="text" />
+		<field name="area" table="rm" dataType="text" />
+		<field name="area_chargable" table="rm" dataType="text" />
+		<field name="option2" table="rm" dataType="text" />
+		
+		<parameter name="errorinfo1"  dataType="text" value=""/>
+        <parameter name="errorinfo2"  dataType="text" value=""/>
+        <parameter name="errorinfo3"  dataType="text" value=""/>
+        <parameter name="errorinfo4"  dataType="text" value=""/>
+        <parameter name="errorinfo5"  dataType="text" value=""/>
+        <parameter name="errorinfo6"  dataType="text" value=""/>
+        <parameter name="errorinfo7"  dataType="text" value=""/>
+	</dataSource>
+	<panel type="grid"  id="falseDataPanel" dataSource="falseDataSource" showOnLoad="true" layoutRegion="nested_center">
+        <title translatable="true">False Data List</title>
+        <action id="exportXLS">
+              <title translatable="true">XLS</title>
+              <command type="exportPanel" outputType="xls" panelId="falseDataPanel"/>
+        </action>
+        <field controlType="button">
+            <title translatable="true">Edit</title>
+            <command type="callFunction" functionName="checkFalseController.edit()"/>
+        </field>
+        <indexField name="rm_id" table="rm"/>
+        <field name="bl_id" table="rm" dataType="text" />
+		<field name="bl_name" table="rm" dataType="text" >
+			<title>bl name</title>
+		</field>
+		<field name="fl_id" table="rm" dataType="text" />
+		<field name="rm_id" table="rm" dataType="text" />
+		<field name="dv_id" table="rm" dataType="text" />
+		<field name="dv_name" table="rm" dataType="text" >
+			<title>dv name</title>
+		</field>
+		<field name="dp_id" table="rm" dataType="text" />
+		<field name="dp_name" table="rm" dataType="text" >
+			<title>dp name</title>
+		</field>
+		<field name="area_manual" table="rm" dataType="text" />
+		<field name="area" table="rm" dataType="text" />
+		<field name="area_chargable" table="rm" dataType="text" />
+		<field name="option2" table="rm" dataType="text" >
+			<title translatable="true">ERRORTYPE</title>
+		</field>
+    </panel>
+    <panel type="form" id="editPanel" dataSource="falseDataSource" showOnLoad="false" columns="2" layoutRegion="nested_east">
+        <title translatable="true">edit datiles</title>
+        <action id="save">
+            <title translatable="true">save</title>
+        </action>
+        <field name="bl_id" table="rm" dataType="text" />
+		<field name="fl_id" table="rm" dataType="text" />
+		<field name="rm_id" table="rm" dataType="text" />
+		<field name="dv_id" table="rm" dataType="text" />
+		<field name="dp_id" table="rm" dataType="text" />
+		<field name="area_manual" table="rm" dataType="text" />
+		<field name="area" table="rm" dataType="text" />
+		<field name="area_chargable" table="rm" dataType="text" />
+    </panel>
+    <js file="asc-bj-usms-data-check-sch-rm.js"/>
+</view>

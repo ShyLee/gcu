@@ -1,0 +1,91 @@
+## First page of applications tab shows Products (domains) and Activities (applications)
+## Each activity leads to its own page of Processes and Tasks
+##
+## -- Macro for listing activities within a product --
+##
+#macro (listActivities $activities)
+                               <ol class="app-processes">
+#foreach ($activity in $activities)
+                                   <li><a href="$activity.activityFile" rel="process">$activity.title</a></li>
+#end
+                               </ol>
+#end
+## -- Macro adding activities as a horizontally scrollable set of lists --
+##
+#macro (addScrollableList $navigationBucket $limit $rowHeight)
+                   <!-- wrapper for navigator elements, sets dimensions of viewport -->
+                   <div class="scrollable-wrapper-${rowHeight}-height">
+                       <!-- root element for scrollable -->
+                       <div class="scrollable-${rowHeight}-height" id="${navigationBucket.identifier}Navigator">
+                           <!-- root element for the items -->
+                           <div class="items">
+#foreach ($activityTranche in $navigationBucket.getActivityTranches($limit))
+#listActivities ($activityTranche)
+#end
+                           </div>
+                       </div>
+                   <!-- wrapper for navigator button elements -->
+                   <div class="navi"></div>
+                   </div>
+#end
+##
+## -- Begin fragment output --
+##
+<div class="nav-pages" id="navPagesApps">
+    <div class="page">
+#set ($imgPath = "/archibus/schema/ab-core/page-navigation/img/")
+##
+## -- loop over blocks and output via relevant macro
+##
+#foreach ($navigationBlock in $navigationBlocks)
+#if ($navigationBlock.blockType == "DIVIDER")
+#set ($rowTitle = $navigationBlock.displayTitle)
+#set ($rowShading = $navigationBlock.backgroundShading)
+#elseif ($navigationBlock.blockType == "ROW")
+        <div class="page-row ${navigationBlock.displayHeight}-height" >
+#if ($rowTitle)
+            <h3>$rowTitle</h3>
+            <hr class="appRule">
+#set ($rowTitle = false)
+#end
+#foreach ($navigationBucket in $navigationBlock.navigationBuckets)
+#if ($navigationBlock.displayHeight == "full" && $navigationBucket.activities.size() >= 12)
+#set ($useScrollableNavi = true)
+#set ($srollableNaviLength = 12)
+#elseif ($navigationBlock.displayHeight == "three-quarters" && $navigationBucket.activities.size() >= 8)
+#set ($useScrollableNavi = true)
+#set ($srollableNaviLength = 8)
+#elseif ($navigationBlock.displayHeight == "half" && $navigationBucket.activities.size() >= 6)
+#set ($useScrollableNavi = true)
+#set ($srollableNaviLength = 6)
+#else
+#set ($useScrollableNavi = false)
+#end
+            <div class="bucket-application" onMouseUp="openProcess(this,event);">
+                <h2 class="process-title">$navigationBucket.title #if ($navigationBucket.iconFile)<img src="$imgPath${navigationBucket.iconFile}" alt="" class="appTitleImg"/>#end</h2>
+                <div class="bucket-wrapper" >
+#if ($useScrollableNavi)
+#addScrollableList ($navigationBucket $srollableNaviLength $navigationBlock.displayHeight)
+<!-- $naviScrollableBlocks.add($navigationBucket.identifier) -->
+#else
+#listActivities ($navigationBucket.activities)
+#end
+                </div>
+            </div>
+#end
+       </div>
+#end
+#end
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $("a").click(function() {return false;});
+    setPageDimensions();
+
+#foreach ($naviIdentifier in $naviScrollableBlocks)
+    $('#${naviIdentifier}Navigator').scrollable({circular: false, vertical: false, mousewheel: true}).navigator();
+#end
+});
+</script>

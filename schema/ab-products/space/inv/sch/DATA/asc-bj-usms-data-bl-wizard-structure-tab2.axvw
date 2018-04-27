@@ -1,0 +1,285 @@
+<view version="2.0">
+	<js file="asc-bj-usms-data-bl-wizard-structure-tab2.js"/>
+	<message name="message_cancelConfirm" translatable="true">Are you sure you want to gave up edit this record?</message>
+	
+	<dataSource id="tsBl">
+    	
+		<table name="bl" role="main"/>
+		
+		<field table="bl" name="area_bl_comn_gp"/>
+		<field table="bl" name="area_building_manual"/>
+		<field table="bl" name="area_jianzhu_all"/>
+		<field table="bl" name="area_land"/>
+		<field table="bl" name="area_land_net"/>
+		<field table="bl" name="area_rm"/>
+		<field table="bl" name="area_underground"/>
+		<field table="bl" name="area_use_net"/>
+		<field table="bl" name="area_unsold"/>
+		<field table="bl" name="area_sold"/>
+		<field table="bl" name="area_defence"/>
+		<field table="bl" name="area_underground"/>
+		<field table="bl" name="area_garage_undergroud"/>
+		<field table="bl" name="area_underground"/>
+		<field table="bl" name="area_ziyong"/>
+		<field table="bl" name="area_rent"/>
+		<field table="bl" name="area_lend"/>
+		<field table="bl" name="area_invest"/>
+		<field table="bl" name="area_danbao"/>
+		<field table="bl" name="area_other"/>
+		<field table="bl" name="area_jianzhu_yuan"/>
+		<!-- <field table="bl" name="unsold_area_seg"/> -->
+		<field table="bl" name="date_building_end"/>
+		<field table="bl" name="years_plan_use"/>
+		<field table="bl" name="date_begin"/>
+		<field table="bl" name="date_examine"/>
+		<field table="bl" name="date_rent"/>
+		<field table="bl" name="date_acquire"/>
+		<field table="bl" name="date_dv_use"/>
+		<field table="bl" name="address1"/>
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="bl_situation"/>
+		<field table="bl" name="bldg_photo"/>
+		<field table="bl" name="building_cat"/>
+		<field table="bl" name="comments"/>
+		<field table="bl" name="construction_type"/>
+		<field table="bl" name="count_rm_keyong"/>
+		<field table="bl" name="count_underground"/>
+		<field table="bl" name="count_upground"/>
+		<field table="bl" name="dwg_src"/>
+		<field table="bl" name="gongtanlv"/>
+		<field table="bl" name="grp_uid"/>
+		<field table="bl" name="name"/>
+		<field table="bl" name="origial_cad"/>
+		<field table="bl" name="pr_id"/>
+		<field table="bl" name="quake_grade"/>
+		<field table="bl" name="share_serv_rate"/>
+		<field table="bl" name="site_id"/>
+		<field table="bl" name="status"/>
+		<field table="bl" name="use1"/>
+		<field table="bl" name="name_building"/>
+		<field table="bl" name="height"/>
+		<field table="bl" name="eaves_height"/>
+		<field table="bl" name="count_suite_sold"/>
+		<field table="bl" name="count_carport_undergroud"/>
+		<field table="bl" name="is_dangerous_house"/>
+		<field table="bl" name="relic_level"/>
+		<field table="bl" name="fire_message"/>
+		<field table="bl" name="monitor_message"/>
+		<field table="bl" name="roof_type"/>
+		<field table="bl" name="spark_gap_type"/>
+		<field table="bl" name="hvac_type"/>
+		<field table="bl" name="rain_drainage_type"/>
+		<field table="bl" name="count_elevator"/>
+		<field table="bl" name="is_temp_build"/>
+		<field table="bl" name="atype_code"/>
+		<field table="bl" name="srcid"/>
+		<field table="bl" name="use_status"/>
+		<field table="bl" name="lend_df_dp"/>
+		<field table="bl" name="guzhuwu_unit"/>
+		<field table="bl" name="parcelland_address"/>
+		<field table="bl" name="operator"/>
+		<field table="bl" name="old_bl_name"/>
+		<field table="bl" name="image_file"/>
+		<field table="bl" name="rent_df_dp"/>
+	</dataSource>
+	
+	<tabs workflow="free" id="structInfoTabs" tabRefreshPolicy="refreshOnLoad">
+		
+	    <tab name="Basic"  selected="true" useFrame="true">
+		    <title translatable="true">Basic Information</title>  
+		    <!-- base building info panel-->
+		    <panel type="form" id="tsBlForm0" dataSource="tsBl" columns="2" newRecord="true">
+		        
+		        <action id="return" ><!--enabled="${panel.newRecord}"  -->
+					<title translatable="true">Return</title>
+				<!-- 	<command type="showPanel" panelId="tsBlForm0" applyParentRestriction="false"/> -->
+					<command type="callFunction" functionName="rplmBuildingStructureController.returnToIndex()"/>
+				</action>
+				<action id="cancel">
+					<title translatable="true">Cancel</title>
+					<command type="showPanel" panelId="tsBlForm0" applyParentRestriction="true"/>
+				</action>
+		        <action id="save">
+					<title translatable="true">Save</title>
+					<command type="saveForm"/>
+					<!-- <command type="callFunction" functionName="rplmBuildingStructureController.afterTsBlForm0Save()"/>  -->
+					<!-- <command type="selectTabPage" tabPageName="Area" /> -->
+				</action>
+		        <field table="bl" name="bl_id" />
+		        <field table="bl" name="site_id" required="true">
+		        	<action>
+			        	<title>...</title>
+			        	<tooltip>Select Value</tooltip>
+			        	<command type="selectValue" fieldNames="bl.pr_id,bl.site_id"
+							selectFieldNames="property.pr_id,property.site_id" 
+							visibleFieldNames="property.site_id,property.pr_id,property.name" 
+							filterFieldNames="bl.site_id" 
+							showIndex="false"/>
+			    	</action>
+		        </field>
+		        <field table="bl" name="pr_id" required="true">
+		            <action>
+			        	<title>...</title>
+			        	<tooltip>Select Value</tooltip>
+			        	<command type="selectValue" fieldNames="bl.pr_id,bl.site_id"
+							selectFieldNames="property.pr_id,property.site_id" 
+							visibleFieldNames="property.site_id,property.pr_id,property.name" 
+							filterFieldNames="bl.site_id" 
+							showIndex="false"/>
+			    	</action>
+				</field>
+		        <field table="bl" name="name" required="true"/>
+		        <field table="bl" name="old_bl_name"/>
+		        <field table="bl" name="use1" required="true"/>
+		<!--         <field table="bl" name="area_land"/> -->
+		        <field table="bl" name="address1"/>
+		         <field table="bl" name="image_file"/>
+  			  </panel>
+	    </tab>
+	
+	    <tab name="Area"  useFrame="true">
+		   <title translatable="true">Area</title>
+				<panel type="form" id="tsBlForm1" dataSource="tsBl" columns="2" showOnLoad="true">    	
+					<action id="cancel">
+						<title translatable="true">Return</title>
+						<!-- <command type="selectTabPage" tabPageName="Basic" /> -->
+						<command type="callFunction" functionName="rplmBuildingStructureController.returnToIndex()"/>
+					</action>
+					<action id="cancel">
+						<title translatable="true">Cancel</title>
+						<command type="showPanel" panelId="tsBlForm1" applyParentRestriction="true"/>
+					</action>
+			    	<action id="save">
+						<title translatable="true">Save</title>
+						<command type="saveForm"/>
+						<!-- <command type="selectTabPage" tabPageName="Date" /> -->
+					</action>
+					<field table="bl" name="bl_id" readOnly="true" hidden="false"/>
+					<field table="bl" name="area_bl_comn_gp"/>
+					<field table="bl" name="area_building_manual" required="true"/>
+					<field table="bl" name="area_jianzhu_all"/>
+					<field table="bl" name="area_land"/>
+					<field table="bl" name="area_land_net"/>
+					<field table="bl" name="area_rm"/>
+					<field table="bl" name="area_use_net" readOnly="true"/>
+					<field table="bl" name="area_unsold"/>
+					<field table="bl" name="area_sold"/>
+					<field table="bl" name="area_defence"/>
+					<field table="bl" name="area_underground"/>
+					<field table="bl" name="area_garage_undergroud"/>
+					<field table="bl" name="area_ziyong" readOnly="false"/>
+					<field table="bl" name="area_rent" readOnly="false"/>
+					<field table="bl" name="area_lend" readOnly="false"/>
+					<field table="bl" name="area_invest" readOnly="false"/>
+					<field table="bl" name="area_danbao" readOnly="false"/>
+					<field table="bl" name="area_other" readOnly="false"/>
+					<field table="bl" name="area_jianzhu_yuan"/>
+					<!-- <field table="bl" name="unsold_area_seg"/> -->
+					<field/>		
+				</panel>
+		
+	    </tab>
+	    <tab name="Date"  useFrame="true">
+		   <title translatable="true">Date</title>
+		    <panel type="form" id="tsBlForm2" dataSource="tsBl" columns="2" showOnLoad="true">	
+				<action id="return">
+					<title translatable="true">Return</title>
+					<!-- <command type="selectTabPage" tabPageName="Area" /> -->
+					<command type="callFunction" functionName="rplmBuildingStructureController.returnToIndex()"/>
+				</action>
+				<action id="cancel">
+					<title translatable="true">Cancel</title>
+					<command type="showPanel" panelId="tsBlForm2" applyParentRestriction="true"/>
+				</action>
+				<action id="save">
+					<title translatable="true">Save</title>
+					<command type="saveForm"/>
+					<!-- <command type="selectTabPage" tabPageName="qita" /> -->
+				</action>
+				<field table="bl" name="bl_id" readOnly="true" hidden="false"/>
+				<field table="bl" name="date_building_end"/>
+				<field table="bl" name="years_plan_use"/>
+				<field table="bl" name="date_begin"/>
+				<field table="bl" name="date_examine"/>
+				<field table="bl" name="date_rent"/>
+				<field table="bl" name="date_acquire"/>
+				<field table="bl" name="date_dv_use"/>	
+			</panel>
+	    </tab>
+	    <tab name="qita"  useFrame="true">
+		    <title translatable="true">qita</title>
+		    <panel type="form" id="tsBlForm3" dataSource="tsBl" columns="2" showOnLoad="true">
+				<action id="return">
+					<title translatable="true">Return</title>
+					<!-- <command type="selectTabPage" tabPageName="Date" /> -->
+					<command type="callFunction" functionName="rplmBuildingStructureController.returnToIndex()"/>
+				</action>
+				<action id="cancel">
+					<title translatable="true">Cancel</title>
+					<command type="showPanel" panelId="tsBlForm3" applyParentRestriction="true"/>
+				</action>
+				<action id="save">
+					<title translatable="true">Save</title>
+					<command type="saveForm"/>
+					<!-- <command type="callFunction" functionName="rplmBuildingStructureController.openNextTab()"/> -->
+				</action>
+				<field table="bl" name="bl_id" readOnly="true" hidden="false"/>
+				<field table="bl" name="bl_situation"/>
+				<!-- <field table="bl" name="bldg_photo"/> -->
+				<field table="bl" name="building_cat"/>
+				<field table="bl" name="construction_type"/>
+				<field table="bl" name="count_rm_keyong"/>
+				<field table="bl" name="count_underground"/>
+				<field table="bl" name="count_upground"/>
+				<field table="bl" name="dwg_src"/>
+				<field table="bl" name="gongtanlv"/>
+				<field table="bl" name="grp_uid"/>
+				<field table="bl" name="origial_cad"/>
+				<field table="bl" name="quake_grade"/>
+				<field table="bl" name="share_serv_rate"/>
+				<field table="bl" name="status"/>
+				<field table="bl" name="name_building"/>
+				<field table="bl" name="height"/>
+				<field table="bl" name="eaves_height"/>
+				<field table="bl" name="count_suite_sold"/>
+				<field table="bl" name="count_carport_undergroud"/>
+				<field table="bl" name="is_dangerous_house"/>
+				<field table="bl" name="relic_level"/>
+				<field table="bl" name="fire_message"/>
+				<field table="bl" name="monitor_message"/>
+				<field table="bl" name="roof_type"/>
+				<field table="bl" name="spark_gap_type"/>
+				<field table="bl" name="hvac_type"/>
+				<field table="bl" name="rain_drainage_type"/>
+				<field table="bl" name="count_elevator"/>
+				<field table="bl" name="is_temp_build"/>
+				<field table="bl" name="atype_code">
+					<!-- <title>Table Name</title> -->
+		         	<action>
+		        		<title>...</title>
+		        		<tooltip>Select Value</tooltip>
+		        		<command type="selectValue" 
+		        			fieldNames="bl.atype_code" 
+		        			selectFieldNames="sc_atyp.atype_code" 
+		        			visibleFieldNames="sc_atyp.atype_code,sc_atyp.atype_name"/>
+		      		</action>
+				</field>
+				<field table="bl" name="srcid"/>
+				<field table="bl" name="use_status"/>
+				<field table="bl" name="lend_df_dp"/>
+				<field table="bl" name="rent_df_dp"/>
+				<field table="bl" name="guzhuwu_unit"/>
+				<field table="bl" name="parcelland_address"/>
+				<field table="bl" name="operator"/>
+				<field table="bl" name="comments"/>	
+			</panel>
+	    </tab>
+		
+	</tabs>
+	
+    <!-- 
+   <event type="beforeTabClose">
+        <command type="callFunction" functionName="wr_tabs_beforeCloseTab"/>
+    </event>
+ -->
+</view>

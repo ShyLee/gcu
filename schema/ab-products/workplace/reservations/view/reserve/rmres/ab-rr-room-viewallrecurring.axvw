@@ -1,0 +1,34 @@
+<view version="2.0">
+    <preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    
+    <message translatable="true" name="errNotFound">User form loaded but miniconsole not found</message>
+    <message translatable="true" name="DateStart">Date Start</message>
+    <message translatable="true" name="BuildingCode">Building Code</message>
+    <message translatable="true" name="FloorCode">Floor Code</message>
+    <message translatable="true" name="RoomCode">Room Code</message>
+    <message translatable="true" name="ConfigCode">Configuration Code</message>
+    <message translatable="true" name="RoomArrangementType">Room Arrangement Type</message>
+    <message translatable="true" name="TimeStart">Time Start</message>
+    <message translatable="true" name="TimeEnd">Time End</message>
+    
+    <!-- HTML panel for displaying grid -->
+    <panel type="html" id="rm_report">
+        <title translatable="true">View All Dates</title>
+        
+        <action id="close">
+            <title translatable="true">Close</title>
+			<command type="closeDialog"/>
+        </action>
+        
+        <html>
+            <!-- The grid will be created inside this div element -->
+            <div id="rm_report_grid"/>
+        </html>
+    </panel>
+    
+    <!-- JS functions specific to this tab -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-room-viewallrecurring.js"/>
+</view>

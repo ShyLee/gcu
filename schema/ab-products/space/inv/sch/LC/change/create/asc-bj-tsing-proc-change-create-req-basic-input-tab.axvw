@@ -1,0 +1,296 @@
+<view version="2.0">
+    
+    <js file="asc-bj-tsing-proc-change-create-req-basic-input-tab.js"/>
+    
+    <message name="noRoomType" translatable="true">Please input Room Category and Room Type</message>
+    
+    <dataSource id="ascBjUsmsProcChangeCreateReqBasicInputTabFormDS">
+        <table name="activity_log" role="main"/>
+        <table name="rm" role="standard"/>
+        <field name="rm_id" table="rm"/>
+        <field name="bl_id" table="rm"/>
+        <field name="fl_id" table="rm"/>
+        <field name="rm_type" table="rm"/>
+        <field name="rm_cat" table="rm"/>
+        <field name="name" table="rm"/>
+        <field name="use_desc" table="rm"/>
+        <field name="activity_log_id" table="activity_log"/>
+        <field name="activity_type" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="description" table="activity_log"/>
+        <field name="requestor" table="activity_log"/>
+        <field name="phone_requestor" table="activity_log"/>
+        <field name="priority" table="activity_log"/>
+        <field name="prob_type" table="activity_log"/>
+        <field name="date_required" table="activity_log"/>
+        <field name="time_required" table="activity_log"/>
+        <field name="dp_id" table="activity_log"/>
+        <field name="dv_id" table="activity_log"/>
+        <field name="rm_cat" table="activity_log"/>
+        <field name="rm_type" table="activity_log"/>
+		<field name="rm_name" table="activity_log"/>
+        <field name="rm_name_after" table="activity_log"/>
+        <field name="rm_cat_after" table="activity_log"/>
+        <field name="rm_type_after" table="activity_log"/>
+        <field name="bl_id" table="activity_log"/>
+        <field name="fl_id" table="activity_log"/>
+        <field name="rm_id" table="activity_log"/>
+    </dataSource>
+    
+    <dataSource id="tsRmTuChangeLogDS">
+      <table name="ts_rm_tu_change_log" role="main" />  
+      <field name="rm_tu_change_id" table="ts_rm_tu_change_log"/>   
+      <field name="site_id" table="ts_rm_tu_change_log"/>
+      <field name="pr_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_name" table="ts_rm_tu_change_log"/>
+      <field name="fl_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_use" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat" table="ts_rm_tu_change_log"/>
+      <field name="rm_type" table="ts_rm_tu_change_log"/>
+      <field name="use_desc" table="ts_rm_tu_change_log"/>
+      <field name="rm_name" table="ts_rm_tu_change_log"/>
+      <field name="rm_use_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_type_after" table="ts_rm_tu_change_log"/>
+      <field name="use_desc_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_name_after" table="ts_rm_tu_change_log"/>
+      <field name="oper_dv_id" table="ts_rm_tu_change_log"/>
+      <field name="oper_em_id" table="ts_rm_tu_change_log"/>
+      <field name="oper_em_name" table="ts_rm_tu_change_log"/>
+      <field name="oper_date" table="ts_rm_tu_change_log"/>
+      <field name="activity_log_id" table="ts_rm_tu_change_log"/>
+            
+    </dataSource>
+
+    
+    <dataSource id="roomDS">
+        <table name="rm" role="main"/>
+        <field name="rm_id" table="rm"/>
+        <field name="bl_id" table="rm"/>
+        <field name="fl_id" table="rm"/>
+        <field name="rm_type" table="rm"/>
+        <field name="rm_cat" table="rm"/>
+        <field name="name" table="rm"/>
+        <field name="use_desc" table="rm"/>  
+        <field name="ruzhu_status" table="rm"/>  
+    </dataSource>
+    <dataSource id="emDS">
+       <table name="em" role="main"/>
+       <field name="em_id" table="em"/>
+       <field name="name" table="em"/>
+    </dataSource>
+    
+    <panel id="basicInformationForm" type="form" columns="2" dataSource="ascBjUsmsProcChangeCreateReqBasicInputTabFormDS" newRecord="true">
+        <title translatable="true">basic information</title>
+        <action id="back">
+         <title translatable="true">back</title>
+        </action>
+        <action id="insert">
+         <title translatable="true">insert</title>
+        </action>
+        <action id="submit">
+         <title translatable="true">Submit</title>
+        </action>
+        <field name="activity_log_id" table="activity_log" hidden="false" readOnly="true">
+            <title translatable="true">Service Request ID</title>
+        </field>
+       
+        <field table="activity_log" name="requestor" value="${user.name}" readOnly="true">
+        	<action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="activity_log.requestor" 
+				 selectFieldNames="em.em_id"
+                 visibleFieldNames="em.em_id,em.name,em.sex,em.dv_id"></command>
+            </action>
+		</field>
+		<field table="activity_log" name="phone_requestor" value="${user.employee.phone}"/>
+        <field name="dv_id" table="activity_log" value="${user.employee.organization.divisionId}" readOnly="true"/>
+        <field name="date_required" table="activity_log" value="new Date()"/>
+        <field name="activity_type" table="activity_log" readOnly="true"/>
+        <field name="prob_type" table="activity_log" hidden="true"/>
+        <field table="activity_log" name="description"
+         colspan="4" required="true" style="width: 100%; height: 80px;"
+         showSelectValueAction="false"/>
+        <field name="priority" table="activity_log" hidden="true"/>
+    </panel>
+    
+    <panel type="form" columns="2" id="ascBjUsmsProcChangeCreateReqBasicInputTabForm" dataSource="tsRmTuChangeLogDS" showOnLoad="true" newRecord="true">       
+        <title translatable="true">room basic information</title>		
+		 <action id="save">
+          <title translatable="true">save</title>
+        </action>  
+        <action id="clear">
+          <title translatable="true">clear</title>
+         
+        </action>
+         <action id="cancel">
+          <title translatable="true">cancel</title>
+         
+        </action>     
+          <field name="rm_tu_change_id" table="ts_rm_tu_change_log" hidden="true"/>
+	      <field name="site_id" table="ts_rm_tu_change_log" required="true">
+	       <action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        	     fieldNames="ts_rm_tu_change_log.site_id"
+					selectFieldNames="site.site_id" 
+					visibleFieldNames="site.site_id,site.name" 
+					showIndex="true"/>
+	      </action>
+	      </field>
+	      <field name="pr_id" table="ts_rm_tu_change_log" required="true">
+	       <action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        	     fieldNames="ts_rm_tu_change_log.site_id,ts_rm_tu_change_log.pr_id"
+					selectFieldNames="property.site_id,property.pr_id" 
+					visibleFieldNames="property.site_id,property.pr_id" 
+					showIndex="true"/>
+	       </action>
+	      </field>
+          
+          <field name="bl_id" table="ts_rm_tu_change_log" required="true">
+       	  <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="ts_rm_tu_change_log.site_id,ts_rm_tu_change_log.pr_id,ts_rm_tu_change_log.bl_id,ts_rm_tu_change_log.bl_name"
+                 selectFieldNames="bl.site_id,bl.pr_id,bl.bl_id,bl.name" 
+					visibleFieldNames="bl.site_id,bl.pr_id,bl.bl_id,bl.name" 
+					showIndex="true"/>
+            </action>
+       	 </field>
+         <field name="bl_name" table="ts_rm_tu_change_log" required="true">
+         <action>
+	        	<title>...</title>
+	        	<tooltip>Select Value</tooltip>
+	        	<command type="selectValue" 
+	        	     fieldNames="ts_rm_tu_change_log.site_id,ts_rm_tu_change_log.pr_id,ts_rm_tu_change_log.bl_id,ts_rm_tu_change_log.bl_name"
+					selectFieldNames="bl.site_id,bl.pr_id,rm.bl_id,bl.name" 
+					visibleFieldNames="bl.site_id,bl.pr_id,rm.bl_id,bl.name" 
+					showIndex="true"/>
+	     </action>
+        </field>
+        <field name="fl_id" table="ts_rm_tu_change_log" readOnly="true" required="true">
+          <action>
+                <title>...</title>
+                <command type="selectValue"
+                    fieldNames="ts_rm_tu_change_log.site_id,ts_rm_tu_change_log.pr_id,ts_rm_tu_change_log.bl_id,ts_rm_tu_change_log.bl_name,ts_rm_tu_change_log.fl_id"
+					selectFieldNames="bl.site_id,bl.pr_id,bl.bl_id,bl.name,fl.fl_id" 
+					visibleFieldNames="bl.site_id,bl.pr_id,bl.bl_id,bl.name,fl.fl_id" 
+					showIndex="true"/>
+            </action>
+        </field> 
+        <field name="rm_id" table="ts_rm_tu_change_log" required="true">
+            <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="ts_rm_tu_change_log.site_id,ts_rm_tu_change_log.pr_id,ts_rm_tu_change_log.bl_id,ts_rm_tu_change_log.bl_name,ts_rm_tu_change_log.fl_id,ts_rm_tu_change_log.rm_id,ts_rm_tu_change_log.rm_use,ts_rm_tu_change_log.rm_cat,ts_rm_tu_change_log.rm_type,ts_rm_tu_change_log.use_desc,ts_rm_tu_change_log.rm_name"
+                 selectFieldNames="bl.site_id,bl.pr_id,rm.bl_id,bl.name,rm.fl_id,rm.rm_id,rm.rm_use,rm.rm_cat,rm.rm_type,rm.use_desc,rm.name"
+                 visibleFieldNames="bl.site_id,bl.pr_id,rm.bl_id,bl.name,rm.fl_id,rm.rm_id,rm.rm_cat,rm.rm_type,rm.use_desc,rm.name,rm.rm_use"
+                 actionListener="autoGetTitle"
+                 restriction="rm.rm_id in(select rm_id from rm where ruzhu_status=0 or ruzhu_status=1)"
+                ></command>
+            </action>
+        </field>
+          <field name="rm_use" table="ts_rm_tu_change_log" readOnly="true"/>
+          <field name="rm_use_after" table="ts_rm_tu_change_log" required="true">
+             <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="ts_rm_tu_change_log.rm_use_after"
+                 selectFieldNames="rm.rm_use"
+                 visibleFieldNames="rm.rm_use"               
+                 />
+            </action>
+          </field>
+	      <field name="rm_cat" table="ts_rm_tu_change_log" readOnly="true"/>
+	      <field name="rm_cat_after" table="ts_rm_tu_change_log" required="true">
+	        <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="ts_rm_tu_change_log.rm_use_after,ts_rm_tu_change_log.rm_cat_after"
+                 selectFieldNames="rm.rm_use,rmcat.rm_cat"
+                 visibleFieldNames="rm.rm_use,rmcat.rm_cat"                
+                 ></command>
+            </action>
+	      </field> 
+	      <field name="rm_type" table="ts_rm_tu_change_log" readOnly="true"/>
+	      <field name="rm_type_after" table="ts_rm_tu_change_log" required="true">
+	        <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="ts_rm_tu_change_log.rm_use_after,ts_rm_tu_change_log.rm_cat_after,ts_rm_tu_change_log.rm_type_after"
+                 selectFieldNames="rm.rm_use,rmcat.rm_cat,rmtype.rm_type"
+                 visibleFieldNames="rm.rm_use,rmcat.rm_cat,rmtype.rm_type"                 
+                 ></command>
+            </action>
+	      </field>
+	      <field name="use_desc" table="ts_rm_tu_change_log" readOnly="true"/>
+	      <field name="use_desc_after" table="ts_rm_tu_change_log" required="true">
+	         <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="ts_rm_tu_change_log.rm_use_after,ts_rm_tu_change_log.rm_cat_after,ts_rm_tu_change_log.rm_type_after,ts_rm_tu_change_log.use_desc_after"
+                 selectFieldNames="rm.rm_use,rmcat.rm_cat,rmtype.rm_type,rm.use_desc"
+                 visibleFieldNames="rm.rm_use,rmcat.rm_cat,rmtype.rm_type,rm.use_desc"               
+                 />
+            </action>
+	      </field>
+	      <field name="rm_name" table="ts_rm_tu_change_log" readOnly="true"/>     
+	      <field name="rm_name_after" table="ts_rm_tu_change_log" required="true">
+	        <action>
+                <title>...</title>
+                <command type="selectValue"
+                 fieldNames="ts_rm_tu_change_log.rm_name_after"
+                 selectFieldNames="rm.name"
+                 visibleFieldNames="rm.name"               
+                 />
+            </action>
+	      </field>
+	      <field name="oper_dv_id" table="ts_rm_tu_change_log" value="${user.employee.organization.divisionId}" required="true"/>
+	      <field name="oper_em_id" table="ts_rm_tu_change_log" value="${user.employee.id}" required="true"/>
+	      <field name="oper_em_name" table="ts_rm_tu_change_log" required="true"/>
+	      <field name="oper_date" table="ts_rm_tu_change_log" value="new Date()" required="true"/>
+	      <field name="activity_log_id" table="ts_rm_tu_change_log" hidden="true"/>
+
+    </panel>
+    
+    
+    <panel type="grid"  id="ascBjUsmsProcChangeCreateReqBasicInputTabDestricptionForm" formLabelWidth="25" dataSource="tsRmTuChangeLogDS" newRecord="true">        
+        <title translatable="true">room list</title>      
+        <field controlType="button" id="delete">
+            <title translatable="true">delete</title>
+        </field>
+        <field controlType="button" id="edit">
+            <title translatable="true">edit</title>
+        </field>
+      <field name="rm_tu_change_id" table="ts_rm_tu_change_log" hidden="false"/>
+      <field name="site_id" table="ts_rm_tu_change_log"/>
+      <field name="pr_id" table="ts_rm_tu_change_log"/>
+      <field name="bl_id" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="bl_name" table="ts_rm_tu_change_log"/>
+      <field name="fl_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_id" table="ts_rm_tu_change_log"/>
+      <field name="rm_use" table="ts_rm_tu_change_log"/>
+      <field name="rm_use_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat" table="ts_rm_tu_change_log"/>
+      <field name="rm_cat_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_type" table="ts_rm_tu_change_log"/>
+      <field name="rm_type_after" table="ts_rm_tu_change_log"/>
+      <field name="use_desc" table="ts_rm_tu_change_log"/>
+      <field name="use_desc_after" table="ts_rm_tu_change_log"/>
+      <field name="rm_name" table="ts_rm_tu_change_log"/>
+      <field name="rm_name_after" table="ts_rm_tu_change_log"/>
+      <field name="oper_dv_id" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="oper_em_id" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="oper_em_name" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="oper_date" table="ts_rm_tu_change_log" hidden="true"/>
+      <field name="activity_log_id" table="ts_rm_tu_change_log" hidden="true"/>
+    </panel>
+    
+</view>

@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gcu-dorm-lateLight" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="85902f69-c943-42a7-9d2c-33268a94474d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="year1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2011"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year3" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2012"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year4" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2013"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateStart" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2014-10-31"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateEnd" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2014-11-15"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="days" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateStartValue" class="java.lang.String"/>
+	<parameter name="dateEndValue" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select dv_id,dv_name,
+       countLate1,countLight1,
+       round(late1/$P{days},2) late1,
+       round(light1/$P{days},2) light1,
+
+       countLate2,countLight2,
+       round(late2/$P{days},2) late2,
+       round(light2/$P{days},2) light2,
+
+       countLate3,countLight3,
+       round(late3/$P{days},2) late3,
+       round(light3/$P{days},2) light3,
+
+       countLate4,countLight4,
+       round(late4/$P{days},2) late4,
+       round(light4/$P{days},2) light4,
+
+       dvLate,dvLight,dvRm,dvStu,
+
+       case when dvStu=0 then 0 else round(dvLate/dvStu/$P{days}*100,2) end late,
+       case when dvRm=0 then 0 else round(dvLight/dvRm/$P{days}*100,2) end light
+
+ from (
+       select dv_id,dv_name,
+       countLate1,countLight1,
+       case when countStu1=0 then 0.00 else countLate1/countStu1*100 end late1,
+       case when countRm1=0 then 0.00 else countLight1/countRm1*100 end light1,
+
+       countLate2,countLight2,
+       case when countStu2=0 then 0.00 else countLate2/countStu2*100 end late2,
+       case when countRm2=0 then 0.00 else countLight2/countRm2*100 end light2,
+
+       countLate3,countLight3,
+       case when countStu3=0 then 0.00 else countLate3/countStu3*100 end late3,
+       case when countRm3=0 then 0.00 else countLight3/countRm3*100 end light3,
+
+       countLate4,countLight4,
+       case when countStu4=0 then 0.00 else countLate4/countStu4*100 end late4,
+       case when countRm4=0 then 0.00 else countLight4/countRm4*100 end light4,
+
+       countLate1+countLate2+countLate4+countLate4 dvLate,
+       countLight1+countLight2+countLight3+countLight4 dvLight,
+
+       countRm1+countRm2+countRm3+countRm4 dvRm,
+       countStu1+countStu2+countStu3+countStu4 dvStu
+
+
+       from (
+           select dv_id,dv_name,
+           sum(case stu_in_year when $P{year1} then count_stu else 0 end) countStu1,
+           sum(case stu_in_year when $P{year1} then count_rm else 0 end) countRm1,
+           sum(case stu_in_year when $P{year1} then count_late else 0 end) countLate1,
+           sum(case stu_in_year when $P{year1} then count_light else 0 end) countLight1,
+
+           sum(case stu_in_year when $P{year2} then count_stu else 0 end) countStu2,
+           sum(case stu_in_year when $P{year2} then count_rm else 0 end) countRm2,
+           sum(case stu_in_year when $P{year2} then count_late else 0 end) countLate2,
+           sum(case stu_in_year when $P{year2} then count_light else 0 end) countLight2,
+
+           sum(case stu_in_year when $P{year3} then count_stu else 0 end) countStu3,
+           sum(case stu_in_year when $P{year3} then count_rm else 0 end) countRm3,
+           sum(case stu_in_year when $P{year3} then count_late else 0 end) countLate3,
+           sum(case stu_in_year when $P{year3} then count_light else 0 end) countLight3,
+
+           sum(case stu_in_year when $P{year4} then count_stu else 0 end) countStu4,
+           sum(case stu_in_year when $P{year4} then count_rm else 0 end) countRm4,
+           sum(case stu_in_year when $P{year4} then count_late else 0 end) countLate4,
+           sum(case stu_in_year when $P{year4} then count_light else 0 end) countLight4
+           from (
+               select a.dv_id,a.dv_name,a.stu_in_year,a.count_stu,d.count_rm,b.count_late,c.count_light from
+                 ( select b.dv_id, b.dv_name, b.stu_in_year, count_stu
+                       from (select dv_id, stu_in_year, count(stu_no) count_stu
+                             from sc_student
+                            group by dv_id, stu_in_year
+                            order by dv_id, stu_in_year) a,
+                          sc_stu_dv_year b
+                    where b.dv_id = a.dv_id(+)
+                         and b.stu_in_year = a.stu_in_year(+)
+                    order by b.dv_id, b.dv_name, b.stu_in_year) a,
+
+                   --全校各个单位单个年级的晚归人数
+                  (select b.dv_id,b.dv_name,b.stu_in_year,nvl(count_late,0) count_late
+                       from (select stu_in_year, dv_id,
+                                    sum(case disp_detail when '晚归' then 1 else 0 end) count_late
+                                    from sc_stu_disp_log
+                                    where disp_detail in('晚归')
+                                          and date_disp >= to_date($P{dateStart}, 'yyyy/MM/dd')
+                                          and date_disp <= to_date($P{dateEnd}, 'yyyy/MM/dd')
+                                    group by stu_in_year, dv_id
+                                    order by stu_in_year) a,
+                       sc_stu_dv_year b
+                       where b.dv_id=a.dv_id(+)
+                             and b.stu_in_year=a.stu_in_year(+)
+                       order by b.dv_id, b.dv_name, b.stu_in_year) b ,
+
+                   --全校各个单位各个年级不熄灯数
+                  ( select b.dv_id, b.dv_name, b.stu_in_year, nvl(count_light, 0) count_light
+                     from (select stu_in_year, dv_id, count(*) count_light
+                             from sc_stu_disp_log
+                            where stu_no is null
+                                  and date_disp >= to_date($P{dateStart}, 'yyyy/MM/dd')
+                                  and date_disp <= to_date($P{dateEnd}, 'yyyy/MM/dd')
+                            group by stu_in_year, dv_id) a,
+                          sc_stu_dv_year b
+                    where b.dv_id = a.dv_id(+)
+                      and b.stu_in_year = a.stu_in_year(+)
+                    order by b.dv_id, b.dv_name, b.stu_in_year) c ,
+
+                   --全校各个单位各个年级房间数
+                  (select b.dv_id, b.dv_name, b.stu_in_year, nvl(a.count_rm, 0) count_rm
+                    from (select dv_id, stu_in_year, count(rm_id) count_rm
+                            from rm
+                           where rm_cat = '301'
+                           group by dv_id, stu_in_year) a,
+                         sc_stu_dv_year b
+                   where b.dv_id = a.dv_id(+)
+                     and b.stu_in_year = a.stu_in_year(+)
+                   order by b.dv_id, b.dv_name, b.stu_in_year) d
+
+                     where a.dv_id=b.dv_id
+                     and a.dv_id=c.dv_id
+                     and a.dv_id=d.dv_id
+                     and a.stu_in_year=b.stu_in_year
+                     and a.stu_in_year=c.stu_in_year
+                     and a.stu_in_year=d.stu_in_year
+           )
+           group by dv_id,dv_name
+           order by dv_id))]]>
+	</queryString>
+	<field name="DV_ID" class="java.lang.String"/>
+	<field name="DV_NAME" class="java.lang.String"/>
+	<field name="COUNTLATE1" class="java.math.BigDecimal"/>
+	<field name="COUNTLIGHT1" class="java.math.BigDecimal"/>
+	<field name="LATE1" class="java.math.BigDecimal"/>
+	<field name="LIGHT1" class="java.math.BigDecimal"/>
+	<field name="COUNTLATE2" class="java.math.BigDecimal"/>
+	<field name="COUNTLIGHT2" class="java.math.BigDecimal"/>
+	<field name="LATE2" class="java.math.BigDecimal"/>
+	<field name="LIGHT2" class="java.math.BigDecimal"/>
+	<field name="COUNTLATE3" class="java.math.BigDecimal"/>
+	<field name="COUNTLIGHT3" class="java.math.BigDecimal"/>
+	<field name="LATE3" class="java.math.BigDecimal"/>
+	<field name="LIGHT3" class="java.math.BigDecimal"/>
+	<field name="COUNTLATE4" class="java.math.BigDecimal"/>
+	<field name="COUNTLIGHT4" class="java.math.BigDecimal"/>
+	<field name="LATE4" class="java.math.BigDecimal"/>
+	<field name="LIGHT4" class="java.math.BigDecimal"/>
+	<field name="DVLATE" class="java.math.BigDecimal"/>
+	<field name="DVLIGHT" class="java.math.BigDecimal"/>
+	<field name="DVRM" class="java.math.BigDecimal"/>
+	<field name="DVSTU" class="java.math.BigDecimal"/>
+	<field name="LATE" class="java.math.BigDecimal"/>
+	<field name="LIGHT" class="java.math.BigDecimal"/>
+	<variable name="schLate" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{DVLATE}]]></variableExpression>
+	</variable>
+	<variable name="schLight" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{DVLIGHT}]]></variableExpression>
+	</variable>
+	<variable name="schStu" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{DVSTU}]]></variableExpression>
+	</variable>
+	<variable name="schRm" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{DVRM}]]></variableExpression>
+	</variable>
+	<variable name="latte" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{schLate}/$V{schStu}/$P{days}*100]]></variableExpression>
+	</variable>
+	<variable name="light" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{schLight}/$V{schRm}/$P{days}*100]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="135" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="327" height="45" uuid="64981bc2-5206-4c1b-8ae9-8011c7ff4b8c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="宋体" size="18" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[违规记录统计表（]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="92" height="90" uuid="afb3b0a3-6271-443f-8ff1-5315dc2f2c0a"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[学院]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="45" width="400" height="30" uuid="85a29a1a-2087-46c3-8d97-ed684e98ed95"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[一般违规]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="75" width="42" height="30" uuid="78d72173-cf05-4fae-ad2e-4138ab1f5db3"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[级]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="105" width="50" height="30" uuid="134dba44-b18e-4ed5-9f87-2ff6131610ac"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[晚归人数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="105" width="50" height="30" uuid="a4f4845a-d8cb-4c7a-90ed-a9b25c13edce"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[不熄灯数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="75" width="40" height="30" uuid="69c3db50-f57a-4e18-9183-3ca1f2794915"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[级]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="75" width="37" height="30" uuid="c499531f-191c-45d8-b636-c90e0c48aca4"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[级]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="75" width="40" height="30" uuid="76ccbdd3-b00f-4ac0-9160-20bd5094d02c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[级]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="105" width="50" height="30" uuid="59449952-e158-463e-bf79-10838fa32d26"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[不熄灯数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="105" width="50" height="30" uuid="a2303a67-4729-4ee7-ac36-de1fd5466889"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[晚归人数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="105" width="50" height="30" uuid="94bfb463-b5c8-4a5e-b3c0-37e160954172"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[晚归人数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="105" width="50" height="30" uuid="ace320b6-e5d3-49d9-8438-97b0e19dc9f1"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[不熄灯数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="105" width="50" height="30" uuid="1c670dfb-b89d-495c-9ee9-dfc668d12a1f"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[不熄灯数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="392" y="105" width="50" height="30" uuid="9ec5b06c-1a00-4c05-916d-542dbbaae98c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[晚归人数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="45" width="114" height="30" uuid="2b278fa7-d878-4bd8-b915-0308186d8aab"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[重大违规]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="75" width="114" height="30" uuid="2fdc44b6-b82b-4be2-b4a6-4576e8cf56df"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[盗用公共电、热水]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="105" width="114" height="30" uuid="afb05051-f481-4d79-8f2e-386bbcbee676"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[彻夜打牌、破坏公物等]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="606" y="45" width="126" height="30" uuid="40401b3d-6394-408b-9e16-5954fe89683c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[各学院整体违规率]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="606" y="75" width="61" height="60" uuid="f812f5c2-940c-4f72-a94a-50124206b2c4"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[晚归人数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="667" y="75" width="65" height="60" uuid="606bf205-92d4-43ec-827c-61e7888e1d83"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[不熄灯数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="732" y="45" width="85" height="90" uuid="0e5ce25d-19a8-47df-a0be-1aca2c14eaa4"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[备注]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="92" y="75" width="58" height="30" uuid="5c3135a8-58d0-473e-b68a-9a803b62c495"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="75" width="60" height="30" uuid="b429eb0d-ab88-43a3-b1d5-881e89e8ce6b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="292" y="75" width="63" height="30" uuid="f8aea3bf-6be7-4116-af3c-286bc7cddd34"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="392" y="75" width="60" height="30" uuid="688c13df-ae9f-4c84-ab8f-58673a4f12e7"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{year4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy年" isBlankWhenNull="true">
+				<reportElement x="327" y="0" width="94" height="45" uuid="a1f41574-c1b9-4792-b919-df25307af586"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="18" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateStartValue}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="442" y="0" width="107" height="45" uuid="a5e5b8d0-b830-42c0-8bc8-0843ae417348"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="18" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateEndValue}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="549" y="0" width="268" height="45" uuid="0fc598e2-a476-4191-b8a0-532801b64f76"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="18" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[）]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="0" width="21" height="45" uuid="96448ed0-05ed-43fd-b985-b84cf43c98f2"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[—]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="92" height="54" uuid="eddce863-9a90-42eb-a082-bb7a8a94b55f"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DV_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="0" width="50" height="27" uuid="c14ca091-662d-433a-b166-bfd8940a57ee"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLATE1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="142" y="0" width="50" height="27" uuid="952b8e73-451e-4342-8d6c-5ac2b2aa6523"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLIGHT1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="0" width="50" height="27" uuid="889cd680-3070-4c83-86d8-fa35ac073195"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLATE2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="0" width="50" height="27" uuid="53f23279-f33d-4ecc-a5b1-9a2b5085b572"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLIGHT2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="292" y="0" width="50" height="27" uuid="d68bdb24-85e0-41de-abe0-dae96628682a"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLATE3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="342" y="0" width="50" height="27" uuid="0a13252c-0ea8-4ad7-9acb-d8a1eaacb956"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLIGHT3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="392" y="0" width="50" height="27" uuid="b5a1875b-8801-426c-91d5-033128103bb8"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLATE4}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="442" y="0" width="50" height="27" uuid="1b8dab66-da69-446a-a8d5-d3cc76252bdc"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COUNTLIGHT4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement x="92" y="27" width="50" height="27" uuid="f5263efc-f341-4692-9423-45abfa14733a"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LATE1}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="142" y="27" width="50" height="27" uuid="f7f42f2b-a35c-4910-af9b-4aa879b36b36"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIGHT1}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement x="192" y="27" width="50" height="27" uuid="037a611a-539a-4774-a54d-b4a361a2f248"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LATE2}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="242" y="27" width="50" height="27" uuid="6a755366-b5c5-432d-bed7-25dcadb6045a"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIGHT2}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="292" y="27" width="50" height="27" uuid="c96761e8-e3a6-40f4-b94d-85b403c75ce9"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LATE3}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="342" y="27" width="50" height="27" uuid="e71f4738-d295-435f-aa99-f88106b720e5"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIGHT3}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="392" y="27" width="50" height="27" uuid="b42a5eb8-13e4-4469-8725-dc9cf48473e7"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LATE4}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="442" y="27" width="50" height="27" uuid="e92b66a4-4d89-4553-b1ed-9c163cfbae9b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIGHT4}+"%"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="606" y="0" width="61" height="27" uuid="81cadbd9-b26c-4219-ac50-b1243f0f9759"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DVLATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="667" y="0" width="65" height="27" uuid="83de0824-3d7b-4462-92d3-d81d98853232"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DVLIGHT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="606" y="27" width="61" height="27" uuid="e802c5fb-c69c-4829-9c56-06ec88dd31f8"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LATE}+"%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="667" y="27" width="65" height="27" uuid="33735920-d966-465e-91ad-c655c0d52e3a"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIGHT}+"%"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="492" y="0" width="114" height="54" uuid="f6ce5bcb-79ac-474d-b433-41aa9c885374"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="732" y="0" width="85" height="54" uuid="d070c0cb-a235-46fd-a5d8-83278b35b532"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="232" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="92" height="25" uuid="863d0e82-29b5-457f-a433-23eee18a15d4"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[小结：以上是]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="63" width="802" height="28" uuid="bb306beb-a03c-4150-a89c-9466e04f0996"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[填表说明：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="163" y="0" width="17" height="25" uuid="d7aa9505-8e42-40bf-b33a-c2d17e7cf95c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[——]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="0" width="431" height="25" uuid="441f93be-f37f-48fd-8859-531a19fee0e6"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[各学院各年级累计违规次数及平均每日的违规率情况。总计晚归人数为]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="118" height="25" uuid="1d52e864-a7fd-4c0c-bf24-5124a32cffa4"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[每日违规率]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="166" y="25" width="42" height="25" uuid="fe5e374e-1eae-4689-bad1-fd8d3e0148c0"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[%；]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="208" y="25" width="102" height="25" uuid="29edb899-e283-40fc-8a56-4c840cbdf34e"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[不熄灯房间数为]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="25" width="104" height="25" uuid="acb29ea1-cb41-4b1f-81f8-43f194895691"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[间，每日违规率]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="91" width="781" height="20" uuid="c9e11cfc-0090-4977-88a9-dccba62c7e3c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[年级晚归率算法：（年级晚归人数/年级总人数/天数）*100%；年级不熄灯率算法：（不熄灯房间数/年级宿舍数量/天数）*100% ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="111" width="781" height="20" uuid="11c005d7-d245-4628-a789-731118f7fa35"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[学院晚归率算法：（学院晚归人数/学院总人数/天数）*100%；学院不熄灯率算法：（学院不熄灯总数/学院宿舍总数/天数）*100% ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="131" width="802" height="20" uuid="7fefc541-4a97-45e5-8a20-8c5b1ada6c1b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[学校晚归率算法：（学校晚归人数/学校在读总人数/天数）*100%；学校不熄灯率：（学校不熄灯总数/学校宿舍总数/天数）*100% ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="521" y="25" width="296" height="25" uuid="f155053d-c137-44f6-8c45-65c726644b7f"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[%。]]></text>
+			</staticText>
+			<textField pattern="yyyy年MM月dd日" isBlankWhenNull="true">
+				<reportElement x="92" y="0" width="71" height="25" uuid="0fdcc7a6-90af-47da-84fe-cffe1e4773f3"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateStartValue}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="0" width="69" height="25" uuid="d336e741-ddb7-44a9-a4cb-ab4932fb9834"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateEndValue}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="680" y="0" width="61" height="25" uuid="9f02f94d-1b4c-489f-a5b8-7ac471a3ad42"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{schLate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="310" y="25" width="50" height="25" uuid="2a7028d0-639d-47bb-9a51-fc8247c91b64"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{schLight}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0000">
+				<reportElement x="464" y="25" width="57" height="25" uuid="1a7cde01-6300-439b-b8bf-850326d1383b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{light}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0000">
+				<reportElement x="118" y="25" width="48" height="25" uuid="2550e0a5-d7d0-406d-af04-adee7a267410"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{latte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="741" y="0" width="76" height="25" uuid="60447eb3-c05c-43df-8fd0-fede058e415e"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="宋体" size="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[人]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,127 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="15%" split="true"/>
+        <center id="rmcatPosition"/>
+    </layout>
+    
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_asc-bj-usms-overall-bl-main_grid_bl">
+    	<table name="bl" role="main" />
+		
+		<field table="bl" name="name"/>
+        <field table="bl" name="bl_id"/>
+        <field table="bl" name="land_code"/>
+        <field table="bl" name="area_building_manual"  showTotals="true"/>
+        <field table="bl" name="construction_type"/>
+        <field table="bl" name="use1" />
+        <field table="bl" name="date_building_end"/>
+        <field table="bl" name="count_upground"/>
+        <field table="bl" name="count_underground"/>
+        <field table="bl" name="area_underground"/>
+		<field table="bl" name="count_rm_keyong"  showTotals="true">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field table="bl" name="area_rm"  showTotals="true"/>
+		<field name="area_bl_comn_gp" showTotals="true">
+			<title translatable="true">Common Area</title>
+		</field>
+		<field name="gongtanlv" dataType="number" decimals="4">
+			<sql dialect="generic">
+    	          round(bl.gongtanlv,4) 
+            </sql>
+		</field>
+		<field table="bl" name="area_serv"  showTotals="true"/>
+		<parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="bl.acc_type!='yxz' and bl.site_id=${parameters['siteIdRes']}"/>
+	</dataSource>
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-bl-main_basic_site">
+    	<table name="site" role="main"/>
+		
+		<!--basic info-->
+		<field table="site" name="name"/>
+		<field table="site" name="site_id"/>
+		
+		<field table="site" name="area_land_occu"/>
+		<field table="site" name="count_rm"/>
+		<field table="site" name="area_rm"/>
+		<field table="site" name="area_gross_int"/>
+		<field table="site" name="no_bldgs"/>
+		<field table="site" name="area_st_comn_rm"/>
+		<field table="site" name="area_serv"/>
+		
+	    <parameter name="siteIdRes" dataType="text" value=""/>
+		<restriction type="sql" sql="site.site_id=${parameters['siteIdRes']}"/>
+    </dataSource>
+	
+	<!-- base university info panel-->
+    <panel type="console" id="ConsoleForm" dataSource="ds_asc-bj-usms-overall-bl-main_grid_bl" columns="4"  layoutRegion="sitePosition">
+        <title translatable="true">Filter</title>
+        <action id="btnFilter">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="btnClear">
+            <title translatable="true">Clear</title>
+        </action>
+       <!--  <action id="fixedReport">
+            <title translatable="true">GuDingBaoBiao</title>
+        </action> -->
+        <field table="bl" name="land_code"/>
+        <field table="bl" name="use1" />
+        <field table="bl" name="construction_type"/>
+        <field >
+            <title translatable="true">Building Age</title>
+            <html>
+                <select id="groupBandFormat" onChange="setPaginatedPanelProperty(this.id, this.value)">
+                                <option value="isnull" translatable="true"></option>
+                                <option value="in_10" translatable="true">in_10</option>
+                                <option value="in_20" translatable="true">in_20</option>
+                                <option value="30_after" translatable="true">30_after</option>
+                                <option value="40_after" translatable="true">40_after</option>
+                                <option value="50_after" translatable="true">50_after</option>
+                </select>
+            </html>
+        </field>
+    </panel>
+	
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallBlMain_blGrid" dataSource="ds_asc-bj-usms-overall-bl-main_grid_bl" layoutRegion="rmcatPosition">
+        <title translatable="true">XueXiao SuoYou JianZhuWu</title>
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallBlMain_blGrid"/>
+		</action>
+		
+		<sortField name="bl_id" table="bl" ascending="true" />
+		<field id="showBlInfo" controlType="button">
+			<title translatable="true">ChaKanXiangQing</title>
+		</field>
+		<field table="bl" name="name"/>
+		<field table="bl" name="bl_id"/>
+		<field table="bl" name="area_building_manual"  showTotals="true"/>
+		<field table="bl" name="construction_type"/>
+		<field table="bl" name="use1" />
+        <field table="bl" name="date_building_end"/>
+		<field table="bl" name="count_upground"/>
+		<field table="bl" name="count_underground"/>
+		<field table="bl" name="area_underground"/>
+		<field table="bl" name="count_rm_keyong"  showTotals="true">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field table="bl" name="area_rm"  showTotals="true"/>
+		<field name="area_bl_comn_gp"  showTotals="true">
+			<title translatable="true">Common Area</title>
+		</field>
+		<field name="gongtanlv" dataType="number" decimals="4"/>
+		<field table="bl" name="area_serv"  showTotals="true">
+			<title translatable="true">GongGongSheShiMianJi</title>
+		</field>
+    </panel>
+	
+    
+    <js file="asc-bj-usms-overall-bl-main-wd.js"/>
+</view>

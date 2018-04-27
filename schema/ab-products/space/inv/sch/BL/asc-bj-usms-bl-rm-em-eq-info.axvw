@@ -1,0 +1,170 @@
+<view version="2.0">
+    <layout type="borderLayout" id="mainLayout">
+        <north  id="columnPosition" autoScroll="true" split="true" initialSize="90"/>
+        <center id="gridPostion" autoScroll="true" initialSize="45%"/>
+        <south id="formPostion" split="false"   initialSize="5%"/>
+    </layout>
+    
+    <title translatable="true">FangJianJiBanGongRenYuanXinXi</title>
+    
+	<!-- dataSource for rm -->
+    <dataSource id="ds_asc-bj-usms-bl-rm-em-eq-info_columnReport_rm">
+        <table name="rm" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="rmcat" role="standard"/>
+        <table name="rmtype" role="standard"/>
+		
+        <field table="bl" name="name"/>
+        <field table="rm" name="bl_id"  hidden="true"/>
+        <field table="rm" name="fl_id"/>
+		<field table="rm" name="rm_id"/>
+        <field table="rm" name="name"/>
+		<field table="dv" name="dv_name"/>
+		<field table="dp" name="dp_name"/>
+		<field table="rm" name="dv_id" hidden="true"/>
+		<field table="rmcat" name="rmcat_name"/>
+        <field table="rmtype" name="rmtype_name"/>
+		<field table="rm" name="rm_std" hidden="true"/>
+        <field table="rm" name="phone"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="area"/>
+		<!--<field table="rm" name="area_manual"/>-->
+		<field table="rm" name="area_chargable" hidden="true"/>
+		<restriction type="sql" sql="rm.bl_id=${parameters['blIdRes']} and rm.fl_id=${parameters['flIdRes']} and rm.rm_id=${parameters['rmIdRes']}"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+		<parameter name="flIdRes" dataType="text" value=""/>
+		<parameter name="rmIdRes" dataType="text" value=""/>
+    </dataSource>
+	
+	<!-- dataSource for em -->
+    <dataSource id="ds_asc-bj-usms-bl-rm-em-eq-info_grid_em">
+        <table name="em" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+		
+        <field table="em" name="em_id"/>
+		<field table="em" name="name"/>
+		<field table="em" name="zhiw_id"/>
+		<field table="em" name="zhic_id"/>
+		<field table="em" name="phone"/>
+		<field table="em" name="email"/>
+		<field table="em" name="bl_id"/>
+		<field table="em" name="fl_id"/>
+		<field table="em" name="rm_id"/>
+		<field table="em" name="area_rm"/>
+		<field table="em" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+		<field table="em" name="dp_id"/>
+		<field table="dp" name="dp_name"/>
+		<restriction type="sql" sql="em.bl_id=${parameters['blIdRes']} and em.fl_id=${parameters['flIdRes']} and em.rm_id=${parameters['rmIdRes']}"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+		<parameter name="flIdRes" dataType="text" value=""/>
+		<parameter name="rmIdRes" dataType="text" value=""/>
+    </dataSource>
+    <dataSource id="eq_ds">
+		<table name="eq" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <table name="bl" role="standard"/>
+        <table name="csi" role="standard"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="eq_name"/>
+        <field table="eq" name="brand"/>
+        <field table="eq" name="eq_std"/>
+        <field table="eq" name="eq_type"/>
+        <field table="eq" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="eq" name="eq_warehouse"/>
+        <field table="eq" name="num_eq"/>
+        <field table="eq" name="units"/>
+        <field table="eq" name="price"/>
+        <field table="eq" name="total_price" />
+        <field table="eq" name="attachments_num" />
+        <field table="eq" name="attachments_price" />
+        <field table="eq" name="date_in_service" />
+        <field table="eq" name="date_purchased" />
+        <field table="eq" name="em_id"/>
+        <field table="eq" name="em_name"/>
+        <field table="eq" name="bl_id"/>
+        <field table="bl" name="name"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="eq" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="eq" name="type_use"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="source"/>
+        <field table="eq" name="subject_funds"/>
+        <field table="eq" name="ctry_id"/>
+        <field table="eq" name="ctry_name"/>
+        <field table="eq" name="num_serial"/>
+        <field table="eq" name="vn_id"/>
+        <field table="eq" name="is_up"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="add_comment"/>
+		<restriction type="sql" sql="eq.bl_id=${parameters['blIdRes']} and eq.fl_id=${parameters['flIdRes']} and eq.rm_id=${parameters['rmIdRes']}"/>
+		<parameter name="blIdRes" dataType="text" value=""/>
+		<parameter name="flIdRes" dataType="text" value=""/>
+		<parameter name="rmIdRes" dataType="text" value=""/>
+    </dataSource>
+    
+   <!-- room columnReport panel -->
+    <panel type="columnReport" id="ascBjUsmsBlRmDetails" columns="6" dataSource="ds_asc-bj-usms-bl-rm-em-eq-info_columnReport_rm"  layoutRegion="columnPosition">
+        <title translatable="true">FanJianXinXi</title>
+        <action id="eidt">
+            <title translatable="true">Edit</title>
+        </action>
+    </panel>
+	<tabs workflow="free" id="emAndEqTabs" tabRefreshPolicy="never" layoutRegion="gridPostion">
+		<tab name="emTab" selected="true">
+		    <title translatable="true">BanGongRenYuan</title>
+		    <!-- employees panel -->
+			<panel type="grid" controlType="reportGrid" id="ascBjUsmsBlRmEmDetails" dataSource="ds_asc-bj-usms-bl-rm-em-eq-info_grid_em" >
+		        <sortField table="em" name="em_id" ascending="true"/>
+		        <field table="em" name="em_id"/>
+				<field table="em" name="name"/>
+				<field table="em" name="email"/>
+				<field table="em" name="phone"/>
+				<field table="em" name="zhiw_id"/>
+				<field table="em" name="area_rm"/>
+				<field table="dv" name="dv_name"/>
+				<field table="dp" name="dp_name"/>
+		    </panel>
+		</tab>
+		<tab name="eqOwnTab">
+			<title>Eq Info</title>
+			<panel type="grid" id="eqPanel" dataSource="eq_ds" >
+				<field table="eq" name="eq_id"/>
+		        <field table="eq" name="eq_name"/>
+		        <field table="eq" name="brand"/>
+		        <field table="eq" name="eq_std"/>
+		        <field table="eq" name="eq_type"/>
+		        <field table="dv" name="dv_name"/>
+        		<field table="dp" name="dp_name"/>
+        		<sortField table="eq" name="eq_id" ascending="false"/>
+        		<indexField table="eq" name="eq_id"/>
+		    </panel>
+		</tab>
+	</tabs>
+   
+	<panel type="form" id="ascBjUsmsBlRmEditDetails" showOnLoad="false" columns="1" dataSource="ds_asc-bj-usms-bl-rm-em-eq-info_columnReport_rm" layoutRegion="formPostion">
+        <title translatable="true">EidtRoomName</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+         <action id="cancel">
+            <title translatable="true">Cancel</title>
+			<command type="closeDialog"/>
+        </action>
+        <field table="rm" name="bl_id" readOnly='true'  hidden="true"/>
+        <field table="bl" name="name" readOnly='true'/>
+        <field table="rm" name="fl_id" readOnly='true'/>
+		<field table="rm" name="rm_id" readOnly='true'/>
+        <field table="rm" name="name"/> 
+    </panel>
+    <js file="asc-bj-usms-bl-rm-em-eq-info.js"/>
+</view>

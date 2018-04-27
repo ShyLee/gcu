@@ -1,0 +1,175 @@
+<view version="2.0">
+   
+    <!-- dataSource for building info panel -->
+    <dataSource id="blDs">
+        <table name="bl" role="main"/>
+        <table name="site" role="standard"/>
+        <field table="site" name="name"/>
+        <field table="bl" name="bldg_photo"/>
+       <field table="bl" name="bl_id"/>
+       <field table="bl" name="name"/>
+       <field table="bl" name="pr_id"/>
+       <field table="bl" name="asset_num"/>
+	   <field table="bl" name="asset_name"/>
+	   <field table="bl" name="atype_code"/>
+	   <field table="bl" name="atype_name"/>
+	   <field table="bl" name="rm_laiyuan"/>
+       <field table="bl" name="date_use"/>
+       <field table="bl" name="use1"/>
+       <field table="bl" name="address1"/>
+       
+        <field table="bl" name="building_type"/>
+		<field table="bl" name="construction_type"/>
+		<field table="bl" name="count_upground"/>
+        <field table="bl" name="count_underground"/>
+		<field table="bl" name="build_company"/>
+		<field table="bl" name="date_building_end"/>
+		<field table="bl" name="gongtanlv" />
+		<field table="bl" name="quake_grade"/>
+		<field table="bl" name="area_upground"/>
+		<field table="bl" name="area_underground"/>
+       
+		<field table="bl" name="acc_type" />
+      	<field table="bl" name="comments" rowspan="3" colspan="2"/>
+      	
+        <field table="bl" name="use1"/>
+		<field table="bl" name="land_code"/>
+		<field table="bl" name="building_cat"/>
+		<field table="bl" name="dv_use"/>
+		<field table="bl" name="date_dv_use"/>
+		<field table="bl" name="date_last_daxiu"/>
+		<field table="bl" name="years_plan_use"/>
+    </dataSource>
+    <!-- base building info panel-->
+   	<panel type="form" id="blBasicInfoPanel" dataSource="blDs" columns="2" showOnLoad="false">
+   	     <action id="chartByDv">
+			<title translatable="true">Chart By Dv</title>
+		 </action>
+		 <action id="chartByType">
+			<title translatable="true">Chart By Type</title>
+		</action>
+		<action id="rmDetailInfo">
+			<title translatable="true">Room By BL</title>
+		</action>
+       <field labelClass="labelFieldset" colspan="2">
+       		<title translatable="true">Ji Ben Xin Xi</title>
+       </field>
+       <field table="site" name="name" readOnly="true"/>
+       <field table="bl" name="pr_id" readOnly="true"/>
+       <field table="bl" name="bl_id" readOnly="true"/>
+       <field table="bl" name="name" readOnly="true"/>
+       <field table="bl" name="asset_num" readOnly="true"/>
+	   <field table="bl" name="asset_name" readOnly="true"/>
+	   <field table="bl" name="atype_code" readOnly="true"/>
+	   <field table="bl" name="atype_name" readOnly="true"/>
+	   <field table="bl" name="rm_laiyuan" readOnly="true"/>
+       <field table="bl" name="date_use" readOnly="true"/>
+       <field table="bl" name="address1" readOnly="true" colspan="2"/>
+       
+       <field labelClass="labelFieldset" colspan="2">
+     		<title translatable="true">Construct Information</title>
+     	</field>
+		<field table="bl" name="building_type" readOnly="true"/>
+		<field table="bl" name="construction_type" readOnly="true"/>
+		<field table="bl" name="count_upground" readOnly="true"/>
+        <field table="bl" name="count_underground" readOnly="true"/>
+		<field table="bl" name="build_company" readOnly="true"/>
+		<field table="bl" name="date_building_end" readOnly="true"/>
+		<field table="bl" name="gongtanlv" readOnly="true"/>
+		<field table="bl" name="quake_grade" readOnly="true"/>
+		<field table="bl" name="area_upground" readOnly="true"/>
+		<field table="bl" name="area_underground" readOnly="true"/>
+		
+     	<field labelClass="labelFieldset" colspan="2">
+     		<title translatable="true">Use Status Info</title>
+     	</field>
+		<field table="bl" name="acc_type" readOnly="true"/>
+		<field table="bl" name="use1" readOnly="true"/>
+		<field table="bl" name="land_code" readOnly="true"/>
+		<field table="bl" name="building_cat" readOnly="true"/>
+		<field table="bl" name="date_last_daxiu" readOnly="true"/>
+		<field table="bl" name="date_dv_use" readOnly="true"/>
+		<field table="bl" name="years_plan_use" readOnly="true"/>
+   	</panel>
+    
+    <dataSource id="bl_room_detail_info_ds">
+           <sql dialect="generic">
+            SELECT rm.fl_id  ${sql.as} fl_id,
+            rm.bl_id  ${sql.as} bl_id,
+            rm.rm_id  ${sql.as}  rm_id,
+            rm.area   ${sql.as} area,
+            rm.area_comn_rm  ${sql.as}  area_comn_rm,
+            rm.dv_id	 ${sql.as}  dv_id,
+            rm.rm_cat  ${sql.as} rm_cat,
+            rm.rm_type  ${sql.as}  rm_type,
+            rm.name  ${sql.as}  name,
+            rm.use_desc  ${sql.as} use_desc,
+            rm.count_em  ${sql.as} count_em,
+            rm.phone  ${sql.as} phone,
+            rm.em_use  ${sql.as}  em_use,
+            dv.bu_id   ${sql.as} bu_id,
+            dv.name	 ${sql.as} dvName,
+            dv.dv_code  ${sql.as}  dv_code,
+            bl.name  ${sql.as}  blName,
+            bl.site_id  ${sql.as}  site_id
+            FROM rm
+            LEFT OUTER JOIN dv
+            ON rm.dv_id=dv.dv_id
+            LEFT OUTER JOIN bl
+            ON rm.bl_id=bl.bl_id
+        </sql>
+        <table name="rm" role="main"/>
+        <field table="rm" name="bl_id" dataType="text"/>
+        <field table="rm" name="blname" dataType="text"/>
+        <field table="rm" name="fl_id" dataType="text"/>
+        <field table="rm" name="bl_id" dataType="text"/>
+        <field table="rm" name="site_id" dataType="text"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="area" dataType="number" size="8" decimals="2" showTotals="true"/>
+        <field table="rm" name="area_comn_rm"/>
+        <field table="rm" name="bu_id" dataType="text"/>
+        <field table="rm" name="name" dataType="text"/>
+        <field table="rm" name="dv_id" dataType="text"/>
+        <field table="rm" name="dvName" dataType="text"/>
+        <field table="rm" name="rm_cat" dataType="text"/>
+        <field table="rm" name="rm_type" dataType="text"/>
+        <field table="rm" name="name" dataType="text"/>
+        <field table="rm" name="use_desc" dataType="text"/>
+        <field table="rm" name="count_em" dataType="text"/>
+        <field table="rm" name="phone" dataType="text"/>
+        <field table="rm" name="em_use" dataType="text"/>
+        <parameter name="res" dataType="verbatim" value=""/>
+        <restriction type="sql" sql=" ${parameters['res']}"/>
+    </dataSource>
+	
+	 <panel type="grid" id="bl_room_detail_info" showCounts="true" dataSource="bl_room_detail_info_ds" showOnLoad="false">
+	 <title translatable="true"></title>
+		<indexField name="dv_id" table="rm"/>
+		<sortField table="rm" name="fl_id" ascending="true"/>
+        <sortField table="rm" name="rm_id" ascending="true"/>
+		<action id="exportXLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="abScRptRmInv_SumGrid"/>
+        </action>
+		  <field table="rm" name="bl_id" hidden="true"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="fl_id"/>
+        <field table="rm" name="rm_id"/>
+        <field table="rm" name="area" dataType="number" size="8" decimals="2" showTotals="true"/>
+        <field table="rm" name="bu_id" hidden="true"/>
+        <field table="rm" name="dv_id">
+        	<title>Dv Code</title>
+        </field>
+        <field table="rm" name="dvName">
+        	<title>Devision Name</title>
+        </field>
+        <field table="rm" name="rm_cat"/>
+        <field table="rm" name="rm_type"/>
+        <field table="rm" name="use_desc" hidden="true"/>
+        <field table="rm" name="name"/>
+        <field table="rm" name="count_em"/>
+        <field table="rm" name="phone"/>
+        <field table="rm" name="em_use" hidden="false"/>
+    </panel>   
+   <js file="asc-bj-usms-bl-summary-info-basic-tab.js"/> 
+</view>

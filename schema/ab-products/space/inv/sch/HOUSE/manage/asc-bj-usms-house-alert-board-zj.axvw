@@ -1,0 +1,65 @@
+<view version="2.0">
+ <dataSource id="zzfCardDs">
+        <table name="sc_zzfcard" role="main"/>
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="rm_id"/>
+        <field table="sc_zzfcard" name="bl_id"/>
+        <field table="sc_zzfcard" name="fl_id"/>
+        <field table="sc_zzfcard" name="em_name"/>
+        <field table="sc_zzfcard" name="dv_name"/>
+        <field table="sc_zzfcard" name="em_id"/>
+        <field table="sc_zzfcard" name="identi_code"/>
+        <field table="sc_zzfcard" name="dv_name"/>
+        <field table="sc_zzfcard" name="zhiw_id"/>
+        <field table="sc_zzfcard" name="zhic_id"/>
+        <field table="sc_zzfcard" name="agreement_code"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="phone"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+        <field table="sc_zzfcard" name="sponsor"/>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="sponsor"/>
+        <field table="sc_zzfcard" name="sponsor_name"/>
+        <field table="sc_zzfcard" name="payment_to"/>
+        <field name="tixingtianshu"  dataType="number" size="6" decimals="0">
+		            <sql dialect="generic">
+		            (sc_zzfcard.date_payrent_last-${sql.currentDate})
+		            </sql>
+		        </field>
+        <field table="sc_zzfcard" name="rent_period"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+       <restriction  type="sql" sql="sc_zzfcard.payment_to='house' and sc_zzfcard.date_payrent_last !=sc_zzfcard.date_checkout_ought 
+        and sysdate>date_checkin and (sc_zzfcard.date_payrent_last-${sql.currentDate}) &lt;=30
+        and (sc_zzfcard.card_status='yrz' or sc_zzfcard.card_status='yxq')"/>
+    </dataSource>
+	<panel type="html" id="color" >
+               <html>
+                   <table width="600" height="25" border="0">
+                       <tr>
+                           <td width="100" style="background-color:#00CC66"></td><td width="200"><span id="idd1"></span></td><td></td>
+                           <td width="100" style="background-color:#FFFF00"></td><td width="200"><span id="idd2"></span></td><td></td>
+                           <td width="100" style="background-color:#FF3333"></td><td width="200"><span id="idd3"></span></td><td></td>
+                       </tr>
+                   </table>
+               </html>
+	</panel>
+	<panel type="grid" id="detailsconsole" dataSource="zzfCardDs">
+		<title> </title>
+		<field name="tixingtianshu" dataType="number" size="6" decimals="0" hidden="true"/>
+		<field table="sc_zzfcard" name="rm_id"/>
+              <field table="sc_zzfcard" name="bl_id"/>
+              <field table="sc_zzfcard" name="em_name"/>
+              <field table="sc_zzfcard" name="em_id"/>
+              <field table="sc_zzfcard" name="dv_name"/>
+              <field table="sc_zzfcard" name="date_checkin" />
+              <field table="sc_zzfcard" name="date_checkout_ought" />
+              <field table="sc_zzfcard" name="date_payrent_last"/>
+              <field table="sc_zzfcard" name="rent_period"/>
+              <field table="sc_zzfcard" name="phone"/>
+              <field table="sc_zzfcard" name="card_id" hidden="true"/>
+              <sortField table="sc_zzfcard" name="card_id"/>
+              <indexField table="sc_zzfcard" name="card_id"/>
+	</panel>
+	<js file="asc-bj-usms-house-alert-board-zj.js"/>
+</view>

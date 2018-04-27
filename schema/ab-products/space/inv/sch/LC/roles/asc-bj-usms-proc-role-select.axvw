@@ -1,0 +1,31 @@
+<view version="2.0">
+    <dataSource id="ds_ab-helpdesk-role-select_grid_roles">
+        <table name="helpdesk_roles" role="main"/>
+        <field name="role" table="helpdesk_roles"/>
+        <field name="step_type" table="helpdesk_roles"/>
+        <field name="class" table="helpdesk_roles"/>
+        <field name="method" table="helpdesk_roles"/>
+        <restriction type="sql" sql="helpdesk_roles.step_type ='approval' AND helpdesk_roles.class='com.archibus.service.school.lc.RoleLookUp'"/>
+    </dataSource>
+    
+    <panel type="grid" id="roles_report" controlType="reportGrid" dataSource="ds_ab-helpdesk-role-select_grid_roles" multipleSelectionEnabled="true" useParentRestriction="false">
+        <title translatable="true">Roles</title>
+        <action id="add">
+            <title translatable="true">Add Role</title>
+            <command type="selectTabPage" tabPageName="edit" newRecord="true"/>
+        </action>
+        <action>
+            <title translatable="true">Delete Selected</title>
+            <command type="deleteSelectedRows"/>
+            <command type="showPanel" panelId="roles_report" applyMultipleSelectionRestriction="false"/>
+        </action>
+        <field controlType="button">
+            <command type="selectTabPage" tabPageName="edit"/>
+            <title translatable="true">Select</title>
+        </field>
+        <field name="role" table="helpdesk_roles">
+            <title translatable="true">Role</title>
+        </field>
+        <field name="step_type" table="helpdesk_roles" hidden="true"/>
+    </panel>
+</view>

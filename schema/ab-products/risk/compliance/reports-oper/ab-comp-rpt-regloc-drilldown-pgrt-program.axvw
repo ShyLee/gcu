@@ -1,0 +1,82 @@
+<view version="2.0">
+	
+    <title translatable="true">Compliance by Location Drill-down - Program</title>
+    
+    <report orientation="landscape"/>
+
+    <dataSource id="abCbRptDrilldown_dsProgram">
+        <table name="regprogram" role="main"/>
+        <table name="regulation" role="standard"/>
+           
+        <field table="regulation" name="regulation" hidden="true"/>
+        <field table="regprogram" name="reg_program" hidden="true"/>
+        
+        <field table="regprogram" name="regulation" hidden="true"/>
+        
+        <field name="vf_count_requirement" dataType="number" size="12" decimals="0">
+            <title translatable="true">Count Requirements</title>
+            <sql dialect="generic">(SELECT COUNT(regrequirement.reg_requirement)FROM regrequirement where regrequirement.reg_program=regprogram.reg_program and  ${parameters['requirementRes']})</sql>
+        </field>
+     
+        <field name="vf_count_event" dataType="number" size="12" decimals="0">
+            <title translatable="true">Count Events</title>
+            <sql dialect="generic">(SELECT COUNT(activity_log.activity_log_id)FROM activity_log,regloc where 
+            
+                                             activity_log.location_id=regloc.location_id 
+                                             AND  regloc.regulation=regprogram.regulation 
+                                             AND  regloc.reg_program=regprogram.reg_program
+                                             AND activity_log.activity_type='COMPLIANCE - EVENT' 
+                                             AND ${sql.daysBeforeCurrentDate('activity_log.date_scheduled')}  >-365
+                                             AND  activity_log.date_scheduled >= ${sql.currentDate}  
+                                             AND activity_log.status not in('COMPLETED','COMPLETED-V', 'CLOSED', 'CANCELLED')
+                                         )
+          </sql>
+        </field>
+        <field name="comp_level"/>
+        <field name="reg_program"/>
+        <field name="status"/>
+        <field name="priority"/>
+        <field name="regulation"/>
+        <field name="em_id"/>
+        <field name="regprog_cat"/>
+        <field name="regprog_type"/>
+        <field name="date_start"/>
+        <field name="date_end"/>
+        <field name="vn_id"/>
+        <field name="criteria_type"/>
+        <field name="summary"/>
+        <field name="project_id"/>
+        <field name="contact_id"/>
+        
+        <parameter name="regulationRes" dataType="verbatim" value=" 1=1 "/>
+        <parameter name="programRes" dataType="verbatim" value=" 1=1 "/>
+        <parameter name="requirementRes" dataType="verbatim" value=" 1=1 "/>
+        
+        <restriction type="sql" sql=" ${parameters['programRes']} and ${parameters['regulationRes']}"/>
+    </dataSource>
+    
+    <panel id="abCbRptDrilldown_panelProgram" dataSource="abCbRptDrilldown_dsProgram" type="paginatedReport" format="table" role="data">
+        <title translatable="true">Program Summary</title>
+        
+        <field name="vf_count_requirement"  >
+            <title translatable="true">Count Requirements</title>
+        </field>
+        <field name="vf_count_event"  >
+            <title translatable="true">Count Events</title>
+        </field>
+        <field name="comp_level"   />
+        <field name="status" />
+        <field name="priority"  />
+        <field name="regulation"/>
+        <field name="em_id" />
+        <field name="regprog_cat"/>
+        <field name="regprog_type"/>
+        <field name="date_start" />
+        <field name="date_end"  />
+        <field name="vn_id" />
+        <field name="criteria_type"/>
+        <field name="summary" />
+        <field name="project_id" />
+        <field name="contact_id" />
+    </panel>
+</view>

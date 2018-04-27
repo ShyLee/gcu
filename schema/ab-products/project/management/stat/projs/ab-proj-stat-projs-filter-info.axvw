@@ -1,0 +1,10 @@
+<view version="2.0">
+    
+    <panel id="projStatProjsFilterInfo_info" type="html" dataSource="none" showOnLoad="true">
+        <html><h1 style="font-size:14px">Filter Projects</h1>
+        <p style="font-size:11px">Filter by Program, Type, Status, Person or Location.  
+        <br/>The filter is applied to all of the panels on the page.
+        <br/></p>        
+        </html>
+    </panel>
+</view>

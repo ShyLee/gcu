@@ -1,0 +1,408 @@
+<view version="2.0">
+    <js file="asc-bj-usms-eq-return-sch.js"/>
+    <message name="txtReturn" translatable="true" > Return</message>
+    <message name="txtAdjust" translatable="true" > Adjust</message>
+    <message name="txtChuZhi" translatable="true" > ChuZhi</message>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="30%"  split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="nextLayout" containingLayout="mainLayout" region="north">
+        <west initialSize="55%" split="true"/>
+        <center/>
+    </layout>
+    <layout type="borderLayout" id="mainCenterLayout" containingLayout="mainLayout" region="center">
+        <north initialSize="30%" split="true"/>
+        <center/>
+    </layout>
+    <dataSource id="ascBjUsmsEmDs">
+        <table name="em" role="main"/>
+        <field table="em" name="em_id"/>
+        <field table="em" name="name"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqDs">
+        <table name="eq" role="main"/>
+        <field table="eq" name="eq_id"/>
+        <field table="eq" name="sch_status"/>
+        <field table="eq" name="dv_id"/>
+        <field table="eq" name="dp_id"/>
+        <field table="eq" name="buy_type"/>
+        <field table="eq" name="bl_id"/>
+        <field table="eq" name="fl_id"/>
+        <field table="eq" name="rm_id"/>
+        <field table="eq" name="em_id"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqReturnSch">
+        <table name="return_dispose" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="dp" role="standard"/>
+        <field table="return_dispose" name="rtr_dip_id"/>
+        <field table="return_dispose" name="rtr_dip_name"/>
+        <field table="return_dispose" name="rtr_doc"/>
+        <field table="return_dispose" name="description"/>
+        <field table="return_dispose" name="approved_by"/>
+        <field table="return_dispose" name="request_by"/>
+        <field table="return_dispose" name="cz_price"/>
+        <field table="return_dispose" name="data_type"/>
+        <field table="return_dispose" name="date_approved"/>
+        <field table="return_dispose" name="date_request"/>
+        <field table="return_dispose" name="doc1"/>
+        <field table="return_dispose" name="dv_asset_mgr"/>
+        <field table="return_dispose" name="dv_id"/>
+        <field table="dv" name="dv_name"/>
+        <field table="return_dispose" name="dp_id"/>
+        <field table="dp" name="dp_name"/>
+        <field table="return_dispose" name="tel"/>
+        <field table="return_dispose" name="total_price"/>
+        <field table="return_dispose" name="comments"/>
+        <field table="return_dispose" name="request_by"/>
+        <field table="return_dispose" name="check_by"/>
+        <field table="return_dispose" name="date_check"/>
+        <field table="return_dispose" name="audit_status"/>
+        <field table="return_dispose" name="eq_head_suggest"/>
+        <sortField table="return_dispose" name="rtr_dip_id" ascending="false"/>
+<!--         <restriction type="sql" sql="return_dispose.audit_status in ('1','3','5') and return_dispose.data_type='0'"/> -->
+        <restriction type="sql" sql="return_dispose.audit_status in ('1','5') and return_dispose.data_type='0'"/>
+    </dataSource>
+    <dataSource id="ascBjUsmsEqChangeDs">
+        <table name="eq_change" role="main"/>
+        <field table="eq_change" name="id"/>
+        <field table="eq_change" name="rtr_dip_id"/>
+        <field table="eq_change" name="eq_id"/>
+        <field table="eq_change" name="eq_id_old"/>
+        <field table="eq_change" name="eq_name"/>
+        <field table="eq_change" name="brand"/>
+        <field table="eq_change" name="eq_std"/>
+        <field table="eq_change" name="eq_type"/>
+        <field table="eq_change" name="csi_id"/>
+        <field table="eq_change" name="eq_warehouse"/>
+        <field table="eq_change" name="num_eq" showTotals="true"/>
+        <field table="eq_change" name="units"/>
+        <field table="eq_change" name="price" showTotals="true"/>
+        <field table="eq_change" name="total_price" showTotals="true"/>
+        <field table="eq_change" name="attachments_num" showTotals="true"/>
+        <field table="eq_change" name="attachments_price" showTotals="true"/>
+        <field table="eq_change" name="date_in_service"/>
+        <field table="eq_change" name="date_purchased"/>
+        <field table="eq_change" name="em_id"/>
+        <field table="eq_change" name="em_name"/>
+        <field table="eq_change" name="bl_id"/>
+        <field table="eq_change" name="bl_name"/>
+        <field table="eq_change" name="fl_id"/>
+        <field table="eq_change" name="rm_id"/>
+        <field table="eq_change" name="dv_id"/>
+        <field table="eq_change" name="dv_name"/>
+        <field table="eq_change" name="dp_id"/>
+        <field table="eq_change" name="dp_name"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq_change" name="buy_type"/>
+        <field table="eq_change" name="source"/>
+        <field table="eq_change" name="ctry_id"/>
+        <field table="eq_change" name="ctry_name"/>
+        <field table="eq_change" name="num_serial"/>
+        <field table="eq_change" name="vn_id"/>
+        <field table="eq_change" name="is_up"/>
+        <field table="eq_change" name="sch_status"/>
+        <field table="eq_change" name="add_comment"/>
+        
+        <field table="eq_change" name="em_id_old"/>
+        <field table="eq_change" name="em_name_old"/>
+        <field table="eq_change" name="bl_id_old"/>
+        <field table="eq_change" name="bl_name_old"/>
+        <field table="eq_change" name="fl_id_old"/>
+        <field table="eq_change" name="rm_id_old"/>
+        <field table="eq_change" name="type_use_old"/>
+        <field table="eq_change" name="dv_id_old"/>
+        <field table="eq_change" name="dv_name_old"/>
+        <field table="eq_change" name="dp_id_old"/>
+        <field table="eq_change" name="dp_name_old"/>
+        
+        <field table="eq_change" name="date_change"/>
+        <field table="eq_change" name="operator"/>
+        <field table="eq_change" name="comments"/>
+        <field table="eq_change" name="type_adjust"/>
+        <field table="eq_change" name="status"/>
+        <field table="eq_change" name="date_appraisal"/>
+        <field table="eq_change" name="cost_old"/>
+        <field table="eq_change" name="cost"/>
+        <field table="eq_change" name="audit_status"/>
+        <field table="eq_change" name="check_status"/>
+        <field table="eq_change" name="person_appraisal"/>
+        <field table="eq_change" name="appraisal_option"/>
+        <field table="eq_change" name="change_reason"/>
+        <field table="eq_change" name="okBadStatus"/>
+        <field table="eq_change" name="eq_change_doc"/>
+        
+        <field table="eq_change" name="cost_old"/>
+        <field table="eq_change" name="appraisal_option"/>
+        <field table="eq_change" name="approved_status"/>
+        
+    </dataSource>
+         <dataSource id="eq_attach_change_ds">
+        <table name="eq_attach_change" role="main"/>
+        <field table="eq_attach_change" name="id" />
+        <field table="eq_attach_change" name="eq_id"/>
+        <field table="eq_attach_change" name="eq_attach_id" />
+        <field table="eq_attach_change" name="eq_attach_name"/>
+        <field table="eq_attach_change" name="brand"/> 
+        <field table="eq_attach_change" name="eq_std"/>
+        <field table="eq_attach_change" name="eq_type"/>
+        <field table="eq_attach_change" name="csi_id"/>
+        <field table="eq_attach_change" name="eq_warehouse"/>  
+        <field table="eq_attach_change" name="num_eq" showTotals="true"/>
+        <field table="eq_attach_change" name="units"/>
+        <field table="eq_attach_change" name="price" showTotals="true"/>
+        <field table="eq_attach_change" name="ctry_id"/>
+        <field table="eq_attach_change" name="ctry_name"/>
+        <field table="eq_attach_change" name="dv_id"/>
+        <field table="eq_attach_change" name="dv_id_old"/>
+        <field table="eq_attach_change" name="dv_name"/>
+        <field table="eq_attach_change" name="dv_name_old"/>
+        <field table="eq_attach_change" name="dp_id"/>
+        <field table="eq_attach_change" name="dp_name_old"/>
+        <field table="eq_attach_change" name="type_use"/>
+        <field table="eq_attach_change" name="type_use_old"/>
+        <field table="eq_attach_change" name="buy_type"/>
+        <field table="eq_attach_change" name="source"/>
+        <field table="eq_attach_change" name="num_serial"/>
+        <field table="eq_attach_change" name="date_in_service"/>
+        <field table="eq_attach_change" name="date_purchased"/>
+        <field table="eq_attach_change" name="bl_id"/>
+        <field table="eq_attach_change" name="bl_id_old"/>
+        <field table="eq_attach_change" name="bl_name_old"/>
+        <field table="eq_attach_change" name="fl_id"/>
+        <field table="eq_attach_change" name="fl_id_old"/>
+        <field table="eq_attach_change" name="rm_id"/>
+        <field table="eq_attach_change" name="rm_id_old"/>
+        <field table="eq_attach_change" name="em_id"/>
+        <field table="eq_attach_change" name="em_id_old"/>
+        <field table="eq_attach_change" name="em_name"/>
+        <field table="eq_attach_change" name="em_name_old"/>
+        <field table="eq_attach_change" name="vn_id"/>
+        <field table="eq_attach_change" name="sch_status"/>
+        <field table="eq_attach_change" name="rtr_dip_id"/>
+        
+        <field table="eq_attach_change" name="handling_em"/>
+        <field table="eq_attach_change" name="handling_em_name"/>
+        <field table="eq_attach_change" name="subject_funds"/>
+        <field table="eq_attach_change" name="date_manufactured"/>
+    </dataSource>
+    <panel type="grid" id="returnEqGrid" dataSource="ascBjUsmsEqReturnSch" layout="nextLayout" region="west" columns="2">
+        <title translatable="true">Return Report</title>
+        <field table="return_dispose" name="rtr_dip_id" controlType="link" hidden="false">
+            <title translatable="true">TuiHuanDanHao</title>
+            <command type="callFunction" functionName="refreshFormPanel(this)"/>
+        </field>
+        <field table="return_dispose" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" controlType="link">
+            <command type="callFunction" functionName="refreshFormPanel(this)"/>
+        </field>
+        <field table="dp" name="dp_name" controlType="link">
+            <command type="callFunction" functionName="refreshFormPanel(this)"/>
+        </field>
+        <field table="return_dispose" name="date_request" width="80"/>
+        <field table="return_dispose" name="rtr_dip_name" width="130"/>
+        <field table="return_dispose" name="description" hidden="true"/>
+        <field table="return_dispose" name="audit_status"/>
+        
+    </panel>
+    <panel type="form" id="returnEqForm" showOnLoad="false" dataSource="ascBjUsmsEqReturnSch" layout="nextLayout" region="center">
+         <title translatable="true">Return Report Details</title>
+        <action id="notice">
+            <title translatable="true">Notice</title>
+        </action>
+         <title translatable="true">Return Report Details</title>
+        <action id="backReturn">
+            <title translatable="true">BackReturn</title>
+        </action>
+        <action id="btnDoneReturn">
+            <title translatable="true">DoneReturn</title>
+        </action>
+<!--         <action id="btnClose"> -->
+<!--             <title translatable="true">Cancel</title> -->
+<!--         </action> -->
+        <field table="return_dispose" name="rtr_dip_id" readOnly="true" hidden="true">
+            <title translatable="true">TuiHuanDanHao</title>
+        </field>
+        <field table="return_dispose" name="dv_id" hidden="true"/>
+        <field table="dv" name="dv_name" readOnly="true">
+            <title translatable="true">TiJiaoDanWei</title>
+        </field>
+        
+        <field table="return_dispose" name="rtr_dip_name" readOnly="true"/>
+        
+        <field table="return_dispose" name="description" readOnly="true"/>
+        <field table="return_dispose" name="date_request" readOnly="true"/>
+        <field table="return_dispose" name="rtr_doc" readOnly="true"/>
+        <field table="return_dispose" name="approved_by" hidden="true"/>
+        <field table="return_dispose" name="comments" width="350" required="true">
+            <title translatable="true">ChuShenYiJian</title>
+        </field>
+        <field table="return_dispose" name="eq_head_suggest"/>
+        <field table="return_dispose" name="audit_status" hidden="true"/>
+    </panel>
+	<tabs workflow="free" id="needApproveTabs" tabRefreshPolicy="never" layout="mainCenterLayout" region="north">
+		<tab name="eqTab" selected="true">
+		   <title translatable="true">Reduce Info List</title>
+		   <panel type="grid" id="returnListGrid" showOnLoad="false" dataSource="ascBjUsmsEqChangeDs" >
+		        <field id="btnTiaoJi" controlType="button" width="60">
+		            <title translatable="true">TiaoJi</title>
+		            <command type="callFunction" functionName="controller.dvAdjustDo()"/>
+		        </field>
+<!-- 				<field controlType="button" id="viewAttach" width="120"> -->
+<!-- 		        	<title>view Attach</title> -->
+<!-- 		        </field> -->
+				<indexField table="eq_change" name="id"/>
+				<field table="eq_change" name="id" hidden="true"/>
+		        <field table="eq_change" name="rtr_dip_id" hidden="true"/>
+		        <field table="eq_change" name="okBadStatus" controlType="link"/>
+		        <field table="eq_change" name="change_reason"/>
+		        <field table="eq_change" name="eq_change_doc" controlType="link"/>
+		        <field table="eq_change" name="audit_status" hidden="true"/>
+		        <field table="eq_change" name="eq_id" controlType="link"/>
+		        <field table="eq_change" name="eq_id_old" controlType="link"/>
+		        <field table="eq_change" name="eq_name" controlType="link">
+		        </field>
+		        <field table="eq_change" name="eq_type"/>
+		        <field table="eq_change" name="csi_id"/>
+		        <field table="eq_change" name="eq_warehouse"/>
+		        <field table="eq_change" name="num_eq" showTotals="true"/>
+		        <field table="eq_change" name="units"/>
+		        <field table="eq_change" name="price" showTotals="true"/>
+		        <field table="eq_change" name="total_price" showTotals="true"/>
+		        <field table="eq_change" name="attachments_num" showTotals="true"/>
+		        <field table="eq_change" name="attachments_price" showTotals="true"/>
+		        <field table="eq_change" name="date_in_service"/>
+		        <field table="eq_change" name="date_purchased"/>
+		        <field table="eq_change" name="em_id_old" hidden="true"/>
+		        <field table="eq_change" name="em_name_old"/>
+		        <field table="eq_change" name="bl_id_old" hidden="true"/>
+		        <field table="eq_change" name="bl_name_old"/>
+		        <field table="eq_change" name="fl_id_old"/>
+		        <field table="eq_change" name="rm_id_old"/>
+		        <field table="eq_change" name="dv_id_old" hidden="true"/>
+		        <field table="eq_change" name="dv_name_old"/>
+		        <field table="eq_change" name="dp_id_old" hidden="true"/>
+		        <field table="eq_change" name="dp_name_old"/>
+		        <field table="eq_change" name="type_use"/>
+		        <field table="eq_change" name="buy_type"/>
+		        <field table="eq_change" name="source"/>
+		        <field table="eq_change" name="ctry_id"/>
+		        <field table="eq_change" name="ctry_name"/>
+		        <field table="eq_change" name="num_serial"/>
+		        <field table="eq_change" name="vn_id"/>
+		        <field table="eq_change" name="is_up"/>
+		        <field table="eq_change" name="sch_status"/>
+		        <field table="eq_change" name="add_comment"/>
+		    </panel>
+		</tab>
+		<tab name="attachTab">
+			<title translatable="true">Return Attach Info List</title>
+			<panel type="grid" id="returnAttachListGrid" showOnLoad="false" dataSource="eq_attach_change_ds" >
+				<title></title>
+				<indexField table="eq_attach_change" name="id"/>
+		  	    <field table="eq_attach_change" name="id"  hidden="true"/>
+		        <field table="eq_attach_change" name="eq_id" controlType="link"/>
+		        <field table="eq_attach_change" name="eq_attach_id" />
+		        <field table="eq_attach_change" name="eq_attach_name"/>
+		        <field table="eq_attach_change" name="brand"/> 
+		        <field table="eq_attach_change" name="eq_std"/>
+		        <field table="eq_attach_change" name="eq_type"/>
+		        <field table="eq_attach_change" name="csi_id"/>
+		        <field table="eq_attach_change" name="eq_warehouse"/>  
+		        <field table="eq_attach_change" name="num_eq" showTotals="true"/>
+		        <field table="eq_attach_change" name="units"/>
+		        <field table="eq_attach_change" name="price" showTotals="true"/>
+		        <field table="eq_attach_change" name="ctry_id"/>
+		        <field table="eq_attach_change" name="ctry_name"/>
+		        <field table="eq_attach_change" name="dv_id" hidden="true"/>
+		        <field table="eq_attach_change" name="dv_id_old" hidden="true"/>
+		        <field table="eq_attach_change" name="dv_name" hidden="true"/>
+		        <field table="eq_attach_change" name="dv_name_old"/>
+		        <field table="eq_attach_change" name="dp_id" hidden="true"/>
+		        <field table="eq_attach_change" name="dp_name_old"/>
+		        <field table="eq_attach_change" name="type_use" hidden="true"/>
+		        <field table="eq_attach_change" name="type_use_old"/>
+		        <field table="eq_attach_change" name="buy_type"/>
+		        <field table="eq_attach_change" name="source"/>
+		        <field table="eq_attach_change" name="num_serial"/>
+		        <field table="eq_attach_change" name="date_in_service"/>
+		        <field table="eq_attach_change" name="date_purchased"/>
+		        <field table="eq_attach_change" name="bl_id" hidden="true"/>
+		        <field table="eq_attach_change" name="bl_id_old" hidden="true"/>
+		        <field table="eq_attach_change" name="bl_name_old"/>
+		        <field table="eq_attach_change" name="fl_id_old"/>
+		        <field table="eq_attach_change" name="rm_id_old"/>
+		        <field table="eq_attach_change" name="em_id"/>
+		        <field table="eq_attach_change" name="em_id_old" hidden="true"/>
+		        <field table="eq_attach_change" name="em_name" hidden="true"/>
+		        <field table="eq_attach_change" name="em_name_old"/>
+		        <field table="eq_attach_change" name="vn_id"/>
+		        <field table="eq_attach_change" name="sch_status"/>
+		        <field table="eq_attach_change" name="rtr_dip_id" hidden="true"/>
+		  	</panel>
+		</tab>
+	</tabs>
+    <panel type="form" id="returnTiaoJiPanel" dataSource="ascBjUsmsEqChangeDs" showOnLoad="false" layout="mainCenterLayout" region="center" columns="2">
+        <title translatable="true">TiaoJiEqPanel</title>
+        <action id="btnDoneAdjust">
+            <title translatable="true">DoneAdjust</title>
+        </action>
+        <field table="eq_change" name="rtr_dip_id" hidden="true">
+            <title translatable="true">TuiHuanDanHao</title>
+        </field>
+        <field table="eq_change" name="eq_id" readOnly="true"/>
+        <field table="eq_change" name="eq_name" readOnly="true"/>
+        <field table="eq_change" name="dv_id_old" hidden="true"/>
+        <field table="eq_change" name="dv_name_old" readOnly="true"/>
+        <field table="eq_change" name="dv_id" hidden="true"/>
+        
+        <field table="eq_change" name="dv_name" required="true">
+			<action>
+				<title>...</title>
+				<command type="selectValue" 
+					fieldNames="eq_change.dv_id,eq_change.dv_name"
+					selectFieldNames="dv.dv_id,dv.dv_name" 
+					visibleFieldNames="dv.dv_id,dv.dv_name">
+				</command>
+			</action>
+        </field>
+        <field table="eq_change" name="dp_id" hidden="true"/>
+        <field table="eq_change" name="dp_id_old" hidden="true"/>
+        <field table="eq_change" name="dp_name_old" readOnly="true"/>
+        
+        <field table="eq_change" name="dp_name" required="false">
+			<action>
+				<title>...</title>
+				<command type="selectValue" 
+					fieldNames="eq_change.dv_id,eq_change.dv_name,eq_change.dp_id,eq_change.dp_name"
+					selectFieldNames="dv.dv_id,dv.dv_name,dp.dp_id,dp.dp_name" 
+					visibleFieldNames="dv.dv_id,dv.dv_name,dp.dp_id,dp.dp_name">
+				</command>
+			</action>
+        </field>
+        <field table="eq_change" name="type_use_old" readOnly="true"/>
+        <field table="eq_change" name="type_use"/>
+        <field table="eq_change" name="okBadStatus" readOnly="true"/>
+        <field/>
+        <field table="eq_change" name="approved_status" hidden="true"/>
+        <field table="eq_change" name="type_adjust" hidden="true"/>
+        <field table="eq_change" name="appraisal_option" colspan="2" width="300" required="true"/>
+    </panel>
+    <panel type="form" id="returnBaoFeiPanel" dataSource="ascBjUsmsEqChangeDs" showOnLoad="false" layout="mainCenterLayout" region="center">
+        <title translatable="true">BaoFeiPanel</title>
+        <action id="btnDoneBF">
+            <title translatable="true">DoneBf</title>
+        </action>
+        <field table="eq_change" name="rtr_dip_id" hidden="true">
+            <title translatable="true">TuiHuanDanHao</title>
+        </field>
+        <field table="eq_change" name="eq_id" readOnly="true"/>
+        <field table="eq_change" name="eq_name" readOnly="true"/>
+        <field table="eq_change" name="dv_id_old" readOnly="true"/>
+        <field table="eq_change" name="dp_id_old" readOnly="true"/>
+        <field table="eq_change" name="okBadStatus" readOnly="true"/>
+        <field table="eq_change" name="appraisal_option"  width="350"/>
+        <field table="eq_change" name="approved_status" hidden="true"/>
+    </panel>
+</view>

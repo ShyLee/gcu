@@ -1,0 +1,19 @@
+<view version="2.0">
+    <title translatable="true">Xue Xiao GeLeiXing FangWu Tong Ji</title>
+	
+    <!-- datasource for rmtype report-->
+    <dataSource id="ds_asc-bj-usms-overall-rmtype_tab_site">
+		<table name="site" role="main" />
+		<field table="site" name="site_id"/>
+		<field table="site" name="name"/>
+	</dataSource>
+    
+    <!-- datasource for rmcat report -->
+    <tabs id="campusTabs" layout="mainLayout">
+        <tab name="univer" selected="true" file="asc-bj-usms-overall-rmtype-whole.axvw">
+            <title translatable="true">Whole School</title>
+        </tab>
+    </tabs>
+	
+    <js file="asc-bj-usms-overall-rmtype.js"/>
+</view>

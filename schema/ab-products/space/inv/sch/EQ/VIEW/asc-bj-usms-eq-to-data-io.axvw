@@ -1,0 +1,33 @@
+<view version="2.0">
+    <title translatable="true">Asset Eq IO</title>
+    
+    <dataSource id="asset_eq_DS">
+        <table name="asset_eq" role="main" />
+        <field table="asset_eq" name="eq_id"/>
+        <field table="asset_eq" name="eq_name"/>
+        <field table="asset_eq" name="eq_type"/>
+        <field table="asset_eq" name="eq_use"/>
+        <field table="asset_eq" name="date_purchased"/>
+        <field table="asset_eq" name="mfr_no"/>
+        <field table="asset_eq" name="dv_id"/>
+        <field table="asset_eq" name="dv_name"/>
+        <field table="asset_eq" name="dp_id"/>
+        <field table="asset_eq" name="dp_name"/>
+        <field table="asset_eq" name="bl_id"/>
+        <field table="asset_eq" name="bl_name"/>
+        <field table="asset_eq" name="fl_id"/>
+        <field table="asset_eq" name="rm_id"/>
+        <field table="asset_eq" name="em_use"/>
+        <field table="asset_eq" name="em_use_name"/>
+        <sortField table="asset_eq" name="eq_id"/>
+    </dataSource>
+    
+    <panel type ="grid" id="gridPanel" dataSource="asset_eq_DS" >
+        <title translatable="true">Eq IO List</title>
+        <action id="export:XLS">
+            <title translatable="true">XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="gridPanel"/>
+        </action>
+         <indexField table="asset_eq" name="eq_id"/>
+    </panel>
+</view>

@@ -1,0 +1,118 @@
+<view version="2.0">
+	<js file="asc-bj-usms-eq-def-class.js"/>
+    
+    <message name="messageConfirmDelete" translatable="true">Are you sure you want to delete '{0}' ?</message>
+    <message name="errorDelete" translatable="true">Could not delete '{0}'.</message>
+	<message name="error_top_level" translatable="true">You cannot modify the Top Level node.</message>
+    <layout type="borderLayout" id="mainLayout">
+        <north initialSize="60" split="true" />
+        <center />
+    </layout>
+	<layout type="borderLayout" id="nextLayout" containingLayout="mainLayout" region="center">
+		<west initialSize="40%" split="true" autoScroll="true"/>
+		<center/>
+	</layout>
+    <layout type="borderLayout" id="next2Layout" containingLayout="nextLayout" region="center">
+        <north initialSize="20%" autoScroll="true"/>
+        <center autoScroll="true"/>
+    </layout>
+
+    <title translatable="true">Define Classifications</title>
+    
+    <!--Classifications DataSource-->
+    <dataSource id="dsClassifications">
+        <table name="csi" role="main"/>
+        <field table="csi" name="csi_id"/>       
+        <field table="csi" name="description"/>
+		<field table="csi" name="hierarchy_ids"/>
+		<sortField table="csi" name="csi_id" ascending="true"/>
+    </dataSource>  
+    <!-- Console Form -->
+    <panel  type="console" id="searchconsolepanel" dataSource="dsClassifications" layout="mainLayout" region="north" columns="2">
+        <title>Filter</title>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description">
+            <action>
+                <title>...</title>
+                <tooltip>Select Value</tooltip>
+                <command type="selectValue" fieldNames="csi.csi_id,csi.description"
+                    selectFieldNames="csi.csi_id,csi.description" 
+                    visibleFieldNames="csi.csi_id,csi.description" 
+                    filterFieldNames="csi.csi_id" 
+                    showIndex="false"/>
+            </action>
+        </field>
+        <action id="btnCreateTreeLevel" hidden="true">
+            <title translatable="true">Create Tree Level</title>
+            <command type="callFunction" functionName="createTreeLevel"/>
+        </action>
+        <!-- <action id="btnDo">
+            <title translatable="true">Test</title> 
+        </action> -->
+        <action id="btnStart">
+            <title translatable="true">Start</title> 
+        </action>
+        <action id="btnsearch">
+            <title translatable="true">Show</title> 
+        </action>
+        <action id="btnClear">
+            <title translatable="true">Clear</title>
+        </action>
+    </panel>
+    <!--Classifications Panel-->
+    <panel type="hierTree" id="classificationsTreePanel" dataSource="dsClassifications" showOnLoad="true" layout="nextLayout" region="west">
+        <title translatable="true">Classifications</title>
+        <action id="addNew">
+            <title translatable="true">Add New</title>
+            <command type="showPanel" panelId="classificationDetailsPanel" newRecord="true" clearRestriction="true"/>
+        </action>
+        <action id="refresh">
+            <title translatable="true">Refresh</title>
+            <command type="showPanel" panelId="classificationsTreePanel"/>
+        </action>
+        <event type="onClickNode">
+            <command type="showPanel" panelId="classificationDetailsPanel"/>
+        </event>
+        <field name="csi_id">
+        </field> 
+        <field name="description">
+            
+        </field>
+    </panel>
+    
+    <!--Classification Details DataSource-->
+    <dataSource id="dsClassificationDetails">
+        <table name="csi" role="main"/>
+        <field table="csi" name="csi_id"/>
+		<field table="csi" name="description"/>
+		<field table="csi" name="hierarchy_ids"/>
+    </dataSource>
+    
+    <!--Classification Details Panel-->
+    <panel type="form" id="classificationDetailsPanel" dataSource="dsClassificationDetails" showOnLoad="false" layout="next2Layout" region="north">
+        <title translatable="true">Classification</title>        
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="delete" enabled="${!panel.newRecord}">
+            <title translatable="true">Delete</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+            <command type="showPanel" panelId="classificationDetailsPanel" show="false"/>
+			<command type="showPanel" panelId="classificationDetailsPanel"/>
+        </action>
+        <field name="csi_id"/>
+		<field name="hierarchy_ids"/>
+		<field name="description"/>
+    </panel>
+    <panel type="grid" dataSource="dsClassificationDetails" id="formDetail" layout="next2Layout" region="center" showOnLoad="false">
+        <title>Filter</title>
+        <field id="btnClick" controlType="button">
+            <title>Show Position</title>
+        </field>
+        <field table="csi" name="csi_id"/>
+        <field table="csi" name="description"/>
+        <field table="csi" name="hierarchy_ids"/>
+    </panel> 
+</view>

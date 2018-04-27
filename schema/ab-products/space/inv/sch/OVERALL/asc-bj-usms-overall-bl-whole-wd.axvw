@@ -1,0 +1,135 @@
+<view version="2.0">
+	
+	<css>.prominentLabel {font-weight: bold; font-size: 12px !important; text-align: right; white-space: normal;} </css>
+	
+    <layout id="main">
+        <north id="sitePosition" initialSize="10%" split="true"/>
+        <center id="rmcatPosition"/>
+    </layout>
+    
+	<!-- datasource for rmcat report -->
+    <dataSource id="ds_asc-bj-usms-overall-bl-whole_grid_bl">
+		<table name="bl" role="main" />
+		<field table="bl" name="name"/>
+		<field table="bl" name="bl_id"/>
+        <field table="bl" name="land_code"/>
+		<field table="bl" name="area_building_manual"  showTotals="true"/>
+		<field table="bl" name="construction_type"/>
+		<field table="bl" name="use1" />
+        <field table="bl" name="date_building_end"/>
+		<field table="bl" name="count_upground"/>
+		<field table="bl" name="count_underground"/>
+		<field table="bl" name="area_underground"/>
+		<field table="bl" name="value_other"/>
+		<field table="bl" name="value_rent"/>
+		<field table="bl" name="value_ziyong"/>
+		<field table="bl" name="count_rm_keyong"  showTotals="true">
+			<title translatable="true">Room Count</title>
+		</field>
+		<field table="bl" name="area_rm"  showTotals="true"/>
+		<field name="area_bl_comn_gp" showTotals="true">
+			<title translatable="true">Common Area</title>
+		</field>
+		<field name="gongtanlv" dataType="number" decimals="4">
+			<sql dialect="generic">
+    	          round(bl.gongtanlv,4) 
+            </sql>
+		</field>
+		<field table="bl" name="area_serv"  showTotals="true"/>
+		<restriction type="sql" sql="bl.acc_type!='yxz' and bl.site_id is not null"/>
+		<sortField table="bl" name="bl_id"/>
+	</dataSource>
+	
+	<!-- dataSource for site basic info panel -->
+    <dataSource id="ds_asc-bj-usms-overall-bl-whole_basic_school">
+    	<table name="sc_school" role="main"/>
+		
+		<!--basic info-->
+		<field table="sc_school" name="sch_name"/>
+		<field table="sc_school" name="address"/>
+		<field table="sc_school" name="telephone"/>
+		<field table="sc_school" name="zip"/>
+		
+		<field table="sc_school" name="count_teacher_actual"/>
+		<field table="sc_school" name="count_student_actual"/>
+		<field table="sc_school" name="area_jianzhu"/>
+		<field table="sc_school" name="area_shiyong"/>
+		
+		<field table="sc_school" name="count_bl"/>
+		<field table="sc_school" name="count_rm"/>
+		<field table="sc_school" name="area_comn"/>
+		<field table="sc_school" name="area_serv"/>
+		<field table="sc_school" name="area_underground_jianzhu"/>
+    </dataSource>
+	
+	<!-- whole school summary data-->
+    <panel type="console" id="ConsoleForm" dataSource="ds_asc-bj-usms-overall-bl-whole_grid_bl" columns="4"  layoutRegion="sitePosition">
+    	<title translatable="true">Filter</title>
+        <action id="btnFilter">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="btnClear">
+            <title translatable="true">Clear</title>
+        </action>
+        <action id="fixedReport">
+			<title translatable="true">GuDingBaoBiao</title>
+		</action>
+		<field table="bl" name="land_code"/>
+        <field table="bl" name="use1" />
+        <field table="bl" name="construction_type"/>
+        <field >
+            <title translatable="true">Building Age</title>
+            <html>
+                <select id="groupBandFormat" onChange="setPaginatedPanelProperty(this.id, this.value)">
+                                <option value="isnull" translatable="true"></option>
+                                <option value="in_10" translatable="true">in_10</option>
+                                <option value="in_20" translatable="true">in_20</option>
+                                <option value="30_after" translatable="true">30_after</option>
+                                <option value="40_after" translatable="true">40_after</option>
+                                <option value="50_after" translatable="true">50_after</option>
+                </select>
+            </html>
+        </field>
+    </panel>
+	<!-- Display records from the aggregated DataSource in a grid -->
+    <panel type="grid" id="ascBjUsmsOverallBlWhole_blGrid" dataSource="ds_asc-bj-usms-overall-bl-whole_grid_bl" showCounts="true" layoutRegion="rmcatPosition">
+        <title translatable="true">XueXiao SuoYou JianZhuWu</title>
+		<action id="exportXls">
+			<title translatable="true">XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="ascBjUsmsOverallBlWhole_blGrid"/>
+		</action>
+		
+		<sortField name="bl_id" table="bl" ascending="true" />
+		<field id="showBlInfo" controlType="button">
+			<title translatable="true">ChaKanXiangQing</title>
+		</field>
+		<field table="bl" name="bl_id" controlType="link"/>
+		<field table="bl" name="name" controlType="link"/>
+		<field table="bl" name="count_upground" controlType="link"/>
+		<field table="bl" name="count_rm_keyong"  showTotals="true" controlType="link">
+			<title translatable="true">Room Count</title>
+		</field>
+		<!-- 建筑面积 -->
+		<field table="bl" name="area_building_manual"  showTotals="true" controlType="link"/>
+		<!-- 使用面积 -->
+		<field table="bl" name="area_rm"  showTotals="true" controlType="link"/>
+		<field name="area_bl_comn_gp"  showTotals="true" controlType="link">
+			<title translatable="true">Common Area</title>
+		</field>
+		<field name="gongtanlv" dataType="number" decimals="4" controlType="link"/>
+		<field table="bl" name="area_serv"  showTotals="true" controlType="link">
+			<title translatable="true">GongGongSheShiMianJi</title>
+		</field>
+		<field table="bl" name="construction_type" controlType="link"/>
+		<field table="bl" name="use1" controlType="link"/>
+		<field table="bl" name="date_building_end" controlType="link"/>
+		<field table="bl" name="count_underground" controlType="link"/>
+		<field table="bl" name="area_underground" controlType="link"/>
+		<field table="bl" name="value_other" controlType="link"/>
+		<field table="bl" name="value_rent" controlType="link"/>
+		<field table="bl" name="value_ziyong" controlType="link"/>
+		
+    </panel>
+    <js file="asc-bj-usms-overall-bl-whole-wd.js"/>
+	<js file="asc-bj-usms-overall-common.js"/>
+</view>

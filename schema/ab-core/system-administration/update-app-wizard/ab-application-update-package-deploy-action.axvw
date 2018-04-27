@@ -1,0 +1,43 @@
+<view version="2.0">
+<title translatable="true">Package and Deploy Wizard: Package Deployment</title>
+
+<script src="/archibus/dwr/interface/AppUpdateWizardService.js" language="JavaScript"> </script>
+<js file="ab-application-update-progress.js"/>
+<js file="ab-application-update-package-deploy-action.js"/>
+
+<message name="confirm_message" translatable="true">This Package Deployments action will merge any \\archibus\\mysite-data.WAR and mysite-extensions.WAR into the archibus.WAR file on this computer. Proceed?</message>
+<message name="arch_file_missing_message" translatable="true">File \\webapps\\archibus.WAR is missing</message>
+<message name="package_complete_message" translatable="true">Package Deployment completed</message>
+<dataSource id="ab-app-upd-progressDS">
+	<table name="afm_tbls" />
+	<field name="table_name" hidden="true" />
+	<restriction type="parsed">
+		<clause table="afm_tbls" name="table_name" value="afm_tbls" />
+	</restriction>
+</dataSource>
+
+<panel type="grid" id="reportProgressPanel" layout="mainLayout" dataSource="ab-app-upd-progressDS">
+	<title translatable="true">Package Deployment</title>
+	<action type="command" id="help">
+		<title>Help</title>
+		<command type="showHelp"
+		file="/help/system/Content/app_update/deploy_actions_over.htm" />
+	</action>
+	<!-- Progress fields. -->
+	<field name="pct_complete" dataType="string">
+		<title>Percent&lt;br/&gt;Complete</title>
+	</field>
+	<field name="eclapsed_time" dataType="string">
+		<title>Elapsed&lt;br/&gt;Time</title>
+	</field>
+	<field name="est_time_remain" dataType="string">
+		<title>Estimated&lt;br/&gt;Time&lt;br/&gt;Remaining</title>
+	</field>
+
+	<!-- Start/Stop Job button -->
+	<field controlType="button" id="progressButton" name="startButton">
+		<title translatable="true">Start Job</title>
+	</field>
+</panel>  
+
+</view>

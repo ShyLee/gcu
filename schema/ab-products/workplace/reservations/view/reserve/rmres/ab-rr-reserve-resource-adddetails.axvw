@@ -1,0 +1,39 @@
+<!-- Add details view of the reserved room -->
+<view version="2.0">
+	<preferences>
+        <viewTitleBar show="false"/>
+    </preferences>
+    <message translatable="true" name="selectResourceAndTimeError">You must select a Resource and a time period to validate this step</message>
+    <message translatable="true" name="timeSelectedNotAvailable">The selected time period for this reservation is occupied;please change the time or date period</message>
+    <message translatable="true" name="selectTimeError">The start time must be earlier than the end time</message>
+    <message translatable="true" name="errorOutOfRoomTimeScope">The resource reservation must be within the room reservation's timeslot.</message>
+    
+    <dataSource id="ds_ab-rr-reserve-resource-adddetails_form_reserve_rs">
+        <table name="reserve_rs" role="main"/>
+        <field table="reserve_rs" name="time_start"/>
+        <field table="reserve_rs" name="time_end"/>
+        <field table="reserve_rs" name="comments"/>
+        <restriction type="sql" sql="rsres_id IS NULL"/>
+    </dataSource>
+    
+    <panel id="addResourceReservDetailsPanel" type="form" columns="2" dataSource="ds_ab-rr-reserve-resource-adddetails_form_reserve_rs">
+        <title translatable="true">Add Resource Reservation Details</title>
+        <action id="save">
+            <title translatable="true">Save</title>
+        </action>
+        <action id="delete">
+            <title translatable="true">Delete</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">Cancel</title>
+			<command type="closeDialog"/>
+        </action>
+        <field table="reserve_rs" name="time_start" readOnly="false" required="false"/>
+        <field table="reserve_rs" name="time_end" readOnly="false" required="false"/>
+        <field table="reserve_rs" name="comments" colspan="2" readOnly="false" required="false"/>
+    </panel>
+    
+    <!-- JS functions specific to this pop-up -->
+    <js file="ab-rr-common.js"/>
+    <js file="ab-rr-reserve-resource-adddetails.js"/>
+</view>

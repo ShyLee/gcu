@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html manifest="cache.appcache" lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>App Launcher</title>
+
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            background-color: #d3d3d3
+        }
+
+        #appLoadingIndicator {
+            position: absolute;
+            top: 50%;
+            margin-top: -15px;
+            text-align: center;
+            width: 100%;
+            height: 30px;
+            -webkit-animation-name: appLoadingIndicator;
+            -webkit-animation-duration: 0.5s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-direction: linear;
+        }
+
+        #appLoadingIndicator > * {
+            background-color: #FFFFFF;
+            display: inline-block;
+            height: 30px;
+            -webkit-border-radius: 15px;
+            margin: 0 5px;
+            width: 30px;
+            opacity: 0.8;
+        }
+
+        @-webkit-keyframes appLoadingIndicator{
+            0% {
+                opacity: 0.8
+            }
+            50% {
+                opacity: 0
+            }
+            100% {
+                opacity: 0.8
+            }
+        }
+    </style>
+
+    <script type="text/javascript" src="device-api.js"></script>
+
+<script type="text/javascript" id="mobilesyncservice"></script>
+<script type="text/javascript" id="securityservice"></script>
+<script type="text/javascript" id="mobilesecurityservice"></script>
+<script type="text/javascript" id="smartclientconfigservice"></script>
+<script type="text/javascript" id="adminservice"></script>
+<script type="text/javascript" id="drawingSvgService"></script>
+<script type="text/javascript" id="workflowScr"></script>
+<script type="text/javascript" id="engineScr"></script>
+
+<!-- The line below must be kept intact for Sencha Command to build your application -->
+<script type="text/javascript">var Abm=Abm||{};Abm.appCacheData=[];
+(function(k){function N(a,b,c){null===v&&(v=window.openDatabase("ARCHIBUS","1.0","ARCHIBUS Mobile Applications Database",52428800));var e="%"+a+"%";v.transaction(function(a){a.executeSql("CREATE TABLE IF NOT EXISTS AppCache (key TEXT, value TEXT)",null,function(a){a.executeSql("SELECT key, value FROM AppCache WHERE key LIKE ?",[e],function(a,i){for(var e=0;e<i.rows.length;e++){var D=i.rows.item(e);Abm.appCacheData.push({key:D.key,value:D.value})}"function"===typeof b&&b.call(c)},function(a){alert(a.code)})},
+w)})}function O(a,b){var c,e=!1;for(c=0;c<Abm.appCacheData.length;c++)Abm.appCacheData[c].key===a&&(Abm.appCacheData[c].value=b,e=!0);e||Abm.appCacheData.push({key:a,value:b})}function s(a){function b(a,i){var c=a.length,b,g;for(b=0;b<c;b++){g=a[b];var n=a,h=b,d=void 0;"string"==typeof g&&(g={path:g});g.shared?(g.version=g.shared,d=g.shared+g.path):(E.href=g.path,d=E.href);g.uri=d;g.key=e+"-"+d;f[d]=g;n[h]=g;g.type=i;g.index=b;g.collection=a;g.ready=!1;g.evaluated=!1}return a}var c;"string"==typeof a?
+(c=a,a=F(c)):c=JSON.stringify(a);var e=a.id,n=e+"-"+G+o,f={};this.key=n;this.css=b(a.css,"css");this.js=b(a.js,"js");this.assets=this.css.concat(this.js);this.getAsset=function(a){return f[a]};this.store=function(){t(n,c)}}function x(a,b){j.write('<meta name="'+a+'" content="'+b+'">')}function p(a,b,c){var e=new XMLHttpRequest,c=c||w,a=a+(-1==a.indexOf("?")?"?":"&")+Date.now();try{e.open("GET",a,!0),e.onreadystatechange=function(){if(4==e.readyState){var a=e.status,d=e.responseText;200<=a&&300>a||
+304==a||0==a&&0<d.length?b(d):c()}},e.send(null)}catch(d){c()}}function P(a,b){var c=j.createElement("iframe");m.push({iframe:c,callback:b});c.src=a+".html";c.style.cssText="width:0;height:0;border:0;position:absolute;z-index:-999;visibility:hidden";j.body.appendChild(c)}function H(a,b,c){var e=!!a.shared;if(a.remote)b("");else{if(!e)var d=b,f=a.version,l,b=function(i){l=i.substring(0,f.length+4);l!=="/*"+f+"*/"?confirm("Requested: '"+a.uri+"' with checksum: "+f+" but received: "+l.substring(2,f.length)+
+"instead. Attempt to refresh the application?")&&Q():d(i)};(e?P:p)(a.uri,b,c)}}function I(a){var b=a.data,a=a.source.window,c,e,d,f;c=0;for(e=m.length;c<e;c++)if(d=m[c],f=d.iframe,f.contentWindow===a){d.callback(b);j.body.removeChild(f);m.splice(c,1);break}}function J(a){"undefined"!=typeof console&&(console.error||console.log).call(console,a)}function t(a,b){try{O(a,b)}catch(c){if(c.code==c.QUOTA_EXCEEDED_ERR&&q){var e=q.assets.map(function(a){return a.key}),d=0,f=y.length,l=!1,i;for(e.push(q.key);d<=
+f-1;)i=y.key(d),-1==e.indexOf(i)?(y.removeItem(i),l=!0,f--):d++;l&&t(a,b)}}}function u(a){try{var b;a:{var c;for(c=0;c<Abm.appCacheData.length;c++)if(Abm.appCacheData[c].key===a){b=Abm.appCacheData[c].value;break a}b=null}return b}catch(d){return null}}function Q(){K||(K=!0,p(o,function(a){(new s(a)).store();k.location.reload()}))}function z(a){function b(a,b){var d=a.collection,e=a.index,f=d.length,h;a.ready=!0;a.content=b;for(h=e-1;0<=h;h--)if(a=d[h],!a.ready||!a.evaluated)return;for(h=e;h<f;h++)if(a=
+d[h],a.ready)a.evaluated||c(a);else break}function c(a){a.evaluated=!0;if("js"==a.type)try{eval(a.content)}catch(c){J("Error evaluating "+a.uri+" with message: "+c)}else{var b=j.createElement("style"),d;b.type="text/css";b.textContent=a.content;"id"in a&&(b.id=a.id);"disabled"in a&&(b.disabled=a.disabled);d=document.createElement("base");d.href=a.path.replace(/\/[^\/]*$/,"/");A.appendChild(d);A.appendChild(b);A.removeChild(d)}delete a.content;0==--f&&e()}function e(){function b(){k&&c()}function c(){var a=
+r.onUpdated||w;if("onSetup"in r)r.onSetup(a);else a()}function e(){l.store();h.forEach(function(a){t(a.key,a.content)});c()}function g(a,b){a.content=b;0==--m&&(d.status==d.IDLE?e():j=e)}function f(){L("online",f,!1);p(o,function(c){q=l=new s(c);var e;l.assets.forEach(function(b){e=a.getAsset(b.uri);(!e||b.version!==e.version)&&h.push(b)});m=h.length;0==m?d.status==d.IDLE?b():j=b:h.forEach(function(b){function c(){H(b,function(a){g(b,a)})}var d=a.getAsset(b.uri),e=b.path,f=b.update;!d||!f||null===
+u(b.key)||"delta"!=f?c():p("deltas/"+e+"/"+d.version+".json",function(a){try{var c=b,d;var e=u(b.key),f=F(a),a=[],i,h,j;if(0===f.length)d=e;else{h=0;for(j=f.length;h<j;h++)i=f[h],"number"===typeof i?a.push(e.substring(i,i+f[++h])):a.push(i);d=a.join("")}g(c,d)}catch(k){J("Malformed delta content received for "+b.uri)}},c)})})}var h=[],k=!1,j=function(){},n=function(){d.swapCache();k=!0;j()},m;L("message",I,!1);if(d.status==d.UPDATEREADY)n();else if(d.status==d.CHECKING||d.status==d.DOWNLOADING)d.onupdateready=
+n,d.onnoupdate=d.onobsolete=function(){j()};!1!==navigator.onLine?f():B("online",f,!1)}var k=a.assets,f=k.length,l;q=a;B("message",I,!1);0==f?e():k.forEach(function(a){var c=u(a.key);null===c?H(a,function(c){a.remote||t(a.key,c);b(a,c)},function(){b(a,"")}):b(a,c)})}function M(a){null!==j.readyState.match(/interactive|complete|loaded/)?z(a):B("DOMContentLoaded",function(){navigator.standalone?setTimeout(function(){setTimeout(function(){z(a)},1)},1):z(a)},!1)}var w=function(){},m=[],j=k.document,A=
+j.head,B=k.addEventListener,L=k.removeEventListener,y=k.localStorage,d=k.applicationCache,F=JSON.parse,E=j.createElement("a"),C=j.location,G=C.origin+C.pathname+C.search,o="app.json",K=!1,q,v=null;if("undefined"===typeof r)var r=k.Ext={};r.blink=function(a){x("viewport","width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no");x("apple-mobile-web-app-capable","yes");x("apple-touch-fullscreen","yes");N(a.id,function(){Abm.appKey=a.id;var b=u(a.id+"-"+G+o);b?(a=
+new s(b),M(a)):p(o,function(b){a=new s(b);a.store();M(a)})},this)}})(this);;Ext.blink({"id":"cbba1b70-ea74-49ef-88e2-65ddb2f9bd78"})</script>
+</head>
+<body>
+<div id="appLoadingIndicator">
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+</body>
+</html>

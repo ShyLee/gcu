@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:archibus="http://www.archibus.com/schema/archibus"
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:soap="http://cxf.apache.org/bindings/soap"
+    xsi:schemaLocation="http://www.archibus.com/schema/archibus http://www.archibus.com/schema/archibus/webcentral-namespace.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    http://cxf.apache.org/bindings/soap http://cxf.apache.org/schemas/configuration/soap.xsd">
+
+    <!-- WebServices for SmartClient -->
+
+    <import resource="../cxf-common/cxf-common.xml"/>
+
+    <!-- SmartClientView Service. Required for SmartClient. -->
+    <bean
+        id="smartClientViewService-remote"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.service.remoting.SmartClientViewService">
+        <property name="target">
+            <bean
+                class="com.archibus.service.remoting.SmartClientViewServiceImpl"
+                p:sqlInjectionHandler-ref="sqlInjectionHandler"
+                p:sqlInjectionHandlerForReplaceColumn-ref="sqlInjectionHandlerForReplaceColumn">
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>contextInterceptor</value>
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+                <!-- TODO remove duplicate calls DataSourceContextTemplate.prepareDataSourceContext(dataSource) ? -->
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    <jaxws:endpoint
+        id="smartClientViewService-ws"
+        implementor="#smartClientViewService-remote"
+        address="/smartClientViewService">
+        <jaxws:dataBinding>
+            <ref bean="aegisModelDataBinding"/>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
+
+    <!-- Security Service. Required for SmartClient. -->
+    <jaxws:endpoint
+        id="securityService-ws"
+        implementor="#securityService"
+        address="/securityService">
+        <jaxws:dataBinding>
+            <ref bean="aegisDataBinding"/>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
+
+    <!-- SmartClientConfig Service. Required for SmartClient. -->
+    <bean
+        id="smartClientConfigService-remote"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.service.remoting.SmartClientConfigService">
+        <property name="target">
+            <bean
+                class="com.archibus.service.remoting.SmartClientConfigServiceImpl"
+                p:ssoMode="${security.configurationFile}">
+                <property name="smartClientConfig">
+                    <bean
+                        class="com.archibus.model.config.SmartClientConfig"
+                        p:fileServerLocation="${smartClient.fileServerLocation}"
+                        p:reinstall="${smartClient.reinstall}"
+                        p:reinstallVersion="${smartClient.reinstall.version}"
+                        p:referer="${smartClient.referer}">
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>exceptionHandlingInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    <jaxws:endpoint
+        id="smartClientConfigService-ws"
+        implementor="#smartClientConfigService-remote"
+        address="/smartClientConfigService">
+        <jaxws:dataBinding>
+            <ref bean="aegisDataBinding"/>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
+
+    <!-- SmartClientSsoConfig Service. Required for SmartClient. -->
+    <bean
+        id="smartClientSsoConfigService-remote"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.service.remoting.SmartClientSsoConfigService">
+        <property name="target">
+            <bean class="com.archibus.service.remoting.SmartClientSsoConfigServiceImpl">
+                <property name="smartClientSsoConfig">
+                    <bean
+                        class="com.archibus.model.config.SmartClientSsoConfig"
+                        p:projectIdKey="$ProjectidSource{projectidSource.projectIdKey}"
+                        p:usernameKey="$UsernameSource{usernameKey}">
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>exceptionHandlingInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    <jaxws:endpoint
+        id="smartClientSsoConfigService-ws"
+        implementor="#smartClientSsoConfigService-remote"
+        address="/smartClientSsoConfigService">
+        <jaxws:dataBinding>
+            <ref bean="aegisDataBinding"/>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
+
+    <!-- Admin Service. Required for SmartClient. -->
+    <jaxws:endpoint
+        id="adminService-ws"
+        implementor="#adminService"
+        address="/adminService">
+        <jaxws:dataBinding>
+            <ref bean="aegisDataBinding"/>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
+
+    <!-- DrawingManagementService Service. Required for SmartClient. Manages files in enterpriseGraphicsFolder and drawingsFolder. -->
+    <bean
+        id="drawingManagementService-remote"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:proxyInterfaces="com.archibus.service.remoting.DrawingManagementService">
+        <property name="target">
+            <bean class="com.archibus.service.remoting.DrawingManagementServiceImpl">
+                <property name="fileAccessProviderForDrawings">
+                    <ref bean="fileAccessProviderForDrawings"/>
+                </property>
+                <property name="fileAccessProviderForEnterpriseGraphics">
+                    <ref bean="fileAccessProviderForEnterpriseGraphics"/>
+                </property>
+            </bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>securityInterceptor</value>
+                <value>contextInterceptor</value>
+                <value>transactionInterceptor.data</value>
+                <value>exceptionHandlingInterceptor</value>
+                <!-- TODO remove duplicate calls DataSourceContextTemplate.prepareDataSourceContext(dataSource) ? -->
+                <value>eventHandlerContextInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    <jaxws:endpoint
+        id="drawingManagementService-ws"
+        implementor="#drawingManagementService-remote"
+        address="/drawingManagementService">
+        <jaxws:binding>
+            <soap:soapBinding
+                mtomEnabled="true"
+                version="1.2"/>
+        </jaxws:binding>
+        <jaxws:dataBinding>
+            <ref bean="aegisModelDataBinding"/>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
+
+    <!-- fileAccessProviderForDrawings bean. Used by drawingManagementService-remote bean. -->
+    <bean
+        id="fileAccessProviderForDrawings"
+        class="com.archibus.app.solution.common.fileaccess.FileAccessProviderFileSystem">
+        <property
+            name="folder"
+            value="$HasEncryptedPasswords{drawingManagement.drawings.folder}"/>
+    </bean>
+
+    <!-- fileAccessProviderForEnterpriseGraphics bean. Used by drawingManagementService-remote bean. -->
+    <bean
+        id="fileAccessProviderForEnterpriseGraphics"
+        class="com.archibus.app.solution.common.fileaccess.FileAccessProviderFileSystem">
+        <property
+            name="folder"
+            value="$HasEncryptedPasswords{drawingManagement.enterpriseGraphics.folder}"/>
+    </bean>
+
+    <!-- Resolves property values like "$Path{WebAppPath}/projects/hq/drawings" with the absolute path of the folder where the Web application is deployed. Used by drawingManagementService in webservices.xml, drawing-management.properties files. Is used to resolve value of property "folder" of the FileAccessProviderFileSystem bean. -->
+    <bean
+        class="com.archibus.utility.WebAppPathPropertyPlaceholderConfigurer"
+        depends-on="configManager"
+        p:placeholderPrefix="$Path{">
+    </bean>
+
+    <!-- Alternative fileAccessProviderForDrawings bean, using FTP provider. Might be used by drawingManagementService-remote bean. <bean id="fileAccessProviderForDrawings" class="com.archibus.app.solution.common.fileaccess.FileAccessProviderFtp"> <property name="host" value="$HasEncryptedPasswords{drawingManagement.ftp.host}"/> <property name="port" value="$HasEncryptedPasswords{drawingManagement.ftp.port}"/> <property name="username" value="$HasEncryptedPasswords{drawingManagement.ftp.username}"/> <property name="password" value="$HasEncryptedPasswords{drawingManagement.ftp.password}"/> <property name="folder" value="$HasEncryptedPasswords{drawingManagement.drawings.folder}"/> </bean> -->
+    <!-- Alternative fileAccessProviderForEnterpriseGraphics bean, using FTP provider. Might be used by drawingManagementService-remote bean. <bean id="fileAccessProviderForEnterpriseGraphics" class="com.archibus.app.solution.common.fileaccess.FileAccessProviderFtp"> <property name="host" value="$HasEncryptedPasswords{drawingManagement.ftp.host}"/> <property name="port" value="$HasEncryptedPasswords{drawingManagement.ftp.port}"/> <property name="username" value="$HasEncryptedPasswords{drawingManagement.ftp.username}"/> <property name="password" value="$HasEncryptedPasswords{drawingManagement.ftp.password}"/> <property name="folder" value="$HasEncryptedPasswords{drawingManagement.enterpriseGraphics.folder}"/> </bean> -->
+
+    <!-- Alternative fileAccessProviderForDrawings bean, using FTPS provider. Might be used by drawingManagementService-remote bean. <bean id="fileAccessProviderForDrawings" class="com.archibus.app.solution.common.fileaccess.FileAccessProviderFtps"> <property name="host" value="$HasEncryptedPasswords{drawingManagement.ftp.host}"/> <property name="port" value="$HasEncryptedPasswords{drawingManagement.ftp.port}"/> <property name="username" value="$HasEncryptedPasswords{drawingManagement.ftp.username}"/> <property name="password" value="$HasEncryptedPasswords{drawingManagement.ftp.password}"/> <property name="serverCertificateFileName" value="HasEncryptedPasswords{drawingManagement.ftp.serverCertificateFileName}"/> <property name="clientCertificateFileName" value="HasEncryptedPasswords{drawingManagement.ftp.clientCertificateFileName}"/> <property name="clientKeyPassphrase" value="$HasEncryptedPasswords{drawingManagement.ftp.clientKeyPassphrase}"/> <property name="folder" value="$HasEncryptedPasswords{drawingManagement.drawings.folder}"/> 
+        </bean> -->
+
+    <!-- Alternative fileAccessProviderForEnterpriseGraphics bean, using FTPS provider. Might be used by drawingManagementService-remote bean. <bean id="fileAccessProviderForEnterpriseGraphics" class="com.archibus.app.solution.common.fileaccess.FileAccessProviderFtps"> <property name="host" value="$HasEncryptedPasswords{drawingManagement.ftp.host}"/> <property name="port" value="$HasEncryptedPasswords{drawingManagement.ftp.port}"/> <property name="username" value="$HasEncryptedPasswords{drawingManagement.ftp.username}"/> <property name="password" value="$HasEncryptedPasswords{drawingManagement.ftp.password}"/> <property name="serverCertificateFileName" value="HasEncryptedPasswords{drawingManagement.ftp.serverCertificateFileName}"/> <property name="clientCertificateFileName" value="HasEncryptedPasswords{drawingManagement.ftp.clientCertificateFileName}"/> <property name="clientKeyPassphrase" value="$HasEncryptedPasswords{drawingManagement.ftp.clientKeyPassphrase}"/> <property name="folder" 
+        value="$HasEncryptedPasswords{drawingManagement.enterpriseGraphics.folder}"/> </bean> -->
+
+</beans>

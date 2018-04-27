@@ -1,0 +1,340 @@
+<view version="2.0">
+    <message name="approvedSummary">Approved</message>
+    <message name="cancelledSummary">Cancelled/Stopped</message>
+    <message name="issuedSummary">Issued</message>
+    <message name="completedSummary">Completed</message>
+    <message name="closedSummary">Closed</message>
+    <message name="menu_comm1">Notice</message>
+    <message name="menu_comm2">Correspondence</message>
+    <message name="menu_comm3">Meeting Minutes</message>
+    <message name="menu_comm4">More Options</message>
+    <js file="ab-proj-stat-projs.js"/>
+    <js file="ab-proj-stat-common.js"/>
+    <layout id="main">
+        <north initialSize="37%" split="true"/>
+        <center id="projs" />
+    </layout>
+    <layout id="nested_north" containingLayout="main" region="north">
+        <west id="summ" initialSize="50%" split="true"/>
+        <center id="budVsSp"/>
+    </layout>
+ 	 
+    <dataSource type="grouping" id="projStatProjs_ds0">
+        <table name="project" role="main"/>
+        <sql dialect="generic">
+            SELECT  project.project_id,
+                    project.duration_est,
+                    project.cost_budget,
+                    project.funding_probability,
+                    project.status,
+                    (CASE  
+                        WHEN project.status IN  ('Approved','Approved-In Design') THEN '1 -' ${sql.concat} ${parameters['approved']} 
+                        WHEN project.status IN    ('Approved-Cancelled','Issued-Stopped') THEN '2 -' ${sql.concat} ${parameters['cancelled']}                                     
+                        WHEN project.status IN    ('Issued-In Process','Issued-On Hold') THEN '3 -' ${sql.concat} ${parameters['issued']}
+                        WHEN project.status IN    ('Completed-Pending','Completed-Not Ver','Completed-Verified') THEN '4 -' ${sql.concat} ${parameters['completed']}
+                        WHEN project.status =    'Closed' THEN '5 -' ${sql.concat} ${parameters['closed']}                       
+                    END) ${sql.as}  status_sorted
+            FROM project 
+            LEFT OUTER JOIN program ON program.program_id = project.program_id
+            LEFT OUTER JOIN bl ON bl.bl_id = project.bl_id
+            LEFT OUTER JOIN site on site.site_id = project.site_id
+            LEFT OUTER JOIN ctry ON ctry.ctry_id = bl.ctry_id
+            WHERE project.is_template = 0
+            AND project.status NOT IN ('Created') AND project.status NOT LIKE ('Requested%')
+            AND ${parameters['summRestriction']}
+            AND ${sql.vpaRestriction}
+        </sql>  
+        <field table="project" name="status_sorted" dataType="text" groupBy="true">
+            <title translatable="true">Project Status</title>
+        </field> 
+        <field name="count_projects" formula="count" baseField="project.project_id" dataType="number" decimals="0">
+            <title translatable="true">Count</title>
+        </field>    
+        <field name="sum_duration_est" formula="sum" baseField="project.duration_est" dataType="number" decimals="0">
+            <title translatable="true">Duration - Est. (Days) - Sum</title>
+        </field>
+        <field name="sum_cost_budget" formula="sum" baseField="project.cost_budget" dataType="number" decimals="0">
+            <title translatable="true">Budgeted Cost - Sum</title>
+        </field>
+        <sortField name="status_sorted"/>
+        <parameter name="approved" dataType="text" value=""/>
+        <parameter name="cancelled" dataType="text" value=""/>
+        <parameter name="issued" dataType="text" value=""/>
+        <parameter name="completed" dataType="text" value=""/>
+        <parameter name="closed" dataType="text" value=""/>
+        <parameter name="summRestriction" dataType="verbatim" value=" 1=1 "/>
+    </dataSource>
+    
+    <panel type="crossTable" id="projStatProjs_summary" dataSource="projStatProjs_ds0" layoutRegion="summ">
+        <title translatable="true">Project Totals by Status</title>
+        <action id="showAllProjs">
+            <title>Show All Projects</title>
+        </action>
+        <action id="showMyProjs">
+            <title>Show My Projects</title>
+        </action>
+        <action>
+            <title>Custom Filter</title>
+            <command type="openDialog" viewName="ab-proj-stat-projs-filter.axvw" height="400" width="800"/>
+        </action>
+        <action imageName="/schema/ab-system/graphics/ab-icon-helpview.gif" id="projStatProjs_summary_help">
+            <tooltip>Help</tooltip>
+            <command type="openDialog" viewName="ab-proj-stat-projs-summ-info.axvw" height="250" width="500"/>
+        </action>
+        <event type="onClickItem">
+            <command type="callFunction" functionName="showProjects"/>
+        </event>    
+    </panel>
+    
+    <dataSource id="projStatProjs_dsBudSp">
+        <sql dialect="generic">
+            SELECT ${parameters['dateSql']} ${sql.as} date_field, 
+               0 ${sql.as} costs_base, 
+               0 ${sql.as} cumcosts_base,  
+               0 ${sql.as} costs_act, 
+               0 ${sql.as} cumcosts_act 
+            FROM afm_cal_dates 
+            WHERE (afm_cal_dates.cal_date &gt;= ${parameters['fromDate']} 
+               AND afm_cal_dates.cal_date &lt;= ${parameters['toDate']})
+            GROUP BY date_field 
+            ORDER BY date_field
+        </sql>
+        <table name="afm_cal_dates"/>
+        <field name="date_field" dataType="text" >
+            <title></title>
+        </field>
+        <field name="costs_base" dataType="number" decimals="0" size="18" >
+            <title>Budget</title>
+        </field>
+        <field name="cumcosts_base" dataType="number" decimals="0" size="18" >
+            <title>Cumulative Budget</title>
+        </field>
+        <field name="costs_act" dataType="number" decimals="0" size="18" >
+            <title>Spend</title>
+        </field>
+        <field name="cumcosts_act" dataType="number" decimals="0" size="18" >
+            <title>Cumulative Spend</title>
+        </field>
+        <parameter name="consoleRestriction" dataType="verbatim" value=" 1=1 "/>
+        <parameter name="fromDate" dataType="date" value="2005-01-01"/>
+        <parameter name="toDate" dataType="date" value="2020-12-31"/>
+        <parameter name="minDate" dataType="date" value="2005-01-01"/>
+        <parameter name="groupBy" dataType="text" value="month"/>
+        <parameter name="budgetFrom" dataType="text" value="projects"/>
+        <parameter name="dateSql" dataType="verbatim" value="afm_cal_dates.cal_date"/>
+        <sortField name="date_field"/>
+    </dataSource>
+    
+    <dataSource id="projStatProjs_dsMinMax" applyVpaRestrictions="false">
+        <table name="invoice"/>
+        <sql dialect="generic">
+            SELECT MIN(min_date) ${sql.as} min_date, MAX(max_date) ${sql.as} max_date FROM
+						((SELECT MIN(invoice.date_sent) ${sql.as} min_date,
+						            MAX(invoice.date_sent) ${sql.as} max_date 
+						            FROM invoice 
+						            LEFT OUTER JOIN project ON invoice.project_id = project.project_id
+						            LEFT OUTER JOIN program ON program.program_id = project.program_id
+						            LEFT OUTER JOIN bl ON bl.bl_id = project.bl_id
+						            LEFT OUTER JOIN site on site.site_id = project.site_id
+						            LEFT OUTER JOIN ctry ON ctry.ctry_id = bl.ctry_id
+						            WHERE invoice.status IN ('ISSUED','CLOSED') AND ${parameters['consoleRestriction']}) 
+						UNION (
+						SELECT MIN(project.date_start) ${sql.as} min_date,
+						            MAX(project.date_end) ${sql.as} max_date
+						            FROM project 
+						            LEFT OUTER JOIN program ON program.program_id = project.program_id
+						            LEFT OUTER JOIN bl ON bl.bl_id = project.bl_id
+						            LEFT OUTER JOIN site on site.site_id = project.site_id
+						            LEFT OUTER JOIN ctry ON ctry.ctry_id = bl.ctry_id
+						            WHERE ${parameters['consoleRestriction']}						
+						)) ${sql.as} invoice
+				</sql>
+        <field name="min_date" dataType="date"/>
+        <field name="max_date" dataType="date"/>
+        <parameter name="consoleRestriction" dataType="verbatim" value=" 1=1 "/>
+        <sortField name="min_date"/>
+    </dataSource>
+    
+    <panel id="projStatProjs_budMnth" type="chart" controlType="columnChart" layoutRegion="budVsSp"
+        dataSource="projStatProjs_dsBudSp" showLegendAsPopUp="false" showOnLoad="false"
+        refreshWorkflowRuleId="AbProjectManagement-ProjectCostsService-getChartData">
+        <title>Budget vs Spend by Month</title>
+        <action>
+        		<title>Show Console</title>
+        		<command type="openDialog" viewName="ab-proj-stat-projs-bud-console.axvw" height="310" width="500"/>
+        </action>
+        <action imageName="/schema/ab-system/graphics/ab-icon-helpview.gif" id="projStatProjs_budMnth_help">
+            <tooltip>Help</tooltip>
+            <command type="openDialog" viewName="ab-proj-stat-projs-bud-info.axvw" height="200" width="500"/>
+        </action>
+        <event type="onClickItem">                 
+            <command type="callFunction" functionName="openDetails"/>
+        </event>
+        <groupingAxis table="afm_cal_dates" field="date_field" showLabel="true" labelRotation="45">
+            <title></title> 
+        </groupingAxis>
+        <dataAxis table="afm_cal_dates" field="costs_base" displayAxis="false">
+           <title>Budget</title>
+        </dataAxis>
+        <dataAxis table="afm_cal_dates" field="costs_act" displayAxis="false">
+           <title>Spend</title>
+        </dataAxis>
+    </panel>
+    
+    <panel id="projStatProjs_budQtr" type="chart" controlType="columnChart" layoutRegion="budVsSp"
+        dataSource="projStatProjs_dsBudSp" showLegendAsPopUp="false" showOnLoad="false"
+        refreshWorkflowRuleId="AbProjectManagement-ProjectCostsService-getChartData">
+        <title>Budget vs Spend by Quarter</title>
+        <action>
+        		<title>Show Console</title>
+        		<command type="openDialog" viewName="ab-proj-stat-projs-bud-console.axvw" height="310" width="500"/>
+        </action>
+        <action imageName="/schema/ab-system/graphics/ab-icon-helpview.gif" id="projStatProjs_budQtr_help">
+            <tooltip>Help</tooltip>
+            <command type="openDialog" viewName="ab-proj-stat-projs-bud-info.axvw" height="200" width="500"/>
+        </action>
+        <event type="onClickItem">                 
+            <command type="callFunction" functionName="openDetails"/>
+        </event>
+        <groupingAxis table="afm_cal_dates" field="date_field" showLabel="true" labelRotation="45">
+            <title></title> 
+        </groupingAxis>
+        <dataAxis table="afm_cal_dates" field="costs_base" displayAxis="false">
+           <title>Budget</title>
+        </dataAxis>
+        <dataAxis table="afm_cal_dates" field="costs_act" displayAxis="false">
+           <title>Spend</title>
+        </dataAxis>
+    </panel>
+    
+    <panel id="projStatProjs_budYr" type="chart" controlType="columnChart" layoutRegion="budVsSp"
+        dataSource="projStatProjs_dsBudSp" showLegendAsPopUp="false" showOnLoad="false"
+        refreshWorkflowRuleId="AbProjectManagement-ProjectCostsService-getChartData">
+        <title>Budget vs Spend by Year</title>
+        <action>
+        		<title>Show Console</title>
+        		<command type="openDialog" viewName="ab-proj-stat-projs-bud-console.axvw" height="310" width="500"/>
+        </action>
+        <action imageName="/schema/ab-system/graphics/ab-icon-helpview.gif" id="projStatProjs_budYr_help">
+            <tooltip>Help</tooltip>
+            <command type="openDialog" viewName="ab-proj-stat-projs-bud-info.axvw" height="200" width="500"/>
+        </action>
+        <event type="onClickItem">                 
+            <command type="callFunction" functionName="openDetails"/>
+        </event>
+        <groupingAxis table="afm_cal_dates" field="date_field" showLabel="true" labelRotation="45">
+            <title></title> 
+        </groupingAxis>
+        <dataAxis table="afm_cal_dates" field="costs_base" displayAxis="false">
+           <title>Budget</title>
+        </dataAxis>
+        <dataAxis table="afm_cal_dates" field="costs_act" displayAxis="false">
+           <title>Spend</title>
+        </dataAxis>
+    </panel>
+    
+    <dataSource id="projStatProjsDs8" type="grouping" applyVpaRestrictions="false">
+        <table name="project" role="main"/>                 
+        <sql dialect="generic">
+        SELECT 
+            project.project_id,project.project_name, project.status,project.duration_est, project.cost_budget, project.is_template,
+            CASE WHEN funds.tot_fund_amount IS NULL THEN 0 ELSE funds.tot_fund_amount END ${sql.as} tot_fund_amount,
+            (${sql.isNull('contract_amount.cost_contract',0)}+${sql.isNull('change_orders.cost_change_orders',0)}) ${sql.as} revised_cost,
+            CASE WHEN invoices.amount_tot_invoice IS NULL THEN 0 ELSE invoices.amount_tot_invoice END ${sql.as} amount_tot_invoice,
+            CASE WHEN amount_tot_invoice IS NULL THEN 0 WHEN (${sql.isNull('contract_amount.cost_contract',0)}+${sql.isNull('change_orders.cost_change_orders',0)}) = 0 THEN 0
+            ELSE (amount_tot_invoice*100/(${sql.isNull('contract_amount.cost_contract',0)}+${sql.isNull('change_orders.cost_change_orders',0)})) END ${sql.as} pct_claims,
+            CASE WHEN ${sql.isNull('cost_total_contr',0)} = 0 THEN 0 WHEN ${sql.isNull('cost_complete_contr',0)} = 0 THEN 0 
+            ELSE (100*cost_complete_contr/cost_total_contr) END ${sql.as} pct_complete_by_cost_contr,
+						CASE WHEN ${sql.isNull('cost_total_proj',0)} = 0 THEN 0 WHEN ${sql.isNull('cost_complete_proj',0)} = 0 THEN 0 
+            ELSE (100*cost_complete_proj/cost_total_proj) END ${sql.as} pct_complete_by_cost_proj
+        FROM project 
+        LEFT OUTER JOIN 
+            (SELECT work_pkg_bids.project_id, SUM(work_pkg_bids.cost_contract) ${sql.as}  cost_contract FROM work_pkg_bids 
+            WHERE work_pkg_bids.status IN ( 'Contract Signed', 'In Process', 'In Process-On Hold', 'Completed', 'Completed and Verified', 'Paid in Full')
+            GROUP BY work_pkg_bids.project_id) 
+            ${sql.as}  contract_amount
+        ON project.project_id = contract_amount.project_id 
+        LEFT OUTER JOIN
+            (SELECT activity_log.project_id, SUM(cost_est_design_cap + cost_est_design_exp) ${sql.as}  cost_change_orders FROM activity_log 
+            WHERE activity_log.activity_type LIKE 'PROJECT - CHANGE ORDER' AND activity_log.status NOT IN('CREATED','REQUESTED','REJECTED') GROUP BY activity_log.project_id ) ${sql.as}  change_orders 
+        ON project.project_id = change_orders.project_id
+        LEFT OUTER JOIN
+            (SELECT invoice.project_id, SUM(invoice.amount_tot_invoice) ${sql.as}  amount_tot_invoice
+            FROM invoice WHERE work_pkg_id IS NOT NULL GROUP BY invoice.project_id ) ${sql.as}  invoices 
+        ON project.project_id = invoices.project_id
+        LEFT OUTER JOIN
+            (SELECT activity_log.project_id, 
+            SUM(activity_log.pct_complete * (activity_log.cost_est_design_exp + activity_log.cost_est_design_cap)/100.000) ${sql.as}  cost_complete_contr, 
+            SUM(activity_log.cost_est_design_exp + activity_log.cost_est_design_cap) ${sql.as}  cost_total_contr
+            FROM activity_log 
+            WHERE EXISTS (SELECT 1 FROM work_pkg_bids WHERE work_pkg_bids.work_pkg_id = activity_log.work_pkg_id AND work_pkg_bids.project_id = activity_log.project_id
+                AND work_pkg_bids.status IN ( 'Contract Signed', 'In Process', 'In Process-On Hold', 'Completed', 'Completed and Verified', 'Paid in Full'))
+            GROUP BY activity_log.project_id) ${sql.as}  pct_complete_contr
+        ON project.project_id = pct_complete_contr.project_id
+        LEFT OUTER JOIN
+            (SELECT activity_log.project_id, 
+            SUM(activity_log.pct_complete * (activity_log.cost_est_design_exp + activity_log.cost_est_design_cap)/100.000) ${sql.as}  cost_complete_proj, 
+            SUM(activity_log.cost_est_design_exp + activity_log.cost_est_design_cap) ${sql.as}  cost_total_proj
+            FROM activity_log
+            GROUP BY activity_log.project_id) ${sql.as}  pct_complete_proj
+        ON project.project_id = pct_complete_proj.project_id
+        LEFT OUTER JOIN 
+            (SELECT projfunds.project_id, SUM(projfunds.amount_exp + projfunds.amount_cap) ${sql.as}  tot_fund_amount
+            FROM projfunds 
+            GROUP BY projfunds.project_id) ${sql.as}  funds
+        ON project.project_id = funds.project_id
+         LEFT OUTER JOIN program ON program.program_id = project.program_id
+            LEFT OUTER JOIN bl ON bl.bl_id = project.bl_id
+            LEFT OUTER JOIN site on site.site_id = project.site_id
+            LEFT OUTER JOIN ctry ON ctry.ctry_id = bl.ctry_id
+        WHERE project.is_template = 0 AND project.status NOT IN ('Created') AND project.status NOT LIKE ('Requested%')
+        AND ${sql.vpaRestriction} AND ${parameters['projectsRestriction']}
+        </sql>
+        <field name="project_id" table="project" groupBy="true"/>  
+        <field name="duration_est" formula="sum" baseField="project.duration_est" dataType="number" size="20" decimals="0" showTotals="true" >
+            <title>Duration - Est.</title>
+        </field>
+        <field name="cost_budget" formula="sum" baseField="project.cost_budget" dataType="number" size="20" decimals="0" showTotals="true" >
+            <title>Budgeted Cost</title>
+        </field>  
+        <field name="tot_fund_amount" formula="sum" baseField="project.tot_fund_amount" dataType="number" size="20" decimals="0" showTotals="true">
+            <title>Project Funds</title>
+        </field>
+        <field name="revised_cost" formula="sum" baseField="project.revised_cost" dataType="number" decimals="0" size="20" showTotals="true"> 
+            <title>Revised &lt;br/&gt;Contracted &lt;br/&gt;Cost</title> 
+        </field> 
+        <field name="amount_tot_invoice" formula="sum" baseField="project.amount_tot_invoice"  dataType="number" decimals="0" size="20" showTotals="true">
+            <title>Invoice Total</title>
+        </field>  
+        <field name="pct_claims" formula="max" baseField="project.pct_claims" dataType="number" showTotals="false" decimals="0" size="6">
+            <title>% Invoiced</title>
+        </field>
+        <field name="pct_complete_by_cost_contr" formula="max" baseField="project.pct_complete_by_cost_contr" showTotals="false" dataType="number" decimals="0" size="6">
+            <title>% Contracted &lt;br/&gt;Actions &lt;br/&gt;Complete</title>
+        </field>
+        <field name="pct_complete_by_cost_proj" formula="max" baseField="project.pct_complete_by_cost_proj" showTotals="false" dataType="number" decimals="0" size="6">
+            <title>% Project &lt;br/&gt;Actions &lt;br/&gt;Complete</title>
+        </field>
+        <field name="status" formula="max" baseField="project.status" showTotals="false" dataType="text"/>
+        <field name="project_name" formula="max" baseField="project.project_name" showTotals="false" dataType="text" >
+            <title>Project Name</title>
+        </field>
+        <sortField name="project_id" ascending="true"/>
+        <parameter name="projectsRestriction" dataType="verbatim" value=" 1=1 "/>
+    </dataSource> 
+                
+    <panel id="projStatProjs_projects" type="crossTable" dataSource="projStatProjsDs8" layoutRegion="projs">
+        <title translatable="true">Progress Status Report</title> 
+        <action id="export:XLS">
+            <title>XLS</title>
+            <command type="exportPanel" outputType="xls" panelId="projStatProjs_projects"/>
+        </action>
+        <action imageName="/schema/ab-system/graphics/ab-icon-helpview.gif" id="projStatProjs_projects_help">
+            <tooltip>Help</tooltip>
+            <command type="openDialog" viewName="ab-proj-stat-projs-info.axvw" height="250" width="500"/>
+        </action>
+        <event type="onClickItem">
+           <command type="callFunction" functionName="projStatProjsController.openProjectDashboard(this)"/>
+        </event>
+    </panel>
+</view>

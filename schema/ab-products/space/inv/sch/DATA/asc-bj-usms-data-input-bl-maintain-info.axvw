@@ -1,0 +1,94 @@
+<view version="2.0">
+	<message name="saveRecordFail" translatable="true">Save record failed</message>
+	<message name="dataDifferentErr" translatable="true">ShuJuBuYiZhiCuoWu</message>
+	<message name="saveRecordSuccess" translatable="true">Save record success</message>
+	
+	<layout type="borderLayout" id="mainLayout">
+		<west id="top" initialSize="40%" split="true" />
+		<center autoScroll="true" />
+	</layout>
+	<title translatable="true">Add Building Maintain</title>
+
+	<dataSource id="abScDefBlMaintainDS">
+		<table name="sc_bl_maintain" role="main" />
+		<table name="bl" role="standard" />
+		<field table="sc_bl_maintain" name="bl_id" />
+		<field table="sc_bl_maintain" name="maintain_items" />
+		<field table="sc_bl_maintain" name="cost" />
+		<field table="sc_bl_maintain" name="fund_src" />
+		<field table="sc_bl_maintain" name="maintain_date" />
+		<field table="sc_bl_maintain" name="maintain_firm" />
+		<field table="sc_bl_maintain" name="is_addtocost" />
+		<field table="sc_bl_maintain" name="maintain_fee" />
+		<field table="sc_bl_maintain" name="reason" />
+		<field table="sc_bl_maintain" name="value_book" />
+		<field table="sc_bl_maintain" name="value_book_after" />
+		<field table="sc_bl_maintain" name="description" />
+	</dataSource>
+
+    <dataSource id="abScDefBlDS">
+		<table name="bl" role="main" />
+		<field table="bl" name="bl_id" />
+		<field table="bl" name="value_book"/>
+	</dataSource>
+
+	<panel type="grid" id="abScDefBlMaintainGrid" dataSource="abScDefBlMaintainDS"
+		layout="mainLayout" region="west" recordLimit="100">
+		<sortField name="bl_id" table="sc_bl_maintain" ascending="true" />
+		
+		<title translatable="true">Building Maintain List Panel</title>
+		<action id="addNew">
+			<title translatable="true">Add New</title>
+		<!-- 	<command type="showPanel" panelId="abScDefBlMaintainForm" newRecord="true" applyParentRestriction="false"/> -->
+		</action>
+
+        <field table="sc_bl_maintain" name="bl_id" controlType="link">
+			<command type="showPanel" panelId="abScDefBlMaintainForm" />
+		</field>
+		<field table="sc_bl_maintain" name="maintain_date" controlType="link">
+			<command type="showPanel" panelId="abScDefBlMaintainForm" />
+		</field>
+		<field table="sc_bl_maintain" name="maintain_items" controlType="link">
+			<command type="showPanel" panelId="abScDefBlMaintainForm" />
+		</field>
+		<field table="sc_bl_maintain" name="maintain_firm" controlType="link">
+			<command type="showPanel" panelId="abScDefBlMaintainForm" />
+		</field>
+	</panel>
+
+	<panel type="form" id="abScDefBlMaintainForm" showOnLoad="false"
+		dataSource="abScDefBlMaintainDS" layout="mainLayout" region="center">
+		<title translatable="true">Edit Building Maintain Record</title>
+		<action id="save">
+			<title translatable="true">Save</title>
+		</action>
+		<action id="cancel">
+			<title translatable="true">Cancel</title>
+			<command type="showPanel" panelId="abScDefBlMaintainForm" show="false" />
+		</action>
+        <field table="sc_bl_maintain" name="bl_id"  showSelectValueAction="true">
+        <action>
+				<title>...</title>
+				<command type="selectValue"
+					fieldNames="sc_bl_maintain.bl_id,sc_bl_maintain.value_book"
+					selectFieldNames="bl.bl_id,bl.value_book"
+					visibleFieldNames="bl.bl_id,bl.value_book" >
+					<title>Building Select</title>
+				</command>
+			</action>
+	    </field> 
+		<field table="sc_bl_maintain" name="maintain_items" />
+		<field table="sc_bl_maintain" name="maintain_fee" />
+		<field table="sc_bl_maintain" name="cost" />
+		<field table="sc_bl_maintain" name="value_book" readOnly="false"/>
+		<field table="sc_bl_maintain" name="value_book_after"/>
+		<field table="sc_bl_maintain" name="fund_src" />
+		<field table="sc_bl_maintain" name="maintain_date" />
+		<field table="sc_bl_maintain" name="maintain_firm" />
+		<field table="sc_bl_maintain" name="is_addtocost" />
+		<field table="sc_bl_maintain" name="reason" />
+		<field table="sc_bl_maintain" name="description" />
+	</panel>
+
+	<js file="asc-bj-usms-data-input-bl-maintain-info.js" />
+</view>

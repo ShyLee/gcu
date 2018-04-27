@@ -1,0 +1,89 @@
+<view version="2.0">
+  <dataSource id="activity_log_ds">
+        <table name="activity_log" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="bl" role="standard"/>
+        <field table="activity_log" name="activity_log_id" />
+        <field table="activity_log" name="activity_type" />
+        <field table="activity_log" name="prob_type" />
+        <field table="activity_log" name="description" />
+        <field table="activity_log" name="comments" />
+        <field table="activity_log" name="status" />
+        <field table="activity_log" name="requestor" />
+        <field table="activity_log" name="requestor_name" />
+        <field table="activity_log" name="deal_id" />
+        <field table="activity_log" name="notes" />
+        <field table="activity_log" name="notes2" />
+        <field table="activity_log" name="deal_id" />
+        <field table="activity_log" name="dv_id" />
+        <field table="activity_log" name="location" />
+        <field table="dv" name="dv_name" />
+        <field table="activity_log" name="bl_id" />
+        <field table="bl" name="name" />
+        <field table="activity_log" name="phone_requestor"/>
+        <field table="activity_log" name="date_requested"/>
+        <parameter name="activityType" dataType="text" value=""/>
+<!--         <restriction type="sql" sql="activity_log.activity_type= ${parameters['activityType']} AND activity_log.status='APPROVED' AND activity_log.verified_by is null" /> -->
+        <restriction type="sql" sql="activity_log.created_by = '${user.name}' AND activity_log.activity_type= ${parameters['activityType']} AND activity_log.status='APPROVED'" />
+    </dataSource>
+  <dataSource id="activity_log_detail_ds">
+        <table name="activity_log" role="main"/>
+        <table name="dv" role="standard"/>
+        <table name="bl" role="standard"/>
+        <field table="activity_log" name="activity_log_id" />
+        <field table="activity_log" name="activity_type" />
+        <field table="activity_log" name="prob_type" />
+        <field table="activity_log" name="description" />
+        <field table="activity_log" name="comments" />
+        <field table="activity_log" name="status" />
+        <field table="activity_log" name="requestor" />
+        <field table="activity_log" name="requestor_name" />
+        <field table="activity_log" name="deal_id" />
+        <field table="activity_log" name="notes" />
+        <field table="activity_log" name="notes2" />
+        <field table="activity_log" name="deal_id" />
+        <field table="activity_log" name="dv_id" />
+        <field table="dv" name="dv_name" />
+        <field table="activity_log" name="bl_id" />
+        <field table="bl" name="name" />
+        <field table="activity_log" name="phone_requestor"/>
+        <field table="activity_log" name="date_requested"/>
+        <field table="activity_log" name="location"/>
+        <field table="activity_log" name="created_name"/>
+    </dataSource>
+    
+    <panel type="grid" id="approvedInfoGrid" showOnLoad="true" controlType="reportGrid" dataSource="activity_log_ds">
+        <title translatable="true">Requests List</title>
+        <sortField table="activity_log" name="activity_log_id" ascending="false"/>
+        <field id="next" controlType="button">
+            <title translatable="true">Next</title>
+        </field>
+        <field id="view" controlType="button">
+            <title translatable="true">View</title>
+        </field>
+        <field table="activity_log" name="requestor" hidden="true"/>
+        <field table="activity_log" name="requestor_name" />
+        <field table="dv" name="dv_name" />
+        <field table="activity_log" name="description" />
+        <field table="activity_log" name="comments" />
+        <field table="activity_log" name="activity_type" hidden="true"/>
+        <field table="activity_log" name="activity_log_id"/>
+    </panel>
+    <panel type="form" id="detailPanel" showOnLoad="false" dataSource="activity_log_detail_ds" columns="1">
+        <title translatable="true">Requests Info</title>
+        <field table="activity_log" name="activity_log_id" readOnly="true"/>
+        <field table="activity_log" name="activity_type" readOnly="true"/>
+        <field table="activity_log" name="prob_type" hidden="true"/>
+        <field table="activity_log" name="requestor" readOnly="true"/>
+        <field table="activity_log" name="requestor_name" readOnly="true"/>
+   	    <field table="activity_log" name="phone_requestor" readOnly="true"/>
+        <field table="dv" name="dv_name" readOnly="true"/>
+        <field table="activity_log" name="created_name" readOnly="true"/>
+        <field table="activity_log" name="date_requested" readOnly="true"/>
+        <field table="activity_log" name="description" readOnly="true"/>
+        <field table="activity_log" name="comments" readOnly="true"/>
+        <field table="activity_log" name="status" hidden="true"/>
+    </panel>
+	<js file="asc-bj-hhu-house-asgn-em-to-rm-select-tab.js"/>
+	<js file="asc-bj-usms-lc-constant.js"/>
+</view>

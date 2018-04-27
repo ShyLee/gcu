@@ -1,0 +1,102 @@
+<view version="2.0">
+    <js file="asc-bj-usms-house-check-out-dialog.js"/>
+    <dataSource id="sc_zzfcardDataSource">
+        <table name="sc_zzfcard" role="main"/>
+        <field name="card_id" table="sc_zzfcard"/>
+        <field name="card_status" table="sc_zzfcard"/>
+        <field name="cause_checkout" table="sc_zzfcard"/>
+        <field name="date_checkout_actual" table="sc_zzfcard"/>
+        <field name="date_payrent_last" table="sc_zzfcard"/>
+        
+        <field name="fee_water_info" table="sc_zzfcard"/>
+        <field name="fee_ele_info" table="sc_zzfcard"/>
+        <field name="pro_info" table="sc_zzfcard"/>
+        <field name="pro_other_info" table="sc_zzfcard"/>
+        <field name="pro_people" table="sc_zzfcard"/>
+        
+        <field name="rent_info" table="sc_zzfcard"/>
+        <field name="key_info" table="sc_zzfcard"/>
+        <field name="furniture_info" table="sc_zzfcard"/>
+        <field name="room_info" table="sc_zzfcard"/>
+        <field name="fcb_other_info" table="sc_zzfcard"/>
+        <field name="fcb_people" table="sc_zzfcard"/>
+        
+        <field name="date_work_begin" table="sc_zzfcard"/>
+        <field name="date_checkin" table="sc_zzfcard"/>
+        <field name="total_rent" table="sc_zzfcard"/>
+        <field name="date_checkout_ought" table="sc_zzfcard"/>
+        <field name="bl_id" table="sc_zzfcard"/>
+        <field name="fl_id" table="sc_zzfcard"/>
+        <field name="rm_id" table="sc_zzfcard"/>
+        <field name="is_refund" table="sc_zzfcard"/>
+        <field table="sc_zzfcard" name="doc_checkout1" />
+        <field table="sc_zzfcard" name="doc_checkout2" />
+        <field table="sc_zzfcard" name="note1" />
+    </dataSource>
+
+       
+    <panel type="form" columns="2" id="rentOutInfo" dataSource="sc_zzfcardDataSource">
+        <title translatable="true">Rentout Info</title>
+        <action id="print">
+            <title translatable="true">Print</title>
+        </action>
+        <action id="save">
+            <title translatable="true">save</title>
+        </action>
+        <action id="cancel">
+            <title translatable="true">cancel</title>
+        </action>
+        <field name="card_id" table="sc_zzfcard" hidden="true"/>
+        
+        <field name="date_work_begin" table="sc_zzfcard" hidden="true"/>
+        <field name="date_checkin" table="sc_zzfcard" hidden="true"/>
+        <field name="date_checkout_ought" table="sc_zzfcard" hidden="true"/>
+        <field name="bl_id" table="sc_zzfcard" hidden="true"/>
+        <field name="fl_id" table="sc_zzfcard" hidden="true"/>
+        <field name="rm_id" table="sc_zzfcard" hidden="true"/>
+        
+        
+<!--         <field name="date_checkout_actual" table="sc_zzfcard" required="true" onchange="rentOutController.autoSetDate()"/> -->
+        <field name="date_checkout_actual" table="sc_zzfcard" required="true"/>
+        <field name="date_payrent_last" table="sc_zzfcard" readOnly="true" required="true"/>
+        <field name="cause_checkout" table="sc_zzfcard" required="true"/>
+        <field table="sc_zzfcard" name="is_refund" />
+        <field table="sc_zzfcard" name="doc_checkout1" />
+        <field table="sc_zzfcard" name="doc_checkout2" />
+        <field table="sc_zzfcard" name="note1" colspan="2" height="20px"/>
+    </panel>
+    
+    <panel type="form" columns="2" id="proInfo" dataSource="sc_zzfcardDataSource">
+        <title translatable="true">Property Info</title>
+        <field name="card_id" table="sc_zzfcard" hidden="true"/>
+        
+        <field name="fee_water_info" table="sc_zzfcard"  width="207px"/>
+        <field name="fee_ele_info" table="sc_zzfcard"  width="207px"/>
+        <field name="pro_info" table="sc_zzfcard" width="207px"/>
+        <field name="pro_other_info" table="sc_zzfcard"  width="207px"/>
+        <field name="pro_people" table="sc_zzfcard"/>
+    </panel>
+    
+    <panel type="form" columns="2" id="FCBInfo" dataSource="sc_zzfcardDataSource">
+        <title translatable="true">Fcb Info</title>
+        <field name="card_id" table="sc_zzfcard" hidden="true"/>
+        
+        <field name="rent_info" table="sc_zzfcard"  width="207px"/>
+        <field name="key_info" table="sc_zzfcard"  width="207px"/>
+        <field name="furniture_info" table="sc_zzfcard"  width="207px"/>
+        <field name="room_info" table="sc_zzfcard"  width="207px"/>
+        <field name="fcb_other_info" table="sc_zzfcard"  width="207px"/>
+        <field name="fcb_people" table="sc_zzfcard"/>
+    </panel>
+	
+	 <dataSource id="rmDs">
+        <table name="rm" role="main"/>
+        <field name="bl_id" table="rm"/>
+        <field name="fl_id" table="rm"/>
+        <field name="rm_id" table="rm"/>
+        <field name="count_house_all" table="rm"/>
+        <field name="count_house_yz" table="rm"/>
+        <field name="count_house_kz" table="rm"/>
+     </dataSource>
+    
+</view>

@@ -1,0 +1,81 @@
+<view version="2.0">
+   	<title translatable="true">fen pei fang jian lie biao</title>
+    <layout id="main">
+        <north  initialSize="90"/>
+        <center />
+    </layout>
+
+	<dataSource id="sc_other_ds">
+		<table name="sc_stu_other" role="main" />
+		<table name="bl" role="standard" />
+		<field table="sc_stu_other" name="id"/>
+		<field table="sc_stu_other" name="identi_code"/>
+		<field table="sc_stu_other" name="pro_name"/>
+        <field table="bl" name="name"/>
+        <field table="bl" name="bl_id"/>
+	</dataSource>
+	
+    <dataSource id="sc_other_assign_ds">
+		<table name="sc_stu_other_log" role="main" />
+		<table name="sc_stu_other_log" role="other_id" />
+        <field table="sc_stu_other_log" name="id"/>
+        <field table="sc_stu_other_log" name="identi_code" />
+        <field table="sc_stu_other_log" name="pro_name" />
+        <field table="sc_stu_other_log" name="bl_id" />
+        <field table="sc_stu_other_log" name="fl_id" />
+        <field table="sc_stu_other_log" name="rm_id" />
+        <field table="sc_stu_other_log" name="date_checkin" />
+        <field table="sc_stu_other_log" name="checkout_cause"/>
+        <field table="sc_stu_other_log" name="date_checkout" />
+        <sortField table="sc_stu_other_log" name="id" ascending="false"/>
+	</dataSource>
+	
+    <panel type="console" id="consoleForm" dataSource="sc_other_assign_ds" columns="2"  layout="main" region="north">
+    	<title translatable="true">Filter</title>
+        <action id="show">
+            <title translatable="true">Show</title>
+            <command type="showPanel" panelId="gridForm"/>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="consoleForm"/>
+            <command type="showPanel" panelId="gridForm"/>
+        </action>
+<!--         <field table="sc_stu_other" name="bl_id" > -->
+<!--         	<action> -->
+<!--             <title>...</title> -->
+<!--             <tooltip>Select Value</tooltip> -->
+<!--             <command type="selectValue" fieldNames="sc_stu_other.bl_id" -->
+<!--                 selectFieldNames="bl.bl_id,bl.name"  -->
+<!--                 visibleFieldNames="bl.bl_id,bl.name"     -->
+<!--                 showIndex="false"/> -->
+<!--             </action> -->
+<!--         </field> -->
+		 <field table="sc_stu_other_log" name="identi_code" />
+        <field table="sc_stu_other_log" name="pro_name" />
+        <field table="sc_stu_other_log" name="date_checkin"  alias="sc_stu_other_log.date_from" op="&gt;=">
+			<title translatable="true">Date From</title>
+		</field>
+		<field table="sc_stu_other_log" name="date_checkin"  alias="sc_stu_other_log.date_to" op="&lt;=">
+			<title translatable="true">Date To</title>
+		</field>
+    </panel>
+    
+    <panel type="grid" id="gridForm" dataSource="sc_other_assign_ds" layoutRegion="gridPosition"  multipleSelectionEnabled="true" >
+    	<title translatable="true">fenpei</title>
+        <action id="delete">
+            <title translatable="true">Delete</title>
+        </action>
+        <field table="sc_stu_other_log" name="id" hidden="true"/>
+        <field table="sc_stu_other_log" name="other_id" hidden="true"/>
+        <field table="sc_stu_other_log" name="identi_code" />
+        <field table="sc_stu_other_log" name="pro_name" />
+        <field table="sc_stu_other_log" name="bl_id" />
+        <field table="sc_stu_other_log" name="fl_id" />
+        <field table="sc_stu_other_log" name="rm_id" />
+        <field table="sc_stu_other_log" name="date_checkin" />
+        <field table="sc_stu_other_log" name="date_checkout" />
+        <field table="sc_stu_other_log" name="checkout_cause" hidden="true"/>
+    </panel>
+    <js file="asc-bj-dorm-others-assign.js"/>
+</view>

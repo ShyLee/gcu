@@ -1,0 +1,36 @@
+<view version="2.0">
+	
+  <title>ShengChengGuDingBaoBiaoChuangKou</title>
+  
+  <dataSource id="ds0">
+    <table name="afm_tbls" role="main"/>
+    <field table="afm_tbls" name="table_name" hidden="true"/>
+	<!-- define a datasource with only one record -->
+    <restriction type="sql" sql="table_name = 'afm_tbls'"/>
+  </dataSource>
+  
+  
+  <panel type="grid" controlType="reportGrid" id="reportProgressPanel" showOnLoad="true" dataSource="ds0">
+    <title>ShengChengGuDingBaoBiaoGongZuoLiuCheng</title>
+    <!--field name="job_name" table="afm_tbls" dataType="string">
+    	<title translatable="true">Report or&lt;br/&gt;Job Name&lt;br/&gt;</title>
+    </field-->
+    <field name="result_view" table="afm_tbls" dataType="string">
+    	<title>Result View or File&lt;br/&gt;&lt;br/&gt;&lt;i&gt;Link will be enabled when job finishes.&lt;br/&gt;</title>
+    </field>
+    <field name="pct_complete" table="afm_tbls" dataType="string">
+    	<title>Percent&lt;br/&gt;Complete</title>
+    </field>
+    <field name="eclapsed_time" table="afm_tbls" dataType="string">
+    	<title>Elapsed&lt;br/&gt;Time</title>
+    </field>
+    <field name="est_time_remain" table="afm_tbls" dataType="string">
+    	<title>Estimated&lt;br/&gt;Time&lt;br/&gt;Remaining</title>
+    </field>
+    <field controlType="button" id="progressButton" onclick="onProgressButtonClick" name="stopButton">
+          <title>Stop Job</title>
+    </field>
+  </panel>
+  
+  <js file="ab-ireport-example.js"/>
+</view>

@@ -1,0 +1,221 @@
+<view version="2.0">
+    <title translatable="true">Payment Inback</title>
+    <js file="asc-bj-usms-house-payment-inback.js" />
+    <js file="asc-bj-usms-house-common.js"/>
+    
+    <layout type="borderLayout" id="mainLayout">
+        <north id="consoleRegion" initialSize="80" split="true" />
+        <center autoScroll="true" />
+    </layout>
+    <layout type="borderLayout" id="bodyLayout" containingLayout="mainLayout" region="center">
+        <west  initialSize="45%" split="true" />
+        <center id="right" autoScroll="true" />
+    </layout>
+    <layout type="borderLayout" id="bodyLayoutWest" containingLayout="bodyLayout" region="west">
+        <north id="gridRegion" initialSize="40%" split="true" />
+        <center id="changeLogRegion" autoScroll="true" />
+    </layout>
+	<dataSource id="sc_zzfcard_ds">
+        <table name="sc_zzfcard" role="main"/>
+        <table name="bl" role="standard"/>
+        
+        <field table="sc_zzfcard" name="card_id" />
+        <field table="sc_zzfcard" name="em_id" />
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" />
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="date_checkin"  />
+        <field table="sc_zzfcard" name="date_checkout_ought"  />
+        <field table="sc_zzfcard" name="payment_to" />
+        
+        <field table="sc_zzfcard" name="bl_id" />
+        <field table="bl" name="name" />
+        <field table="sc_zzfcard" name="unit_code" />
+        <field table="sc_zzfcard" name="fl_id" />
+        <field table="sc_zzfcard" name="rm_id" />
+        
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="cash_clean"	 />
+        
+        <field table="sc_zzfcard" name="date_register"  />
+		<field table="sc_zzfcard" name="lease_id" />
+        <field table="sc_zzfcard" name="all_payoff"  />
+        <field table="sc_zzfcard" name="sex" />
+        <field table="sc_zzfcard" name="phone" />
+        <field table="sc_zzfcard" name="email" />
+        <field table="sc_zzfcard" name="date_join_work" />
+        <field table="sc_zzfcard" name="marriage_stat" />
+        <field table="sc_zzfcard" name="is_working_parents" />
+        <field table="sc_zzfcard" name="po_name" />
+        <field table="sc_zzfcard" name="po_dv_id" />
+		<field table="sc_zzfcard" name="po_em_id" />
+		<field table="sc_zzfcard" name="po_identi_code" />
+        <field table="sc_zzfcard" name="curr_addr"  />
+   
+        <field table="sc_zzfcard" name="date_created" />
+        <field table="sc_zzfcard" name="area_lease" />
+        <field table="sc_zzfcard" name="rent_period" />
+        <field table="sc_zzfcard" name="cash_deposit" />
+        <field table="sc_zzfcard" name="curr_rent_rate" />
+       
+        <field table="sc_zzfcard" name="eq_desc_chkout" />
+        <field table="sc_zzfcard" name="amount_months" />
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+		<field table="sc_zzfcard" name="rent_pay_people" />
+        <field table="sc_zzfcard" name="clean_pay_people"  />
+        
+        <field table="sc_zzfcard" name="card_status" />
+        <field table="sc_zzfcard" name="sponsor" />
+        <field table="sc_zzfcard" name="sponsor_name" />
+        <field table="sc_zzfcard" name="payment_to" />
+        <field table="sc_zzfcard" name="rent_period" />
+        <field table="sc_zzfcard" name="is_em" />
+        <field table="sc_zzfcard" name="phone_home" />
+        <field table="sc_zzfcard" name="actual_payoff"  />
+		<field table="sc_zzfcard" name="address_bt"  />
+		<field table="sc_zzfcard" name="area_fuli"	 />
+		
+		<field table="sc_zzfcard" name="clean_people_id"/>
+		
+<!-- 		<restriction type="sql" sql="payment_to='finance' and card_status='1' and date_checkin is not null"/> -->
+		<restriction type="sql" sql=" (card_status='yrz' or card_status='yxq') and date_checkin is not null and cause_checkout is null"/>
+    </dataSource>
+    
+    <dataSource id="sc_zzfrent_inback_ds">
+        <table name="sc_zzfrent_inback" role="main"/>
+        <table name="bl" role="standard"/>
+        <table name="sc_zzfcard" role="standard"/>
+        <field table="sc_zzfrent_inback" name="id" />
+        <field table="sc_zzfrent_inback" name="card_id" />
+        <field table="sc_zzfrent_inback" name="em_id" />
+        <field table="sc_zzfrent_inback" name="em_name" />
+        <field table="sc_zzfrent_inback" name="dv_id" />
+        <field table="sc_zzfrent_inback" name="bl_id" />
+        <field table="bl" name="name" />
+        <field table="sc_zzfrent_inback" name="unit_code" />
+        <field table="sc_zzfrent_inback" name="fl_id" />
+        <field table="sc_zzfrent_inback" name="rm_id" />
+        <field table="sc_zzfrent_inback" name="handle_em_id" />
+        <field table="sc_zzfrent_inback" name="handle_em_name" />
+        <field table="sc_zzfrent_inback" name="pay_name" />
+        
+        <field table="sc_zzfrent_inback" name="month_rent" />
+        <field table="sc_zzfrent_inback" name="cash_clean" />
+        <field table="sc_zzfrent_inback" name="actual_cash_clean" />
+        <field table="sc_zzfrent_inback" name="actual_month_rent" />
+        <field table="sc_zzfrent_inback" name="need_cash_clean" />
+        <field table="sc_zzfrent_inback" name="need_month_rent" />
+        <field table="sc_zzfrent_inback" name="cause_clean" />
+        <field table="sc_zzfrent_inback" name="cause_rent" />
+        <field table="sc_zzfrent_inback" name="date_change" />
+        <field table="sc_zzfrent_inback" name="inback_name" />
+        <field table="sc_zzfrent_inback" name="inback_name_clean"/>
+        <field table="sc_zzfrent_inback" name="inback_type"/>
+        
+        <field table="sc_zzfcard" name="card_id"/>
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+        <sortfield table="sc_zzfrent_inback" name="id" ascending="false"/>
+     </dataSource>
+     <panel id="consolePanel" type="console" dataSource="sc_zzfcard_ds" layoutRegion="consoleRegion" columns="3">
+        <title translatable="true">Filter</title>
+        <action>
+            <title translatable="true">Show</title>
+            <command type="showPanel" panelId="gridPanel"/>
+            <command type="showPanel" panelId="changeLogPanel" show="false"/>
+            <command type="showPanel" panelId="editPanel" show="false"/>
+        </action>
+        <action>
+            <title translatable="true">Clear</title>
+            <command type="clearPanel" panelId="consolePanel"/>
+            <command type="showPanel" panelId="gridPanel"/>
+            <command type="showPanel" panelId="changeLogPanel" show="false"/>
+            <command type="showPanel" panelId="editPanel" show="false"/>
+        </action>
+        <field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="em_name" required="false"/>
+        <field table="sc_zzfcard" name="dv_name" />
+     </panel>
+     <panel type="grid" id="gridPanel" dataSource="sc_zzfcard_ds" layoutRegion="gridRegion">
+     	<title>Card List</title>
+		<field id="inback" controlType="button">
+			<title>Inback</title>
+		</field>
+     	<field table="sc_zzfcard" name="card_id" hidden="true"/>
+        <field table="sc_zzfcard" name="em_id" />
+        <field table="sc_zzfcard" name="em_name" />
+        <field table="sc_zzfcard" name="identi_code" hidden="true"/>
+        <field table="sc_zzfcard" name="dv_name" />
+        <field table="sc_zzfcard" name="payment_to" />
+        <field table="sc_zzfcard" name="desposit_payoff"/>
+        <field table="sc_zzfcard" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" />
+        <field table="sc_zzfcard" name="unit_code" />
+        <field table="sc_zzfcard" name="fl_id" />
+        <field table="sc_zzfcard" name="rm_id" />
+        <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+     </panel>
+     <panel type="grid" id="changeLogPanel" dataSource="sc_zzfrent_inback_ds" layoutRegion="changeLogRegion" showOnLoad="false">
+     	<title>Inback Info</title>
+        <field table="sc_zzfrent_inback" name="id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="card_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="em_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="em_name" controlType="link">
+        	<command type="showPanel" panelId="editPanel"/>
+        </field>
+        <field table="sc_zzfrent_inback" name="dv_id" />
+        <field table="sc_zzfrent_inback" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="unit_code" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="fl_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="rm_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="handle_em_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="handle_em_name" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="pay_name" />
+        
+        <field table="sc_zzfrent_inback" name="month_rent"/>
+        <field table="sc_zzfrent_inback" name="inback_type"/>
+        <field table="sc_zzfrent_inback" name="inback_name"/>
+        <field table="sc_zzfrent_inback" name="need_month_rent"/>
+        <field table="sc_zzfrent_inback" name="cause_rent"/>
+        <field table="sc_zzfrent_inback" name="date_change" hidden="true"/>
+         <field table="sc_zzfcard" name="date_checkin"/>
+        <field table="sc_zzfcard" name="date_checkout_ought"/>
+        <field table="sc_zzfcard" name="date_payrent_last"/>
+     </panel>
+     <panel type="form" id="editPanel" dataSource="sc_zzfrent_inback_ds" layoutRegion="right" showOnLoad="false" columns="1">
+     	<title>Edit Inback Info</title>
+     	<action id="save"  enabled="${panel.newRecord}">
+     		<title>save</title>
+     	</action>
+     	<action id="paymmentBack" enabled="${!panel.newRecord}" hidden="true">
+     		<title>Print Payment Back</title>
+     	</action>
+        <field table="sc_zzfrent_inback" name="id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="card_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="em_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="em_name"  readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="dv_id" readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="unit_code" readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="fl_id" readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="rm_id" readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="handle_em_id" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="handle_em_name" hidden="true"/>
+        <field table="sc_zzfcard" name="date_checkin" readOnly="true"/>
+        <field table="sc_zzfcard" name="date_checkout_ought" readOnly="true"/>
+        <field table="sc_zzfcard" name="date_payrent_last" readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="pay_name" />
+        <field table="sc_zzfrent_inback" name="inback_type" onchange="abPaymentInbackController.inbackType()"/>
+        <field table="sc_zzfrent_inback" name="inback_name" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="date_change"/>
+        <field table="sc_zzfrent_inback" name="month_rent" readOnly="true"/>
+        <field table="sc_zzfrent_inback" name="actual_month_rent"  onchange="autoMonthRent()" hidden="true"/>
+        <field table="sc_zzfrent_inback" name="need_month_rent" readOnly="false"/>
+        <field table="sc_zzfrent_inback" name="cause_rent"/>
+     </panel>
+</view>

@@ -1,0 +1,82 @@
+<view version="2.0">
+	<title translatable="true">eqcountryyear</title>	
+	<dataSource id="dv_DS">
+		<sql dialect="generic">
+	SELECT name as ctry_name , ctry.ctry_id as ctry_no
+      		,A.t_eq as y10_count,A.t_price as y10_sum
+			,B.t_eq as y8_count,B.t_price as y8_sum
+			,C.t_eq as y6_count,C.t_price as y6_sum
+			,D.t_eq as y4_count,D.t_price as y4_sum
+			,E.t_eq as y2_count,E.t_price as y2_sum
+			,F.t_eq as y0_count,F.t_price as y0_sum
+      FROM ctry
+      LEFT JOIN
+			(select ctry_id , sum(price) as t_price,count(eq_id) as t_eq from eq where date_purchased between trunc(sysdate,'yyyy')- interval'12' year and trunc(sysdate,'yyyy') - interval'10' year group by ctry_id) A on ctry.ctry_id = A.ctry_id
+			LEFT JOIN
+			(select ctry_id , sum(price) as t_price,count(eq_id) as t_eq from eq where date_purchased between trunc(sysdate,'yyyy')- interval'10' year and trunc(sysdate,'yyyy') - interval'8' year group by ctry_id) B on ctry.ctry_id = B.ctry_id
+			LEFT JOIN
+			(select ctry_id , sum(price) as t_price,count(eq_id) as t_eq from eq where date_purchased between trunc(sysdate,'yyyy')- interval'8' year and trunc(sysdate,'yyyy') - interval'6' year group by ctry_id) C on ctry.ctry_id = C.ctry_id
+			LEFT JOIN
+			(select ctry_id , sum(price) as t_price,count(eq_id) as t_eq from eq where date_purchased between trunc(sysdate,'yyyy')- interval'6' year and trunc(sysdate,'yyyy') - interval'4' year group by ctry_id) D on ctry.ctry_id = D.ctry_id
+			LEFT JOIN
+			(select ctry_id , sum(price) as t_price,count(eq_id) as t_eq from eq where date_purchased between trunc(sysdate,'yyyy')- interval'4' year and trunc(sysdate,'yyyy') - interval'2' year group by ctry_id) E on ctry.ctry_id = E.ctry_id
+			LEFT JOIN
+			(select ctry_id , sum(price) as t_price,count(eq_id) as t_eq from eq where date_purchased between trunc(sysdate,'yyyy')- interval'2' year and trunc(sysdate,'yyyy')  group by ctry_id) F on ctry.ctry_id = F.ctry_id
+		</sql>
+		<table name="dv" role="main"/>
+		<field name="ctry_name" dataType="text">
+			<title translatable="true">ctry_name</title>
+		</field>
+		<field name="ctry_no" dataType="text" hidden="true">
+			<title translatable="true">ctry_name</title>
+		</field>
+		<field name="y10_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="y10_sum" dataType="number" decimals="0">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="y8_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="y8_sum" dataType="number" decimals="0">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="y6_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="y6_sum" dataType="number" decimals="0">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="y4_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="y4_sum" dataType="number" decimals="0">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="y2_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="y2_sum" dataType="number" decimals="0">
+			<title translatable="true">jine</title>
+		</field>
+		<field name="y0_count" dataType="number" decimals="0">
+			<title translatable="true">taijian</title>
+		</field>
+		<field name="y0_sum" dataType="number" decimals="0">
+			<title translatable="true">jine</title>
+		</field>
+		<restriction type="sql" sql="dv.ctry_no in (select DISTINCT ctry_id from eq where eq.date_purchased between trunc(sysdate,'yyyy')- interval'12' year and trunc(sysdate,'yyyy'))"/> 
+	</dataSource>
+	<panel type="grid" id="gridPanel" dataSource="dv_DS" >
+		<title translatable="true">eqcountryyear</title>
+		<action id="exportXLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls" panelId="gridPanel"/>
+		</action>
+		<action id="report">
+			<title>Report</title>
+		</action>
+	</panel>
+	<js file="asc-bj-usms-eq-report-country-year.js"/>
+</view>

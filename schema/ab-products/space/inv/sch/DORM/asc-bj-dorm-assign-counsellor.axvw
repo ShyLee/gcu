@@ -1,0 +1,70 @@
+<view version="2.0">
+   	<title translatable="true">fdy su she fen pei</title>
+    <layout id="main">
+        <north id="sitePosition" initialSize="90"/>
+        <center id="tabs"/>
+    </layout>
+    
+	<dataSource id="ds_asc_bj_dorm_assign_console">
+		<table name="sc_em" role="main" />
+		<table name="bl" role="standard" />
+		<table name="dv" role="standard" />
+		<field table="sc_em" name="bl_id"/>
+		<field table="sc_em" name="em_id"/>
+		<field table="sc_em" name="name"/>
+		<field table="sc_em" name="dv_id"/>
+		<field table="dv" name="dv_name"/>
+        <field table="bl" name="name"/>
+	</dataSource>
+    
+    <panel type="console" id="ConsoleForm" dataSource="ds_asc_bj_dorm_assign_console" columns="3"  layoutRegion="sitePosition">
+    	<title translatable="true">Filter</title>
+        <action id="showTree">
+            <title translatable="true">Show</title>
+        </action>
+        <action id="clear">
+            <title translatable="true">Clear</title>
+        </action>
+        <action id="allocated">
+			<title translatable="true">YiFenPeiXinXi</title>
+		</action>
+		<field table="sc_em" name="bl_id" hidden="true"/>
+        <field table="bl" name="name" onchange="changeBlName()">
+        	<title translatable="true">sushe</title>
+			<action>
+				<title translatable="true">...</title>
+				<command type="selectValue" 
+				         fieldNames="sc_em.bl_id,bl.name"
+					     selectFieldNames="bl.bl_id,bl.name" 
+					     visibleFieldNames="bl.bl_id,bl.name"
+					     restriction="bl.bl_id in(select bl_id from rm where rm.rm_cat='301')">
+				</command>
+			</action>
+        </field>
+		<field table="sc_em" name="em_id">
+			<action id="selectEm">
+			</action>
+		</field>
+		<field table="sc_em" name="name">
+			<action id="selectEmName">
+			</action>
+		</field>
+		<field table="sc_em" name="dv_id" hidden="true"/>
+		<field table="dv" name="dv_name" hidden="true"/>
+    </panel>
+
+    <dataSource id="ds_asc_bj_dorm_assign_tab_sex">
+		<table name="em" role="main" />
+		<field table="em" name="sex"/>
+	</dataSource>
+	
+    <tabs id="campusTabs" layoutRegion="tabs" workflow="free" tabRefreshPolicy="refreshOnSelect" >
+        <tab name="male_tab" selected="true" file="asc-bj-dorm-assign-counsellor-male-tab.axvw">
+            <title translatable="true">men</title>
+        </tab>
+        <tab name="female_tab" file="asc-bj-dorm-assign-counsellor-female-tab.axvw">
+            <title translatable="true">women</title>
+        </tab>
+    </tabs>
+    <js file="asc-bj-dorm-assign-counsellor.js"/>
+</view>

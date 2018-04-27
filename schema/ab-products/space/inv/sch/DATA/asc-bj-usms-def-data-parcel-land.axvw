@@ -1,0 +1,241 @@
+<view version="2.0">
+
+	<layout type="borderLayout" id="mainLayout">
+		<west id="top" initialSize="30%" split="true" />
+		<center id="zongdi" autoScroll="true" />
+	</layout>
+	
+
+	<title translatable="true">Parcel Land </title>
+
+	<dataSource id="abScDefLandCatDS">
+		<table name="sc_parcelland" role="main" />
+		<field table="sc_parcelland" name="land_code" />
+		<field table="sc_parcelland" name="parcelland_address" />
+		<field table="sc_parcelland" name="certificate" />
+		<field table="sc_parcelland" name="dv_id" />
+		<field table="sc_parcelland" name="have_certificate" />
+		<field table="sc_parcelland" name="land_cat" />
+		<field table="sc_parcelland" name="land_properties" />
+		<field table="sc_parcelland" name="land_type" />
+		<field table="sc_parcelland" name="province" />
+		<field table="sc_parcelland" name="status" />
+		<field table="sc_parcelland" name="bl_area_total" />
+		<field table="sc_parcelland" name="bl_count_total" />
+		<field table="sc_parcelland" name="contacts" />
+		<field table="sc_parcelland" name="description" />
+		<field table="sc_parcelland" name="land_photo" />
+		<field table="sc_parcelland" name="quanszm" /> 
+		<field table="sc_parcelland" name="image_file" />
+		<field table="sc_parcelland" name="hpattern_acad" />
+		<field table="sc_parcelland" name="name"/>
+		<field table="sc_parcelland" name="date_receipt"/>
+		<field table="sc_parcelland" name="assets_num"/>
+		<field table="sc_parcelland" name="atype_code"/>
+		<field table="sc_parcelland" name="atype_name"/>
+		<field table="sc_parcelland" name="assets_name"/>
+		<field table="sc_parcelland" name="measure_unit"/>
+		<field table="sc_parcelland" name="srcid"/>
+		<field table="sc_parcelland" name="date_build"/>
+		<field table="sc_parcelland" name="cgzzxs_id"/>
+		<field table="sc_parcelland" name="chanqx_sid"/>
+		<field table="sc_parcelland" name="quansxz_id"/>
+		<field table="sc_parcelland" name="land_photo"/>
+		<field table="sc_parcelland" name="certificate"/>
+		<field table="sc_parcelland" name="dihao"/>
+		<field table="sc_parcelland" name="date_faz"/>
+		<field table="sc_parcelland" name="area_land"/>
+		<field table="sc_parcelland" name="parcelland_address"/>
+		<field table="sc_parcelland" name="value_type"/>
+		<field table="sc_parcelland" name="value_book"/>
+		<field table="sc_parcelland" name="value_fiscal_alloc"/>
+		<field table="sc_parcelland" name="business_income"/>
+		<field table="sc_parcelland" name="ysw_income"/>
+		<field table="sc_parcelland" name="other_funds"/>
+		<field table="sc_parcelland" name="czxjy_funds"/>
+		<field table="sc_parcelland" name="account_proof"/>
+		<field table="sc_parcelland" name="area_tudi"/>
+		<field table="sc_parcelland" name="avg_price"/>
+		<field table="sc_parcelland" name="use_dp"/>
+		<field table="sc_parcelland" name="use_status"/>
+		<field table="sc_parcelland" name="area_ziyong"/>
+		<field table="sc_parcelland" name="area_lend"/>
+		<field table="sc_parcelland" name="area_rent"/>
+		<field table="sc_parcelland" name="area_invest"/>
+		<field table="sc_parcelland" name="area_danbao"/>
+		<field table="sc_parcelland" name="area_other"/>
+		<field table="sc_parcelland" name="value_ziyong"/>
+		<field table="sc_parcelland" name="value_lend"/>
+		<field table="sc_parcelland" name="value_rent"/>
+		<field table="sc_parcelland" name="value_invest"/>
+		<field table="sc_parcelland" name="value_danbao"/>
+		<field table="sc_parcelland" name="value_other"/>
+		<field table="sc_parcelland" name="lend_df_dp"/>
+		<field table="sc_parcelland" name="rent_df_dp"/>
+		<field table="sc_parcelland" name="description"/>
+		<field table="sc_parcelland" name="operator"/>
+		<field table="sc_parcelland" name="auditor"/>
+		<field table="sc_parcelland" name="accounted"/>
+		<field table="sc_parcelland" name="nothandle"/>
+		<field table="sc_parcelland" name="land_type"/>
+		<field table="sc_parcelland" name="site_id"/>
+		<field table="sc_parcelland" name="value_book"/>
+		<field table="sc_parcelland" name="quanzmh"/>
+		<field table="sc_parcelland" name="quans_czr"/>
+	</dataSource>
+	
+	
+	<panel type="grid" id="ascBjUsmsDefDataLandCatGrid" dataSource="abScDefLandCatDS"
+		layout="mainLayout" region="west" recordLimit="100">
+		<title translatable="true">Parcel Land List Panel</title>
+		<sortField name="land_code" table="sc_parcelland"
+			ascending="true" />
+		<action id="addNew">
+			<title translatable="true">Add New</title>
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatForm"
+				newRecord="true" />
+		</action>
+		<field table="sc_parcelland" name="land_code"
+			controlType="link">
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatForm" />
+		</field>
+		<field table="sc_parcelland" name="name"
+			controlType="link">
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatForm" />
+		</field>
+		<field table="sc_parcelland" name="atype_name"
+			controlType="link">
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatForm" />
+		</field>
+		<field table="sc_parcelland" name="area_tudi"
+			controlType="link">
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatForm" />
+		</field>
+
+	</panel>
+
+	<panel type="form" id="ascBjUsmsDefDataLandCatForm" showOnLoad="false"
+		columns="2" dataSource="abScDefLandCatDS" layoutRegion="zongdi">
+		<title translatable="true">Define Parcel Land</title>
+		<action id="save">
+			<title translatable="true">Save</title>
+			<command type="saveForm" />
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatGrid"
+				applyParentRestriction="false" />
+		</action>
+		<action id="delete">
+			<title translatable="true">Delete</title>
+			<command type="deleteRecord" />
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatForm"
+				show="false" />
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatGrid"
+				applyParentRestriction="false" />
+		</action>
+		<action id="cancel">
+			<title translatable="true">Cancel</title>
+			<command type="showPanel" panelId="ascBjUsmsDefDataLandCatForm"
+				show="false" />
+		</action>
+		
+		
+		<field labelClass="labelFieldset" colspan="2">
+		      <title>Basic Information</title>
+		</field>
+		<field table="sc_parcelland" name="land_code" />
+        <field table="sc_parcelland" name="name" required="true"/>
+		<field table="sc_parcelland" name="assets_num"/>
+		<field table="sc_parcelland" name="assets_name"  required="true"/>
+		<field table="sc_parcelland" name="atype_code"  required="true">
+			<action> 
+ 				<title>...</title> 
+ 				<tooltip>Select Value</tooltip> 
+ 				<command type="selectValue" 
+ 					fieldNames="sc_parcelland.atype_code,sc_parcelland.atype_name" 
+ 					selectFieldNames="sc_atyp.atype_code,sc_atyp.atype_name" 
+ 					visibleFieldNames="sc_atyp.atype_code,sc_atyp.atype_name"  /> 
+ 			</action> 
+        </field>
+		<field table="sc_parcelland" name="atype_name" readOnly="true"/>
+	
+		<field labelClass="labelFieldset" colspan="2">
+		      <title>Landownership Information</title>
+		</field>
+        <field table="sc_parcelland" name="srcid"/>
+        <field table="sc_parcelland" name="date_build"/>
+		<field table="sc_parcelland" name="cgzzxs_id"/>
+		<field table="sc_parcelland" name="chanqx_sid"  required="true"/>
+		<field table="sc_parcelland" name="quansxz_id"/>
+		<field table="sc_parcelland" name="quanszm" /> 
+		<field table="sc_parcelland" name="quanzmh"/> 
+		<field table="sc_parcelland" name="parcelland_address"/>
+		<field table="sc_parcelland" name="date_faz"/>
+		<field table="sc_parcelland" name="quans_czr"/>
+		<field table="sc_parcelland" name="area_land" readOnly="false"/>
+		<field table="sc_parcelland" name="measure_unit"  required="true"/>
+		
+		<field labelClass="labelFieldset" colspan="2">
+		       <title>Area Information</title>
+		</field>
+		<field table="sc_parcelland" name="area_tudi"  required="true" readOnly="false"/>
+		<field table="sc_parcelland" name="use_status"/>
+		<field table="sc_parcelland" name="area_ziyong" readOnly="false"/>
+		<field table="sc_parcelland" name="area_lend" readOnly="false"/>
+		<field table="sc_parcelland" name="area_rent" readOnly="false"/>
+		<field table="sc_parcelland" name="area_invest" readOnly="false"/>
+		<field table="sc_parcelland" name="area_danbao" readOnly="false"/>
+		<field table="sc_parcelland" name="area_other" readOnly="false"/>
+		
+		<field labelClass="labelFieldset" colspan="2">
+		       <title>Value Information</title>
+		</field>
+		
+		<field table="sc_parcelland" name="value_type"/>
+		<field table="sc_parcelland" name="value_book"/>
+		<!--净值-->
+		<field table="sc_parcelland" name="value_book"/>
+
+		<field table="sc_parcelland" name="avg_price"/>
+		<field table="sc_parcelland" name="value_ziyong"/>
+		<field table="sc_parcelland" name="value_lend"/>
+		<field table="sc_parcelland" name="value_rent"/>
+		<field table="sc_parcelland" name="value_invest"/>
+		<field table="sc_parcelland" name="value_danbao"/>
+		<field table="sc_parcelland" name="value_other"/>
+		
+		<field labelClass="labelFieldset" colspan="2">
+		                    <title>Condition Information</title>
+		</field>
+		<!--用途分类-->
+		<field table="sc_parcelland" name="land_type"/>
+		<field table="sc_parcelland" name="land_photo"/>
+		<field table="sc_parcelland" name="certificate"/>
+		<field table="sc_parcelland" name="account_proof"/>
+		<field table="sc_parcelland" name="accounted"/>
+		<field table="sc_parcelland" name="site_id"/>
+		<field table="sc_parcelland" name="use_dp"/>
+		<field table="sc_parcelland" name="operator"/>				
+		<field labelClass="labelFieldset" colspan="2">
+		                    <title>Other Information</title>
+		</field>
+		<field table="sc_parcelland" name="dihao" hidden="true"/>
+		<field table="sc_parcelland" name="business_income" hidden="true"/>
+		<field table="sc_parcelland" name="ysw_income" hidden="true"/>
+		<field table="sc_parcelland" name="other_funds" hidden="true"/>
+		<field table="sc_parcelland" name="czxjy_funds" hidden="true"/>
+		<field table="sc_parcelland" name="lend_df_dp" hidden="true"/>
+		<field table="sc_parcelland" name="rent_df_dp" hidden="true"/>
+
+		<field table="sc_parcelland" name="auditor"/>
+		
+		<field table="sc_parcelland" name="nothandle" hidden="true"/>
+		<field table="sc_parcelland" name="date_receipt"/>
+		<field table="sc_parcelland" name="hpattern_acad" readOnly="false">
+			<action>
+                <command type="callFunction" functionName="setPattern"/>
+            </action>
+		</field>	
+			<field/>
+      	<field table="sc_parcelland" name="description" colspan="2" rowspan="2"/>	
+	</panel>
+    <js file="asc-bj-usms-def-data-parcel-land.js"/> 
+</view>

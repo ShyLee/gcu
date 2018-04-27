@@ -1,0 +1,185 @@
+<view version="2.0">
+	<message name="reportTitle" translatable="true">Jian Zhu Wu :
+	</message>
+	<message name="treeTitle" translatable="true">Xiao Qu :</message>
+	<message name="noSite" translatable="true">No Site</message>
+	<message name="total" translatable="true">Total</message>
+
+	<title translatable="true">View Building Modify Record</title>
+
+	<layout type="borderLayout" id="mainLayout">
+		<north id="consolePanel" autoScroll="true" split="true"
+			initialSize="90" />
+		<center autoScroll="true" />
+	</layout>
+	<layout type="borderLayout" id="centerLayout" containingLayout="mainLayout"
+		region="center">
+		<west id="treePosition" autoScroll="true" split="true"
+			initialSize="35%" />
+		<center id="rptPosition" autoScroll="true" />
+	</layout>
+
+	<dataSource id="abScDvRmcatStack_console_blDS">
+		<table name="bl" role="main" />
+		<table name="property" role="standard" />
+		<field table="property" name="site_id" />
+		<field table="bl" name="pr_id" />
+		<field table="bl" name="bl_id" />
+	</dataSource>
+
+	<panel type="console" columns="3" id="sbfFilterPanel"
+		labelsPosition="top" dataSource="abScDvRmcatStack_console_blDS"
+		layoutRegion="consolePanel">
+		<title translatable="true">Filter</title>
+		<action id="show">
+			<title translatable="true">Show</title>
+		</action>
+		<action id="clear">
+			<title translatable="true">Clear</title>
+			<command type="clearPanel" panelId="sbfFilterPanel" />
+		</action>
+
+		<field table="property" name="site_id" />
+		<field table="bl" name="pr_id">
+			<action>
+				<title>...</title>
+				<tooltip>Select Value</tooltip>
+				<command type="selectValue" fieldNames="bl.pr_id,property.site_id"
+					selectFieldNames="property.pr_id,property.site_id"
+					visibleFieldNames="property.site_id,property.pr_id,property.name"
+					filterFieldNames="property.site_id" showIndex="false" />
+			</action>
+		</field>
+		<field table="bl" name="bl_id">
+			<action>
+				<title translatable="true">...</title>
+				<command type="selectValue" fieldNames="bl.bl_id,bl.pr_id,property.site_id"
+					selectFieldNames="bl.bl_id,bl.pr_id,bl.site_id" visibleFieldNames="bl.site_id,bl.pr_id,bl.bl_id,bl.name"
+					restriction="bl.acc_type!='yxz'">
+					<title>Building</title>
+				</command>
+			</action>
+		</field>
+	</panel>
+
+
+	<!-- dataSource for site tree -->
+	<dataSource id="abScDvRmcatStack_tree_siteDS">
+		<sql dialect="generic">
+			(SELECT DISTINCT site.site_id ${sql.as} site_id,
+			site.name
+			${sql.as} name
+			FROM bl,property LEFT OUTER JOIN site ON site.site_id =
+			property.site_id
+			WHERE bl.pr_id = property.pr_id
+			AND bl.acc_type!='yxz'
+			and bl.bl_id in(select DISTINCT sc_bl_maintain.bl_id from sc_bl_maintain )
+			AND bl.bl_id ${parameters['blId']}
+			AND property.pr_id
+			${parameters['prId']}
+			AND ${parameters['siteId']}
+			)		
+        </sql>
+		<table name="site" role="main" />
+		<field table="site" name="site_id" dataType="text" />
+		<field table="site" name="name" dataType="text" />
+		<sortField table="site" name="site_id" ascending="true" />
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL" />
+		<parameter name="blId" dataType="verbatim" value="IS NOT NULL" />
+		<parameter name="siteId" dataType="verbatim" value=" 1=1 " />
+	</dataSource>
+
+	<dataSource id="abScDvRmcatStack_tree_prDS">
+		<sql dialect="generic">
+			(SELECT DISTINCT property.site_id ${sql.as} site_id,
+			property.pr_id
+			${sql.as} pr_id,
+			property.name ${sql.as} name,
+			property.qty_no_bldgs_calc ${sql.as} qty_no_bldgs_calc
+			FROM bl,property
+			WHERE bl.pr_id =property.pr_id
+			AND bl.acc_type!='yxz'
+			AND	property.pr_id ${parameters['prId']}
+			AND bl.bl_id ${parameters['blId']}
+			and bl.bl_id in(select DISTINCT sc_bl_maintain.bl_id from sc_bl_maintain ))
+        </sql>
+		<table name="property" role="main" />
+		<field table="property" name="site_id" dataType="text" />
+		<field table="property" name="pr_id" dataType="text" />
+		<field table="property" name="name" dataType="text" />
+		<field table="property" name="qty_no_bldgs_calc" dataType="text" />
+		<sortField table="property" name="name" ascending="true" />
+		<parameter name="prId" dataType="verbatim" value="IS NOT NULL" />
+		<parameter name="blId" dataType="verbatim" value="IS NOT NULL" />
+	</dataSource>
+
+	<!-- dataSource for building tree -->
+	<dataSource id="abScDvRmcatStack_tree_blDS">
+		<sql dialect="generic">
+			(SELECT DISTINCT bl.site_id ${sql.as} site_id,
+			bl.pr_id ${sql.as} pr_id,
+			bl.bl_id ${sql.as} bl_id,
+			bl.name ${sql.as}	name
+			FROM bl
+			WHERE bl.acc_type!='yxz' and bl.bl_id
+			${parameters['blId']}
+			and bl.bl_id in(select DISTINCT sc_bl_maintain.bl_id from sc_bl_maintain ))
+        </sql>
+		<table name="bl" role="main" />
+		<field table="bl" name="site_id" dataType="text" />
+		<field table="bl" name="pr_id" dataType="text" />
+		<field table="bl" name="bl_id" dataType="text" />
+		<field table="bl" name="name" dataType="text" />
+		<sortField table="bl" name="name" ascending="true" />
+		<parameter name="blId" dataType="verbatim" value="IS NOT NULL" />
+	</dataSource>
+
+	<!-- site tree panel -->
+	<panel type="tree" id="abScDvRmcatStackSite_tree" dataSource="abScDvRmcatStack_tree_siteDS"
+		layoutRegion="treePosition">
+		<title translatable="true">Xiao Qu</title>
+
+		<panel type="tree" id="abScDvRmcatStackBl_tree" dataSource="abScDvRmcatStack_tree_prDS">
+			<field table="PROPERTY" name="pr_id" />
+		</panel>
+
+		<panel type="tree" id="abScDvRmcatStackBl_tree" dataSource="abScDvRmcatStack_tree_blDS">
+			<event type="onClickNode">
+				<command type="callFunction" functionName="onClickBlNode" />
+			</event>
+			<field table="bl" name="bl_id" />
+		</panel>
+	</panel>
+
+	<dataSource id="ds_ab-sc-bl-rpt-maintain-info">
+		<table name="dv" role="main" />
+		<table name="sc_bl_maintain" role="main" />
+		<field table="sc_bl_maintain" name="bl_id" hidden="true" />
+		<field table="sc_bl_maintain" name="maintain_date" />
+		<field table="sc_bl_maintain" name="reason" />
+		<field table="sc_bl_maintain" name="maintain_firm" />
+		<field table="sc_bl_maintain" name="fund_src" />
+		<field table="sc_bl_maintain" name="maintain_fee" />
+		<field table="sc_bl_maintain" name="cost" />
+		<field table="sc_bl_maintain" name="maintain_items" />
+		<!-- <field table="sc_bl_maintain" name="description" /> -->
+		<restriction type="sql"
+			sql="sc_bl_maintain.bl_id=${parameters['blIdRes']}" />
+		<parameter name="blIdRes" dataType="text" value="" />
+	</dataSource>
+
+	<!-- cross table report -->
+	<panel id="abScBlRptMaintainInfoRptPanel" type="grid"
+		controlType="reportGrid" dataSource="ds_ab-sc-bl-rpt-maintain-info"
+		showOnLoad="false" layoutRegion="rptPosition">
+		<title translatable="true">Jian Zhu Wu</title>
+		<sortField name="bl_id" table="sc_bl_maintain" ascending="true" />
+		<action id="export:XLS">
+			<title>XLS</title>
+			<command type="exportPanel" outputType="xls"
+				panelId="abScBlRptMaintainInfoRptPanel" />
+		</action>
+	</panel>
+
+	<js file="asc-bj-usms-bl-rpt-maintain-info.js" />
+</view>
